@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2D 像素经营模拟游戏设计方案</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f1df;
+      --ink: #2d251c;
+      --muted: #6b5f50;
+      --line: #d6c7a8;
+      --accent: #9b4f2f;
+      --accent-2: #2f6d58;
+      --panel: #fff9ea;
+      --table: #efe3c4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.75;
+    }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+
+    header {
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 36px;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      border-left: 6px solid var(--accent);
+      font-size: 24px;
+      margin-top: 40px;
+      padding-left: 12px;
+    }
+
+    h3 {
+      color: var(--accent-2);
+      font-size: 18px;
+      margin-top: 24px;
+    }
+
+    p {
+      margin: 12px 0 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 17px;
+      margin-top: 12px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 18px;
+    }
+
+    .summary {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      margin: 24px 0;
+      padding: 18px 20px;
+    }
+
+    ul,
+    ol {
+      margin: 12px 0 0;
+      padding-left: 24px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 14px;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--table);
+    }
+
+    code {
+      background: #eadbbd;
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .flow {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      margin-top: 16px;
+    }
+
+    .step {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      min-height: 82px;
+      padding: 14px;
+    }
+
+    .step strong {
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .note {
+      border-left: 4px solid var(--accent-2);
+      color: var(--muted);
+      margin-top: 16px;
+      padding-left: 14px;
+    }
+
+    .style-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 18px;
+    }
+
+    figure {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      margin: 0;
+      padding: 12px;
+    }
+
+    figure img {
+      display: block;
+      image-rendering: pixelated;
+      width: 100%;
+    }
+
+    figcaption {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>2D 像素经营模拟游戏设计方案</h1>
+      <p class="subtitle">八九十年代中国乡镇背景下，从种苹果、摆摊卖苹果开始的高压力经营策略游戏。</p>
+      <p class="meta">文档版本：v0.2 ｜ 当前原型目标：种苹果 - 摆摊卖苹果 - 买种子再种</p>
+    </header>
+
+    <section class="summary">
+      <strong>一句话概括：</strong>
+      玩家扮演一名四十岁左右的乡镇中年人，在八九十年代“下海”经商，从一小块地和路边摊起步，通过亲自劳作获得农产品，再通过摆摊经营赚取现金，逐步升级工具、扩大经营方式，最终拥有自己的固定店面。
+    </section>
+
+    <section>
+      <h2>一、游戏背景</h2>
+      <p>
+        游戏发生在八九十年代的中国乡镇。时代正在变化，个体经营、赶集贸易、路边摊和小商品买卖逐渐活跃起来。
+        主角是一名四十岁左右的中年人，面对家庭开销、生活压力和时代机会，决定放下过去稳定但有限的生活，开始自己创业。
+      </p>
+      <p>
+        游戏不强调一夜暴富，而强调小人物在真实生活压力下的判断、劳作和积累。玩家需要自己种植、养殖或进货，再选择合适的经营方式把商品卖出去。
+      </p>
+    </section>
+
+    <section>
+      <h2>二、核心体验</h2>
+      <ul>
+        <li><strong>卖出东西的快感：</strong>这是游戏最重要的体验。玩家先投入时间和体力种植、养殖、加工或备货，再把亲手获得的商品卖出去，看到顾客付款、库存减少、现金增加，形成明确的劳动回报。</li>
+        <li><strong>劳作到经营的转化：</strong>游戏要重点放大“我辛苦弄来的东西终于卖出去了”的满足感。摆摊过程需要有顾客围上来、成交音效、现金跳动、剩余库存快速变化、临近收摊前清货等强反馈。</li>
+        <li><strong>高压力经营判断：</strong>资金、时间、库存新鲜度、天气、人流、地点、定价和管理风险都会影响结果。</li>
+        <li><strong>中国八九十年代乡镇特色：</strong>路边摊、三轮车、货车、菜市场、乡镇集市、熟客、邻里关系和管理检查共同构成游戏氛围。</li>
+        <li><strong>长期成长：</strong>从路边摊开始，逐步发展到三轮车、货车、固定摊位、租店面和自有店面。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>三、整体画面风格</h2>
+      <p>
+        当前选择第二套方向：清爽可爱经营像素风。整体视觉要有轻松经营游戏的亲和力，同时保留八九十年代中国乡镇的生活道具、建筑质感和摆摊场景。
+        画面不走沉重纪实路线，而是用明亮、温暖、清楚的像素图形承载高压力经营玩法，让玩家在种植、收获、摆摊和成交时获得明确反馈。
+      </p>
+      <ul>
+        <li><strong>角色比例：</strong>可爱但不幼稚，成年人保持中年劳动者气质，适合 24x32 到 32x40 的 sprite 规格。</li>
+        <li><strong>色彩基调：</strong>暖阳、红苹果、土路、砖墙、木质摊位和绿色农田，整体明亮但不脱离乡镇现实。</li>
+        <li><strong>售卖反馈：</strong>顾客围拢、苹果筐变空、现金进入钱箱、摊位热闹度上升，是这一风格需要重点表现的爽点。</li>
+        <li><strong>年代识别：</strong>三轮车、旧货车、竹筐、搪瓷杯、算盘、账本、老式房屋和乡镇小路构成视觉记忆点。</li>
+      </ul>
+
+      <div class="style-grid">
+        <figure>
+          <img src="assets/style_refs/selected_style_clean_cute.png" alt="清爽可爱经营像素风总参考">
+          <figcaption>总风格：清爽可爱经营像素风，明亮、有烟火气，适合表现种植后摆摊售卖的满足感。</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/style_refs/characters.png" alt="人物像素风参考">
+          <figcaption>人物：主角、家人、顾客、摊主、市场管理人员等，表情清楚，比例可爱但保留成人气质。</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/style_refs/plants.png" alt="植物和农作物像素风参考">
+          <figcaption>植物：苹果成长阶段、果筐、土壤状态和后续作物方向，用清楚的阶段变化服务经营判断。</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/style_refs/animals.png" alt="动物像素风参考">
+          <figcaption>动物：鸡、鸭、猪、牛、猫狗等后续养殖内容，保持可爱亲和但不变成幻想风。</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/style_refs/buildings.png" alt="房屋和经营场景像素风参考">
+          <figcaption>房屋：农家院、路边摊、三轮车、货车、菜市场摊位、租店面和自有店面，支撑长期成长线。</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/style_refs/daily_items.png" alt="日常用品像素风参考">
+          <figcaption>日常用品：竹筐、扁担、算盘、账本、搪瓷杯、秤、钱箱等，强化八九十年代乡镇质感。</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>四、核心循环</h2>
+      <p>
+        这里描述的是整款游戏的长期循环，而不是第一版苹果原型的单一流程。不同阶段的商品、交通工具和经营地点会变化，但核心始终围绕“获得商品 - 找到人流 - 卖出赚钱 - 扩大生产和经营”展开。
+      </p>
+      <div class="flow">
+        <div class="step"><strong>1. 规划生产</strong>根据季节、资金、家庭压力和市场行情，决定种什么、养什么或加工什么。</div>
+        <div class="step"><strong>2. 投入劳作</strong>消耗时间、体力和本金进行种植、养殖、收获、加工或进货。</div>
+        <div class="step"><strong>3. 整理货物</strong>管理库存、新鲜度、装载容量和可售商品组合。</div>
+        <div class="step"><strong>4. 判断人流</strong>根据地点、时间、天气、节日和事件选择在哪里摆摊或开卖。</div>
+        <div class="step"><strong>5. 售卖成交</strong>设定价格、应对顾客、承担管理风险，把货物尽可能卖成现金。</div>
+        <div class="step"><strong>6. 复盘扩张</strong>结算利润，升级工具、交通工具、摊位和店面，进入更高效率的经营阶段。</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>五、经营成长阶段</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>经营方式</th>
+            <th>玩法重点</th>
+            <th>解锁变化</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>路边摊</td>
+            <td>成本低、容量小、受天气和人流影响大，也可能被管理人员驱赶或罚款。</td>
+            <td>售卖少量自家农产品，体验最基础的摆摊成交快感。</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>三轮车卖货</td>
+            <td>可以选择路线，去村口、学校、厂门口等位置售卖，但仍有被查、被罚、甚至失去三轮车的风险。</td>
+            <td>提升带货量，解锁更多售卖地点和路线规划。</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>货车卖货</td>
+            <td>批量运输，承担油费、维修、滞销和管理检查风险，严重时可能被扣车或损失大量现金。</td>
+            <td>支持跨乡镇卖货和更大规模库存，利润更高但风险更重。</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>菜市场固定摊位</td>
+            <td>稳定人流和摊位费并存，开始形成固定顾客。</td>
+            <td>提升商品种类，出现同行竞争。</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>租店面</td>
+            <td>经营成本更高，但能装修、雇人、扩品类。</td>
+            <td>从流动经营进入店铺经营。</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>自有店面</td>
+            <td>形成长期资产和稳定品牌。</td>
+            <td>进入成熟经营阶段。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>六、第一版原型：第一筐苹果</h2>
+      <p>
+        第一版只实现最小闭环：玩家种苹果、收获苹果、摆摊卖苹果，再用赚到的钱购买更多苹果种子继续种植。
+        该原型用于验证游戏是否具备持续经营的乐趣和压力。
+      </p>
+
+      <h3>原型目标</h3>
+      <ul>
+        <li>玩家拥有少量现金、若干块土地和初始行动点。</li>
+        <li>玩家可以购买苹果种子并种到地里。</li>
+        <li>苹果需要若干天成熟，期间需要浇水照料。</li>
+        <li>成熟后收获苹果，苹果进入库存并随天数降低新鲜度。</li>
+        <li>玩家可以在路边摊设置售价并卖给顾客。</li>
+        <li>卖出苹果获得现金，现金可继续购买种子。</li>
+        <li>攒够一笔钱后，解锁或购买二手三轮车作为阶段目标。</li>
+      </ul>
+
+      <h3>建议初始数值</h3>
+      <table>
+        <tbody>
+          <tr><th>初始现金</th><td>20 元</td></tr>
+          <tr><th>苹果种子价格</th><td>5 元 / 颗</td></tr>
+          <tr><th>初始土地</th><td>3 块</td></tr>
+          <tr><th>成熟时间</th><td>3 天</td></tr>
+          <tr><th>单株产量</th><td>4 个苹果</td></tr>
+          <tr><th>苹果基础售价</th><td>3 元 / 个</td></tr>
+          <tr><th>苹果保鲜期</th><td>3 天</td></tr>
+          <tr><th>每日行动点</th><td>6 点</td></tr>
+          <tr><th>播种消耗</th><td>1 点</td></tr>
+          <tr><th>浇水消耗</th><td>1 点</td></tr>
+          <tr><th>收获消耗</th><td>1 点</td></tr>
+          <tr><th>摆摊消耗</th><td>3 点</td></tr>
+          <tr><th>二手三轮车价格</th><td>120 元</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>七、压力与策略</h2>
+      <ul>
+        <li><strong>时间压力：</strong>每天行动点有限，种植、浇水、收获、摆摊都要取舍。</li>
+        <li><strong>资金压力：</strong>种子需要现金，卖不出去会影响下一轮生产。</li>
+        <li><strong>库存压力：</strong>苹果会逐日变差，越新鲜越容易卖出。</li>
+        <li><strong>天气压力：</strong>晴天适合摆摊，下雨可能影响人流，但对农作物有利。</li>
+        <li><strong>定价压力：</strong>高价利润大但成交慢，低价回款快但利润薄。</li>
+        <li><strong>管理风险：</strong>路边摊、三轮车和货车阶段都可能遇到城管或市场管理人员，导致罚款、没收货物，严重时失去三轮车或货车。</li>
+      </ul>
+
+      <p class="note">
+        第一版的策略深度主要来自定价、行动点分配和现金周转。后续版本再加入更多作物、养殖、加工、雇员和地点选择。
+      </p>
+    </section>
+
+    <section>
+      <h2>八、人流系统</h2>
+      <p>
+        人流系统是游戏的重要特色。玩家不是只要有货就能卖出去，而是要判断“什么时候、去哪里、卖给谁”。不同地点、时间、节日和天气会形成不同人流结构，从而改变摆摊决策。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>影响因素</th>
+            <th>设计方向</th>
+            <th>例子</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>地点</td>
+            <td>决定基础人流、顾客类型和管理风险。</td>
+            <td>学校门口学生多，厂门口下班时工人多，集市入口人流大但竞争强。</td>
+          </tr>
+          <tr>
+            <td>时间</td>
+            <td>同一地点在不同时段的人流不同。</td>
+            <td>早市适合卖新鲜农产品，下午学校门口适合卖零食水果，傍晚居民区更适合日用品。</td>
+          </tr>
+          <tr>
+            <td>节日</td>
+            <td>改变消费意愿、热门商品和客单价。</td>
+            <td>春节前水果、肉类、年货需求上升；开学季学生用品和便宜水果更好卖。</td>
+          </tr>
+          <tr>
+            <td>天气</td>
+            <td>影响出门人数和商品偏好。</td>
+            <td>晴天人流高，雨天人流低但农田受益；炎热天气水果更容易卖。</td>
+          </tr>
+          <tr>
+            <td>事件</td>
+            <td>短期制造机会或风险。</td>
+            <td>乡镇企业发工资、赶集日、庙会、管理检查加强都会改变当天策略。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="note">
+        人流系统需要让玩家形成预判：今天货不多时去高价低人流地点，货快坏时去高人流地点清货，节日前提前备货，检查严格时避开高风险区域。
+      </p>
+    </section>
+
+    <section>
+      <h2>九、管理风险系统</h2>
+      <p>
+        前三个经营方式具有强烈的流动经营特征，也最能体现八九十年代乡镇摆摊的现实感。城管或市场管理人员不是单纯惩罚机制，而是迫使玩家权衡利润、人流和安全性的策略变量。
+      </p>
+      <ul>
+        <li><strong>路边摊：</strong>风险较高但损失较小，可能被驱赶、罚少量钱或损失部分货物。</li>
+        <li><strong>三轮车：</strong>机动性更强，可以躲避检查，但被抓时可能罚款、没收货物，严重时失去三轮车。</li>
+        <li><strong>货车：</strong>收益高、装货多，但违规摆卖或跨区域售卖时风险更大，严重时可能被扣车或造成大额损失。</li>
+        <li><strong>固定摊位之后：</strong>管理风险下降，转为摊位费、租金、证照、卫生检查和同行竞争等长期经营压力。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>十、顾客购买逻辑草案</h2>
+      <p>顾客购买可以先使用简单概率模型，便于快速实现和调整。</p>
+      <p><code>购买概率 = 基础需求 + 新鲜度加成 - 价格惩罚 + 天气影响 + 人流影响</code></p>
+      <table>
+        <thead>
+          <tr>
+            <th>因素</th>
+            <th>示例影响</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>新鲜苹果</td><td>购买概率 +25%</td></tr>
+          <tr><td>普通苹果</td><td>购买概率不变</td></tr>
+          <tr><td>不新鲜苹果</td><td>购买概率 -30%</td></tr>
+          <tr><td>价格低于基础价</td><td>购买概率 +25%，但利润降低</td></tr>
+          <tr><td>价格高于基础价</td><td>购买概率下降，但单个利润提高</td></tr>
+          <tr><td>晴天</td><td>购买概率 +10%</td></tr>
+          <tr><td>下雨</td><td>购买概率 -20%</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>十一、后续扩展方向</h2>
+      <ul>
+        <li><strong>种植扩展：</strong>梨、桃、白菜、玉米、花生等不同季节作物。</li>
+        <li><strong>养殖扩展：</strong>鸡、鸭、猪等动物产品。</li>
+        <li><strong>加工扩展：</strong>苹果干、苹果酱、罐头、熟食等提高利润的产品。</li>
+        <li><strong>地点扩展：</strong>村口、学校门口、厂门口、集市、菜市场。</li>
+        <li><strong>家庭事件：</strong>孩子学费、老人看病、亲戚借钱等生活压力。</li>
+        <li><strong>时代事件：</strong>赶集旺季、下海潮、乡镇企业发工资、春节年货。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
