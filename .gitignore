@@ -1,5 +1,7 @@
 .godot/
 .import/
+.superpowers/
+.DS_Store
 export.cfg
 export_presets.cfg
 *.translation
