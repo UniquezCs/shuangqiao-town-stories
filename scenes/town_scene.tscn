@@ -1,0 +1,131 @@
+[gd_scene format=4 uid="uid://c8hq36ibnkvy"]
+
+[ext_resource type="Script" uid="uid://wwpdhynr5urt" path="res://scripts/scenes/town_scene.gd" id="1_town"]
+[ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="2_exit"]
+[ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="2_jlhm2"]
+[ext_resource type="Script" uid="uid://dxjwdpr37qd85" path="res://scripts/world/stall_spot.gd" id="3_spot"]
+[ext_resource type="Script" uid="uid://d0tkjpr6h15xk" path="res://scripts/world/stall.gd" id="4_stall"]
+[ext_resource type="Texture2D" uid="uid://cci8a2btx0mf8" path="res://assets/generated/prototype_v1_32/objects/stall_spot_128x32.png" id="5_5h8k3"]
+[ext_resource type="Script" uid="uid://c2qg2628rxakr" path="res://scripts/world/customer_spawner.gd" id="5_spawner"]
+[ext_resource type="Texture2D" uid="uid://bd5g8nqs3r4ms" path="res://assets/generated/prototype_v1_32/objects/school_gate_256x128.png" id="6_dsl1t"]
+[ext_resource type="Texture2D" uid="uid://b8xog1vvwbjlc" path="res://assets/generated/props/street_stall_props_v2_cutouts/01_stall_empty.png" id="8_jlhm2"]
+[ext_resource type="Texture2D" uid="uid://bl6y5d525xk4w" path="res://assets/generated/prototype_v1_32/objects/factory_gate_256x128.png" id="10_6kr2p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(46, 27.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_spot"]
+size = Vector2(158, 47)
+
+[node name="TownScene" type="Node2D" unique_id=1250339104]
+script = ExtResource("1_town")
+
+[node name="GroundLayer" type="TileMapLayer" parent="." unique_id=2065411014]
+z_index = -30
+tile_map_data = PackedByteArray("AADr//j/AAAAAAEAAADr//n/AAAAAAEAAADr//r/AAAAAAEAAADr//v/AAAAAAEAAADr//z/AAAAAAEAAADr//3/AAAAAAEAAADr//7/AAAAAAEAAADr////AAAAAAEAAADr/wAAAAACAAEAAADr/wEAAAAAAAEAAADs//j/AAAAAAEAAADs//n/AAAAAAEAAADs//r/AAAAAAEAAADs//v/AAAAAAEAAADs//z/AAAAAAEAAADs//3/AAAAAAEAAADs//7/AAAAAAEAAADs////AAAAAAEAAADs/wAAAAACAAEAAADs/wEAAAAAAAEAAADt//j/AAAAAAEAAADt//n/AAAAAAEAAADt//r/AAAAAAEAAADt//v/AAAAAAEAAADt//z/AAAAAAEAAADt//3/AAAAAAEAAADt//7/AAAAAAEAAADt////AAAAAAEAAADt/wAAAAACAAEAAADt/wEAAAAAAAEAAADu//j/AAAAAAEAAADu//n/AAAAAAEAAADu//r/AAAAAAEAAADu//v/AAAAAAEAAADu//z/AAAAAAEAAADu//3/AAAAAAEAAADu//7/AAAAAAEAAADu////AAAAAAEAAADu/wAAAAACAAEAAADu/wEAAAAAAAEAAADv//j/AAAAAAEAAADv//n/AAAAAAEAAADv//r/AAAAAAEAAADv//v/AAAAAAEAAADv//z/AAAAAAEAAADv//3/AAAAAAEAAADv//7/AAAAAAEAAADv////AAAAAAEAAADv/wAAAAACAAEAAADv/wEAAAAAAAEAAADw//j/AAAAAAEAAADw//n/AAAAAAEAAADw//r/AAAAAAEAAADw//v/AAAAAAEAAADw//z/AAAAAAEAAADw//3/AAAAAAEAAADw//7/AAAAAAEAAADw////AAAAAAEAAADw/wAAAAACAAEAAADw/wEAAAAAAAEAAADx//j/AAAAAAEAAADx//n/AAAAAAEAAADx//r/AAAAAAEAAADx//v/AAAAAAEAAADx//z/AAAAAAEAAADx//3/AAAAAAEAAADx//7/AAAAAAEAAADx////AAAAAAEAAADx/wAAAAACAAEAAADx/wEAAAAAAAEAAADy//j/AAAAAAEAAADy//n/AAAAAAEAAADy//r/AAAAAAEAAADy//v/AAAAAAEAAADy//z/AAAAAAEAAADy//3/AAAAAAEAAADy//7/AAAAAAEAAADy////AAAAAAEAAADy/wAAAAACAAEAAADy/wEAAAAAAAEAAADz//j/AAAAAAEAAADz//n/AAAAAAEAAADz//r/AAAAAAEAAADz//v/AAAAAAEAAADz//z/AAAAAAEAAADz//3/AAAAAAEAAADz//7/AAAAAAEAAADz////AAAAAAEAAADz/wAAAAACAAEAAADz/wEAAAAAAAEAAAD0//j/AAAAAAEAAAD0//n/AAAAAAEAAAD0//r/AAAAAAEAAAD0//v/AAAAAAEAAAD0//z/AAAAAAEAAAD0//3/AAAAAAEAAAD0//7/AAAAAAEAAAD0////AAAAAAEAAAD0/wAAAAACAAEAAAD0/wEAAAAAAAEAAAD1//j/AAAAAAEAAAD1//n/AAAAAAEAAAD1//r/AAAAAAEAAAD1//v/AAAAAAEAAAD1//z/AAAAAAEAAAD1////AAACAAEAAGD1/wAAAAAEAAEAAAD2//j/AAAAAAEAAAD2//n/AAAAAAEAAAD2//r/AAAAAAEAAAD2//v/AAAAAAEAAAD2//z/AAAAAAEAAAD2//3/AAAAAAEAAAD2//7/AAAAAAEAAAD2////AAAAAAEAAAD2/wAAAAACAAEAADD2/wEAAAAAAAEAAAD3//j/AAAAAAEAAAD3//n/AAAAAAEAAAD3//r/AAAAAAEAAAD3//v/AAAAAAEAAAD3//z/AAAAAAEAAAD3//3/AAAAAAEAAAD3//7/AAAAAAEAAAD3////AAAAAAEAAAD3/wAAAAACAAEAADD3/wEAAAAAAAEAAAD4//j/AAAAAAEAAAD4//n/AAAAAAEAAAD4//r/AAAAAAEAAAD4//v/AAAAAAEAAAD4//z/AAAAAAEAAAD4//3/AAAAAAEAAAD4//7/AAAAAAEAAAD4////AAAAAAEAAAD4/wAAAAACAAEAADD4/wEAAAAAAAEAAAD5//j/AAAAAAEAAAD5//n/AAAAAAEAAAD5//r/AAAAAAEAAAD5//v/AAAAAAEAAAD5//z/AAAAAAEAAAD5//3/AAAAAAEAAAD5//7/AAAAAAEAAAD5////AAAAAAEAAAD5/wAAAAACAAEAADD5/wEAAAAAAAEAAAD6//j/AAAAAAEAAAD6//n/AAAAAAEAAAD6//r/AAAAAAEAAAD6//v/AAAAAAEAAAD6//z/AAAAAAEAAAD6//3/AAAAAAEAAAD6//7/AAAAAAEAAAD6////AAAAAAEAAAD6/wAAAAACAAEAADD6/wEAAAAAAAEAAAD7//j/AAAAAAEAAAD7//n/AAAAAAEAAAD7//r/AAAAAAEAAAD7//v/AAAAAAEAAAD7//z/AAAAAAEAAAD7//3/AAAAAAEAAAD7//7/AAAAAAEAAAD7////AAAAAAEAAAD7/wAAAAACAAEAADD7/wEAAAAAAAEAAAD8//j/AAAAAAEAAAD8//n/AAAAAAEAAAD8//r/AAAAAAEAAAD8//v/AAAAAAEAAAD8//z/AAAAAAEAAAD8//3/AAAAAAEAAAD8//7/AAAAAAEAAAD8////AAAAAAEAAAD8/wAAAAACAAEAADD8/wEAAAAAAAEAAAD9//j/AAAAAAEAAAD9//n/AAAAAAEAAAD9//r/AAAAAAEAAAD9//v/AAAAAAEAAAD9//z/AAAAAAEAAAD9//3/AAAAAAEAAAD9//7/AAAAAAEAAAD9////AAAAAAEAAAD9/wAAAAACAAEAADD9/wEAAAAAAAEAAAD+//j/AAAAAAEAAAD+//n/AAAAAAEAAAD+//r/AAAAAAEAAAD+//v/AAAAAAEAAAD+//z/AAAAAAEAAAD+//3/AAAAAAEAAAD+//7/AAAAAAEAAAD+////AAAAAAEAAAD+/wAAAAACAAEAADD+/wEAAAAAAAEAAAD///j/AAAAAAEAAAD///n/AAAAAAEAAAD///r/AAAAAAEAAAD///v/AAAAAAEAAAD///z/AAAAAAEAAAD///3/AAAAAAEAAAD///7/AAAAAAEAAAD/////AAAAAAEAAAD//wAAAAACAAEAADD//wEAAAAAAAEAAAAAAPj/AAAAAAEAAAAAAPn/AAAAAAEAAAAAAPr/AAAAAAEAAAAAAPv/AAAAAAEAAAAAAPz/AAAAAAEAAAAAAP3/AAAAAAEAAAAAAP7/AAAAAAEAAAAAAP//AAAAAAEAAAAAAAAAAAACAAEAADAAAAEAAAAAAAEAAAABAPj/AAAAAAEAAAABAPn/AAAAAAEAAAABAPr/AAAAAAEAAAABAPv/AAAAAAEAAAABAPz/AAAAAAEAAAABAP3/AAAAAAEAAAABAP7/AAAAAAEAAAABAP//AAAAAAEAAAABAAAAAAACAAEAADABAAEAAAAAAAEAAAACAPj/AAAAAAEAAAACAPn/AAAAAAEAAAACAPr/AAAAAAEAAAACAPv/AAAAAAEAAAACAPz/AAAAAAEAAAACAP3/AAAAAAEAAAACAP7/AAAAAAEAAAACAP//AAAAAAEAAAACAAAAAAACAAEAADACAAEAAAAAAAEAAAADAPj/AAAAAAEAAAADAPn/AAAAAAEAAAADAPr/AAAAAAEAAAADAPv/AAAAAAEAAAADAPz/AAAAAAEAAAADAP3/AAAAAAEAAAADAP7/AAAAAAEAAAADAP//AAAAAAEAAAADAAAAAAACAAEAADADAAEAAAAAAAEAAAAEAPj/AAAAAAEAAAAEAPn/AAAAAAEAAAAEAPr/AAAAAAEAAAAEAPv/AAAAAAEAAAAEAPz/AAAAAAEAAAAEAP3/AAAAAAEAAAAEAP7/AAAAAAEAAAAEAP//AAAAAAEAAAAEAAAAAAACAAEAADAEAAEAAAAAAAEAAAAFAPj/AAAAAAEAAAAFAPn/AAAAAAEAAAAFAPr/AAAAAAEAAAAFAPv/AAAAAAEAAAAFAPz/AAAAAAEAAAAFAP3/AAAAAAEAAAAFAP7/AAAAAAEAAAAFAP//AAAAAAEAAAAFAAAAAAACAAEAADAFAAEAAAAAAAEAAAAGAPj/AAAAAAEAAAAGAPn/AAAAAAEAAAAGAPr/AAAAAAEAAAAGAPv/AAAAAAEAAAAGAPz/AAAAAAEAAAAGAP3/AAAAAAEAAAAGAP7/AAAAAAEAAAAGAP//AAAAAAEAAAAGAAAAAAACAAEAADAGAAEAAAAAAAEAAAAHAPj/AAAAAAEAAAAHAPn/AAAAAAEAAAAHAPr/AAAAAAEAAAAHAPv/AAAAAAEAAAAHAPz/AAAAAAEAAAAHAP3/AAAAAAEAAAAHAP7/AAAAAAEAAAAHAP//AAAAAAEAAAAHAAAAAAACAAEAADAHAAEAAAAAAAEAAAAIAPj/AAAAAAEAAAAIAPn/AAAAAAEAAAAIAPr/AAAAAAEAAAAIAPv/AAAAAAEAAAAIAPz/AAAAAAEAAAAIAP3/AAAAAAEAAAAIAP7/AAAAAAEAAAAIAP//AAAAAAEAAAAIAAAAAAACAAEAADAIAAEAAAAAAAEAAAAJAPj/AAAAAAEAAAAJAPn/AAAAAAEAAAAJAPr/AAAAAAEAAAAJAPv/AAAAAAEAAAAJAPz/AAAAAAEAAAAJAP3/AAAAAAEAAAAJAP7/AAAAAAEAAAAJAP//AAAAAAEAAAAJAAAAAAACAAEAADAJAAEAAAAAAAEAAAAKAPj/AAAAAAEAAAAKAPn/AAAAAAEAAAAKAPr/AAAAAAEAAAAKAPv/AAAAAAEAAAAKAPz/AAAAAAEAAAAKAP3/AAAAAAEAAAAKAP7/AAAAAAEAAAAKAP//AAAAAAEAAAAKAAAAAAACAAEAADAKAAEAAAAAAAEAAAALAPj/AAAAAAEAAAALAPn/AAAAAAEAAAALAPr/AAAAAAEAAAALAPv/AAAAAAEAAAALAPz/AAAAAAEAAAALAP3/AAAAAAEAAAALAP7/AAACAAEAAGALAP//AAACAAEAAGALAAAAAAAEAAEAAAALAAEAAAACAAEAAGAMAPj/AAAAAAEAAAAMAPn/AAAAAAEAAAAMAPr/AAAAAAEAAAAMAPv/AAAAAAEAAAAMAPz/AAAAAAEAAAAMAP3/AAAAAAEAAAAMAP7/AAAAAAEAAAAMAP//AAAAAAEAAAAMAAAAAAACAAEAAAAMAAEAAAAAAAEAAAANAPj/AAAAAAEAAAANAPn/AAAAAAEAAAANAPr/AAAAAAEAAAANAPv/AAAAAAEAAAANAPz/AAAAAAEAAAANAP3/AAAAAAEAAAANAP7/AAAAAAEAAAANAP//AAAAAAEAAAANAAAAAAACAAEAAAANAAEAAAAAAAEAAAAOAPj/AAAAAAEAAAAOAPn/AAAAAAEAAAAOAPr/AAAAAAEAAAAOAPv/AAAAAAEAAAAOAPz/AAAAAAEAAAAOAP3/AAAAAAEAAAAOAP7/AAAAAAEAAAAOAP//AAAAAAEAAAAOAAAAAAACAAEAAAAOAAEAAAAAAAEAAAD1/wEAAAACAAEAAGA=")
+tile_set = ExtResource("2_jlhm2")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1412263034]
+
+[node name="default" type="Marker2D" parent="Spawns" unique_id=205574665]
+position = Vector2(-540, 16)
+
+[node name="town_spawn" type="Marker2D" parent="Spawns" unique_id=1399093534]
+position = Vector2(-540, 16)
+
+[node name="ToHome" type="Area2D" parent="." unique_id=1645666304]
+position = Vector2(-648, 17)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_exit")
+target_scene = "home"
+spawn_id = "home_spawn"
+prompt = "回家"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToHome" unique_id=532352903]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="SchoolSpot" type="Area2D" parent="." unique_id=1684645973]
+position = Vector2(-330, -112)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_spot")
+
+[node name="SpotVisual" type="Sprite2D" parent="SchoolSpot" unique_id=1141695062]
+visible = false
+z_index = -2
+texture_filter = 1
+position = Vector2(0, 42)
+texture = ExtResource("5_5h8k3")
+
+[node name="Landmark" type="Sprite2D" parent="SchoolSpot" unique_id=1981759994]
+z_index = -5
+texture_filter = 1
+position = Vector2(0, -72)
+texture = ExtResource("6_dsl1t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SchoolSpot" unique_id=424097076]
+position = Vector2(8, 21)
+shape = SubResource("RectangleShape2D_spot")
+
+[node name="Stall" type="Node2D" parent="SchoolSpot" unique_id=1519109239 groups=["stall"]]
+position = Vector2(-3, -1)
+script = ExtResource("4_stall")
+
+[node name="Visual" type="Sprite2D" parent="SchoolSpot/Stall" unique_id=40420376]
+texture_filter = 1
+position = Vector2(6.000004, 20.5)
+scale = Vector2(0.62790704, 0.38311687)
+texture = ExtResource("8_jlhm2")
+
+[node name="CustomerSpawner" type="Node" parent="SchoolSpot" unique_id=1368679675]
+script = ExtResource("5_spawner")
+
+[node name="Timer" type="Timer" parent="SchoolSpot/CustomerSpawner" unique_id=1812325959]
+one_shot = true
+
+[node name="FactorySpot" type="Area2D" parent="." unique_id=781175266]
+position = Vector2(330, -112)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_spot")
+spot_id = "factory_gate"
+label = "厂门口"
+
+[node name="SpotVisual" type="Sprite2D" parent="FactorySpot" unique_id=631686087]
+visible = false
+z_index = -2
+texture_filter = 1
+position = Vector2(0, 42)
+texture = ExtResource("5_5h8k3")
+
+[node name="Landmark" type="Sprite2D" parent="FactorySpot" unique_id=28522525]
+z_index = -5
+texture_filter = 1
+position = Vector2(0, -72)
+texture = ExtResource("10_6kr2p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FactorySpot" unique_id=1027733527]
+position = Vector2(4, 22.5)
+shape = SubResource("RectangleShape2D_spot")
+
+[node name="Stall" type="Node2D" parent="FactorySpot" unique_id=1297938666 groups=["stall"]]
+position = Vector2(3, 9)
+script = ExtResource("4_stall")
+
+[node name="Visual" type="Sprite2D" parent="FactorySpot/Stall" unique_id=1703778535]
+texture_filter = 1
+position = Vector2(5.750001, 11.500001)
+scale = Vector2(0.5494186, 0.3181818)
+texture = ExtResource("8_jlhm2")
+
+[node name="CustomerSpawner" type="Node" parent="FactorySpot" unique_id=1987065235]
+script = ExtResource("5_spawner")
+spot_id = "factory_gate"
+customer_type = "worker"
+spawn_offset = Vector2(260, 0)
+exit_offset = Vector2(-260, 0)
+
+[node name="Timer" type="Timer" parent="FactorySpot/CustomerSpawner" unique_id=1483200978]
+one_shot = true

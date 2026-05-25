@@ -1,0 +1,21 @@
+extends Node
+
+signal inventory_changed(item_id: String, count: int)
+signal cash_changed(amount: int)
+signal objective_changed(text: String)
+signal scene_change_requested(target_scene: String, spawn_id: String)
+signal time_window_changed(window_id: String)
+signal farm_plot_state_changed(plot_id: String, state: String)
+signal stall_opened(spot_id: String, price: int, stock: int)
+signal stall_closed(spot_id: String, returned_stock: int)
+signal stall_stock_changed(stock: int)
+signal price_changed(price: int)
+signal customer_decision(customer_type: String, bought: bool, reason: String)
+signal sale_completed(item_id: String, price: int, remaining_stock: int)
+signal day_settlement_requested()
+signal prototype_completed(result: Dictionary)
+
+signal interaction_prompt_changed(text: String)
+signal sale_feedback(text: String, world_position: Vector2)
+signal settlement_ready(result: Dictionary)
+signal price_panel_requested(stall_spot: Node)

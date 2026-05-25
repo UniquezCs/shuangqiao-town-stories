@@ -1,0 +1,20 @@
+[gd_resource type="TileSet" format=3 uid="uid://b4mqfho66uar1"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q7lx8"]
+load_path = "res://.godot/imported/prototype_scene_tiles.png-bc83b33f71b52d5f7869fdc3c12dae21.ctex"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tk2e5"]
+texture = SubResource("CompressedTexture2D_q7lx8")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+
+[resource]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_tk2e5")

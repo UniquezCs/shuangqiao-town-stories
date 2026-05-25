@@ -1,15 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://player_scene"]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player_script"]
+[ext_resource type="SpriteFrames" path="res://assets/generated/prototype_v1_32/characters/vendor_walk_spriteframes_48x64.tres" id="2_g2els"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
-size = Vector2(40, 56)
+size = Vector2(24, 34)
 
-[node name="Player" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
+radius = 42.0
+
+[node name="Player" type="CharacterBody2D" unique_id=97559793]
 script = ExtResource("1_player_script")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(4, 4)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1266849560]
+texture_filter = 1
+position = Vector2(0, -15)
+sprite_frames = ExtResource("2_g2els")
+animation = &"walk_down"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=883333702]
 shape = SubResource("RectangleShape2D_player")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=1307737084]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=804471038]
+shape = SubResource("CircleShape2D_interaction")

@@ -134,6 +134,8 @@ scripts/player.gd
 docs/game_design.html
 docs/prototype_v1_plan.html
 docs/assets/style_refs/
+assets/generated/sprites/
+assets/generated/tilesets/
 addons/godot_ai/
 ```
 
@@ -149,10 +151,17 @@ Movement controls:
 - Use Godot 4.6.
 - Keep Godot editor cache out of Git.
 - Keep generated project assets inside the repository when they are referenced by scenes or docs.
+- Map and location visuals must be built with Godot `TileMapLayer` nodes backed by image assets or generated tilesets. Do not use `_draw()`, `ColorRect`, `Polygon2D`, or script-generated rectangles as official scene visuals.
+- NPCs and gameplay objects must be represented with `Sprite2D` or `AnimatedSprite2D` nodes using real texture assets. Do not draw NPCs, stalls, farms, shops, or props procedurally in gameplay scripts.
+- If a needed tile, prop, NPC, or animation asset does not exist, generate it with the installed `generate2dsprite` / `generate2dmap` skill workflow, then integrate the resulting texture or `SpriteFrames` resource into the scene.
+- Follow the project pixel-size baseline: `32x32` tiles, `48x64` character/NPC frames, `32x32` small props, and larger objects in clean multiples of 32 pixels.
 - Prefer small, playable loops over large abstract systems.
 - When adding gameplay, start from the first prototype plan: minimal apple planting, town selling, player-set price, NPC customer decisions, cash gain, seed purchase, and planting again.
 - Keep the main `docs/game_design.html` focused on the overall game direction. Keep prototype-specific goals in `docs/prototype_v1_plan.html`.
 - Keep UI and feedback focused on business pressure and sales satisfaction.
+- Use `assets/generated/sprites/characters_walk_cycle_v2.png` as the current protagonist walking reference. The previous character sheet did not have enough frame contrast.
+- Use `assets/generated/tilesets/street_stall_props_v2.png` as the current roadside stall and township prop reference.
+- Use `assets/generated/tilesets/town_buildings_props_v2.png` as the current township buildings, road, wall, gate, and street prop reference.
 
 Useful local verification command:
 
@@ -168,6 +177,7 @@ Run the main scene:
 
 ## Collaboration Rules For Agents
 
+- Follow `docs/development_baseline.md` as the required development baseline.
 - Read `docs/game_design.html` before making design-heavy changes.
 - Read `docs/prototype_v1_plan.html` before making first-prototype implementation changes.
 - Preserve the selected visual style unless the user explicitly changes it.

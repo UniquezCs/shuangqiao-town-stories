@@ -181,6 +181,32 @@
       margin: 10px 8px 0 0;
       padding: 2px 10px;
     }
+
+    .asset-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      margin-top: 18px;
+    }
+
+    figure {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      margin: 0;
+      padding: 12px;
+    }
+
+    figure img {
+      display: block;
+      image-rendering: pixelated;
+      width: 100%;
+    }
+
+    figcaption {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -354,6 +380,20 @@
         明亮、亲和、易读，同时带有八九十年代中国乡镇生活感。角色以 32x40 像素为基准规格，
         地图元素以 16x16 或 32x32 网格对齐，导入 Godot 时使用 nearest 过滤。
       </p>
+      <div class="asset-grid">
+        <figure>
+          <img src="../assets/generated/sprites/characters_walk_cycle_v2.png" alt="主角走路动画 v2">
+          <figcaption>主角走路动画 v2：四方向，每方向 8 帧。重点解决 v1 帧数少、差异不明显、行走不流畅的问题。</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/generated/tilesets/street_stall_props_v2.png" alt="摆摊与镇街物品 v2">
+          <figcaption>摆摊与镇街物品 v2：补充布摊、苹果数量状态、竹筐、钱箱、秤、价格牌、扁担、校门、厂门和路面标记。</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/generated/tilesets/town_buildings_props_v2.png" alt="房屋与城镇物件 v2">
+          <figcaption>房屋与城镇物件 v2：补充民居、店铺、院门、校门/厂门、围墙、路面、水渠、电线杆、旧车和街边杂物。</figcaption>
+        </figure>
+      </div>
 
       <h3>角色 Sprite Sheet</h3>
       <table>
@@ -367,25 +407,26 @@
         <tbody>
           <tr>
             <td>主角</td>
-            <td>32x40 像素 / 帧；上、下、左、右 4 个方向；每个方向 4 帧走路动画。</td>
-            <td>中年劳动者气质，可爱但不幼稚。服装朴素，颜色和背景有清楚区分。需要站立帧和行走循环。</td>
+            <td>32x40 像素 / 帧；上、下、左、右 4 个方向；每个方向至少 8 帧走路动画。参考文件：<code>assets/generated/sprites/characters_walk_cycle_v2.png</code>。</td>
+            <td>中年劳动者气质，可爱但不幼稚。服装朴素，颜色和背景有清楚区分。走路帧必须有明显差异：左右脚交替、手臂摆动、身体上下起伏、背篓随步伐轻微变化。</td>
           </tr>
           <tr>
             <td>学生顾客</td>
-            <td>32x40 像素 / 帧；上、下、左、右 4 个方向；每个方向 4 帧走路动画。</td>
+            <td>32x40 像素 / 帧；上、下、左、右 4 个方向；每个方向至少 6 帧走路动画。</td>
             <td>体型比成年人略小，带书包或校服/红领巾等时代特征。用于学校门口高峰。</td>
           </tr>
           <tr>
             <td>工人顾客</td>
-            <td>32x40 像素 / 帧；上、下、左、右 4 个方向；每个方向 4 帧走路动画。</td>
+            <td>32x40 像素 / 帧；上、下、左、右 4 个方向；每个方向至少 6 帧走路动画。</td>
             <td>成人比例，工装、毛巾、饭盒或帆布包等识别点。用于厂门口下班高峰。</td>
           </tr>
         </tbody>
       </table>
       <ul>
-        <li><strong>动画命名建议：</strong><code>walk_down</code>、<code>walk_up</code>、<code>walk_left</code>、<code>walk_right</code>，每组 4 帧。</li>
+        <li><strong>动画命名建议：</strong><code>walk_down</code>、<code>walk_up</code>、<code>walk_left</code>、<code>walk_right</code>。主角每组 8 帧，NPC 每组不少于 6 帧。</li>
         <li><strong>朝向规则：</strong>角色停止移动时保留最后朝向的站立帧。</li>
         <li><strong>可读性：</strong>主角、学生、工人三者在轮廓、颜色和道具上必须一眼区分。</li>
+        <li><strong>流畅度验收：</strong>以 8-10 fps 播放时，不能像原地抖动；脚步落点、手臂摆动和身体重心必须能读出连续行走。</li>
       </ul>
 
       <h3>家 / 农田地图元素</h3>
@@ -400,7 +441,7 @@
         <tbody>
           <tr>
             <td>主角房屋</td>
-            <td>房屋外立面、门、窗、屋檐、墙根阴影、门前小空地。</td>
+            <td>房屋外立面、门、窗、屋檐、墙根阴影、门前小空地。参考文件：<code>assets/generated/tilesets/town_buildings_props_v2.png</code>。</td>
             <td>构成玩家家的视觉中心，作为开局和回家买种子的空间锚点。</td>
           </tr>
           <tr>
@@ -443,23 +484,28 @@
           </tr>
           <tr>
             <td>学校门口</td>
-            <td>校门、围墙、黑板报或公告栏、放学提示元素、可摆摊点标识。</td>
+            <td>校门、围墙、黑板报或公告栏、放学提示元素、可摆摊点标识。房屋与城镇物件 v2 中的院门、围墙和公告栏可作为基础。</td>
             <td>低价快卖地点，放学阶段学生人流最高。</td>
           </tr>
           <tr>
             <td>厂门口</td>
-            <td>厂门、门卫室、标语牌、自行车停放处、可摆摊点标识。</td>
+            <td>厂门、门卫室、标语牌、自行车停放处、可摆摊点标识。房屋与城镇物件 v2 中的厂门、门卫室和旧自行车可作为基础。</td>
             <td>高价慢卖地点，下班阶段工人人流最高。</td>
           </tr>
           <tr>
             <td>摊位</td>
-            <td>布摊、竹筐、价格牌、钱箱、上架苹果状态。</td>
-            <td>玩家摆摊后出现。需要能表现上架苹果数量减少。</td>
+            <td>布摊、竹筐、价格牌、钱箱、手秤、杆秤、扁担、收摊布包、凳子、伞棚、上架苹果状态。参考文件：<code>assets/generated/tilesets/street_stall_props_v2.png</code>。</td>
+            <td>玩家摆摊后出现。必须能表现上架苹果数量减少，至少包含空摊、5 个苹果、3 个苹果、1 个苹果四种状态。</td>
           </tr>
           <tr>
             <td>环境装饰</td>
-            <td>电线杆、旧广告、砖墙、路边树、搪瓷杯小摊、旧自行车。</td>
+            <td>电线杆、旧广告、砖墙、路边树、树桩、搪瓷杯、热水瓶、旧收音机、旧自行车、麻袋、木箱、路面边角、水渠、长椅、菜筐、煤堆。</td>
             <td>强化八九十年代乡镇识别度，不承担复杂交互。</td>
+          </tr>
+          <tr>
+            <td>摆摊交互标记</td>
+            <td>可摆摊地面框、顾客等待脚印、收摊/不可用标记、现金或硬币拾取图标。</td>
+            <td>帮助玩家识别哪里能蹲摊、NPC 排队位置和交易反馈位置。</td>
           </tr>
         </tbody>
       </table>

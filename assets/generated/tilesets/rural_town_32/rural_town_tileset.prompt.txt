@@ -1,0 +1,17 @@
+Generate 2D Map skill pipeline:
+- map_mode: tile_mode
+- visual_model: tilemap
+- runtime_object_model: interactive_scene_objects + scene_hooks later, but this deliverable is ground tiles only
+- collision_model: tile_collision metadata, no pixel-derived collision
+- engine_target: Godot_TileMap / Godot TileMapLayer
+- tile_size: 32x32
+
+Use the visible layout guide only for exact slot count, spacing, and cell order; do not reproduce the guide lines, text, numbers, cyan safe boxes, labels, or magenta background. Create a production-ready retro pixel-art tileset atlas for a Godot top-down 2D rural Chinese township management game set in the 1980s-1990s. EXACT layout: 8 columns x 4 rows, 32 equal square tiles. Each tile must fill its cell as a seamless or edge-compatible ground tile, viewed top-down / slight 3/4 RPG tile style, crisp pixel art, warm earthy palette, readable at 32x32, no objects taller than ground level, no characters, no labels, no shadows crossing cell boundaries.
+
+Tile order row-major:
+0 grass with sparse weeds; 1 dry packed dirt; 2 muddy foot path; 3 empty plowed farm soil; 4 seeded farm soil with tiny seed dots; 5 sprouting farm soil; 6 green crop farm soil; 7 apple orchard farm tile with low leafy crop/tree hints and red apples but still ground-tile readable;
+8 gray stone floor; 9 red-brown brick floor; 10 horizontal asphalt township road with subtle center wear; 11 vertical asphalt township road; 12 four-way asphalt road intersection; 13 asphalt road corner; 14 road edge/curb transition; 15 zebra crossing on road;
+16 grass-to-dirt transition north edge; 17 grass-to-dirt transition east edge; 18 grass-to-dirt transition south edge; 19 grass-to-dirt transition west edge; 20 horizontal drainage ditch / water channel; 21 vertical drainage ditch / water channel; 22 shallow water edge tile with stone bank; 23 wooden plank bridge ground tile;
+24 busy market dirt ground with footprints; 25 roadside stall mat placement tile, woven straw mat on dirt, flat ground tile; 26 courtyard stone paving; 27 town curb stone edge; 28 factory concrete yard tile; 29 school yard packed dirt with faint chalk/play marks; 30 soft dark ground shadow edge tile; 31 grass with small rural flowers.
+
+Use a flat transparent or solid #FF00FF background only in unused outside areas, but each cell should be filled by its tile. Keep tile seams clean and do not include text, UI, borders, grid lines, labels, arrows, or perspective scenery.

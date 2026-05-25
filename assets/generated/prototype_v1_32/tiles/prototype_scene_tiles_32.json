@@ -1,0 +1,10 @@
+{
+  "dirt": 0,
+  "path": 1,
+  "road": 2,
+  "road_crossing": 3,
+  "farm_empty": 4,
+  "farm_seeded": 5,
+  "farm_growing": 6,
+  "farm_ready": 7
+}
