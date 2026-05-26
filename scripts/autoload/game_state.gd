@@ -3,6 +3,8 @@ extends Node
 var cash := 0
 var current_scene := PrototypeConstants.SCENE_HOME
 var current_time_window := PrototypeConstants.WINDOW_PREP
+var current_game_minute := 0
+var day_clock_started := false
 var objective := ""
 var prototype_completed := false
 
@@ -10,19 +12,24 @@ var sales_count := 0
 var rejected_count := 0
 var total_sales_income := 0
 var used_spots: Array[String] = []
+var farm_plot_states := {}
 
 
 func reset_game() -> void:
 	cash = 0
 	current_scene = PrototypeConstants.SCENE_HOME
+	current_game_minute = 0
+	day_clock_started = false
 	current_time_window = PrototypeConstants.WINDOW_PREP
 	prototype_completed = false
 	sales_count = 0
 	rejected_count = 0
 	total_sales_income = 0
 	used_spots = []
+	farm_plot_states = {}
 	Inventory.reset_items()
 	SignalBus.cash_changed.emit(cash)
+	SignalBus.game_time_changed.emit(current_game_minute, format_game_time(current_game_minute))
 	set_time_window(PrototypeConstants.WINDOW_PREP)
 	set_objective("在家里播种苹果种子")
 
@@ -52,6 +59,33 @@ func spend_cash(amount: int) -> bool:
 func set_time_window(window_id: String) -> void:
 	current_time_window = window_id
 	SignalBus.time_window_changed.emit(window_id)
+
+
+func start_day_clock(start_minute: int) -> void:
+	if day_clock_started:
+		return
+	day_clock_started = true
+	set_game_time_minute(start_minute)
+
+
+func set_game_time_minute(total_minutes: int) -> void:
+	current_game_minute = total_minutes
+	SignalBus.game_time_changed.emit(current_game_minute, format_game_time(current_game_minute))
+
+
+func format_game_time(total_minutes: int) -> String:
+	var hour := (total_minutes / 60) % 24
+	var minute := total_minutes % 60
+	return "%02d:%02d" % [hour, minute]
+
+
+func set_farm_plot_state(plot_id: String, state: String) -> void:
+	farm_plot_states[plot_id] = state
+	SignalBus.farm_plot_state_changed.emit(plot_id, state)
+
+
+func get_farm_plot_state(plot_id: String) -> String:
+	return str(farm_plot_states.get(plot_id, "empty"))
 
 
 func record_stall_use(spot_id: String) -> void:

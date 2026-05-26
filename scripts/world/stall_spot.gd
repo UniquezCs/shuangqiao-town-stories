@@ -3,6 +3,8 @@ extends Area2D
 @export var spot_id := PrototypeConstants.SPOT_SCHOOL
 @export var label := "学校门口"
 
+var _last_interacting_player: Node2D = null
+
 @onready var stall: Node2D = $Stall
 
 
@@ -18,7 +20,8 @@ func get_prompt() -> String:
 	return "在%s摆摊" % label
 
 
-func interact(_player: Node) -> void:
+func interact(player: Node) -> void:
+	_last_interacting_player = player as Node2D
 	if stall.get("is_open"):
 		stall.call("close")
 	else:
@@ -26,7 +29,7 @@ func interact(_player: Node) -> void:
 
 
 func open_stall(price: int) -> void:
-	stall.call("open", spot_id, price)
+	stall.call("open", spot_id, price, _last_interacting_player)
 
 
 func get_active_stall() -> Node:

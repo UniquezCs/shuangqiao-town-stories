@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godot 项目每日简报 - 2026-05-26</title>
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --card: #fffaf2;
+      --ink: #1f2a1f;
+      --muted: #5c665c;
+      --line: #d8ccb8;
+      --accent: #2f6b4f;
+      --accent-soft: #e5f0e9;
+      --warn: #8b5e34;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+      background:
+        radial-gradient(circle at top left, #fff7dc 0, transparent 28%),
+        linear-gradient(180deg, #efe7da 0, var(--bg) 100%);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    header, section {
+      background: rgba(255, 250, 242, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(80, 62, 32, 0.06);
+      backdrop-filter: blur(4px);
+    }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 20px; color: var(--accent); }
+    p { margin: 0 0 10px; }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li { margin: 6px 0; }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .chip {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: var(--card);
+    }
+    .panel strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      background: #f0eadf;
+      border-radius: 6px;
+      padding: 1px 6px;
+    }
+    .empty {
+      color: var(--warn);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>日期：2026-05-26</p>
+      <p>回顾范围：自上次简报 <code>2026-05-24T22:00:31Z</code> 以来的 Git 提交与当前工作区状态。</p>
+      <div class="meta">
+        <span class="chip">1 次提交</span>
+        <span class="chip">330 个文件变更</span>
+        <span class="chip">322 新增 / 8 修改 / 0 删除</span>
+        <span class="chip">工作区仅有 1 份未跟踪日报</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>概览</h2>
+      <p>本次迭代把项目从基础框架推进到“苹果摆摊经营原型”可运行状态。核心闭环已经成形：在家播种、进入城镇、选择学校或厂门口摆摊、按时段刷顾客、成交或拒买、日终结算、再回家补种。</p>
+      <p>同时，项目补齐了 32x32 地图瓦片、48x64 角色行走动画、摊位与城镇道具素材，并把像素尺寸、TileMapLayer 与 AnimatedSprite2D 的约束写入开发基线文档。</p>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <div class="grid">
+        <div class="panel">
+          <strong>玩法闭环接入</strong>
+          <p><code>scripts/main.gd</code> 负责家庭/城镇场景切换、营业时间推进、价格面板回调与结算触发。</p>
+        </div>
+        <div class="panel">
+          <strong>全局状态与经济</strong>
+          <p><code>scripts/autoload/game_state.gd</code>、<code>inventory.gd</code>、<code>signal_bus.gd</code> 管理现金、销量、拒买、目标文本和结算数据。</p>
+        </div>
+        <div class="panel">
+          <strong>城市场景成型</strong>
+          <p><code>scenes/town_scene.tscn</code> 引入 TileMapLayer、学校/厂门口摊位点、顾客刷怪器与返家出口。</p>
+        </div>
+        <div class="panel">
+          <strong>像素资产规范</strong>
+          <p><code>docs/development_baseline.md</code> 明确 32x32 tile、48x64 角色帧、禁止用脚本代替主地图/主动画生产。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li>新增 322 个文件，绝大部分为经营原型脚本、场景和生成素材。</li>
+        <li>新增核心脚本：<code>scripts/world/stall.gd</code>、<code>customer_spawner.gd</code>、<code>farm_plot.gd</code>、<code>seed_shop.gd</code>、<code>scene_exit.gd</code>。</li>
+        <li>新增场景：<code>scenes/customer.tscn</code>、<code>home_scene.tscn</code>、<code>town_scene.tscn</code>。</li>
+        <li>新增 UI：<code>scripts/ui/hud.gd</code>、<code>price_panel.gd</code>、<code>settlement_panel.gd</code>。</li>
+        <li>新增大量生成资源：<code>assets/generated/prototype_v1_32/</code>、<code>assets/generated/tilesets/rural_town_32/</code>、<code>assets/generated/props/street_stall_props_v2_cutouts/</code>。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li><code>project.godot</code> 新增 <code>PrototypeConstants</code>、<code>SignalBus</code>、<code>Inventory</code>、<code>GameState</code> 自动加载，并补齐移动/交互输入。</li>
+        <li><code>scenes/main.tscn</code> 与 <code>scripts/player.gd</code> 被更新，以承载玩家移动、世界根节点与界面层。</li>
+        <li><code>docs/game_design.html</code>、<code>docs/prototype_v1_plan.html</code>、<code>Agent.md</code> 被同步到新的经营原型与像素资产规范。</li>
+        <li><code>docs/assets/style_refs/characters.png</code> 更新，用于对齐角色视觉参考。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <p class="empty">本次没有文件删除记录，也没有明确的废弃文件标记。</p>
+      <p>本次提交包含少量行级删除（合计 60 行），主要来自既有文件的内容调整，而不是资源或模块移除。</p>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li>项目现在依赖更多自动加载单例与信号流，后续如果调整结算、库存或时间窗口，容易牵动多个脚本。</li>
+        <li>城镇玩法已经绑定学校/工厂两个摆摊点和不同时段客流逻辑，后续平衡性改动会直接影响原型可玩性。</li>
+        <li>素材体量明显增加，仓库尺寸、导入时间与资源管理成本会上升。</li>
+        <li>开发基线已明确像素尺寸和场景实现方式，后续新资源若不遵守 32x32 / 48x64 规范，集成成本会变高。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>在 Godot 编辑器内跑通主流程，确认自动加载、输入映射、顾客生成与结算面板没有运行时错误。</li>
+        <li>评估是否需要把生成素材按“原始稿 / 透明切片 / 场景实用资源”进一步分层，避免后续目录继续膨胀。</li>
+        <li>为关键经营逻辑补最少量的验证路径，至少覆盖价格区间、顾客购买规则、库存归还与日终结算。</li>
+        <li>决定是否保留当前大量中间产物（例如 sprite pipeline 逐帧 PNG、GIF、contact sheet）进入长期版本库。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>关键文件路径</h2>
+      <ul>
+        <li><code>project.godot</code></li>
+        <li><code>scripts/main.gd</code></li>
+        <li><code>scripts/autoload/game_state.gd</code></li>
+        <li><code>scripts/world/stall.gd</code></li>
+        <li><code>scripts/world/customer_spawner.gd</code></li>
+        <li><code>scripts/ui/settlement_panel.gd</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>scenes/home_scene.tscn</code></li>
+        <li><code>docs/development_baseline.md</code></li>
+        <li><code>assets/generated/tilesets/rural_town_32/</code></li>
+        <li><code>assets/generated/prototype_v1_32/</code></li>
+        <li><code>assets/generated/props/street_stall_props_v2_cutouts/</code></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

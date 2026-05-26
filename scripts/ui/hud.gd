@@ -5,6 +5,7 @@ var _apple_label: Label
 var _seed_label: Label
 var _objective_label: Label
 var _window_label: Label
+var _clock_label: Label
 var _prompt_label: Label
 var _feedback_label: Label
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 	SignalBus.inventory_changed.connect(_on_inventory_changed)
 	SignalBus.objective_changed.connect(_on_objective_changed)
 	SignalBus.time_window_changed.connect(_on_time_window_changed)
+	SignalBus.game_time_changed.connect(_on_game_time_changed)
 	SignalBus.interaction_prompt_changed.connect(_on_interaction_prompt_changed)
 	SignalBus.sale_feedback.connect(_on_sale_feedback)
 
@@ -23,6 +25,7 @@ func _ready() -> void:
 	_on_inventory_changed(PrototypeConstants.ITEM_APPLE_SEED, Inventory.get_count(PrototypeConstants.ITEM_APPLE_SEED))
 	_on_objective_changed(GameState.objective)
 	_on_time_window_changed(GameState.current_time_window)
+	_on_game_time_changed(GameState.current_game_minute, GameState.format_game_time(GameState.current_game_minute))
 
 
 func _build_ui() -> void:
@@ -49,9 +52,10 @@ func _build_ui() -> void:
 	_cash_label = Label.new()
 	_apple_label = Label.new()
 	_seed_label = Label.new()
+	_clock_label = Label.new()
 	_window_label = Label.new()
 	_objective_label = Label.new()
-	for label in [_cash_label, _apple_label, _seed_label, _window_label, _objective_label]:
+	for label in [_cash_label, _apple_label, _seed_label, _clock_label, _window_label, _objective_label]:
 		box.add_child(label)
 
 	_prompt_label = Label.new()
@@ -82,6 +86,10 @@ func _on_objective_changed(text: String) -> void:
 
 func _on_time_window_changed(window_id: String) -> void:
 	_window_label.text = "营业阶段：%s" % PrototypeConstants.WINDOW_LABELS.get(window_id, window_id)
+
+
+func _on_game_time_changed(_total_minutes: int, clock_text: String) -> void:
+	_clock_label.text = "时间：%s" % clock_text
 
 
 func _on_interaction_prompt_changed(text: String) -> void:

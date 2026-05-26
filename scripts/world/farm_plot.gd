@@ -18,6 +18,11 @@ var state := "empty"
 func _ready() -> void:
 	add_to_group("interactable")
 	growth_timer.timeout.connect(_on_growth_timer_timeout)
+	state = GameState.get_farm_plot_state(plot_id)
+	if state == "seeded":
+		growth_timer.start(1.0)
+	elif state == "growing":
+		growth_timer.start(1.0)
 	_refresh_visual()
 
 
@@ -62,7 +67,7 @@ func _on_growth_timer_timeout() -> void:
 
 func _set_state(next_state: String) -> void:
 	state = next_state
-	SignalBus.farm_plot_state_changed.emit(plot_id, state)
+	GameState.set_farm_plot_state(plot_id, state)
 	_refresh_visual()
 
 

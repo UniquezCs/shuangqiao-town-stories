@@ -2,16 +2,13 @@ extends Node2D
 
 const HOME_SCENE := preload("res://scenes/home_scene.tscn")
 const TOWN_SCENE := preload("res://scenes/town_scene.tscn")
+const REAL_SECONDS_PER_GAME_MINUTE := 5.0
+const DAY_START_MINUTE := 6 * 60
+const DAY_END_MINUTE := 19 * 60
 
 var current_world: Node2D = null
 var pending_stall_spot: Node = null
-var time_index := 0
-var time_windows := [
-	PrototypeConstants.WINDOW_MORNING,
-	PrototypeConstants.WINDOW_SCHOOL,
-	PrototypeConstants.WINDOW_FACTORY,
-	PrototypeConstants.WINDOW_END,
-]
+var _settlement_requested := false
 
 @onready var world_root: Node2D = $WorldRoot
 @onready var player: CharacterBody2D = $Player
@@ -23,18 +20,18 @@ func _ready() -> void:
 	SignalBus.scene_change_requested.connect(_on_scene_change_requested)
 	SignalBus.price_panel_requested.connect(_on_price_panel_requested)
 	price_panel.price_confirmed.connect(_on_price_confirmed)
-	time_timer.timeout.connect(_advance_time_window)
+	time_timer.timeout.connect(_advance_game_minute)
 	GameState.reset_game()
+	_start_day_clock()
 	_load_world(PrototypeConstants.SCENE_HOME, "default")
 
 
 func _on_scene_change_requested(target_scene: String, spawn_id: String) -> void:
 	_load_world(target_scene, spawn_id)
 	if target_scene == PrototypeConstants.SCENE_TOWN:
-		_start_business_time()
+		_enter_town()
 	else:
-		time_timer.stop()
-		GameState.set_time_window(PrototypeConstants.WINDOW_PREP)
+		_enter_home()
 
 
 func _load_world(target_scene: String, spawn_id: String) -> void:
@@ -62,36 +59,46 @@ func _on_price_confirmed(price: int) -> void:
 	pending_stall_spot = null
 
 
-func _start_business_time() -> void:
-	time_index = 0
-	GameState.set_time_window(time_windows[time_index])
-	time_timer.start(_duration_for_window(GameState.current_time_window))
+func _start_day_clock() -> void:
+	GameState.start_day_clock(DAY_START_MINUTE)
+	GameState.set_time_window(_time_window_for_minute(GameState.current_game_minute))
+	if time_timer.is_stopped() and GameState.current_game_minute < DAY_END_MINUTE:
+		time_timer.start(REAL_SECONDS_PER_GAME_MINUTE)
+
+
+func _enter_town() -> void:
+	_start_day_clock()
 	GameState.set_objective("选择学校门口或厂门口摆摊")
 
 
-func _advance_time_window() -> void:
-	time_index += 1
-	if time_index >= time_windows.size():
-		time_index = time_windows.size() - 1
-	var next_window: String = time_windows[time_index]
-	GameState.set_time_window(next_window)
-	if next_window == PrototypeConstants.WINDOW_END:
+func _enter_home() -> void:
+	_start_day_clock()
+	if GameState.objective.is_empty():
+		GameState.set_objective("在家里播种苹果种子")
+
+
+func _advance_game_minute() -> void:
+	var next_minute := GameState.current_game_minute + 1
+	GameState.set_game_time_minute(next_minute)
+	GameState.set_time_window(_time_window_for_minute(next_minute))
+	if next_minute >= DAY_END_MINUTE:
 		time_timer.stop()
-		GameState.request_day_settlement(_remaining_apples())
-		GameState.set_objective("日终结算；可回家买种子")
-	else:
-		time_timer.start(_duration_for_window(next_window))
+		if not _settlement_requested:
+			_settlement_requested = true
+			GameState.request_day_settlement(_remaining_apples())
+			GameState.set_objective("日终结算；可回家买种子")
+		return
+	time_timer.start(REAL_SECONDS_PER_GAME_MINUTE)
 
 
-func _duration_for_window(window_id: String) -> float:
-	match window_id:
-		PrototypeConstants.WINDOW_MORNING:
-			return 120.0
-		PrototypeConstants.WINDOW_SCHOOL:
-			return 180.0
-		PrototypeConstants.WINDOW_FACTORY:
-			return 180.0
-	return 0.1
+func _time_window_for_minute(total_minutes: int) -> String:
+	if total_minutes >= DAY_END_MINUTE:
+		return PrototypeConstants.WINDOW_END
+	if total_minutes >= 17 * 60:
+		return PrototypeConstants.WINDOW_FACTORY
+	if total_minutes >= 16 * 60:
+		return PrototypeConstants.WINDOW_SCHOOL
+	return PrototypeConstants.WINDOW_MORNING
 
 
 func _remaining_apples() -> int:
