@@ -4,8 +4,8 @@ const ROUTE_HOME_TO_DESTINATION := "home_to_destination"
 const ROUTE_DESTINATION_TO_HOME := "destination_to_home"
 const ROUTE_NONE := "none"
 const REAL_SECONDS_PER_GAME_MINUTE := 5.0
-const STUDENT_MORNING_COUNT_RANGE := Vector2i(500, 600)
-const STUDENT_AFTERNOON_COUNT_RANGE := Vector2i(50, 60)
+const STUDENT_MORNING_COUNT_RANGE := Vector2i(60, 80)
+const STUDENT_AFTERNOON_COUNT_RANGE := Vector2i(60, 80)
 const WORKER_MORNING_COUNT_RANGE := Vector2i(100, 110)
 const WORKER_AFTERNOON_COUNT_RANGE := Vector2i(100, 110)
 
@@ -43,14 +43,5 @@ static func build_daily_spawn_plan(customer_type: String, rng: RandomNumberGener
 
 
 static func _append_random_spawn_window(plan: Array, count: int, start_minute: int, end_minute: int, mode: String, rng: RandomNumberGenerator) -> void:
-	var candidates := []
-	for minute in range(start_minute, end_minute):
-		candidates.append(minute)
-	for index in range(candidates.size() - 1, 0, -1):
-		var swap_index := rng.randi_range(0, index)
-		var value = candidates[index]
-		candidates[index] = candidates[swap_index]
-		candidates[swap_index] = value
-	var actual_count = mini(count, candidates.size())
-	for index in range(actual_count):
-		plan.append({"minute": int(candidates[index]), "mode": mode})
+	for index in range(count):
+		plan.append({"minute": rng.randi_range(start_minute, end_minute - 1), "mode": mode})

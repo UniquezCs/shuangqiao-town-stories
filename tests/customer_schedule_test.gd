@@ -35,12 +35,13 @@ func _init() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 12345
 	var plan: Array = CustomerSchedule.build_daily_spawn_plan("student", rng)
-	var min_student_count := CustomerSchedule.STUDENT_MORNING_COUNT_RANGE.x + CustomerSchedule.STUDENT_AFTERNOON_COUNT_RANGE.x
-	var max_student_count := CustomerSchedule.STUDENT_MORNING_COUNT_RANGE.y + CustomerSchedule.STUDENT_AFTERNOON_COUNT_RANGE.y
+	var min_student_count = CustomerSchedule.STUDENT_MORNING_COUNT_RANGE.x + CustomerSchedule.STUDENT_AFTERNOON_COUNT_RANGE.x
+	var max_student_count = CustomerSchedule.STUDENT_MORNING_COUNT_RANGE.y + CustomerSchedule.STUDENT_AFTERNOON_COUNT_RANGE.y
 	_assert_true(
 		plan.size() >= min_student_count and plan.size() <= max_student_count,
 		"学生每天刷新总数应有限，当前为 %d" % plan.size()
 	)
+	_assert_true(_contains_multiple_spawns_in_one_minute(plan), "人数大于窗口分钟数时，同一分钟应允许生成多个 NPC")
 	_assert_true(_contains_varied_intervals(plan), "刷新间隔应不固定")
 	for entry in plan:
 		var minute := int(entry["minute"])
@@ -63,6 +64,16 @@ func _contains_varied_intervals(plan: Array) -> bool:
 			intervals[minute - previous] = true
 		previous = minute
 	return intervals.size() >= 2
+
+
+func _contains_multiple_spawns_in_one_minute(plan: Array) -> bool:
+	var counts := {}
+	for entry in plan:
+		var minute := int(entry["minute"])
+		counts[minute] = int(counts.get(minute, 0)) + 1
+		if int(counts[minute]) > 1:
+			return true
+	return false
 
 
 func _assert_equal(actual: Variant, expected: Variant, message: String) -> void:

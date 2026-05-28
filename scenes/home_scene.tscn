@@ -3,15 +3,10 @@
 [ext_resource type="Script" uid="uid://d3y3ipd0fvut6" path="res://scripts/scenes/home_scene.gd" id="1_home"]
 [ext_resource type="Script" uid="uid://b8ehev510lx7q" path="res://scripts/world/farm_plot.gd" id="2_farm"]
 [ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="2_ua24n"]
-[ext_resource type="Script" uid="uid://y12j5qnnp3qa" path="res://scripts/world/seed_shop.gd" id="3_seed"]
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="4_exit"]
 [ext_resource type="Texture2D" uid="uid://fmrxvactv4og" path="res://assets/generated/prototype_v1_32/objects/farm_empty_64.png" id="4_ofjoh"]
-[ext_resource type="Texture2D" uid="uid://0deo4sriy3kp" path="res://assets/generated/prototype_v1_32/objects/seed_shop_64x64.png" id="6_6dbli"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_farm"]
-size = Vector2(56, 48)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_shop"]
 size = Vector2(56, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
@@ -22,6 +17,9 @@ load_path = "res://.godot/imported/environment_tilesheet_v1.png-bcf31555f5b1e768
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ua24n"]
 size = Vector2(356.25, 58.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d0h8d"]
+size = Vector2(370, 274)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ua24n"]
 a = Vector2(224, -352)
@@ -71,21 +69,6 @@ shape = SubResource("RectangleShape2D_farm")
 [node name="GrowthTimer" type="Timer" parent="FarmPlot" unique_id=1771557329]
 one_shot = true
 
-[node name="SeedShop" type="Area2D" parent="." unique_id=678723134]
-position = Vector2(150, -22)
-collision_layer = 2
-collision_mask = 0
-script = ExtResource("3_seed")
-
-[node name="Visual" type="Sprite2D" parent="SeedShop" unique_id=1227658686]
-texture_filter = 1
-position = Vector2(0, -8)
-texture = ExtResource("6_6dbli")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SeedShop" unique_id=449524679]
-position = Vector2(-2, -2)
-shape = SubResource("RectangleShape2D_shop")
-
 [node name="ToTown" type="Area2D" parent="." unique_id=1907699253]
 position = Vector2(159, 151)
 collision_layer = 2
@@ -101,7 +84,6 @@ shape = SubResource("RectangleShape2D_exit")
 [node name="Home" type="Area2D" parent="." unique_id=910736135]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("3_seed")
 
 [node name="Visual" type="Sprite2D" parent="Home" unique_id=1225162614]
 texture_filter = 1
@@ -110,15 +92,15 @@ texture = SubResource("CompressedTexture2D_ua24n")
 region_enabled = true
 region_rect = Rect2(0, 0, 416.39758, 377.7079)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Home" unique_id=1712440050]
-position = Vector2(-310, 4)
-shape = SubResource("RectangleShape2D_shop")
-
 [node name="StaticBody2D" type="StaticBody2D" parent="Home" unique_id=296506284]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=774404297]
 position = Vector2(-322.125, 2.875)
 shape = SubResource("RectangleShape2D_ua24n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Home" unique_id=13465202]
+position = Vector2(-313, -103)
+shape = SubResource("RectangleShape2D_d0h8d")
 
 [node name="LeftWall" type="StaticBody2D" parent="." unique_id=298058636]
 metadata/_edit_lock_ = true

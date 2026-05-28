@@ -13,12 +13,14 @@ var _settlement_requested := false
 @onready var world_root: Node2D = $WorldRoot
 @onready var player: CharacterBody2D = $Player
 @onready var price_panel: CanvasLayer = $PricePanel
+@onready var shop_panel: CanvasLayer = $ShopPanel
 @onready var time_timer: Timer = $TimeWindowTimer
 
 
 func _ready() -> void:
 	SignalBus.scene_change_requested.connect(_on_scene_change_requested)
 	SignalBus.price_panel_requested.connect(_on_price_panel_requested)
+	SignalBus.shop_panel_requested.connect(_on_shop_panel_requested)
 	price_panel.price_confirmed.connect(_on_price_confirmed)
 	time_timer.timeout.connect(_advance_game_minute)
 	GameState.reset_game()
@@ -57,6 +59,10 @@ func _on_price_confirmed(price: int) -> void:
 	if pending_stall_spot != null and is_instance_valid(pending_stall_spot):
 		pending_stall_spot.call("open_stall", price)
 	pending_stall_spot = null
+
+
+func _on_shop_panel_requested(shop: Node) -> void:
+	shop_panel.call("open", shop)
 
 
 func _start_day_clock() -> void:

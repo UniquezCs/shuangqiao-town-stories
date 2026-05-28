@@ -8,6 +8,7 @@ size = Vector2(22, 50)
 
 [node name="Customer" type="CharacterBody2D" unique_id=1683121132]
 collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_customer")
 
 [node name="Visual" type="Sprite2D" parent="." unique_id=249639336]
@@ -18,4 +19,3 @@ texture = ExtResource("2_xss0h")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=841213487]
 position = Vector2(0, -21)
 shape = SubResource("RectangleShape2D_customer")
-disabled = true

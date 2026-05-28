@@ -13,6 +13,8 @@ var rejected_count := 0
 var total_sales_income := 0
 var used_spots: Array[String] = []
 var farm_plot_states := {}
+var seed_shop_apple_price := PrototypeConstants.SHOP_APPLE_PRICE_MIN
+var seed_shop_apple_stock := 0
 
 
 func reset_game() -> void:
@@ -27,6 +29,7 @@ func reset_game() -> void:
 	total_sales_income = 0
 	used_spots = []
 	farm_plot_states = {}
+	refresh_seed_shop_goods()
 	Inventory.reset_items()
 	SignalBus.cash_changed.emit(cash)
 	SignalBus.game_time_changed.emit(current_game_minute, format_game_time(current_game_minute))
@@ -54,6 +57,22 @@ func spend_cash(amount: int) -> bool:
 	cash -= amount
 	SignalBus.cash_changed.emit(cash)
 	return true
+
+
+func refresh_seed_shop_goods(rng: RandomNumberGenerator = null) -> void:
+	var active_rng := rng
+	if active_rng == null:
+		active_rng = RandomNumberGenerator.new()
+		active_rng.randomize()
+	seed_shop_apple_price = active_rng.randi_range(
+		PrototypeConstants.SHOP_APPLE_PRICE_MIN,
+		PrototypeConstants.SHOP_APPLE_PRICE_MAX
+	)
+	seed_shop_apple_stock = active_rng.randi_range(
+		PrototypeConstants.SHOP_APPLE_STOCK_MIN,
+		PrototypeConstants.SHOP_APPLE_STOCK_MAX
+	)
+	SignalBus.seed_shop_goods_changed.emit(seed_shop_apple_price, seed_shop_apple_stock)
 
 
 func set_time_window(window_id: String) -> void:

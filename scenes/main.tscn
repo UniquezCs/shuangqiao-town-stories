@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
+[gd_scene load_steps=7 format=3 uid="uid://main_scene"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="3_hud"]
 [ext_resource type="Script" path="res://scripts/ui/price_panel.gd" id="4_price"]
 [ext_resource type="Script" path="res://scripts/ui/settlement_panel.gd" id="5_settlement"]
+[ext_resource type="Script" path="res://scripts/ui/shop_panel.gd" id="6_shop"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -24,6 +25,9 @@ script = ExtResource("3_hud")
 
 [node name="PricePanel" type="CanvasLayer" parent="."]
 script = ExtResource("4_price")
+
+[node name="ShopPanel" type="CanvasLayer" parent="."]
+script = ExtResource("6_shop")
 
 [node name="SettlementPanel" type="CanvasLayer" parent="."]
 script = ExtResource("5_settlement")

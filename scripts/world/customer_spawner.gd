@@ -3,6 +3,8 @@ extends Node
 const CUSTOMER_SCENE := preload("res://scenes/customer.tscn")
 const CustomerSchedule := preload("res://scripts/world/customer_schedule.gd")
 
+const WAYPOINT_ROUTE_JITTER := Vector2(90, 75)
+
 @export var spot_id := PrototypeConstants.SPOT_SCHOOL
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
 @export var spawn_offset := Vector2(-260, 0)
@@ -35,16 +37,20 @@ func _spawn_customer(route_mode: String) -> void:
 		return
 	var route := _route_for_mode(route_mode)
 	var customer := CUSTOMER_SCENE.instantiate()
-	get_tree().current_scene.add_child(customer)
-	customer.call("setup", customer_type, stall_spot, route["start"], route["end"])
+	customer.call("setup", customer_type, _player_stall_spot(), route["start"], route["end"], route["points"])
+	var world := stall_spot.get_parent()
+	if world != null:
+		world.add_child(customer)
+	else:
+		get_tree().current_scene.add_child(customer)
 
 
 func _route_for_mode(route_mode: String) -> Dictionary:
 	var residence := _residential_position()
 	var destination := stall_spot.global_position + route_anchor_offset
 	if route_mode == CustomerSchedule.ROUTE_HOME_TO_DESTINATION:
-		return {"start": residence, "end": destination}
-	return {"start": destination, "end": residence}
+		return {"start": residence, "end": destination, "points": _random_route_points(residence, destination)}
+	return {"start": destination, "end": residence, "points": _random_route_points(destination, residence)}
 
 
 func _residential_position() -> Vector2:
@@ -54,3 +60,35 @@ func _residential_position() -> Vector2:
 		if marker != null:
 			return marker.global_position
 	return stall_spot.global_position + spawn_offset
+
+
+func _random_route_points(start: Vector2, end: Vector2) -> Array[Vector2]:
+	var points: Array[Vector2] = []
+	var first_ratio := _rng.randf_range(0.32, 0.48)
+	var first := start.lerp(end, first_ratio) + Vector2(
+		_rng.randf_range(-WAYPOINT_ROUTE_JITTER.x, WAYPOINT_ROUTE_JITTER.x),
+		_rng.randf_range(-WAYPOINT_ROUTE_JITTER.y, WAYPOINT_ROUTE_JITTER.y)
+	)
+	points.append(first)
+	if _rng.randf() > 0.45:
+		var second_ratio := _rng.randf_range(0.56, 0.72)
+		var second := start.lerp(end, second_ratio) + Vector2(
+			_rng.randf_range(-WAYPOINT_ROUTE_JITTER.x, WAYPOINT_ROUTE_JITTER.x),
+			_rng.randf_range(-WAYPOINT_ROUTE_JITTER.y, WAYPOINT_ROUTE_JITTER.y)
+		)
+		points.append(second)
+	return points
+
+
+func _player_stall_spot() -> Node:
+	var world := stall_spot.get_parent()
+	if world == null:
+		return stall_spot
+	var fallback: Node = null
+	for node in get_tree().get_nodes_in_group("player_stall_spot"):
+		if node.is_inside_tree() and node.get_parent() == world:
+			if fallback == null:
+				fallback = node
+			if node.has_method("get_active_stall") and node.call("get_active_stall") != null:
+				return node
+	return fallback if fallback != null else stall_spot

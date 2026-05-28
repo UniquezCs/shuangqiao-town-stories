@@ -46,6 +46,21 @@ explicitly changes the baseline.
   implementation.
 - If suitable map assets do not exist, create them with `Generate 2D Map`.
 
+### Gameplay Node Design
+
+- Prefer Godot nodes, collision shapes, areas, signals, timers, and scene
+  composition for gameplay rules.
+- Avoid implementing gameplay constraints as per-frame polling in
+  `_process()` or `_physics_process()` when a node-based solution is practical.
+- Use `Area2D` and signals for detection, such as customer entering a stall's
+  influence range.
+- Use `StaticBody2D`, `CollisionShape2D`, or other physics nodes for physical
+  boundaries, such as the temporary air wall around an open stall.
+- Per-frame checks are allowed only when continuous simulation is genuinely
+  needed, such as movement input, animation state, or physics integration.
+- When adding new gameplay, first consider whether a dedicated node can own
+  the behavior before adding global scans or per-frame state checks.
+
 ## Practical Checklist
 
 Before implementing character animation:
@@ -60,3 +75,12 @@ Before implementing map scenes:
 - Confirm the scene is built with `TileMapLayer`.
 - Confirm required map tiles/assets exist.
 - Generate missing map assets with `Generate 2D Map` before building the scene.
+
+Before implementing gameplay constraints:
+
+- Ask whether the rule can be expressed with `Area2D`, `StaticBody2D`,
+  `CollisionShape2D`, `Timer`, or signals.
+- Prefer creating a dedicated scene/node for the rule over adding per-frame
+  distance checks.
+- If per-frame logic is necessary, keep it local to the node that owns the
+  continuous behavior and document why a node/signal approach is insufficient.

@@ -16,13 +16,11 @@ func open(default_price: int = 2) -> void:
 	_price = clamp(default_price, PrototypeConstants.MIN_APPLE_PRICE, PrototypeConstants.MAX_APPLE_PRICE)
 	_update_label()
 	_panel.visible = true
-	get_tree().paused = true
 
 
 func hide_panel() -> void:
 	if _panel != null:
 		_panel.visible = false
-	get_tree().paused = false
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -11,6 +11,10 @@ var spot_id := ""
 var is_open := false
 var stock := 0
 var price := 2
+@export var influence_radius := 160.0
+
+var _influence_area: Area2D = null
+var _player_boundary: StaticBody2D = null
 
 @onready var visual: Sprite2D = $Visual
 
@@ -39,6 +43,8 @@ func open(spot: String, chosen_price: int, owner: Node2D = null) -> bool:
 	SignalBus.stall_opened.emit(spot_id, price, stock)
 	SignalBus.stall_stock_changed.emit(stock)
 	SignalBus.price_changed.emit(price)
+	_create_influence_area()
+	_create_player_boundary()
 	_refresh_visual()
 	return true
 
@@ -55,6 +61,8 @@ func close() -> void:
 	SignalBus.stall_closed.emit(spot_id, returned)
 	SignalBus.stall_stock_changed.emit(stock)
 	GameState.set_objective("可以换点摆摊，或回家买种子")
+	_remove_influence_area()
+	_remove_player_boundary()
 	_refresh_visual()
 
 
@@ -92,6 +100,80 @@ func sell_one(customer_type: String, customer_profile: Dictionary = {}) -> Dicti
 		SignalBus.sale_feedback.emit(str(decision["reason"]), global_position)
 	SignalBus.customer_decision.emit(customer_type, bool(decision["bought"]), str(decision["reason"]))
 	return decision
+
+
+func _create_influence_area() -> void:
+	if _influence_area != null and is_instance_valid(_influence_area):
+		return
+	_influence_area = Area2D.new()
+	_influence_area.name = "InfluenceArea"
+	_influence_area.collision_layer = 0
+	_influence_area.collision_mask = 4
+	_influence_area.monitorable = false
+	_influence_area.monitoring = true
+	_influence_area.body_entered.connect(_on_influence_body_entered)
+	_influence_area.body_exited.connect(_on_influence_body_exited)
+
+	var collision_shape := CollisionShape2D.new()
+	collision_shape.name = "CollisionShape2D"
+	var circle := CircleShape2D.new()
+	circle.radius = influence_radius
+	collision_shape.shape = circle
+	_influence_area.add_child(collision_shape)
+	add_child(_influence_area)
+
+
+func _remove_influence_area() -> void:
+	if _influence_area == null or not is_instance_valid(_influence_area):
+		_influence_area = null
+		return
+	_influence_area.queue_free()
+	_influence_area = null
+
+
+func _create_player_boundary() -> void:
+	if _player_boundary != null and is_instance_valid(_player_boundary):
+		return
+	_player_boundary = StaticBody2D.new()
+	_player_boundary.name = "PlayerBoundary"
+	_player_boundary.collision_layer = 1
+	_player_boundary.collision_mask = 0
+	add_child(_player_boundary)
+
+	var half_size := PrototypeConstants.STALL_PLAYER_BOUNDARY_HALF_SIZE
+	var thickness := PrototypeConstants.STALL_PLAYER_BOUNDARY_WALL_THICKNESS
+	_add_boundary_wall(Vector2(0, -half_size - thickness * 0.5), Vector2(half_size * 2.0 + thickness * 2.0, thickness))
+	_add_boundary_wall(Vector2(0, half_size + thickness * 0.5), Vector2(half_size * 2.0 + thickness * 2.0, thickness))
+	_add_boundary_wall(Vector2(-half_size - thickness * 0.5, 0), Vector2(thickness, half_size * 2.0))
+	_add_boundary_wall(Vector2(half_size + thickness * 0.5, 0), Vector2(thickness, half_size * 2.0))
+
+
+func _add_boundary_wall(local_position: Vector2, size: Vector2) -> void:
+	var collision_shape := CollisionShape2D.new()
+	collision_shape.name = "CollisionShape2D"
+	collision_shape.position = local_position
+	var rectangle := RectangleShape2D.new()
+	rectangle.size = size
+	collision_shape.shape = rectangle
+	_player_boundary.add_child(collision_shape)
+
+
+func _remove_player_boundary() -> void:
+	if _player_boundary == null or not is_instance_valid(_player_boundary):
+		_player_boundary = null
+		return
+	_player_boundary.queue_free()
+	_player_boundary = null
+
+
+func _on_influence_body_entered(body: Node) -> void:
+	if is_open and body.has_method("enter_stall_influence"):
+		body.call("enter_stall_influence", self)
+
+
+func _on_influence_body_exited(body: Node) -> void:
+	if body.has_method("exit_stall_influence"):
+		body.call("exit_stall_influence", self)
 
 
 func _profile_decision(customer_type: String, customer_profile: Dictionary) -> Dictionary:

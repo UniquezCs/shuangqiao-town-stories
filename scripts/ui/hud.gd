@@ -59,12 +59,12 @@ func _build_ui() -> void:
 		box.add_child(label)
 
 	_prompt_label = Label.new()
-	_prompt_label.position = Vector2(16, 162)
+	_prompt_label.position = Vector2(16, 238)
 	_prompt_label.add_theme_font_size_override("font_size", 20)
 	root.add_child(_prompt_label)
 
 	_feedback_label = Label.new()
-	_feedback_label.position = Vector2(16, 196)
+	_feedback_label.position = Vector2(16, 202)
 	_feedback_label.add_theme_font_size_override("font_size", 18)
 	root.add_child(_feedback_label)
 
