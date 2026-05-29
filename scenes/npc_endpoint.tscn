@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=4]
+
+[ext_resource type="Script" path="res://scripts/world/npc_endpoint.gd" id="1_endpoint"]
+
+[node name="NpcEndpoint" type="Node2D" groups=["npc_endpoint"]]
+script = ExtResource("1_endpoint")
+
+[node name="Visual" type="Sprite2D" parent="."]
+z_index = -5
+texture_filter = 1
+position = Vector2(0, -72)
+
+[node name="EndpointMarker" type="Marker2D" parent="."]
+position = Vector2(0, 42)

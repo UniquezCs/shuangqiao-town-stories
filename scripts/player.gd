@@ -13,10 +13,12 @@ var _current_interactable: Area2D = null
 
 
 func _ready() -> void:
+	add_to_group("player")
 	animated_sprite.play("walk_down")
 	animated_sprite.pause()
 	interaction_area.area_entered.connect(_on_interaction_area_entered)
 	interaction_area.area_exited.connect(_on_interaction_area_exited)
+	SignalBus.current_tool_changed.connect(_on_current_tool_changed)
 	_update_interactable()
 
 
@@ -68,7 +70,7 @@ func _on_interaction_area_exited(area: Area2D) -> void:
 
 func _update_interactable() -> void:
 	_nearby_interactables = _nearby_interactables.filter(func(area: Area2D) -> bool:
-		return is_instance_valid(area) and area.is_inside_tree()
+		return is_instance_valid(area) and area.is_inside_tree() and area.is_in_group("interactable")
 	)
 
 	var nearest: Area2D = null
@@ -88,3 +90,14 @@ func _update_interactable() -> void:
 		prompt = str(_current_interactable.call("get_prompt"))
 	interactable_changed.emit(prompt)
 	SignalBus.interaction_prompt_changed.emit(prompt)
+
+
+func _on_current_tool_changed(_tool_id: String) -> void:
+	call_deferred("_refresh_overlapping_interactables")
+
+
+func _refresh_overlapping_interactables() -> void:
+	for area in interaction_area.get_overlapping_areas():
+		if area.is_in_group("interactable") and not _nearby_interactables.has(area):
+			_nearby_interactables.append(area)
+	_update_interactable()

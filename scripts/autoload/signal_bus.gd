@@ -1,6 +1,7 @@
 extends Node
 
 signal inventory_changed(item_id: String, count: int)
+signal backpack_changed(slots: Array, slot_count: int)
 signal cash_changed(amount: int)
 signal objective_changed(text: String)
 signal scene_change_requested(target_scene: String, spawn_id: String)
@@ -15,6 +16,9 @@ signal customer_decision(customer_type: String, bought: bool, reason: String)
 signal sale_completed(item_id: String, price: int, remaining_stock: int)
 signal day_settlement_requested()
 signal prototype_completed(result: Dictionary)
+signal daily_summary_ready(result: Dictionary)
+signal current_tool_changed(tool_id: String)
+signal chengguan_penalty(amount: int)
 
 signal interaction_prompt_changed(text: String)
 signal sale_feedback(text: String, world_position: Vector2)

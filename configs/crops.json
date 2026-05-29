@@ -1,0 +1,56 @@
+{
+  "apple": {
+	"seed_item_id": "apple_seed",
+	"harvest_item_id": "apple",
+	"growth_days": 0,
+	"yield_min": 3,
+	"yield_max": 5,
+	"requires_water": true,
+	"fertilizer_bonus": 1
+  },
+  "cabbage": {
+	"seed_item_id": "cabbage_seed",
+	"harvest_item_id": "cabbage",
+	"growth_days": 1,
+	"yield_min": 2,
+	"yield_max": 4,
+	"requires_water": true,
+	"fertilizer_bonus": 1
+  },
+  "cucumber": {
+	"seed_item_id": "cucumber_seed",
+	"harvest_item_id": "cucumber",
+	"growth_days": 2,
+	"yield_min": 2,
+	"yield_max": 5,
+	"requires_water": true,
+	"fertilizer_bonus": 1
+  },
+  "tomato": {
+	"seed_item_id": "tomato_seed",
+	"harvest_item_id": "tomato",
+	"growth_days": 2,
+	"yield_min": 3,
+	"yield_max": 5,
+	"requires_water": true,
+	"fertilizer_bonus": 1
+  },
+  "pear": {
+	"seed_item_id": "pear_seed",
+	"harvest_item_id": "pear",
+	"growth_days": 3,
+	"yield_min": 2,
+	"yield_max": 4,
+	"requires_water": true,
+	"fertilizer_bonus": 1
+  },
+  "potato": {
+	"seed_item_id": "potato_seed",
+	"harvest_item_id": "potato",
+	"growth_days": 1,
+	"yield_min": 3,
+	"yield_max": 6,
+	"requires_water": true,
+	"fertilizer_bonus": 1
+  }
+}

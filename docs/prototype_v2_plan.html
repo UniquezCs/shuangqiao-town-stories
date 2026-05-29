@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第二版原型设计方案</title>
+  <style>
+    :root {
+      --paper: #f7f2e8;
+      --ink: #2f2a24;
+      --muted: #746858;
+      --line: #d9cdb7;
+      --green: #56734d;
+      --red: #9a3f32;
+      --blue: #3f6378;
+      --panel: #fffaf0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+    }
+
+    main {
+      width: min(1120px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 36px 0 64px;
+    }
+
+    header {
+      padding: 28px 0 24px;
+      border-bottom: 2px solid var(--line);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 48px);
+      letter-spacing: 0;
+      line-height: 1.15;
+    }
+
+    h2 {
+      margin: 38px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 24px 0 8px;
+      font-size: 19px;
+      line-height: 1.3;
+    }
+
+    p { margin: 8px 0 12px; }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: #eee2cd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .subtitle {
+      max-width: 880px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .card {
+      min-height: 120px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .card h3 { margin-top: 0; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .step {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fffdf7;
+    }
+
+    .step strong {
+      display: block;
+      color: var(--green);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      background: var(--panel);
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      width: 24%;
+      background: #efe3cf;
+    }
+
+    ul {
+      padding-left: 22px;
+      margin: 10px 0 16px;
+    }
+
+    li { margin: 5px 0; }
+
+    .note {
+      padding: 14px 16px;
+      border-left: 4px solid var(--blue);
+      background: #eef3f4;
+      color: #2f4853;
+    }
+
+    .risk {
+      border-left-color: var(--red);
+      background: #f8ece7;
+      color: #5d332c;
+    }
+
+    @media (max-width: 820px) {
+      .grid, .flow { grid-template-columns: 1fr; }
+      th { width: auto; }
+      table, tbody, tr, th, td { display: block; }
+      tr { border-bottom: 2px solid var(--line); }
+      th, td { border-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>第二版原型设计方案</h1>
+      <p class="subtitle">
+        第二版目标是在第一版“摆摊卖苹果”的快感闭环上，补齐可持续经营的基础系统：
+        日循环、房屋、格子背包、动态农田、商品配置、升级、城管追逐风险和更清晰的程序架构。
+      </p>
+      <div class="chips">
+        <span class="chip">Prototype V2</span>
+        <span class="chip">主程序设计文档</span>
+        <span class="chip">Godot 4.6</span>
+        <span class="chip">32x32 Tile</span>
+        <span class="chip">节点 / 信号 / 配置驱动优先</span>
+        <span class="chip">目标：完成全玩法设计与验证</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>设计原则</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>收获与售卖是核心</h3>
+          <p>第二版所有系统都服务于“劳作获得货物，再把货物卖出去”的快感。种植、进货、背包、定价、顾客和城管都应该让卖出商品更有紧张感和成就感。</p>
+        </article>
+        <article class="card">
+          <h3>程序先行，美术占位</h3>
+          <p>当前阶段由主程序推进系统。缺少正式美术资源时，使用文字、简单图块或已有占位素材，不在本阶段生成新美术。</p>
+        </article>
+        <article class="card">
+          <h3>节点化实现</h3>
+          <p>优先使用 <code>Area2D</code>、<code>CollisionShape2D</code>、<code>StaticBody2D</code>、<code>Timer</code> 和信号表达规则，避免不必要的逐帧距离判断。</p>
+        </article>
+      </div>
+
+      <div class="note">
+        本文档描述第二版原型当前应遵循的设计，不再以旧版“固定农田、发现即罚、只卖苹果”的方案为准。
+      </div>
+    </section>
+
+    <section>
+      <h2>玩家日常循环</h2>
+      <div class="flow">
+        <div class="step"><strong>1. 起床</strong>从屋内开始，查看昨日总结、现金、时间和背包。</div>
+        <div class="step"><strong>2. 劳作</strong>在院子里开垦、播种、浇水，或去小卖部补货。</div>
+        <div class="step"><strong>3. 摆摊</strong>去镇街任意可摆摊区域开摊、定价、上架商品。</div>
+        <div class="step"><strong>4. 交易与风险</strong>顾客被摊位影响范围吸引，城管发现摊位后追玩家。</div>
+        <div class="step"><strong>5. 回家睡觉</strong>睡觉或午夜强制日结，推进作物成长并刷新商店货物。</div>
+      </div>
+
+      <h3>时间规则</h3>
+      <ul>
+        <li>游戏时间从每天 <code>06:00</code> 开始。</li>
+        <li><code>1</code> 游戏分钟等于真实 <code>5</code> 秒。</li>
+        <li>到 <code>24:00</code> 自动进入第二天，没有额外惩罚。</li>
+        <li>玩家也可以在床上交互睡觉，主动结束当天。</li>
+        <li>日结显示收入、卖出商品数、接待顾客、拒绝/错过顾客、城管次数和罚款。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>场景结构</h2>
+      <table>
+        <tbody>
+          <tr>
+            <th><code>Main</code></th>
+            <td>游戏入口，持有玩家、相机、HUD、背包、商店、定价、结算 UI 和时间 Timer。负责加载 <code>HouseScene</code>、<code>HomeScene</code>、<code>TownScene</code>。</td>
+          </tr>
+          <tr>
+            <th><code>HouseScene</code></th>
+            <td>玩家屋内场景，包含床 <code>Bed</code> 和出门入口。床交互触发 <code>GameState.end_day()</code>。</td>
+          </tr>
+          <tr>
+            <th><code>HomeScene</code></th>
+            <td>家门口和院子。包含 <code>FarmField</code> 可开垦区域、去镇街入口、进屋入口。旧的固定 <code>FarmPlot</code> 已移除。</td>
+          </tr>
+          <tr>
+            <th><code>TownScene</code></th>
+            <td>镇街，包含居民区、学校、工厂、小卖部、顾客生成器、城管生成器和可摆摊区域。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>核心系统</h2>
+
+      <h3>全局状态与配置</h3>
+      <table>
+        <tbody>
+          <tr>
+            <th><code>ConfigLoader</code></th>
+            <td>读取 <code>configs/items.json</code>、<code>configs/crops.json</code>、<code>configs/upgrades.json</code>。商品、作物和升级数据优先配置驱动。</td>
+          </tr>
+          <tr>
+            <th><code>GameState</code></th>
+            <td>记录现金、日期、时间、当前工具、升级等级、每日统计、商店价格库存、动态农田状态和原型完成状态。</td>
+          </tr>
+          <tr>
+            <th><code>SignalBus</code></th>
+            <td>集中转发跨系统信号，如背包变化、现金变化、场景切换、定价面板、日结、工具变化、城管处罚等。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>背包系统</h3>
+      <ul>
+        <li>背包是格子制，支持同物品堆叠。</li>
+        <li>每个物品的堆叠上限来自 <code>items.json</code>。</li>
+        <li>保留 <code>get_count()</code>、<code>add_item()</code>、<code>remove_item()</code> 兼容接口，方便旧系统继续调用。</li>
+        <li>按 <code>B</code> 打开背包面板，当前版本只查看物品和空格子，不做拖拽整理。</li>
+        <li>背包升级由 <code>upgrades.json</code> 决定格子数和价格。</li>
+      </ul>
+
+      <h3>商品与作物配置</h3>
+      <ul>
+        <li><code>items.json</code> 描述物品名称、分类、堆叠上限、基础售价和图标路径。</li>
+        <li><code>crops.json</code> 描述种子、收获物、成长天数、产量范围、是否需要浇水和施肥加成。</li>
+        <li>第二版建议作物控制在苹果、白菜、黄瓜、番茄、梨、土豆。</li>
+        <li>如需苹果“一浇水就成熟”，可把苹果的 <code>growth_days</code> 改为 <code>0</code>，并在 <code>FarmPlot</code> 浇水逻辑中让该配置立即进入 <code>ready</code>。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>农田系统</h2>
+      <h3>当前设计</h3>
+      <ul>
+        <li><code>FarmField(Area2D)</code> 表示可开垦区域。</li>
+        <li>只有当前工具是锄头时，<code>FarmField</code> 才加入 <code>interactable</code> 组，避免抢走播种、浇水和收获交互焦点。</li>
+        <li>玩家站在可开垦区域内按 <code>E</code>，按 <code>TileMapLayer</code> 的 <code>32x32</code> tile 中心生成一个 <code>FarmPlot</code>。</li>
+        <li>新生成的 <code>FarmPlot</code> 是 <code>1x1</code> tile 面积，初始状态直接是 <code>tilled</code>，下一步就是播种。</li>
+        <li>旧的场景内固定 <code>FarmPlot</code> 已删除，<code>scenes/farm_plot.tscn</code> 只作为运行时生成模板。</li>
+      </ul>
+
+      <h3>状态机</h3>
+      <table>
+        <tbody>
+          <tr><th><code>tilled</code></th><td>已开垦，等待用种子播种。</td></tr>
+          <tr><th><code>seeded</code></th><td>已播种，等待用水壶浇水。</td></tr>
+          <tr><th><code>watered</code></th><td>已浇水，睡觉进入第二天时推进成长。</td></tr>
+          <tr><th><code>ready</code></th><td>成熟，使用镰刀收获作物进入背包。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>持久化规则</h3>
+      <ul>
+        <li>开垦时保存 <code>plot_id</code>、<code>cell_x</code>、<code>cell_y</code>、<code>created=true</code> 和状态到 <code>GameState.farm_plot_states</code>。</li>
+        <li>切到镇街再回家时，<code>FarmField</code> 会根据保存数据恢复动态农田。</li>
+        <li>播种、浇水、成熟、施肥等状态更新不能覆盖丢失坐标信息。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>摆摊与顾客</h2>
+      <h3>摆摊规则</h3>
+      <ul>
+        <li>玩家在镇街可摆摊区域内交互开摊，定价范围仍是 <code>1-5</code> 元。</li>
+        <li>摊位读取背包中的第一个可售商品，当前版本先支持单商品上架。</li>
+        <li>摊位容量和影响范围来自摊位升级配置。</li>
+        <li>开摊后生成三个关键节点：顾客影响范围 <code>InfluenceArea</code>、城管检测目标 <code>InspectionTarget</code>、玩家活动空气墙 <code>PlayerBoundary</code>。</li>
+        <li><code>InspectionTarget</code> 的范围与摊位影响范围一致。</li>
+        <li><code>PlayerBoundary</code> 使用玩家专用碰撞层，只限制玩家，不阻挡城管。</li>
+      </ul>
+
+      <h3>顾客规则</h3>
+      <ul>
+        <li>顾客从居民区、学校、工厂之间按时间窗口移动，生成总数有限，生成时间随机。</li>
+        <li>学生主要在 <code>06:00-08:00</code> 上学、<code>16:00-18:00</code> 放学。</li>
+        <li>工人主要在 <code>07:00-09:00</code> 上班、<code>17:00-19:00</code> 下班。</li>
+        <li>顾客进入摊位影响范围后，先按偏好判断是否停留，再按预算和价格判断是否购买。</li>
+        <li>顾客决定购买时，会停留 <code>5-10</code> 秒并显示倒计时；玩家必须在倒计时结束前按 <code>E</code> 确认交易。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>城管系统</h2>
+      <h3>发现与追逐</h3>
+      <ul>
+        <li><code>ChengguanSpawner</code> 在城镇中随机生成城管，每天生成数量有限。</li>
+        <li>城管巡逻时使用 <code>DetectionArea(Area2D)</code> 检测摊位的 <code>InspectionTarget</code>。</li>
+        <li>发现摊位后不会立即处罚，而是记录违规成立并进入 <code>chasing</code> 状态追玩家。</li>
+        <li>城管巡逻速度为 <code>70</code>，追击速度为 <code>138</code>，略快于玩家速度 <code>120</code>。</li>
+        <li>抓捕判定由 <code>CatchArea.body_entered</code> 触发，不用逐帧距离判断。</li>
+      </ul>
+
+      <h3>处罚规则</h3>
+      <ul>
+        <li>一旦城管发现摊位，违规记录成立。</li>
+        <li>之后即使玩家已经收摊，只要被城管追到，仍然会罚款。</li>
+        <li>如果被追到时摊位还开着，则罚款并强制收摊。</li>
+        <li>如果摊位已经收了，则只罚款。</li>
+        <li>罚款金额当前为 <code>8</code> 元，不会扣成负现金。</li>
+        <li>日结统计会记录被抓次数和罚款总额。</li>
+      </ul>
+
+      <div class="note risk">
+        这个系统的体验重点是“被发现后的紧张追逐”，不是发现瞬间的惩罚。后续需要实测追击速度、检测半径和生成频率，避免风险过高导致玩家不愿意摆摊。
+      </div>
+    </section>
+
+    <section>
+      <h2>商店与升级</h2>
+      <table>
+        <tbody>
+          <tr>
+            <th>小卖部</th>
+            <td>卖苹果种子，也会每天随机价格和库存直接卖苹果，支持玩家低买高卖。</td>
+          </tr>
+          <tr>
+            <th>背包升级</th>
+            <td>花钱增加背包格子数量。当前配置从 <code>8</code> 格升级到 <code>12</code>、<code>16</code> 格。</td>
+          </tr>
+          <tr>
+            <th>摊位升级</th>
+            <td>提高上架容量和影响半径。影响范围越大，顾客更容易被吸引，城管也更容易发现。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Node / Signal 设计摘要</h2>
+      <table>
+        <tbody>
+          <tr><th><code>Player</code></th><td>移动、动画、交互检测。按最近可交互 <code>Area2D</code> 触发 <code>interact(player)</code>。</td></tr>
+          <tr><th><code>FarmField</code></th><td>只在锄头状态下检测开垦交互，负责按 tile 生成动态 <code>FarmPlot</code>。</td></tr>
+          <tr><th><code>FarmPlot</code></th><td>负责单格农田状态机：播种、浇水、成熟、收获。</td></tr>
+          <tr><th><code>Stall</code></th><td>负责商品上架、库存、价格、影响范围、城管检测目标和玩家空气墙。</td></tr>
+          <tr><th><code>Customer</code></th><td>负责顾客路线、偏好、预算、购买倒计时和成交确认。</td></tr>
+          <tr><th><code>Chengguan</code></th><td>负责巡逻、发现摊位、追逐玩家和抓捕处罚。</td></tr>
+          <tr><th><code>SeedShop</code></th><td>负责种子、每日苹果库存和升级入口。</td></tr>
+          <tr><th><code>HUD / Panels</code></th><td>显示现金、时间、目标、工具、背包、商店、定价和日结。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>关键 Signal</h3>
+      <ul>
+        <li><code>inventory_changed</code>、<code>backpack_changed</code>：背包数量和格子 UI 更新。</li>
+        <li><code>cash_changed</code>：现金 UI 更新。</li>
+        <li><code>current_tool_changed</code>：工具切换，刷新农田可交互状态。</li>
+        <li><code>scene_change_requested</code>：房屋、家、镇街之间切换。</li>
+        <li><code>price_panel_requested</code>、<code>shop_panel_requested</code>：打开定价和商店面板。</li>
+        <li><code>sale_completed</code>、<code>customer_decision</code>：交易结果反馈。</li>
+        <li><code>daily_summary_ready</code>：显示昨日总结。</li>
+        <li><code>chengguan_penalty</code>：记录并反馈城管处罚。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>验收标准</h2>
+      <ul>
+        <li>玩家从房屋出门会到房屋门口出生点，而不是镇街入口。</li>
+        <li>玩家装备锄头时，院子可开垦区域才出现开垦交互。</li>
+        <li>新开垦农田为 <code>1x1</code> tile，位置与 <code>TileMapLayer</code> 对齐，开垦后直接可播种。</li>
+        <li>玩家去镇街再回家，已开垦农田不会消失。</li>
+        <li>背包满时购买、收获或进货不会静默丢物品。</li>
+        <li>顾客购买需要玩家在倒计时内按 <code>E</code> 确认。</li>
+        <li>城管发现摊位后追玩家，追到才罚款；已收摊也会处罚。</li>
+        <li>摊位影响范围、城管检测目标和摊位升级数据保持一致。</li>
+        <li>午夜或睡觉进入第二天，日结数据和作物成长正确推进。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>测试计划</h2>
+      <ul>
+        <li><code>tests/config_inventory_v2_test.gd</code>：配置读取、格子背包、堆叠和满包。</li>
+        <li><code>tests/farm_field_creation_test.gd</code>：动态开垦、tile 对齐、锄头限定、场景重载恢复。</li>
+        <li><code>tests/farm_v2_test.gd</code>：农田状态机和跨天成长。</li>
+        <li><code>tests/day_upgrade_chengguan_v2_test.gd</code>：日结、升级、城管发现、追逐后处罚、已收摊仍处罚。</li>
+        <li><code>tests/player_stall_tether_test.gd</code>：玩家空气墙、城管检测目标范围和摊位清理。</li>
+        <li>每次关键改动后运行所有 <code>tests/*_test.tscn</code>，再做主场景 headless 加载。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>全玩法范围补充</h2>
+      <p>
+        第二版的完成标准不是“新增几个系统”，而是把当前项目内所有核心玩法都设计清楚、接入闭环并完成验证。
+        下表作为第二版的玩法范围边界；未列入的内容默认不进入第二版，避免原型继续外扩。
+      </p>
+      <table>
+        <tbody>
+          <tr>
+            <th>种植玩法</th>
+            <td>覆盖开垦、播种、浇水、施肥、跨天成长、成熟、收获、满包失败、场景切换恢复和多作物配置。苹果若保持 <code>growth_days=0</code>，必须明确“一浇水即成熟”还是“隔天成熟”的最终规则。</td>
+          </tr>
+          <tr>
+            <th>库存玩法</th>
+            <td>覆盖格子容量、堆叠上限、购买入包、收获入包、开摊扣货、收摊返货、满包提示、升级扩容和 UI 图标显示。第二版不做拖拽整理，但必须保证不会静默丢物。</td>
+          </tr>
+          <tr>
+            <th>摆摊玩法</th>
+            <td>覆盖可摆摊点、定价、上架商品、库存上限、影响范围、玩家活动边界、成交确认、拒买反馈、售罄反馈和收摊返还。若仍只支持单商品上架，需要把“选择上架商品”列为第二版后续而不是验收必需。</td>
+          </tr>
+          <tr>
+            <th>顾客玩法</th>
+            <td>覆盖学生和工人的时间窗口、路线、预算、偏好、停留倒计时、玩家确认成交、超时离开和日结统计。顾客不能在场景切换后残留到错误父节点。</td>
+          </tr>
+          <tr>
+            <th>风险玩法</th>
+            <td>覆盖城管生成、巡逻、发现、追逐、抓捕、罚款、强制收摊、已收摊仍处罚和每日次数限制。风险必须能被玩家理解，并通过数值调校保持“紧张但不劝退”。</td>
+          </tr>
+          <tr>
+            <th>经济与成长</th>
+            <td>覆盖现金、商店每日价格和库存、低买高卖、种子购买、背包升级、摊位升级、罚款消耗和日结评价。至少要能形成 3-5 天的短期成长目标。</td>
+          </tr>
+          <tr>
+            <th>时间与日结</th>
+            <td>覆盖 06:00 开始、时段切换、午夜强制结算、床上主动睡觉、作物成长推进、商店刷新、日统计归零和昨日总结展示。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>还需要补充的设计</h2>
+      <h3>1. 新手引导与目标链</h3>
+      <ul>
+        <li>需要写清楚第一天玩家看到的目标顺序：出门、开垦、播种、浇水、买货、去镇街、开摊、确认交易、回屋睡觉。</li>
+        <li>每个目标都要有失败提示，例如没钱、没种子、没货、背包满、工具不对、摊位已开、顾客超时离开。</li>
+        <li>HUD 目前显示目标文本，但方案里还缺“目标如何推进、何时替换、哪些目标不应覆盖”的规则。</li>
+      </ul>
+
+      <h3>2. 商店商品列表</h3>
+      <ul>
+        <li>当前商店只稳定支持苹果种子和每日苹果；如果第二版目标是验证全部玩法，建议商店至少能从 <code>crops.json</code> 生成种子列表。</li>
+        <li>需要决定每种种子的价格来源：继续使用常量、写入 <code>items.json</code>，或新增商店配置。推荐把购买价格放入配置，避免售价、进价和种植收益散落在脚本里。</li>
+        <li>需要明确肥料的获得方式、价格和每日库存，否则施肥只是系统入口，不是完整玩法。</li>
+      </ul>
+
+      <h3>3. 商品选择与价格策略</h3>
+      <ul>
+        <li>第二版若要验证多作物经营，摊位应支持选择上架商品；否则多作物只能被种出来，不能形成明确经营策略。</li>
+        <li>价格范围现在仍是 <code>1-5</code> 元，适合苹果，但不一定适合梨、黄瓜、番茄等作物。需要定义按商品基础售价计算的定价范围。</li>
+        <li>顾客偏好应至少覆盖全部可售作物，避免新作物永远卖不出去或都按苹果逻辑成交。</li>
+      </ul>
+
+      <h3>4. 失败、惩罚与恢复</h3>
+      <ul>
+        <li>需要明确现金为 0、背包满、没有种子、没有商品、被城管罚光钱、午夜未回家时玩家如何继续玩。</li>
+        <li>建议第二版不设置硬失败结局，但必须保证玩家始终能通过免费或低成本路径重新进入经营循环。</li>
+        <li>日结中应区分“拒买”和“错过确认”，否则无法判断是定价问题还是玩家操作问题。</li>
+      </ul>
+
+      <h3>5. 存档与重开规则</h3>
+      <ul>
+        <li>现有状态主要在 <code>GameState</code> 内存中流转；若第二版要验证多日玩法，至少需要明确本阶段是否必须落盘保存。</li>
+        <li>如果不做正式存档，也要补充“重启游戏从第 1 天开始”的原型限制，避免误以为多日进度已经可靠持久化。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>验证矩阵补充</h2>
+      <table>
+        <tbody>
+          <tr>
+            <th>自动化测试必须覆盖</th>
+            <td>配置加载、背包堆叠和满包、农田动态创建和恢复、跨天成长、顾客购买确认、商店随机库存、升级、城管追逐处罚、摊位边界清理、日结统计。</td>
+          </tr>
+          <tr>
+            <th>手动验证必须覆盖</th>
+            <td>完整跑通至少 3 个游戏日：第 1 天卖苹果，第 2 天完成种植收获，第 3 天升级背包或摊位，并至少经历一次城管追逐。</td>
+          </tr>
+          <tr>
+            <th>平衡验证必须记录</th>
+            <td>每日平均收入、平均成交数、拒买率、错过率、城管触发率、罚款占收入比例、首次升级所需天数、背包满发生次数。</td>
+          </tr>
+          <tr>
+            <th>主场景验收</th>
+            <td><code>scenes/main.tscn</code> 可 headless 加载；玩家能从房屋到院子到镇街再回屋；所有 UI 面板可打开关闭；没有启动时报错、空引用或无法退出的阻塞状态。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>第二版退出标准</h2>
+      <ul>
+        <li>所有“全玩法范围补充”中的系统都有明确设计、实现入口和至少一条验证路径。</li>
+        <li>玩家可以连续游玩 3 天以上，并经历种植、购买、摆摊、成交、拒买、罚款、升级和日结。</li>
+        <li>全部 <code>tests/*_test.tscn</code> 通过，主场景能无错误加载。</li>
+        <li>设计文档中的“后续迭代”只保留体验增强项，不再包含第二版闭环必需项。</li>
+        <li>已知限制被写入文档，例如是否暂不支持正式存档、是否暂不支持拖拽整理背包、是否暂不支持多商品同时上架。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>后续迭代</h2>
+      <ul>
+        <li>把苹果 <code>growth_days=0</code> 时“一浇水就成熟”的逻辑接入 <code>FarmPlot</code>。</li>
+        <li>增加工具 UI，让当前工具和快捷键更直观。</li>
+        <li>摊位支持玩家选择上架商品，而不是默认背包中第一个可售商品。</li>
+        <li>优化城管追逐：加入警告时间、视线遮挡、逃脱距离或躲避点。</li>
+        <li>商店扩展为作物种子列表，并读取配置生成购买按钮。</li>
+        <li>建立正式存档结构，把 <code>GameState</code> 中的动态农田、背包、升级和日期写入保存文件。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

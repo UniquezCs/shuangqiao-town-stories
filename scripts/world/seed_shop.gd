@@ -18,6 +18,9 @@ func interact(_player: Node) -> void:
 
 
 func buy_seed() -> bool:
+	if not Inventory.can_add_item(PrototypeConstants.ITEM_APPLE_SEED, 1):
+		SignalBus.sale_feedback.emit("背包装不下种子", global_position)
+		return false
 	if GameState.spend_cash(PrototypeConstants.SEED_PRICE):
 		Inventory.add_item(PrototypeConstants.ITEM_APPLE_SEED, 1)
 		SignalBus.sale_feedback.emit("买到苹果种子", global_position)
@@ -31,6 +34,9 @@ func buy_seed() -> bool:
 func buy_apple() -> bool:
 	if GameState.seed_shop_apple_stock <= 0:
 		SignalBus.sale_feedback.emit("今天苹果卖完了", global_position)
+		return false
+	if not Inventory.can_add_item(PrototypeConstants.ITEM_APPLE, 1):
+		SignalBus.sale_feedback.emit("背包装不下苹果", global_position)
 		return false
 	if not GameState.spend_cash(GameState.seed_shop_apple_price):
 		SignalBus.sale_feedback.emit("钱不够", global_position)

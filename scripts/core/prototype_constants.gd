@@ -2,6 +2,7 @@ extends Node
 
 const ITEM_APPLE := "apple"
 const ITEM_APPLE_SEED := "apple_seed"
+const ITEM_FERTILIZER := "fertilizer"
 
 const SEED_PRICE := 2
 const APPLE_HARVEST_COUNT := 5
@@ -13,11 +14,26 @@ const SHOP_APPLE_STOCK_MIN := 3
 const SHOP_APPLE_STOCK_MAX := 12
 const STALL_PLAYER_BOUNDARY_HALF_SIZE := 96.0
 const STALL_PLAYER_BOUNDARY_WALL_THICKNESS := 16.0
+const PLAYER_BOUNDARY_COLLISION_LAYER := 16
+const PLAYER_WORLD_COLLISION_MASK := 17
+const CHENGGUAN_PATROL_SPEED := 70.0
+const CHENGGUAN_CHASE_SPEED := 138.0
 const CUSTOMER_PURCHASE_WAIT_MIN_SECONDS := 5.0
 const CUSTOMER_PURCHASE_WAIT_MAX_SECONDS := 10.0
+const REAL_SECONDS_PER_GAME_MINUTE := 5.0
+const DAY_START_MINUTE := 6 * 60
+const DAY_END_MINUTE := 24 * 60
+const CHENGGUAN_FINE := 8
 
+const SCENE_HOUSE := "house"
 const SCENE_HOME := "home"
 const SCENE_TOWN := "town"
+
+const TOOL_HOE := "hoe"
+const TOOL_SEED := "seed"
+const TOOL_WATER := "water"
+const TOOL_SICKLE := "sickle"
+const TOOL_FERTILIZER := "fertilizer"
 
 const WINDOW_PREP := "prep"
 const WINDOW_MORNING := "morning"
@@ -44,4 +60,13 @@ const WINDOW_LABELS := {
 const ITEM_LABELS := {
 	ITEM_APPLE: "苹果",
 	ITEM_APPLE_SEED: "苹果种子",
+	ITEM_FERTILIZER: "肥料",
+}
+
+const TOOL_LABELS := {
+	TOOL_HOE: "锄头",
+	TOOL_SEED: "种子",
+	TOOL_WATER: "水壶",
+	TOOL_SICKLE: "镰刀",
+	TOOL_FERTILIZER: "肥料",
 }

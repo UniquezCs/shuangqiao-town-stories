@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://chengguan_scene_v2"]
+
+[ext_resource type="Script" path="res://scripts/world/chengguan.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(28, 42)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
+radius = 96.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_catch"]
+radius = 20.0
+
+[node name="Chengguan" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="Visual" type="Sprite2D" parent="."]
+texture_filter = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_detection")
+
+[node name="CatchArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CatchArea"]
+shape = SubResource("CircleShape2D_catch")

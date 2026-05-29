@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godot 项目每日简报 - 2026-05-28</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --card: #fffaf3;
+      --ink: #1d281f;
+      --muted: #5d675f;
+      --line: #d6c8b6;
+      --accent: #2e6a50;
+      --accent-soft: #e4efe8;
+      --warn: #8a5b33;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+      color: var(--ink);
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at top left, #fff5d8 0, transparent 26%),
+        linear-gradient(180deg, #efe7da 0, var(--bg) 100%);
+    }
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    header, section {
+      background: rgba(255, 250, 243, 0.93);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 28px rgba(80, 62, 32, 0.06);
+    }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 20px; color: var(--accent); }
+    p { margin: 0 0 10px; }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li { margin: 6px 0; }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      background: #f1eadf;
+      border-radius: 6px;
+      padding: 1px 6px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .chip {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: var(--card);
+    }
+    .panel strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .empty {
+      color: var(--warn);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>日期：2026-05-28</p>
+      <p>回顾范围：自上次简报 <code>2026-05-26T22:01:52.145Z</code> 以来的 Git 提交、工作区差异，以及关键资源/脚本/场景/配置文件活动痕迹。</p>
+      <div class="meta">
+        <span class="chip">0 次新提交</span>
+        <span class="chip">工作区内容差异 0</span>
+        <span class="chip">29 个文件有新修改时间</span>
+        <span class="chip">主要集中在脚本、场景与 .godot 元数据</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>概览</h2>
+      <p>本次时间窗口内，没有检测到新的 Git 提交，也没有已暂存或未暂存的内容差异；仓库在内容层面处于干净状态。</p>
+      <p>不过，项目存在一批近期被打开或保存过的文件，说明 2026-05-26 晚到 2026-05-27 凌晨之间，开发重心仍围绕顾客生成、主流程衔接、经营状态与城市场景调试展开。</p>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <div class="grid">
+        <div class="panel">
+          <strong>内容层面未见新增提交</strong>
+          <p>自上次简报后，<code>git log --since</code> 未返回新提交，说明主线代码没有新的版本快照。</p>
+        </div>
+        <div class="panel">
+          <strong>工作区差异为空</strong>
+          <p><code>git diff</code> 与 <code>git diff --cached</code> 均为空，当前不存在待提交内容。</p>
+        </div>
+        <div class="panel">
+          <strong>脚本活动聚焦经营闭环</strong>
+          <p>最近修改时间较新的脚本包括 <code>scripts/main.gd</code>、<code>customer.gd</code>、<code>customer_spawner.gd</code>、<code>customer_schedule.gd</code>。</p>
+        </div>
+        <div class="panel">
+          <strong>编辑器状态被频繁刷新</strong>
+          <p><code>.godot/editor/</code> 与缓存配置有明显写入，反映最近在场景、脚本与测试文件间进行了编辑器级调试。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <p class="empty">未检测到新增文件或新增提交。</p>
+      <p>本次窗口内没有可由 Git 明确归类为“新增”的内容；如果有外部工具重导入或临时生成文件，也已不在当前工作区差异中保留。</p>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li>脚本活动痕迹集中在经营与顾客系统：<code>scripts/world/customer_spawner.gd</code>、<code>scripts/world/customer.gd</code>、<code>scripts/world/customer_schedule.gd</code>、<code>scripts/main.gd</code>。</li>
+        <li>状态与界面相关文件近期被触达：<code>scripts/autoload/game_state.gd</code>、<code>scripts/autoload/signal_bus.gd</code>、<code>scripts/ui/hud.gd</code>。</li>
+        <li>场景与经营点位相关文件近期被触达：<code>scenes/town_scene.tscn</code>、<code>scripts/world/stall.gd</code>、<code>scripts/world/stall_spot.gd</code>、<code>scripts/world/farm_plot.gd</code>。</li>
+        <li>测试文件近期被触达：<code>tests/customer_schedule_test.gd</code>、<code>tests/game_state_persistence_test.gd</code>、<code>tests/game_state_persistence_test.tscn</code>。</li>
+        <li>配置与导入元数据近期被触达：<code>project.godot</code>、<code>assets/generated/prototype_v1_32/objects/residential_area_320x128.png.import</code> 以及多份 <code>.godot</code> 编辑器缓存。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <p class="empty">未检测到删除文件，也没有明确的废弃标记。</p>
+      <p>由于当前工作区干净，本次无法从 Git 层面识别“删掉后又恢复”这类短生命周期操作。</p>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li>虽然当前没有待提交差异，但经营原型关键脚本近期被频繁打开，说明这些区域仍可能处于高波动调试期，后续提交容易集中落在顾客流转和主流程联动上。</li>
+        <li><code>.godot</code> 编辑器元数据持续变化，若误提交到版本库，会放大无效噪音并降低后续日报的可读性。</li>
+        <li>测试场景与持久化测试文件近期被触达，意味着状态保存或时间推进逻辑可能仍需要回归验证。</li>
+        <li>资源导入文件 <code>.import</code> 有活动痕迹，后续若更换素材源文件，需要关注导入参数是否稳定。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>确认是否需要把 <code>.godot/editor/</code> 与其他本地状态文件进一步排除或弱化，以减少简报中的编辑器噪音。</li>
+        <li>下一次提交前，优先检查顾客生成、时间调度、摊位交互和游戏状态持久化四条链路是否都通过当前测试与手动验证。</li>
+        <li>如果 2026-05-27 凌晨的这批触达文件代表一次未形成提交的调试工作，建议尽快整理成原子提交，避免后续日报只能看到“活动痕迹”而看不到可审计变更。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>关键文件路径</h2>
+      <ul>
+        <li><code>project.godot</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>scripts/main.gd</code></li>
+        <li><code>scripts/autoload/game_state.gd</code></li>
+        <li><code>scripts/autoload/signal_bus.gd</code></li>
+        <li><code>scripts/world/customer.gd</code></li>
+        <li><code>scripts/world/customer_schedule.gd</code></li>
+        <li><code>scripts/world/customer_spawner.gd</code></li>
+        <li><code>scripts/world/stall.gd</code></li>
+        <li><code>scripts/world/stall_spot.gd</code></li>
+        <li><code>scripts/world/farm_plot.gd</code></li>
+        <li><code>scripts/ui/hud.gd</code></li>
+        <li><code>tests/customer_schedule_test.gd</code></li>
+        <li><code>tests/game_state_persistence_test.gd</code></li>
+        <li><code>assets/generated/prototype_v1_32/objects/residential_area_320x128.png.import</code></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

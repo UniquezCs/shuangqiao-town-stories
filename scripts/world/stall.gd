@@ -11,9 +11,11 @@ var spot_id := ""
 var is_open := false
 var stock := 0
 var price := 2
+var current_item_id := PrototypeConstants.ITEM_APPLE
 @export var influence_radius := 160.0
 
 var _influence_area: Area2D = null
+var _inspection_target: Area2D = null
 var _player_boundary: StaticBody2D = null
 
 @onready var visual: Sprite2D = $Visual
@@ -26,24 +28,29 @@ func _ready() -> void:
 func open(spot: String, chosen_price: int, owner: Node2D = null) -> bool:
 	if is_open:
 		return false
-	var available := Inventory.get_count(PrototypeConstants.ITEM_APPLE)
+	current_item_id = Inventory.get_first_sellable_item_id()
+	if current_item_id.is_empty():
+		current_item_id = PrototypeConstants.ITEM_APPLE
+	var available := Inventory.get_count(current_item_id)
 	if available <= 0:
-		SignalBus.sale_feedback.emit("背包里没有苹果", global_position)
+		SignalBus.sale_feedback.emit("背包里没有可卖的商品", global_position)
 		return false
 	if owner != null and is_instance_valid(owner):
 		global_position = owner.global_position
 	spot_id = spot
 	price = clamp(chosen_price, PrototypeConstants.MIN_APPLE_PRICE, PrototypeConstants.MAX_APPLE_PRICE)
-	stock = min(available, PrototypeConstants.APPLE_HARVEST_COUNT)
-	Inventory.remove_item(PrototypeConstants.ITEM_APPLE, stock)
+	influence_radius = GameState.get_stall_influence_radius()
+	stock = min(available, GameState.get_stall_stock_limit())
+	Inventory.remove_item(current_item_id, stock)
 	is_open = true
 	visible = true
 	GameState.record_stall_use(spot_id)
-	GameState.set_objective("等顾客来买苹果")
+	GameState.set_objective("等顾客来买%s" % ConfigLoader.get_item_name(current_item_id))
 	SignalBus.stall_opened.emit(spot_id, price, stock)
 	SignalBus.stall_stock_changed.emit(stock)
 	SignalBus.price_changed.emit(price)
 	_create_influence_area()
+	_create_inspection_target()
 	_create_player_boundary()
 	_refresh_visual()
 	return true
@@ -54,7 +61,7 @@ func close() -> void:
 		return
 	var returned := stock
 	if returned > 0:
-		Inventory.add_item(PrototypeConstants.ITEM_APPLE, returned)
+		Inventory.add_item(current_item_id, returned)
 	stock = 0
 	is_open = false
 	visible = false
@@ -62,6 +69,7 @@ func close() -> void:
 	SignalBus.stall_stock_changed.emit(stock)
 	GameState.set_objective("可以换点摆摊，或回家买种子")
 	_remove_influence_area()
+	_remove_inspection_target()
 	_remove_player_boundary()
 	_refresh_visual()
 
@@ -89,14 +97,16 @@ func sell_one(customer_type: String, customer_profile: Dictionary = {}) -> Dicti
 	if bool(decision["bought"]):
 		stock -= 1
 		GameState.record_sale(price)
+		GameState.record_customer_served()
 		SignalBus.stall_stock_changed.emit(stock)
-		SignalBus.sale_completed.emit(PrototypeConstants.ITEM_APPLE, price, stock)
+		SignalBus.sale_completed.emit(current_item_id, price, stock)
 		SignalBus.sale_feedback.emit("+%d 元" % price, global_position)
 		if stock <= 0:
-			GameState.set_objective("苹果卖完了，回家买种子")
+			GameState.set_objective("%s卖完了，可以回家补货" % ConfigLoader.get_item_name(current_item_id))
 		_refresh_visual()
 	else:
 		GameState.record_rejection()
+		GameState.record_customer_served()
 		SignalBus.sale_feedback.emit(str(decision["reason"]), global_position)
 	SignalBus.customer_decision.emit(customer_type, bool(decision["bought"]), str(decision["reason"]))
 	return decision
@@ -131,12 +141,40 @@ func _remove_influence_area() -> void:
 	_influence_area = null
 
 
+func _create_inspection_target() -> void:
+	if _inspection_target != null and is_instance_valid(_inspection_target):
+		return
+	_inspection_target = Area2D.new()
+	_inspection_target.name = "InspectionTarget"
+	_inspection_target.add_to_group("open_stall_inspection_target")
+	_inspection_target.collision_layer = 8
+	_inspection_target.collision_mask = 0
+	_inspection_target.monitoring = false
+	_inspection_target.monitorable = true
+
+	var collision_shape := CollisionShape2D.new()
+	collision_shape.name = "CollisionShape2D"
+	var circle := CircleShape2D.new()
+	circle.radius = influence_radius
+	collision_shape.shape = circle
+	_inspection_target.add_child(collision_shape)
+	add_child(_inspection_target)
+
+
+func _remove_inspection_target() -> void:
+	if _inspection_target == null or not is_instance_valid(_inspection_target):
+		_inspection_target = null
+		return
+	_inspection_target.queue_free()
+	_inspection_target = null
+
+
 func _create_player_boundary() -> void:
 	if _player_boundary != null and is_instance_valid(_player_boundary):
 		return
 	_player_boundary = StaticBody2D.new()
 	_player_boundary.name = "PlayerBoundary"
-	_player_boundary.collision_layer = 1
+	_player_boundary.collision_layer = PrototypeConstants.PLAYER_BOUNDARY_COLLISION_LAYER
 	_player_boundary.collision_mask = 0
 	add_child(_player_boundary)
 
@@ -180,13 +218,13 @@ func _profile_decision(customer_type: String, customer_profile: Dictionary) -> D
 	var customer_label := "工人" if customer_type == PrototypeConstants.CUSTOMER_WORKER else "学生"
 	var budget := int(customer_profile.get("budget", _default_budget_for(customer_type)))
 	var preferences: Dictionary = customer_profile.get("preferences", {})
-	var preference := float(preferences.get(PrototypeConstants.ITEM_APPLE, 0.0))
+	var preference := float(preferences.get(current_item_id, preferences.get(PrototypeConstants.ITEM_APPLE, 0.0)))
 	if preference < 0.45:
-		return {"bought": false, "reason": "%s暂时不想买苹果" % customer_label}
+		return {"bought": false, "reason": "%s暂时不想买%s" % [customer_label, ConfigLoader.get_item_name(current_item_id)]}
 
 	var acceptable_price := clampi(int(floor(float(budget) * (0.55 + preference))), 1, budget)
 	if price <= acceptable_price:
-		return {"bought": true, "reason": "%s买下苹果" % customer_label}
+		return {"bought": true, "reason": "%s买下%s" % [customer_label, ConfigLoader.get_item_name(current_item_id)]}
 	if price > budget:
 		return {"bought": false, "reason": "%s预算不够" % customer_label}
 	return {"bought": false, "reason": "%s觉得不划算" % customer_label}

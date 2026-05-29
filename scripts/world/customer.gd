@@ -110,6 +110,7 @@ func confirm_purchase(_player: Node = null) -> void:
 
 func _reject_without_trade(reason: String) -> void:
 	GameState.record_rejection()
+	GameState.record_customer_served()
 	SignalBus.sale_feedback.emit(reason, global_position)
 	SignalBus.customer_decision.emit(customer_type, false, reason)
 	state = "rejecting"
@@ -196,6 +197,8 @@ func _on_purchase_timeout() -> void:
 	if state != "waiting_for_player":
 		return
 	_clear_purchase_request()
+	GameState.record_rejection()
+	GameState.record_customer_served()
 	SignalBus.sale_feedback.emit("顾客等不及走了", global_position)
 	state = "leaving"
 
@@ -231,7 +234,7 @@ func _should_visit_stall(active_stall: Node) -> bool:
 		return false
 	if not bool(active_stall.get("is_open")) or int(active_stall.get("stock")) <= 0:
 		return false
-	return _has_demand_for(PrototypeConstants.ITEM_APPLE)
+	return _has_demand_for(str(active_stall.get("current_item_id")))
 
 
 func _active_stall() -> Node:
@@ -273,5 +276,10 @@ func _build_customer_profile() -> void:
 		"budget": budget,
 		"preferences": {
 			PrototypeConstants.ITEM_APPLE: apple_preference,
+			"cabbage": _rng.randf_range(0.2, 0.85),
+			"cucumber": _rng.randf_range(0.2, 0.85),
+			"tomato": _rng.randf_range(0.25, 0.9),
+			"pear": _rng.randf_range(0.25, 0.9),
+			"potato": _rng.randf_range(0.2, 0.85),
 		},
 	}

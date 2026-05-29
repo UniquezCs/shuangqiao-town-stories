@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/asset_preview_scene_test.gd" id="1_asset_preview_test"]
+
+[node name="AssetPreviewSceneTest" type="Node"]
+script = ExtResource("1_asset_preview_test")

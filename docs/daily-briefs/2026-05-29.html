@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godot 项目每日简报 - 2026-05-29</title>
+  <style>
+    :root {
+      --bg: #f3ede2;
+      --card: rgba(255, 251, 245, 0.94);
+      --ink: #1f241f;
+      --muted: #5f665d;
+      --line: #d8ccb9;
+      --accent: #31654f;
+      --accent-soft: #e3eee7;
+      --warn: #8a5a36;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+      line-height: 1.7;
+      background:
+        radial-gradient(circle at top left, #fff5d7 0, transparent 28%),
+        linear-gradient(180deg, #efe5d8 0, var(--bg) 100%);
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+    header, section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 28px rgba(70, 56, 28, 0.07);
+    }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 20px; color: var(--accent); }
+    p { margin: 0 0 10px; }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li { margin: 6px 0; }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      background: #efe7db;
+      border-radius: 6px;
+      padding: 1px 6px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: #fffaf3;
+    }
+    .panel strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+    .empty {
+      color: var(--warn);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>日期：2026-05-29</p>
+      <p>回顾范围：自上次简报 <code>2026-05-27T22:00:27.739Z</code> 以来的 Git 提交、当前工作区差异，以及新增资源/脚本/场景/配置文件。</p>
+      <div class="meta">
+        <span class="chip">1 次新提交</span>
+        <span class="chip">19 个已跟踪文件仍在修改</span>
+        <span class="chip">39 个未跟踪路径项</span>
+        <span class="chip">0 个删除项</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>概览</h2>
+      <p>本次窗口内，项目先完成了一版“经营原型核心闭环”提交，补齐了摆摊销售、顾客交互、价格反馈和经营测试链路；随后工作区继续向第二版原型推进，新增配置驱动、背包与日结 UI、可开垦农田、睡觉换天、城管追逐和更多测试，但这一批内容尚未提交。</p>
+      <p>从仓库状态看，当前开发重心已经从“苹果摆摊闭环”扩展到“家庭-农田-镇街-风险-升级”的日循环经营骨架。</p>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <div class="grid">
+        <div class="panel">
+          <strong>已提交：第一版闭环补完</strong>
+          <p><code>47240dc</code> 完成经营原型核心闭环，覆盖主场景、顾客、摊位、商店和多份交互测试。</p>
+        </div>
+        <div class="panel">
+          <strong>未提交：第二版系统搭骨架</strong>
+          <p><code>GameState</code>、<code>Inventory</code>、<code>project.godot</code> 和多个新场景/脚本已扩展到日循环、工具切换、升级与配置读取。</p>
+        </div>
+        <div class="panel">
+          <strong>配置驱动开始落地</strong>
+          <p>新增 <code>configs/crops.json</code>、<code>items.json</code>、<code>upgrades.json</code>，并引入 <code>ConfigLoader</code> 自动加载。</p>
+        </div>
+        <div class="panel">
+          <strong>素材批量入库</strong>
+          <p>新增 <code>assistant_art_2026_05_29</code>、<code>prototype_v2</code>、<code>ui_skins_2026_05_29</code> 等生成资源目录，为农田、UI、角色和场景占位提供素材。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li>配置文件：<code>configs/crops.json</code>、<code>configs/items.json</code>、<code>configs/upgrades.json</code>，把作物成长、物品图标与升级档位迁移为数据驱动。</li>
+        <li>自动加载与 UI：<code>scripts/autoload/config_loader.gd</code>、<code>scripts/ui/backpack_panel.gd</code>、<code>scripts/ui/daily_summary_panel.gd</code>。</li>
+        <li>世界与规则脚本：<code>scripts/world/bed.gd</code>、<code>chengguan.gd</code>、<code>chengguan_spawner.gd</code>、<code>farm_field.gd</code>。</li>
+        <li>新场景：<code>scenes/house_scene.tscn</code>、<code>scenes/farm_plot.tscn</code>、<code>scenes/chengguan.tscn</code>。</li>
+        <li>测试补充：新增背包图标、配置背包容量、日结/升级/城管、农田创建和农作物成长测试。</li>
+        <li>工具脚本：<code>tools/build_assistant_art_pack.py</code>、<code>build_prototype_v2_assets.py</code>、<code>build_ui_skin_pack.py</code>。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li><code>project.godot</code> 新增 <code>ConfigLoader</code> 自动加载，补充 <code>B</code> 背包键和 <code>1-4</code> 工具快捷键输入映射。</li>
+        <li><code>scripts/autoload/game_state.gd</code> 从单日状态扩展到多日经营：新增天数、背包等级、摊位等级、当前工具、顾客统计、城管罚款、昨日总结和农田推进逻辑。</li>
+        <li><code>scripts/autoload/inventory.gd</code> 与 <code>scripts/ui/shop_panel.gd</code> 配合升级系统，开始按背包格数与商店升级规则工作。</li>
+        <li><code>scripts/world/farm_plot.gd</code>、<code>scripts/player.gd</code>、<code>scripts/main.gd</code>、<code>scripts/ui/hud.gd</code> 继续接入工具切换、农田状态、主流程提示和界面反馈。</li>
+        <li><code>scenes/home_scene.tscn</code>、<code>main.tscn</code>、<code>player.tscn</code>、<code>town_scene.tscn</code> 被改造以承接新农田、房屋入口、摊位和镇街交互。</li>
+        <li><code>docs/development_baseline.md</code> 与 <code>docs/prototype_v2_plan.html</code> 更新了第二版原型方向和资源/规则基线。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <p class="empty">当前未检测到 Git 层面的删除文件或明确废弃项。</p>
+      <p>不过，<code>GameState.current_scene</code> 默认值已从旧的 <code>SCENE_HOME</code> 切到 <code>SCENE_HOUSE</code>，这意味着旧版“直接在院子开局”的流程正在被新版“屋内起床开局”替代。</p>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li>配置驱动已经接入核心逻辑，若 <code>configs/*.json</code> 字段变化或资源路径失效，背包图标、种子映射、升级价格和作物成长都会一起受影响。</li>
+        <li>日结与睡觉逻辑已落到 <code>bed.gd</code> 和 <code>GameState.end_day()</code>，需要重点验证日切换是否会破坏时间、现金、农田和商店刷新状态。</li>
+        <li>城管由“发现即罚”转向“发现后追击再处罚”，这会改变摊位风险节奏，也会影响既有顾客与摊位测试预期。</li>
+        <li>大量新素材和导入文件仍未提交，后续如果继续批量生成资源，简报和版本历史会被资产噪音迅速放大。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>把第二版未提交改动整理成更小的原子提交，至少拆分为“配置/状态”“农田与日循环”“UI 与素材”三个主题。</li>
+        <li>优先跑通并确认新增测试：<code>backpack_icon_test</code>、<code>config_inventory_v2_test</code>、<code>day_upgrade_chengguan_v2_test</code>、<code>farm_field_creation_test</code>、<code>farm_v2_test</code>。</li>
+        <li>确认 <code>house_scene</code>、<code>home_scene</code>、<code>town_scene</code> 的场景切换点和出生点命名已完全对齐，避免新默认开局场景产生断链。</li>
+        <li>评估是否需要忽略或单独管理批量生成资源目录中的中间文件和 <code>.DS_Store</code>，减少工作区噪音。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>关键文件路径</h2>
+      <ul>
+        <li><code>project.godot</code></li>
+        <li><code>configs/crops.json</code></li>
+        <li><code>configs/items.json</code></li>
+        <li><code>configs/upgrades.json</code></li>
+        <li><code>scripts/autoload/config_loader.gd</code></li>
+        <li><code>scripts/autoload/game_state.gd</code></li>
+        <li><code>scripts/autoload/inventory.gd</code></li>
+        <li><code>scripts/main.gd</code></li>
+        <li><code>scripts/player.gd</code></li>
+        <li><code>scripts/ui/backpack_panel.gd</code></li>
+        <li><code>scripts/ui/daily_summary_panel.gd</code></li>
+        <li><code>scripts/world/farm_field.gd</code></li>
+        <li><code>scripts/world/farm_plot.gd</code></li>
+        <li><code>scripts/world/chengguan.gd</code></li>
+        <li><code>scripts/world/chengguan_spawner.gd</code></li>
+        <li><code>scripts/world/bed.gd</code></li>
+        <li><code>scenes/house_scene.tscn</code></li>
+        <li><code>scenes/home_scene.tscn</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>tests/day_upgrade_chengguan_v2_test.gd</code></li>
+        <li><code>tests/farm_field_creation_test.gd</code></li>
+        <li><code>docs/prototype_v2_plan.html</code></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

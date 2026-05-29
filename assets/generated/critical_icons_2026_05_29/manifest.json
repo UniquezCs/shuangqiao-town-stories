@@ -1,0 +1,223 @@
+{
+  "schema_version": 2,
+  "id": "pack.critical_icons_2026_05_29",
+  "type": "icon_pack",
+  "status": "available",
+  "generated_at": "2026-05-29",
+  "style": "warm 1990s Chinese rural pixel-art inventory and HUD icons",
+  "raw": "res://assets/generated/critical_icons_2026_05_29/raw/ig_06b37ad1cea000ba016a199b190d8c8191a324584b73573fa2.png",
+  "raw_clean": "res://assets/generated/critical_icons_2026_05_29/critical_icons_raw_clean.png",
+  "sheet": "res://assets/generated/critical_icons_2026_05_29/critical_icons_sheet_32.png",
+  "rows": 2,
+  "cols": 5,
+  "cell_size": [
+    32,
+    32
+  ],
+  "items": {
+    "pear": {
+      "id": "critical_icons.pear",
+      "type": "item_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/pear_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "inventory_icon",
+        "sellable_crop"
+      ],
+      "tags": [
+        "icon",
+        "item",
+        "pear"
+      ]
+    },
+    "cabbage_seed_packet": {
+      "id": "critical_icons.cabbage_seed_packet",
+      "type": "item_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/cabbage_seed_packet_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "inventory_icon",
+        "shop_item",
+        "seed_item"
+      ],
+      "tags": [
+        "icon",
+        "seed",
+        "cabbage"
+      ]
+    },
+    "cucumber_seed_packet": {
+      "id": "critical_icons.cucumber_seed_packet",
+      "type": "item_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/cucumber_seed_packet_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "inventory_icon",
+        "shop_item",
+        "seed_item"
+      ],
+      "tags": [
+        "icon",
+        "seed",
+        "cucumber"
+      ]
+    },
+    "tomato_seed_packet": {
+      "id": "critical_icons.tomato_seed_packet",
+      "type": "item_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/tomato_seed_packet_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "inventory_icon",
+        "shop_item",
+        "seed_item"
+      ],
+      "tags": [
+        "icon",
+        "seed",
+        "tomato"
+      ]
+    },
+    "pear_seed_packet": {
+      "id": "critical_icons.pear_seed_packet",
+      "type": "item_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/pear_seed_packet_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "inventory_icon",
+        "shop_item",
+        "seed_item"
+      ],
+      "tags": [
+        "icon",
+        "seed",
+        "pear"
+      ]
+    },
+    "potato_seed_packet": {
+      "id": "critical_icons.potato_seed_packet",
+      "type": "item_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/potato_seed_packet_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "inventory_icon",
+        "shop_item",
+        "seed_item"
+      ],
+      "tags": [
+        "icon",
+        "seed",
+        "potato"
+      ]
+    },
+    "fertilizer_bag": {
+      "id": "critical_icons.fertilizer_bag",
+      "type": "item_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/fertilizer_bag_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "inventory_icon",
+        "tool_consumable"
+      ],
+      "tags": [
+        "icon",
+        "fertilizer"
+      ]
+    },
+    "sickle": {
+      "id": "critical_icons.sickle",
+      "type": "tool_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/sickle_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "hud_tool",
+        "farm_harvest"
+      ],
+      "tags": [
+        "icon",
+        "tool",
+        "harvest"
+      ]
+    },
+    "warning_badge": {
+      "id": "critical_icons.warning_badge",
+      "type": "ui_feedback_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/warning_badge_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "chengguan_feedback",
+        "ui_warning"
+      ],
+      "tags": [
+        "icon",
+        "warning",
+        "chengguan"
+      ]
+    },
+    "fine_penalty": {
+      "id": "critical_icons.fine_penalty",
+      "type": "ui_feedback_icon",
+      "path": "res://assets/generated/critical_icons_2026_05_29/items/fine_penalty_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": "center",
+      "collision": "none",
+      "usage": [
+        "chengguan_feedback",
+        "ui_warning"
+      ],
+      "tags": [
+        "icon",
+        "warning",
+        "chengguan"
+      ]
+    }
+  }
+}

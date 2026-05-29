@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/backpack_icon_test.gd" id="1_backpack_icon"]
+
+[node name="BackpackIconTest" type="Node"]
+script = ExtResource("1_backpack_icon")

@@ -25,6 +25,12 @@ func _ready() -> void:
 	_assert_true(boundary != null, "开摊后应生成 PlayerBoundary 空气墙节点")
 	if boundary == null:
 		return
+	var inspection_target := stall.get_node_or_null("InspectionTarget") as Area2D
+	_assert_true(inspection_target != null, "开摊后应生成城管检测目标")
+	var inspection_shape_node := inspection_target.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	var inspection_shape := inspection_shape_node.shape as CircleShape2D
+	_assert_equal(inspection_shape.radius, stall.get("influence_radius"), "城管检测目标范围应和摊位影响范围一致")
+	_assert_equal(boundary.collision_layer, PrototypeConstants.PLAYER_BOUNDARY_COLLISION_LAYER, "空气墙应使用玩家专用碰撞层，避免挡住城管")
 	_assert_true(boundary.get_child_count() >= 4, "空气墙应由多个 CollisionShape2D 边界组成")
 	for child in boundary.get_children():
 		_assert_true(child is CollisionShape2D, "PlayerBoundary 的子节点应是碰撞形状")

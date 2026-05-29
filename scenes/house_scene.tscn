@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=4 uid="uid://house_scene_v2"]
+
+[ext_resource type="TileSet" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="1_tileset"]
+[ext_resource type="Script" path="res://scripts/world/scene_exit.gd" id="2_exit"]
+[ext_resource type="Script" path="res://scripts/world/bed.gd" id="3_bed"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/street_stall_props_v2_cutouts/21_folded_tarp.png" id="4_bed_tex"]
+[ext_resource type="Texture2D" path="res://assets/generated/props/street_stall_props_v2_cutouts/15_ledger_book.png" id="5_book_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(88, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bed"]
+size = Vector2(96, 64)
+
+[node name="HouseScene" type="Node2D" unique_id=1049214618]
+
+[node name="GroundLayer" type="TileMapLayer" parent="." unique_id=250748633]
+z_index = -30
+tile_map_data = PackedByteArray("AAD6//v/AAADAAEAAAD6//z/AAADAAEAAAD6//3/AAADAAMAAAD6//7/AAADAAMAAAD6////AAADAAMAAAD6/wAAAAADAAMAAAD6/wEAAAADAAMAAAD6/wIAAAADAAMAAAD6/wMAAAADAAMAAAD6/wQAAAADAAMAAAD7//v/AAADAAEAAAD7//z/AAADAAEAAAD7//3/AAABAAIAAAD7//7/AAABAAIAAAD7////AAABAAIAAAD7/wAAAAABAAIAAAD7/wEAAAABAAIAAAD7/wIAAAABAAIAAAD7/wMAAAABAAIAAAD7/wQAAAADAAMAAAD8//v/AAADAAEAAAD8//z/AAADAAEAAAD8//3/AAABAAIAAAD8//7/AAABAAIAAAD8////AAABAAIAAAD8/wAAAAABAAIAAAD8/wEAAAABAAIAAAD8/wIAAAABAAIAAAD8/wMAAAABAAIAAAD8/wQAAAADAAMAAAD9//v/AAADAAEAAAD9//z/AAADAAEAAAD9//3/AAABAAIAAAD9//7/AAABAAIAAAD9////AAABAAIAAAD9/wAAAAABAAIAAAD9/wEAAAABAAIAAAD9/wIAAAABAAIAAAD9/wMAAAABAAIAAAD9/wQAAAADAAMAAAD+//v/AAADAAEAAAD+//z/AAADAAEAAAD+//3/AAABAAIAAAD+//7/AAABAAIAAAD+////AAABAAIAAAD+/wAAAAABAAIAAAD+/wEAAAABAAIAAAD+/wIAAAABAAIAAAD+/wMAAAABAAIAAAD+/wQAAAADAAMAAAD///v/AAADAAEAAAD///z/AAADAAEAAAD///3/AAABAAIAAAD///7/AAABAAIAAAD/////AAABAAIAAAD//wAAAAABAAIAAAD//wEAAAABAAIAAAD//wIAAAABAAIAAAD//wMAAAABAAIAAAD//wQAAAADAAMAAAAAAPv/AAADAAEAAAAAAPz/AAADAAEAAAAAAP3/AAABAAIAAAAAAP7/AAABAAIAAAAAAP//AAABAAIAAAAAAAAAAAABAAIAAAAAAAEAAAABAAIAAAAAAAIAAAABAAIAAAAAAAMAAAABAAIAAAAAAAQAAAADAAMAAAABAPv/AAADAAEAAAABAPz/AAADAAEAAAABAP3/AAABAAIAAAABAP7/AAABAAIAAAABAP//AAABAAIAAAABAAAAAAABAAIAAAABAAEAAAABAAIAAAABAAIAAAABAAIAAAABAAMAAAABAAIAAAABAAQAAAADAAMAAAACAPv/AAADAAEAAAACAPz/AAADAAEAAAACAP3/AAABAAIAAAACAP7/AAABAAIAAAACAP//AAABAAIAAAACAAAAAAABAAIAAAACAAEAAAABAAIAAAACAAIAAAABAAIAAAACAAMAAAABAAIAAAACAAQAAAADAAMAAAADAPv/AAADAAEAAAADAPz/AAADAAEAAAADAP3/AAABAAIAAAADAP7/AAABAAIAAAADAP//AAABAAIAAAADAAAAAAABAAIAAAADAAEAAAABAAIAAAADAAIAAAABAAIAAAADAAMAAAABAAIAAAADAAQAAAADAAMAAAAEAPv/AAADAAEAAAAEAPz/AAADAAEAAAAEAP3/AAABAAIAAAAEAP7/AAABAAIAAAAEAP//AAABAAIAAAAEAAAAAAABAAIAAAAEAAEAAAABAAIAAAAEAAIAAAABAAIAAAAEAAMAAAABAAIAAAAEAAQAAAADAAMAAAAFAPv/AAADAAEAAAAFAPz/AAADAAEAAAAFAP3/AAABAAIAAAAFAP7/AAABAAIAAAAFAP//AAABAAIAAAAFAAAAAAABAAIAAAAFAAEAAAABAAIAAAAFAAIAAAABAAIAAAAFAAMAAAABAAIAAAAFAAQAAAADAAMAAAAGAPv/AAADAAEAAAAGAPz/AAADAAEAAAAGAP3/AAADAAMAAAAGAP7/AAADAAMAAAAGAP//AAADAAMAAAAGAAAAAAADAAMAAAAGAAEAAAADAAMAAAAGAAIAAAADAAMAAAAGAAMAAAADAAMAAAAGAAQAAAADAAMAAAA=")
+tile_set = ExtResource("1_tileset")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=894860239]
+
+[node name="default" type="Marker2D" parent="Spawns" unique_id=351155556]
+position = Vector2(0, 70)
+
+[node name="bed_spawn" type="Marker2D" parent="Spawns" unique_id=2015385860]
+position = Vector2(-12, 78)
+
+[node name="home_door_spawn" type="Marker2D" parent="Spawns" unique_id=1704088267]
+position = Vector2(0, 120)
+
+[node name="ToHomeYard" type="Area2D" parent="." unique_id=1836800359]
+position = Vector2(0, 150)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_exit")
+target_scene = "home"
+spawn_id = "house_door_spawn"
+prompt = "出门到院子"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToHomeYard" unique_id=1473410450]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="Bed" type="Area2D" parent="." unique_id=1454103753]
+position = Vector2(-128, -40)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_bed")
+
+[node name="Visual" type="Sprite2D" parent="Bed" unique_id=747538828]
+texture_filter = 1
+scale = Vector2(0.68, 0.68)
+texture = ExtResource("4_bed_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bed" unique_id=1328258770]
+shape = SubResource("RectangleShape2D_bed")
+
+[node name="Ledger" type="Sprite2D" parent="." unique_id=1748712160]
+texture_filter = 1
+position = Vector2(120, -32)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("5_book_tex")

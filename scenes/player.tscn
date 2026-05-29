@@ -6,10 +6,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(24, 34)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
-radius = 24.93
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g2els"]
 
 [node name="Player" type="CharacterBody2D" unique_id=97559793]
+collision_mask = 17
 script = ExtResource("1_player_script")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1266849560]
@@ -27,4 +27,5 @@ collision_mask = 2
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=804471038]
-shape = SubResource("CircleShape2D_interaction")
+position = Vector2(0, -3)
+shape = SubResource("CapsuleShape2D_g2els")

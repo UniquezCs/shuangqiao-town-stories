@@ -1,0 +1,1288 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-05-29",
+  "purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
+  "status_values": {
+	"implemented": "Used by current scenes, scripts, or configs.",
+	"available": "Asset exists but is not wired into gameplay yet.",
+	"placeholder": "Current gameplay uses a temporary or semantically imperfect asset.",
+	"missing": "Required by design but no suitable asset is registered yet."
+  },
+  "standards": {
+	"tile_size": [
+	  32,
+	  32
+	],
+	"character_frame_size": [
+	  48,
+	  64
+	],
+	"small_prop_size": [
+	  32,
+	  32
+	],
+	"filter": "nearest-neighbor",
+	"anchor_default": "center",
+	"notes": [
+	  "Gameplay code should reference stable asset ids through this registry or domain configs.",
+	  "Collision belongs to gameplay nodes, not to bitmap files.",
+      "Missing assets should use placeholders until the user explicitly asks for art generation."
+	]
+  },
+  "packs": {
+	"prototype_v1_32": {
+	  "id": "pack.prototype_v1_32",
+	  "type": "legacy_pack",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32",
+	  "notes": "Current runtime still uses several v1 32px normalized assets."
+	},
+	"prototype_v2": {
+	  "id": "pack.prototype_v2",
+	  "type": "available_pack",
+	  "status": "available",
+	  "manifest": "res://assets/generated/prototype_v2/manifest.json",
+	  "path": "res://assets/generated/prototype_v2",
+	  "notes": "Generated v2 art exists for characters, UI icons, house/farm objects, but much of it is not integrated."
+	},
+	"street_stall_cutouts": {
+	  "id": "pack.street_stall_cutouts",
+	  "type": "prop_pack",
+	  "status": "implemented",
+	  "manifest": "res://assets/generated/props/street_stall_props_v2_cutouts/manifest.json",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts"
+	},
+	"assistant_art_2026_05_29": {
+	  "id": "pack.assistant_art_2026_05_29",
+	  "type": "available_pack",
+	  "status": "available",
+	  "manifest": "res://assets/generated/assistant_art_2026_05_29/manifest.json",
+	  "path": "res://assets/generated/assistant_art_2026_05_29",
+	  "notes": "Contains crop icons, farm plot stages, UI icons, and town props. Treat as available, not automatically final."
+	},
+	"ui_skins_2026_05_29": {
+	  "id": "pack.ui_skins_2026_05_29",
+	  "type": "available_pack",
+	  "status": "available",
+	  "manifest": "res://assets/generated/ui_skins_2026_05_29/manifest.json",
+	  "path": "res://assets/generated/ui_skins_2026_05_29",
+	  "notes": "Backpack and shop UI skin assets exist but current UI still uses Godot Control placeholders."
+	},
+	"critical_icons_2026_05_29": {
+	  "id": "pack.critical_icons_2026_05_29",
+	  "type": "icon_pack",
+	  "status": "available",
+	  "manifest": "res://assets/generated/critical_icons_2026_05_29/manifest.json",
+	  "path": "res://assets/generated/critical_icons_2026_05_29",
+	  "notes": "Pear, per-crop seed packets, fertilizer, sickle, warning, and fine icons normalized to 32x32."
+	}
+  },
+  "tilesets": {
+	"tileset.rural_town_32": {
+	  "type": "tileset",
+	  "status": "implemented",
+	  "path": "res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres",
+	  "atlas": "res://assets/generated/tilesets/rural_town_32/rural_town_tiles_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"home_ground",
+		"town_ground",
+		"stall_area_marker_layer",
+        "house_ground"
+	  ],
+	  "used_by": [
+		"scenes/home_scene.tscn",
+		"scenes/town_scene.tscn",
+        "scenes/house_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "tilesets"
+	  ]
+	},
+	"tileset.prototype_scene_32": {
+	  "type": "tileset",
+	  "status": "available",
+	  "path": "res://assets/generated/prototype_v1_32/tiles/prototype_scene_tileset_32.tres",
+	  "atlas": "res://assets/generated/prototype_v1_32/tiles/prototype_scene_tiles_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+        "legacy_reference"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "tilesets"
+	  ]
+	}
+  },
+  "characters": {
+	"character.vendor": {
+	  "type": "character",
+	  "status": "implemented",
+	  "node_template": "Player(CharacterBody2D)/AnimatedSprite2D",
+	  "spriteframes": "res://assets/generated/prototype_v1_32/characters/vendor_walk_spriteframes_48x64.tres",
+	  "sheet": "res://assets/generated/prototype_v1_32/characters/vendor_walk_4dir_8f_48x64.png",
+	  "size": [
+		48,
+		64
+	  ],
+	  "animations": [
+		"walk_down",
+		"walk_left",
+		"walk_right",
+        "walk_up"
+	  ],
+	  "frames_per_direction": 8,
+	  "used_by": [
+        "scenes/player.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "characters"
+	  ]
+	},
+	"character.student_customer": {
+	  "type": "npc",
+	  "status": "placeholder",
+	  "node_template": "Customer(CharacterBody2D)/Visual(Sprite2D)",
+	  "current_texture": "res://assets/generated/prototype_v1_32/characters/customer_student_48x64.png",
+	  "available_spriteframes": "res://assets/generated/prototype_v2/characters/student_walk_spriteframes_48x64.tres",
+	  "available_sheet": "res://assets/generated/prototype_v2/characters/student_walk_4dir_8f_48x64.png",
+	  "size": [
+		48,
+		64
+	  ],
+	  "usage": [
+        "customer_student"
+	  ],
+	  "used_by": [
+		"scripts/world/customer.gd",
+        "scenes/customer.tscn"
+	  ],
+	  "next_step": "Switch Customer visual to AnimatedSprite2D when animation logic is ready.",
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "characters"
+	  ]
+	},
+	"character.worker_customer": {
+	  "type": "npc",
+	  "status": "placeholder",
+	  "node_template": "Customer(CharacterBody2D)/Visual(Sprite2D)",
+	  "current_texture": "res://assets/generated/prototype_v1_32/characters/customer_worker_48x64.png",
+	  "available_spriteframes": "res://assets/generated/prototype_v2/characters/worker_walk_spriteframes_48x64.tres",
+	  "available_sheet": "res://assets/generated/prototype_v2/characters/worker_walk_4dir_8f_48x64.png",
+	  "size": [
+		48,
+		64
+	  ],
+	  "usage": [
+        "customer_worker"
+	  ],
+	  "used_by": [
+        "scripts/world/customer.gd"
+	  ],
+	  "next_step": "Switch Customer visual to AnimatedSprite2D when animation logic is ready.",
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "characters"
+	  ]
+	},
+	"character.chengguan": {
+	  "type": "npc",
+	  "status": "placeholder",
+	  "node_template": "Chengguan(CharacterBody2D)/Visual(Sprite2D)",
+	  "current_texture": "res://assets/generated/prototype_v1_32/characters/customer_worker_48x64.png",
+	  "required_size": [
+		48,
+		64
+	  ],
+	  "usage": [
+		"patrol",
+		"chase",
+        "catch_player"
+	  ],
+	  "used_by": [
+		"scripts/world/chengguan.gd",
+        "scenes/chengguan.tscn"
+	  ],
+	  "generation_need": "Dedicated 1990s township chengguan NPC, 4-direction walk animation, 8 frames per direction, 48x64.",
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "characters"
+	  ]
+	}
+  },
+  "items": {
+	"item.apple": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/apple_32.png",
+	  "fallback_path": "res://assets/generated/prototype_v1_32/props/apple_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"inventory_icon",
+		"stall_item",
+        "customer_purchase_countdown"
+	  ],
+	  "used_by": [
+		"configs/items.json",
+        "scripts/world/customer.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"crop",
+        "apple"
+	  ]
+	},
+	"item.apple_seed": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v2/ui/apple_seed_packet_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"inventory_icon",
+        "shop_item"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"seed",
+        "apple"
+	  ]
+	},
+	"item.cabbage": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/cabbage_32.png",
+	  "usage": [
+		"inventory_icon",
+        "sellable_crop"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"crop",
+        "cabbage"
+	  ]
+	},
+	"item.cucumber": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/cucumber_32.png",
+	  "usage": [
+		"inventory_icon",
+        "sellable_crop"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"crop",
+        "cucumber"
+	  ]
+	},
+	"item.tomato": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/tomato_32.png",
+	  "usage": [
+		"inventory_icon",
+        "sellable_crop"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"crop",
+        "tomato"
+	  ]
+	},
+	"item.pear": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/pear_32.png",
+	  "usage": [
+		"inventory_icon",
+        "sellable_crop"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"crop",
+        "pear"
+	  ]
+	},
+	"item.potato": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/potato_32.png",
+	  "usage": [
+		"inventory_icon",
+        "sellable_crop"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"crop",
+        "potato"
+	  ]
+	},
+	"item.generic_seed": {
+	  "type": "item_icon",
+	  "status": "available",
+	  "path": "res://assets/generated/prototype_v1_32/props/seed_bag_32.png",
+	  "required_size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"cabbage_seed",
+		"cucumber_seed",
+		"tomato_seed",
+		"pear_seed",
+        "potato_seed"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "notes": "Generic seed bag remains available as a fallback; active crop seeds now have dedicated icons."
+	},
+	"item.fertilizer": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/fertilizer_bag_32.png",
+	  "usage": [
+		"inventory_icon",
+        "tool_consumable"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+        "fertilizer"
+	  ]
+	},
+	"item.cabbage_seed": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/cabbage_seed_packet_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"inventory_icon",
+		"shop_item",
+        "seed_item"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"seed",
+        "cabbage"
+	  ]
+	},
+	"item.cucumber_seed": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/cucumber_seed_packet_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"inventory_icon",
+		"shop_item",
+        "seed_item"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"seed",
+        "cucumber"
+	  ]
+	},
+	"item.tomato_seed": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/tomato_seed_packet_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"inventory_icon",
+		"shop_item",
+        "seed_item"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"seed",
+        "tomato"
+	  ]
+	},
+	"item.pear_seed": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/pear_seed_packet_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"inventory_icon",
+		"shop_item",
+        "seed_item"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"seed",
+        "pear"
+	  ]
+	},
+	"item.potato_seed": {
+	  "type": "item_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/potato_seed_packet_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"inventory_icon",
+		"shop_item",
+        "seed_item"
+	  ],
+	  "used_by": [
+        "configs/items.json"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"item",
+		"seed",
+        "potato"
+	  ]
+	}
+  },
+  "tools": {
+	"tool.hoe": {
+	  "type": "tool_icon",
+	  "status": "available",
+	  "usage": [
+		"hud_tool",
+        "farm_interaction"
+	  ],
+	  "path": "res://assets/generated/assistant_art_2026_05_29/ui_icons/items/hoe_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"tool",
+        "hoe"
+	  ]
+	},
+	"tool.water": {
+	  "type": "tool_icon",
+	  "status": "available",
+	  "usage": [
+		"hud_tool",
+        "farm_interaction"
+	  ],
+	  "path": "res://assets/generated/assistant_art_2026_05_29/ui_icons/items/watering_can_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"tool",
+        "water"
+	  ]
+	},
+	"tool.sickle": {
+	  "type": "tool_icon",
+	  "status": "available",
+	  "path": "res://assets/generated/critical_icons_2026_05_29/items/sickle_32.png",
+	  "size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"hud_tool",
+        "farm_harvest"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"tool",
+		"sickle",
+        "harvest"
+	  ]
+	}
+  },
+  "farm_plots": {
+	"farm_plot.empty": {
+	  "type": "farm_state",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32/objects/farm_empty_64.png",
+	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/grass_patch.png",
+	  "source_size": [
+		64,
+		64
+	  ],
+	  "display_size": [
+		32,
+		32
+	  ],
+	  "usage": [
+        "farm_plot_empty"
+	  ],
+	  "used_by": [
+		"scenes/farm_plot.tscn",
+        "scripts/world/farm_plot.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "farm_plots"
+	  ]
+	},
+	"farm_plot.tilled": {
+	  "type": "farm_state",
+	  "status": "placeholder",
+	  "path": "res://assets/generated/prototype_v1_32/objects/farm_seeded_64.png",
+	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/freshly_hoed.png",
+	  "source_size": [
+		64,
+		64
+	  ],
+	  "display_size": [
+		32,
+		32
+	  ],
+	  "usage": [
+        "farm_plot_tilled"
+	  ],
+	  "used_by": [
+        "scripts/world/farm_plot.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "farm_plots"
+	  ]
+	},
+	"farm_plot.seeded": {
+	  "type": "farm_state",
+	  "status": "placeholder",
+	  "path": "res://assets/generated/prototype_v1_32/objects/farm_growing_64.png",
+	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/seeded.png",
+	  "source_size": [
+		64,
+		64
+	  ],
+	  "display_size": [
+		32,
+		32
+	  ],
+	  "usage": [
+        "farm_plot_seeded"
+	  ],
+	  "used_by": [
+        "scripts/world/farm_plot.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "farm_plots"
+	  ]
+	},
+	"farm_plot.watered": {
+	  "type": "farm_state",
+	  "status": "placeholder",
+	  "path": "res://assets/generated/prototype_v1_32/objects/farm_growing_64.png",
+	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/watered_seeded.png",
+	  "source_size": [
+		64,
+		64
+	  ],
+	  "display_size": [
+		32,
+		32
+	  ],
+	  "usage": [
+        "farm_plot_watered"
+	  ],
+	  "used_by": [
+        "scripts/world/farm_plot.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "farm_plots"
+	  ]
+	},
+	"farm_plot.ready": {
+	  "type": "farm_state",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32/objects/farm_ready_64.png",
+	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/harvest_ready.png",
+	  "source_size": [
+		64,
+		64
+	  ],
+	  "display_size": [
+		32,
+		32
+	  ],
+	  "usage": [
+        "farm_plot_ready"
+	  ],
+	  "used_by": [
+        "scripts/world/farm_plot.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "farm_plots"
+	  ]
+	}
+  },
+  "stalls": {
+	"stall.empty": {
+	  "type": "stall_visual",
+	  "status": "implemented",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/01_stall_empty.png",
+	  "usage": [
+        "stall_stock_0"
+	  ],
+	  "used_by": [
+		"scripts/world/stall.gd",
+		"scenes/stall_spot.tscn",
+        "scenes/town_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "stalls"
+	  ]
+	},
+	"stall.stock_1": {
+	  "type": "stall_visual",
+	  "status": "implemented",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/04_stall_apple_1.png",
+	  "usage": [
+        "stall_stock_1"
+	  ],
+	  "used_by": [
+        "scripts/world/stall.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "stalls"
+	  ]
+	},
+	"stall.stock_3": {
+	  "type": "stall_visual",
+	  "status": "implemented",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/03_stall_apples_3.png",
+	  "usage": [
+        "stall_stock_2_to_3"
+	  ],
+	  "used_by": [
+        "scripts/world/stall.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "stalls"
+	  ]
+	},
+	"stall.stock_6": {
+	  "type": "stall_visual",
+	  "status": "implemented",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/02_stall_apples_6.png",
+	  "usage": [
+        "stall_stock_4_plus"
+	  ],
+	  "used_by": [
+        "scripts/world/stall.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "stalls"
+	  ]
+	},
+	"stall.dirty_or_confiscated": {
+	  "type": "stall_visual",
+	  "status": "available",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/05_stall_dirty.png",
+	  "usage": [
+        "future_chengguan_feedback"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "stalls"
+	  ]
+	},
+	"stall.upgraded_level_2": {
+	  "type": "stall_visual",
+	  "status": "missing",
+	  "required_size": [
+		128,
+		96
+	  ],
+	  "usage": [
+        "stall_upgrade_level_2"
+	  ],
+	  "generation_need": "Higher-capacity roadside stall visual matching existing stall style.",
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "stalls"
+	  ]
+	},
+	"stall.upgraded_level_3": {
+	  "type": "stall_visual",
+	  "status": "missing",
+	  "required_size": [
+		160,
+		112
+	  ],
+	  "usage": [
+        "stall_upgrade_level_3"
+	  ],
+	  "generation_need": "Larger roadside stall visual with more display space.",
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "stalls"
+	  ]
+	}
+  },
+  "locations": {
+	"location.school_gate": {
+	  "type": "landmark",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32/objects/school_gate_256x128.png",
+	  "available_path": "res://assets/generated/props/street_stall_props_v2_cutouts/28_school_gate.png",
+	  "size": [
+		256,
+		128
+	  ],
+	  "usage": [
+		"town_landmark",
+		"student_route",
+		"npc_endpoint_visual",
+        "centralized_route_destination"
+	  ],
+	  "used_by": [
+        "scenes/town_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	},
+	"location.factory_gate": {
+	  "type": "landmark",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32/objects/factory_gate_256x128.png",
+	  "available_path": "res://assets/generated/props/street_stall_props_v2_cutouts/29_factory_gate.png",
+	  "size": [
+		256,
+		128
+	  ],
+	  "usage": [
+		"town_landmark",
+		"worker_route",
+		"npc_endpoint_visual",
+        "centralized_route_destination"
+	  ],
+	  "used_by": [
+        "scenes/town_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	},
+	"location.residential_area": {
+	  "type": "landmark",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32/objects/residential_area_320x128.png",
+	  "size": [
+		320,
+		128
+	  ],
+	  "usage": [
+		"customer_spawn_origin",
+		"npc_endpoint_visual",
+		"centralized_route_home_endpoint",
+        "same_id_endpoint_pool"
+	  ],
+	  "used_by": [
+        "scenes/town_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	},
+	"location.seed_shop": {
+	  "type": "shop",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32/objects/seed_shop_64x64.png",
+	  "available_path": "res://assets/generated/prototype_v2/objects/seed_shop_stand_128x96.png",
+	  "usage": [
+		"seed_shop",
+		"apple_resale_shop",
+        "upgrade_shop"
+	  ],
+	  "used_by": [
+        "scenes/town_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	},
+	"location.home_exterior": {
+	  "type": "building",
+	  "status": "placeholder",
+	  "current_note": "HomeScene uses an embedded texture region from environment_tilesheet_v1 import.",
+	  "available_path": "res://assets/generated/prototype_v2/objects/rural_house_facade_256x128.png",
+	  "required_size": [
+		256,
+		128
+	  ],
+	  "usage": [
+		"home_yard_building",
+        "house_entry"
+	  ],
+	  "used_by": [
+        "scenes/home_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	},
+	"location.house_interior_floor": {
+	  "type": "tileset_or_prop",
+	  "status": "placeholder",
+	  "path": "res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres",
+	  "required_size": [
+		32,
+		32
+	  ],
+	  "usage": [
+		"house_scene_floor",
+        "house_scene_background_marker"
+	  ],
+	  "used_by": [
+        "scenes/house_scene.tscn"
+	  ],
+	  "generation_need": "Interior background/floor/wall tiles for rural 1990s house, 32x32. Current HouseScene uses a TileMapLayer placeholder block so future art can replace it in-place.",
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	},
+	"location.house_bed": {
+	  "type": "interior_prop",
+	  "status": "placeholder",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/21_folded_tarp.png",
+	  "available_path": "res://assets/generated/prototype_v2/objects/bed_roll_64x64.png",
+	  "usage": [
+        "sleep_interaction"
+	  ],
+	  "used_by": [
+        "scenes/house_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	},
+	"location.house_ledger": {
+	  "type": "interior_prop",
+	  "status": "implemented",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/15_ledger_book.png",
+	  "available_path": "res://assets/generated/prototype_v2/objects/ledger_table_64x64.png",
+	  "usage": [
+        "daily_summary_flavor"
+	  ],
+	  "used_by": [
+        "scenes/house_scene.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "locations"
+	  ]
+	}
+  },
+  "ui": {
+	"ui.hud": {
+	  "type": "ui_surface",
+	  "status": "placeholder",
+	  "current_implementation": "Godot Control labels only",
+	  "available_icons": {
+		"cash": "res://assets/generated/prototype_v2/ui/cash_coins_32.png",
+		"time": "res://assets/generated/prototype_v2/ui/time_clock_32.png",
+		"backpack": "res://assets/generated/prototype_v2/ui/backpack_32.png",
+		"price_tag": "res://assets/generated/prototype_v2/ui/price_tag_32.png"
+	  },
+	  "usage": [
+		"cash",
+		"time",
+		"objective",
+		"current_tool",
+        "feedback"
+	  ],
+	  "used_by": [
+        "scripts/ui/hud.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "ui"
+	  ]
+	},
+	"ui.backpack_panel": {
+	  "type": "ui_surface",
+	  "status": "placeholder",
+	  "current_implementation": "Godot PanelContainer and text labels",
+	  "available_skin_manifest": "res://assets/generated/ui_skins_2026_05_29/manifest.json",
+	  "usage": [
+		"inventory_slots",
+        "item_counts"
+	  ],
+	  "used_by": [
+        "scripts/ui/backpack_panel.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "ui"
+	  ],
+	  "available_components": {
+		"panel_frame": "res://assets/generated/ui_skins_2026_05_29/backpack/items/panel_frame.png",
+		"slot_empty": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_empty.png",
+		"slot_highlighted": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_highlighted.png",
+		"slot_locked": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_locked.png",
+		"quantity_badge": "res://assets/generated/ui_skins_2026_05_29/backpack/items/quantity_badge.png"
+	  }
+	},
+	"ui.shop_panel": {
+	  "type": "ui_surface",
+	  "status": "placeholder",
+	  "current_implementation": "Godot PanelContainer and buttons",
+	  "available_skin_manifest": "res://assets/generated/ui_skins_2026_05_29/manifest.json",
+	  "usage": [
+		"buy_seed",
+		"buy_apple",
+		"upgrade_backpack",
+        "upgrade_stall"
+	  ],
+	  "used_by": [
+        "scripts/ui/shop_panel.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "ui"
+	  ],
+	  "available_components": {
+		"panel_frame": "res://assets/generated/ui_skins_2026_05_29/shop/items/panel_frame.png",
+		"goods_shelf_card": "res://assets/generated/ui_skins_2026_05_29/shop/items/goods_shelf_card.png",
+		"buy_button": "res://assets/generated/ui_skins_2026_05_29/shop/items/buy_button.png",
+		"disabled_buy_button": "res://assets/generated/ui_skins_2026_05_29/shop/items/disabled_buy_button.png",
+		"price_tag_badge": "res://assets/generated/ui_skins_2026_05_29/shop/items/price_tag_badge.png"
+	  }
+	},
+	"ui.price_panel": {
+	  "type": "ui_surface",
+	  "status": "placeholder",
+	  "current_implementation": "Godot PanelContainer and buttons",
+	  "available_icon": "res://assets/generated/prototype_v2/ui/price_tag_32.png",
+	  "usage": [
+        "stall_price_selection"
+	  ],
+	  "used_by": [
+        "scripts/ui/price_panel.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "ui"
+	  ]
+	},
+	"ui.daily_summary_panel": {
+	  "type": "ui_surface",
+	  "status": "placeholder",
+	  "current_implementation": "Godot PanelContainer and text labels",
+	  "available_icon": "res://assets/generated/prototype_v2/ui/daily_summary_ledger_32.png",
+	  "usage": [
+        "day_summary"
+	  ],
+	  "used_by": [
+        "scripts/ui/daily_summary_panel.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "ui"
+	  ]
+	},
+	"ui.purchase_countdown": {
+	  "type": "ui_icon",
+	  "status": "implemented",
+	  "path": "res://assets/generated/prototype_v1_32/props/apple_32.png",
+	  "available_path": "res://assets/generated/prototype_v2/ui/purchase_bubble_32.png",
+	  "usage": [
+        "customer_purchase_countdown"
+	  ],
+	  "used_by": [
+        "scripts/world/customer.gd"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "ui"
+	  ]
+	},
+	"ui.penalty_warning": {
+	  "type": "ui_feedback",
+	  "status": "available",
+	  "current_implementation": "Runtime Label over Chengguan",
+	  "usage": [
+		"chengguan_detected",
+        "fine_feedback"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"ui",
+		"warning",
+		"chengguan",
+        "fine"
+	  ],
+	  "available_icons": {
+		"warning": "res://assets/generated/critical_icons_2026_05_29/items/warning_badge_32.png",
+		"fine": "res://assets/generated/critical_icons_2026_05_29/items/fine_penalty_32.png"
+	  },
+	  "size": [
+		32,
+		32
+	  ]
+	}
+  },
+  "town_props": {
+	"prop.cash_box": {
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/11_cash_box.png",
+	  "usage": [
+		"stall_detail",
+        "future_sale_feedback"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "town_props"
+	  ]
+	},
+	"prop.scale": {
+	  "type": "prop",
+	  "status": "available",
+	  "paths": [
+		"res://assets/generated/props/street_stall_props_v2_cutouts/12_hanging_scale.png",
+        "res://assets/generated/props/street_stall_props_v2_cutouts/13_balance_scale.png"
+	  ],
+	  "usage": [
+		"stall_detail",
+        "shop_detail"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "town_props"
+	  ]
+	},
+	"prop.market_umbrella": {
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/27_market_umbrella.png",
+	  "usage": [
+        "future_stall_upgrade"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "town_props"
+	  ]
+	},
+	"prop.brick_wall": {
+	  "type": "prop",
+	  "status": "available",
+	  "paths": [
+		"res://assets/generated/props/street_stall_props_v2_cutouts/31_brick_wall.png",
+		"res://assets/generated/props/street_stall_props_v2_cutouts/33_brick_pillar.png",
+        "res://assets/generated/props/street_stall_props_v2_cutouts/34_brick_corner_wall.png"
+	  ],
+	  "usage": [
+		"town_decoration",
+        "collision_backdrop"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "town_props"
+	  ]
+	},
+	"prop.dirt_path": {
+	  "type": "prop",
+	  "status": "available",
+	  "paths": [
+		"res://assets/generated/props/street_stall_props_v2_cutouts/35_dirt_path_straight.png",
+		"res://assets/generated/props/street_stall_props_v2_cutouts/36_dirt_path_corner.png",
+        "res://assets/generated/props/street_stall_props_v2_cutouts/37_dirt_patch.png"
+	  ],
+	  "usage": [
+		"town_decoration",
+        "farm_yard_decoration"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+        "town_props"
+	  ]
+	}
+  },
+  "debug_and_validation": {
+	"asset_preview_scene": {
+	  "type": "debug_scene",
+	  "status": "implemented",
+	  "path": "res://scenes/debug/asset_preview_scene.tscn",
+	  "usage": [
+		"preview_registered_assets",
+        "verify_size_anchor_animation"
+	  ],
+	  "used_by": [
+        "tests/asset_preview_scene_test.tscn"
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "tags": [
+		"debug",
+		"asset_registry",
+        "preview"
+	  ]
+	}
+  }
+}

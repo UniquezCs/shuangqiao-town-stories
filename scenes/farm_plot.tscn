@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://farm_plot_scene_v2"]
+
+[ext_resource type="Script" path="res://scripts/world/farm_plot.gd" id="1_farm"]
+[ext_resource type="Texture2D" path="res://assets/generated/prototype_v1_32/objects/farm_empty_64.png" id="2_texture"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_farm"]
+size = Vector2(32, 32)
+
+[node name="FarmPlot" type="Area2D" groups=["farm_plot"]]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_farm")
+
+[node name="Visual" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_farm")
+
+[node name="GrowthTimer" type="Timer" parent="."]
+one_shot = true

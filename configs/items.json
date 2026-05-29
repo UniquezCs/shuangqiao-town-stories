@@ -1,0 +1,93 @@
+{
+  "apple": {
+	"name": "苹果",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 2,
+	"icon": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/apple_32.png"
+  },
+  "apple_seed": {
+	"name": "苹果种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/prototype_v2/ui/apple_seed_packet_32.png"
+  },
+  "cabbage": {
+	"name": "白菜",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 2,
+	"icon": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/cabbage_32.png"
+  },
+  "cabbage_seed": {
+	"name": "白菜种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/critical_icons_2026_05_29/items/cabbage_seed_packet_32.png"
+  },
+  "cucumber": {
+	"name": "黄瓜",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 3,
+	"icon": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/cucumber_32.png"
+  },
+  "cucumber_seed": {
+	"name": "黄瓜种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/critical_icons_2026_05_29/items/cucumber_seed_packet_32.png"
+  },
+  "tomato": {
+	"name": "番茄",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 3,
+	"icon": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/tomato_32.png"
+  },
+  "tomato_seed": {
+	"name": "番茄种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/critical_icons_2026_05_29/items/tomato_seed_packet_32.png"
+  },
+  "pear": {
+	"name": "梨",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 3,
+	"icon": "res://assets/generated/critical_icons_2026_05_29/items/pear_32.png"
+  },
+  "pear_seed": {
+	"name": "梨种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/critical_icons_2026_05_29/items/pear_seed_packet_32.png"
+  },
+  "potato": {
+	"name": "土豆",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 2,
+	"icon": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/potato_32.png"
+  },
+  "potato_seed": {
+	"name": "土豆种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/critical_icons_2026_05_29/items/potato_seed_packet_32.png"
+  },
+  "fertilizer": {
+	"name": "肥料",
+	"category": "tool_consumable",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/critical_icons_2026_05_29/items/fertilizer_bag_32.png"
+  }
+}

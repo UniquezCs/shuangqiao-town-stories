@@ -1,13 +1,12 @@
 [gd_scene format=4 uid="uid://b40wrji0bwy2c"]
 
 [ext_resource type="Script" uid="uid://d3y3ipd0fvut6" path="res://scripts/scenes/home_scene.gd" id="1_home"]
-[ext_resource type="Script" uid="uid://b8ehev510lx7q" path="res://scripts/world/farm_plot.gd" id="2_farm"]
 [ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="2_ua24n"]
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="4_exit"]
-[ext_resource type="Texture2D" uid="uid://fmrxvactv4og" path="res://assets/generated/prototype_v1_32/objects/farm_empty_64.png" id="4_ofjoh"]
+[ext_resource type="Script" path="res://scripts/world/farm_field.gd" id="5_field"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_farm"]
-size = Vector2(56, 48)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_farm_field"]
+size = Vector2(544, 352)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(96, 64)
@@ -53,21 +52,17 @@ position = Vector2(-311, 66)
 [node name="home_spawn" type="Marker2D" parent="Spawns" unique_id=843848749]
 position = Vector2(192, 160)
 
-[node name="FarmPlot" type="Area2D" parent="." unique_id=296087398]
-position = Vector2(-40, -8)
+[node name="house_door_spawn" type="Marker2D" parent="Spawns"]
+position = Vector2(-313, 64)
+
+[node name="FarmField" type="Area2D" parent="."]
+position = Vector2(-72, -8)
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("2_farm")
+script = ExtResource("5_field")
 
-[node name="Visual" type="Sprite2D" parent="FarmPlot" unique_id=1893591201]
-texture_filter = 1
-texture = ExtResource("4_ofjoh")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmPlot" unique_id=423444558]
-shape = SubResource("RectangleShape2D_farm")
-
-[node name="GrowthTimer" type="Timer" parent="FarmPlot" unique_id=1771557329]
-one_shot = true
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarmField"]
+shape = SubResource("RectangleShape2D_farm_field")
 
 [node name="ToTown" type="Area2D" parent="." unique_id=1907699253]
 position = Vector2(159, 151)
@@ -84,6 +79,10 @@ shape = SubResource("RectangleShape2D_exit")
 [node name="Home" type="Area2D" parent="." unique_id=910736135]
 collision_layer = 2
 collision_mask = 0
+script = ExtResource("4_exit")
+target_scene = "house"
+spawn_id = "home_door_spawn"
+prompt = "进屋"
 
 [node name="Visual" type="Sprite2D" parent="Home" unique_id=1225162614]
 texture_filter = 1
