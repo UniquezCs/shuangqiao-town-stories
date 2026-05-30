@@ -1,0 +1,486 @@
+{
+  "source": "Generated from three 4x4 top-down pixel-art sheets.",
+  "final_assets": [
+    {
+      "id": "prop.township.school_classroom_block",
+      "category": "buildings",
+      "description": "school classroom block with courtyard wall",
+      "size": [
+        128,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/school_classroom_block.png"
+    },
+    {
+      "id": "prop.township.hospital_outpatient",
+      "category": "buildings",
+      "description": "hospital outpatient building",
+      "size": [
+        128,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/hospital_outpatient.png"
+    },
+    {
+      "id": "prop.township.supply_coop_shop_row",
+      "category": "buildings",
+      "description": "supply and marketing cooperative shop row",
+      "size": [
+        128,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/supply_coop_shop_row.png"
+    },
+    {
+      "id": "prop.township.factory_workshop_smokestack",
+      "category": "buildings",
+      "description": "factory workshop with smokestack",
+      "size": [
+        160,
+        128
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/factory_workshop_smokestack.png"
+    },
+    {
+      "id": "prop.township.worker_dormitory",
+      "category": "buildings",
+      "description": "worker dormitory block",
+      "size": [
+        128,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/worker_dormitory.png"
+    },
+    {
+      "id": "prop.township.residential_apartment",
+      "category": "buildings",
+      "description": "residential brick apartment block",
+      "size": [
+        128,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/residential_apartment.png"
+    },
+    {
+      "id": "prop.township.courtyard_house_cluster",
+      "category": "buildings",
+      "description": "courtyard house cluster",
+      "size": [
+        128,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/courtyard_house_cluster.png"
+    },
+    {
+      "id": "prop.township.police_government_office",
+      "category": "buildings",
+      "description": "small police or government office",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/police_government_office.png"
+    },
+    {
+      "id": "prop.township.post_office",
+      "category": "buildings",
+      "description": "small post office",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/post_office.png"
+    },
+    {
+      "id": "prop.township.bus_station_canopy",
+      "category": "buildings",
+      "description": "bus station with platform canopy",
+      "size": [
+        128,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/bus_station_canopy.png"
+    },
+    {
+      "id": "prop.township.cinema_cultural_hall",
+      "category": "buildings",
+      "description": "cinema or cultural hall",
+      "size": [
+        128,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/cinema_cultural_hall.png"
+    },
+    {
+      "id": "prop.township.grain_depot_warehouse",
+      "category": "buildings",
+      "description": "grain depot warehouse",
+      "size": [
+        128,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/grain_depot_warehouse.png"
+    },
+    {
+      "id": "prop.township.public_toilet_water_tap",
+      "category": "buildings",
+      "description": "public toilet and water tap block",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/public_toilet_water_tap.png"
+    },
+    {
+      "id": "prop.township.clinic_pharmacy_storefront",
+      "category": "buildings",
+      "description": "clinic or pharmacy storefront",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/clinic_pharmacy_storefront.png"
+    },
+    {
+      "id": "prop.township.market_stall_row",
+      "category": "buildings",
+      "description": "market stall row with awnings",
+      "size": [
+        128,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/market_stall_row.png"
+    },
+    {
+      "id": "prop.township.village_house_garden",
+      "category": "buildings",
+      "description": "village house with vegetable garden edge",
+      "size": [
+        96,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/buildings/village_house_garden.png"
+    },
+    {
+      "id": "prop.township.asphalt_road_horizontal",
+      "category": "infrastructure",
+      "description": "horizontal asphalt road segment",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/asphalt_road_horizontal.png"
+    },
+    {
+      "id": "prop.township.asphalt_road_vertical",
+      "category": "infrastructure",
+      "description": "vertical asphalt road segment",
+      "size": [
+        64,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/asphalt_road_vertical.png"
+    },
+    {
+      "id": "prop.township.asphalt_four_way_intersection",
+      "category": "infrastructure",
+      "description": "asphalt four-way intersection",
+      "size": [
+        96,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/asphalt_four_way_intersection.png"
+    },
+    {
+      "id": "prop.township.asphalt_t_junction",
+      "category": "infrastructure",
+      "description": "asphalt T-junction",
+      "size": [
+        96,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/asphalt_t_junction.png"
+    },
+    {
+      "id": "prop.township.curved_asphalt_corner",
+      "category": "infrastructure",
+      "description": "curved asphalt road corner",
+      "size": [
+        96,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/curved_asphalt_corner.png"
+    },
+    {
+      "id": "prop.township.residential_alley",
+      "category": "infrastructure",
+      "description": "narrow residential alley segment",
+      "size": [
+        64,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/residential_alley.png"
+    },
+    {
+      "id": "prop.township.dirt_village_road",
+      "category": "infrastructure",
+      "description": "dirt village road segment",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/dirt_village_road.png"
+    },
+    {
+      "id": "prop.township.field_path_track",
+      "category": "infrastructure",
+      "description": "field path or farm track",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/field_path_track.png"
+    },
+    {
+      "id": "prop.township.concrete_bridge_horizontal",
+      "category": "infrastructure",
+      "description": "concrete bridge over canal",
+      "size": [
+        128,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/concrete_bridge_horizontal.png"
+    },
+    {
+      "id": "prop.township.wooden_footbridge",
+      "category": "infrastructure",
+      "description": "small wooden footbridge",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/wooden_footbridge.png"
+    },
+    {
+      "id": "prop.township.canal_straight",
+      "category": "infrastructure",
+      "description": "irrigation canal straight segment",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/canal_straight.png"
+    },
+    {
+      "id": "prop.township.canal_bend",
+      "category": "infrastructure",
+      "description": "irrigation canal bend",
+      "size": [
+        96,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/canal_bend.png"
+    },
+    {
+      "id": "prop.township.brick_wall_gate_gap",
+      "category": "infrastructure",
+      "description": "brick compound wall with gate gap",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/brick_wall_gate_gap.png"
+    },
+    {
+      "id": "prop.township.factory_gate_guard_booth",
+      "category": "infrastructure",
+      "description": "factory gate with guard booth",
+      "size": [
+        128,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/factory_gate_guard_booth.png"
+    },
+    {
+      "id": "prop.township.institution_gate_pillars",
+      "category": "infrastructure",
+      "description": "school or hospital gate pillars",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/institution_gate_pillars.png"
+    },
+    {
+      "id": "prop.township.utility_pole_lamp_cluster",
+      "category": "infrastructure",
+      "description": "utility pole and street lamp cluster",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/infrastructure/utility_pole_lamp_cluster.png"
+    },
+    {
+      "id": "prop.township.large_roadside_tree",
+      "category": "daily_props",
+      "description": "large roadside deciduous tree",
+      "size": [
+        96,
+        96
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/large_roadside_tree.png"
+    },
+    {
+      "id": "prop.township.courtyard_tree",
+      "category": "daily_props",
+      "description": "small courtyard tree",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/courtyard_tree.png"
+    },
+    {
+      "id": "prop.township.poplar_row_cluster",
+      "category": "daily_props",
+      "description": "poplar tree row cluster",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/poplar_row_cluster.png"
+    },
+    {
+      "id": "prop.township.shrub_cluster",
+      "category": "daily_props",
+      "description": "bush or shrub cluster",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/shrub_cluster.png"
+    },
+    {
+      "id": "prop.township.vegetable_stall_awning",
+      "category": "daily_props",
+      "description": "vegetable stall awning with baskets",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/vegetable_stall_awning.png"
+    },
+    {
+      "id": "prop.township.bicycle_parking_cluster",
+      "category": "daily_props",
+      "description": "bicycle parking cluster",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/bicycle_parking_cluster.png"
+    },
+    {
+      "id": "prop.township.cargo_tricycle_cart",
+      "category": "daily_props",
+      "description": "cargo tricycle cart",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/cargo_tricycle_cart.png"
+    },
+    {
+      "id": "prop.township.old_truck",
+      "category": "daily_props",
+      "description": "small old truck",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/old_truck.png"
+    },
+    {
+      "id": "prop.township.coal_pile_sacks",
+      "category": "daily_props",
+      "description": "coal pile with sacks",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/coal_pile_sacks.png"
+    },
+    {
+      "id": "prop.township.grain_sacks_stack",
+      "category": "daily_props",
+      "description": "stacked grain sacks",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/grain_sacks_stack.png"
+    },
+    {
+      "id": "prop.township.public_water_pump",
+      "category": "daily_props",
+      "description": "public water pump",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/public_water_pump.png"
+    },
+    {
+      "id": "prop.township.laundry_line",
+      "category": "daily_props",
+      "description": "laundry line with clothes",
+      "size": [
+        96,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/laundry_line.png"
+    },
+    {
+      "id": "prop.township.utility_pole",
+      "category": "daily_props",
+      "description": "utility pole with wires",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/utility_pole.png"
+    },
+    {
+      "id": "prop.township.street_lamp",
+      "category": "daily_props",
+      "description": "street lamp",
+      "size": [
+        32,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/street_lamp.png"
+    },
+    {
+      "id": "prop.township.notice_board",
+      "category": "daily_props",
+      "description": "roadside notice board",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/notice_board.png"
+    },
+    {
+      "id": "prop.township.haystack_farm_tools",
+      "category": "daily_props",
+      "description": "haystack and farm tools bundle",
+      "size": [
+        64,
+        64
+      ],
+      "output": "res://assets/generated/sprites/props/township/daily_props/haystack_farm_tools.png"
+    }
+  ],
+  "note": "Final game-ready PNGs are stored under assets/generated/sprites/props/township. This source summary is intentionally outside assets/generated."
+}

@@ -2,9 +2,9 @@ extends CharacterBody2D
 
 const SPEED := 55.0
 const DEMAND_THRESHOLD := 0.45
-const STUDENT_TEXTURE := preload("res://assets/generated/prototype_v1_32/characters/customer_student_48x64.png")
-const WORKER_TEXTURE := preload("res://assets/generated/prototype_v1_32/characters/customer_worker_48x64.png")
-const APPLE_ICON_TEXTURE := preload("res://assets/generated/prototype_v1_32/props/apple_32.png")
+const STUDENT_TEXTURE := preload("res://assets/generated/sprites/characters/customer_student_48x64.png")
+const WORKER_TEXTURE := preload("res://assets/generated/sprites/characters/customer_worker_48x64.png")
+const APPLE_ICON_TEXTURE := preload("res://assets/generated/sprites/items/general/apple_32.png")
 const PurchaseInteractionScript := preload("res://scripts/world/customer_purchase_interaction.gd")
 
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT

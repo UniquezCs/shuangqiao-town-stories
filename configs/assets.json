@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-05-29",
+  "updated_at": "2026-05-30",
   "purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
   "status_values": {
 	"implemented": "Used by current scenes, scripts, or configs.",
@@ -30,51 +30,19 @@
 	]
   },
   "packs": {
-	"prototype_v1_32": {
-	  "id": "pack.prototype_v1_32",
-	  "type": "legacy_pack",
+	"generated_sprites": {
+	  "id": "pack.generated_sprites",
+	  "type": "sprite_library",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32",
-	  "notes": "Current runtime still uses several v1 32px normalized assets."
+	  "path": "res://assets/generated/sprites",
+	  "notes": "Final generated character, item, prop, farm, location, object, and UI sprites. Intermediate generation sheets/manifests/raw files are intentionally removed."
 	},
-	"prototype_v2": {
-	  "id": "pack.prototype_v2",
-	  "type": "available_pack",
-	  "status": "available",
-	  "manifest": "res://assets/generated/prototype_v2/manifest.json",
-	  "path": "res://assets/generated/prototype_v2",
-	  "notes": "Generated v2 art exists for characters, UI icons, house/farm objects, but much of it is not integrated."
-	},
-	"street_stall_cutouts": {
-	  "id": "pack.street_stall_cutouts",
-	  "type": "prop_pack",
+	"generated_tilesets": {
+	  "id": "pack.generated_tilesets",
+	  "type": "tileset_library",
 	  "status": "implemented",
-	  "manifest": "res://assets/generated/props/street_stall_props_v2_cutouts/manifest.json",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts"
-	},
-	"assistant_art_2026_05_29": {
-	  "id": "pack.assistant_art_2026_05_29",
-	  "type": "available_pack",
-	  "status": "available",
-	  "manifest": "res://assets/generated/assistant_art_2026_05_29/manifest.json",
-	  "path": "res://assets/generated/assistant_art_2026_05_29",
-	  "notes": "Contains crop icons, farm plot stages, UI icons, and town props. Treat as available, not automatically final."
-	},
-	"ui_skins_2026_05_29": {
-	  "id": "pack.ui_skins_2026_05_29",
-	  "type": "available_pack",
-	  "status": "available",
-	  "manifest": "res://assets/generated/ui_skins_2026_05_29/manifest.json",
-	  "path": "res://assets/generated/ui_skins_2026_05_29",
-	  "notes": "Backpack and shop UI skin assets exist but current UI still uses Godot Control placeholders."
-	},
-	"critical_icons_2026_05_29": {
-	  "id": "pack.critical_icons_2026_05_29",
-	  "type": "icon_pack",
-	  "status": "available",
-	  "manifest": "res://assets/generated/critical_icons_2026_05_29/manifest.json",
-	  "path": "res://assets/generated/critical_icons_2026_05_29",
-	  "notes": "Pear, per-crop seed packets, fertilizer, sickle, warning, and fine icons normalized to 32x32."
+	  "path": "res://assets/generated/tilesets",
+	  "notes": "Final generated tile atlases and TileSet resources. Raw map-generation references and manifests are intentionally removed."
 	}
   },
   "tilesets": {
@@ -90,7 +58,13 @@
 	  "usage": [
 		"home_ground",
 		"town_ground",
+		"town_editor_authored_map_layers",
 		"stall_area_marker_layer",
+		"town_water_layer",
+		"town_field_layer",
+		"town_road_layer",
+		"town_decoration_layer",
+		"town_tree_placeholder_layer",
         "house_ground"
 	  ],
 	  "used_by": [
@@ -107,8 +81,8 @@
 	"tileset.prototype_scene_32": {
 	  "type": "tileset",
 	  "status": "available",
-	  "path": "res://assets/generated/prototype_v1_32/tiles/prototype_scene_tileset_32.tres",
-	  "atlas": "res://assets/generated/prototype_v1_32/tiles/prototype_scene_tiles_32.png",
+	  "path": "res://assets/generated/tilesets/prototype_scene_32/prototype_scene_tileset_32.tres",
+	  "atlas": "res://assets/generated/tilesets/prototype_scene_32/prototype_scene_tiles_32.png",
 	  "size": [
 		32,
 		32
@@ -128,8 +102,8 @@
 	  "type": "character",
 	  "status": "implemented",
 	  "node_template": "Player(CharacterBody2D)/AnimatedSprite2D",
-	  "spriteframes": "res://assets/generated/prototype_v1_32/characters/vendor_walk_spriteframes_48x64.tres",
-	  "sheet": "res://assets/generated/prototype_v1_32/characters/vendor_walk_4dir_8f_48x64.png",
+	  "spriteframes": "res://assets/generated/sprites/characters/vendor_walk_spriteframes_48x64.tres",
+	  "sheet": "res://assets/generated/sprites/characters/vendor_walk_4dir_8f_48x64.png",
 	  "size": [
 		48,
 		64
@@ -154,9 +128,9 @@
 	  "type": "npc",
 	  "status": "placeholder",
 	  "node_template": "Customer(CharacterBody2D)/Visual(Sprite2D)",
-	  "current_texture": "res://assets/generated/prototype_v1_32/characters/customer_student_48x64.png",
-	  "available_spriteframes": "res://assets/generated/prototype_v2/characters/student_walk_spriteframes_48x64.tres",
-	  "available_sheet": "res://assets/generated/prototype_v2/characters/student_walk_4dir_8f_48x64.png",
+	  "current_texture": "res://assets/generated/sprites/characters/customer_student_48x64.png",
+	  "available_spriteframes": "res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres",
+	  "available_sheet": "res://assets/generated/sprites/characters/student_walk_4dir_8f_48x64.png",
 	  "size": [
 		48,
 		64
@@ -179,9 +153,9 @@
 	  "type": "npc",
 	  "status": "placeholder",
 	  "node_template": "Customer(CharacterBody2D)/Visual(Sprite2D)",
-	  "current_texture": "res://assets/generated/prototype_v1_32/characters/customer_worker_48x64.png",
-	  "available_spriteframes": "res://assets/generated/prototype_v2/characters/worker_walk_spriteframes_48x64.tres",
-	  "available_sheet": "res://assets/generated/prototype_v2/characters/worker_walk_4dir_8f_48x64.png",
+	  "current_texture": "res://assets/generated/sprites/characters/customer_worker_48x64.png",
+	  "available_spriteframes": "res://assets/generated/sprites/characters/worker_walk_spriteframes_48x64.tres",
+	  "available_sheet": "res://assets/generated/sprites/characters/worker_walk_4dir_8f_48x64.png",
 	  "size": [
 		48,
 		64
@@ -203,7 +177,7 @@
 	  "type": "npc",
 	  "status": "placeholder",
 	  "node_template": "Chengguan(CharacterBody2D)/Visual(Sprite2D)",
-	  "current_texture": "res://assets/generated/prototype_v1_32/characters/customer_worker_48x64.png",
+	  "current_texture": "res://assets/generated/sprites/characters/customer_worker_48x64.png",
 	  "required_size": [
 		48,
 		64
@@ -229,8 +203,8 @@
 	"item.apple": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/apple_32.png",
-	  "fallback_path": "res://assets/generated/prototype_v1_32/props/apple_32.png",
+	  "path": "res://assets/generated/sprites/items/crops/apple_32.png",
+	  "fallback_path": "res://assets/generated/sprites/items/general/apple_32.png",
 	  "size": [
 		32,
 		32
@@ -255,7 +229,7 @@
 	"item.apple_seed": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v2/ui/apple_seed_packet_32.png",
+	  "path": "res://assets/generated/sprites/ui/icons/apple_seed_packet_32.png",
 	  "size": [
 		32,
 		32
@@ -278,7 +252,7 @@
 	"item.cabbage": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/cabbage_32.png",
+	  "path": "res://assets/generated/sprites/items/crops/cabbage_32.png",
 	  "usage": [
 		"inventory_icon",
         "sellable_crop"
@@ -301,7 +275,7 @@
 	"item.cucumber": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/cucumber_32.png",
+	  "path": "res://assets/generated/sprites/items/crops/cucumber_32.png",
 	  "usage": [
 		"inventory_icon",
         "sellable_crop"
@@ -324,7 +298,7 @@
 	"item.tomato": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/tomato_32.png",
+	  "path": "res://assets/generated/sprites/items/crops/tomato_32.png",
 	  "usage": [
 		"inventory_icon",
         "sellable_crop"
@@ -347,7 +321,7 @@
 	"item.pear": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/pear_32.png",
+	  "path": "res://assets/generated/sprites/items/pear_32.png",
 	  "usage": [
 		"inventory_icon",
         "sellable_crop"
@@ -370,7 +344,7 @@
 	"item.potato": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/potato_32.png",
+	  "path": "res://assets/generated/sprites/items/crops/potato_32.png",
 	  "usage": [
 		"inventory_icon",
         "sellable_crop"
@@ -393,7 +367,7 @@
 	"item.generic_seed": {
 	  "type": "item_icon",
 	  "status": "available",
-	  "path": "res://assets/generated/prototype_v1_32/props/seed_bag_32.png",
+	  "path": "res://assets/generated/sprites/items/general/seed_bag_32.png",
 	  "required_size": [
 		32,
 		32
@@ -413,7 +387,7 @@
 	"item.fertilizer": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/fertilizer_bag_32.png",
+	  "path": "res://assets/generated/sprites/items/fertilizer_bag_32.png",
 	  "usage": [
 		"inventory_icon",
         "tool_consumable"
@@ -435,7 +409,7 @@
 	"item.cabbage_seed": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/cabbage_seed_packet_32.png",
+	  "path": "res://assets/generated/sprites/items/cabbage_seed_packet_32.png",
 	  "size": [
 		32,
 		32
@@ -459,7 +433,7 @@
 	"item.cucumber_seed": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/cucumber_seed_packet_32.png",
+	  "path": "res://assets/generated/sprites/items/cucumber_seed_packet_32.png",
 	  "size": [
 		32,
 		32
@@ -483,7 +457,7 @@
 	"item.tomato_seed": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/tomato_seed_packet_32.png",
+	  "path": "res://assets/generated/sprites/items/tomato_seed_packet_32.png",
 	  "size": [
 		32,
 		32
@@ -507,7 +481,7 @@
 	"item.pear_seed": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/pear_seed_packet_32.png",
+	  "path": "res://assets/generated/sprites/items/pear_seed_packet_32.png",
 	  "size": [
 		32,
 		32
@@ -531,7 +505,7 @@
 	"item.potato_seed": {
 	  "type": "item_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/potato_seed_packet_32.png",
+	  "path": "res://assets/generated/sprites/items/potato_seed_packet_32.png",
 	  "size": [
 		32,
 		32
@@ -561,7 +535,7 @@
 		"hud_tool",
         "farm_interaction"
 	  ],
-	  "path": "res://assets/generated/assistant_art_2026_05_29/ui_icons/items/hoe_32.png",
+	  "path": "res://assets/generated/sprites/ui/icons/general/hoe_32.png",
 	  "size": [
 		32,
 		32
@@ -580,7 +554,7 @@
 		"hud_tool",
         "farm_interaction"
 	  ],
-	  "path": "res://assets/generated/assistant_art_2026_05_29/ui_icons/items/watering_can_32.png",
+	  "path": "res://assets/generated/sprites/ui/icons/general/watering_can_32.png",
 	  "size": [
 		32,
 		32
@@ -595,7 +569,7 @@
 	"tool.sickle": {
 	  "type": "tool_icon",
 	  "status": "available",
-	  "path": "res://assets/generated/critical_icons_2026_05_29/items/sickle_32.png",
+	  "path": "res://assets/generated/sprites/items/sickle_32.png",
 	  "size": [
 		32,
 		32
@@ -617,8 +591,8 @@
 	"farm_plot.empty": {
 	  "type": "farm_state",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32/objects/farm_empty_64.png",
-	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/grass_patch.png",
+	  "path": "res://assets/generated/sprites/farm/farm_empty_64.png",
+	  "available_path": "res://assets/generated/sprites/farm/stages/grass_patch.png",
 	  "source_size": [
 		64,
 		64
@@ -643,8 +617,8 @@
 	"farm_plot.tilled": {
 	  "type": "farm_state",
 	  "status": "placeholder",
-	  "path": "res://assets/generated/prototype_v1_32/objects/farm_seeded_64.png",
-	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/freshly_hoed.png",
+	  "path": "res://assets/generated/sprites/farm/farm_seeded_64.png",
+	  "available_path": "res://assets/generated/sprites/farm/stages/freshly_hoed.png",
 	  "source_size": [
 		64,
 		64
@@ -668,8 +642,8 @@
 	"farm_plot.seeded": {
 	  "type": "farm_state",
 	  "status": "placeholder",
-	  "path": "res://assets/generated/prototype_v1_32/objects/farm_growing_64.png",
-	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/seeded.png",
+	  "path": "res://assets/generated/sprites/farm/farm_growing_64.png",
+	  "available_path": "res://assets/generated/sprites/farm/stages/seeded.png",
 	  "source_size": [
 		64,
 		64
@@ -693,8 +667,8 @@
 	"farm_plot.watered": {
 	  "type": "farm_state",
 	  "status": "placeholder",
-	  "path": "res://assets/generated/prototype_v1_32/objects/farm_growing_64.png",
-	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/watered_seeded.png",
+	  "path": "res://assets/generated/sprites/farm/farm_growing_64.png",
+	  "available_path": "res://assets/generated/sprites/farm/stages/watered_seeded.png",
 	  "source_size": [
 		64,
 		64
@@ -718,8 +692,8 @@
 	"farm_plot.ready": {
 	  "type": "farm_state",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32/objects/farm_ready_64.png",
-	  "available_path": "res://assets/generated/assistant_art_2026_05_29/farm_plots/items/harvest_ready.png",
+	  "path": "res://assets/generated/sprites/farm/farm_ready_64.png",
+	  "available_path": "res://assets/generated/sprites/farm/stages/harvest_ready.png",
 	  "source_size": [
 		64,
 		64
@@ -745,7 +719,7 @@
 	"stall.empty": {
 	  "type": "stall_visual",
 	  "status": "implemented",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/01_stall_empty.png",
+	  "path": "res://assets/generated/sprites/props/stall/01_stall_empty.png",
 	  "usage": [
         "stall_stock_0"
 	  ],
@@ -763,7 +737,7 @@
 	"stall.stock_1": {
 	  "type": "stall_visual",
 	  "status": "implemented",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/04_stall_apple_1.png",
+	  "path": "res://assets/generated/sprites/props/stall/04_stall_apple_1.png",
 	  "usage": [
         "stall_stock_1"
 	  ],
@@ -779,7 +753,7 @@
 	"stall.stock_3": {
 	  "type": "stall_visual",
 	  "status": "implemented",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/03_stall_apples_3.png",
+	  "path": "res://assets/generated/sprites/props/stall/03_stall_apples_3.png",
 	  "usage": [
         "stall_stock_2_to_3"
 	  ],
@@ -795,7 +769,7 @@
 	"stall.stock_6": {
 	  "type": "stall_visual",
 	  "status": "implemented",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/02_stall_apples_6.png",
+	  "path": "res://assets/generated/sprites/props/stall/02_stall_apples_6.png",
 	  "usage": [
         "stall_stock_4_plus"
 	  ],
@@ -811,7 +785,7 @@
 	"stall.dirty_or_confiscated": {
 	  "type": "stall_visual",
 	  "status": "available",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/05_stall_dirty.png",
+	  "path": "res://assets/generated/sprites/props/stall/05_stall_dirty.png",
 	  "usage": [
         "future_chengguan_feedback"
 	  ],
@@ -860,8 +834,8 @@
 	"location.school_gate": {
 	  "type": "landmark",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32/objects/school_gate_256x128.png",
-	  "available_path": "res://assets/generated/props/street_stall_props_v2_cutouts/28_school_gate.png",
+	  "path": "res://assets/generated/sprites/locations/school_gate_256x128.png",
+	  "available_path": "res://assets/generated/sprites/props/stall/28_school_gate.png",
 	  "size": [
 		256,
 		128
@@ -884,8 +858,8 @@
 	"location.factory_gate": {
 	  "type": "landmark",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32/objects/factory_gate_256x128.png",
-	  "available_path": "res://assets/generated/props/street_stall_props_v2_cutouts/29_factory_gate.png",
+	  "path": "res://assets/generated/sprites/locations/factory_gate_256x128.png",
+	  "available_path": "res://assets/generated/sprites/props/stall/29_factory_gate.png",
 	  "size": [
 		256,
 		128
@@ -908,7 +882,7 @@
 	"location.residential_area": {
 	  "type": "landmark",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32/objects/residential_area_320x128.png",
+	  "path": "res://assets/generated/sprites/locations/residential_area_320x128.png",
 	  "size": [
 		320,
 		128
@@ -931,8 +905,8 @@
 	"location.seed_shop": {
 	  "type": "shop",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32/objects/seed_shop_64x64.png",
-	  "available_path": "res://assets/generated/prototype_v2/objects/seed_shop_stand_128x96.png",
+	  "path": "res://assets/generated/sprites/locations/seed_shop_64x64.png",
+	  "available_path": "res://assets/generated/sprites/objects/seed_shop_stand_128x96.png",
 	  "usage": [
 		"seed_shop",
 		"apple_resale_shop",
@@ -951,7 +925,7 @@
 	  "type": "building",
 	  "status": "placeholder",
 	  "current_note": "HomeScene uses an embedded texture region from environment_tilesheet_v1 import.",
-	  "available_path": "res://assets/generated/prototype_v2/objects/rural_house_facade_256x128.png",
+	  "available_path": "res://assets/generated/sprites/objects/rural_house_facade_256x128.png",
 	  "required_size": [
 		256,
 		128
@@ -994,8 +968,8 @@
 	"location.house_bed": {
 	  "type": "interior_prop",
 	  "status": "placeholder",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/21_folded_tarp.png",
-	  "available_path": "res://assets/generated/prototype_v2/objects/bed_roll_64x64.png",
+	  "path": "res://assets/generated/sprites/props/stall/21_folded_tarp.png",
+	  "available_path": "res://assets/generated/sprites/objects/bed_roll_64x64.png",
 	  "usage": [
         "sleep_interaction"
 	  ],
@@ -1011,8 +985,8 @@
 	"location.house_ledger": {
 	  "type": "interior_prop",
 	  "status": "implemented",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/15_ledger_book.png",
-	  "available_path": "res://assets/generated/prototype_v2/objects/ledger_table_64x64.png",
+	  "path": "res://assets/generated/sprites/props/stall/15_ledger_book.png",
+	  "available_path": "res://assets/generated/sprites/objects/ledger_table_64x64.png",
 	  "usage": [
         "daily_summary_flavor"
 	  ],
@@ -1032,10 +1006,10 @@
 	  "status": "placeholder",
 	  "current_implementation": "Godot Control labels only",
 	  "available_icons": {
-		"cash": "res://assets/generated/prototype_v2/ui/cash_coins_32.png",
-		"time": "res://assets/generated/prototype_v2/ui/time_clock_32.png",
-		"backpack": "res://assets/generated/prototype_v2/ui/backpack_32.png",
-		"price_tag": "res://assets/generated/prototype_v2/ui/price_tag_32.png"
+		"cash": "res://assets/generated/sprites/ui/icons/cash_coins_32.png",
+		"time": "res://assets/generated/sprites/ui/icons/time_clock_32.png",
+		"backpack": "res://assets/generated/sprites/ui/icons/backpack_32.png",
+		"price_tag": "res://assets/generated/sprites/ui/icons/price_tag_32.png"
 	  },
 	  "usage": [
 		"cash",
@@ -1057,7 +1031,6 @@
 	  "type": "ui_surface",
 	  "status": "placeholder",
 	  "current_implementation": "Godot PanelContainer and text labels",
-	  "available_skin_manifest": "res://assets/generated/ui_skins_2026_05_29/manifest.json",
 	  "usage": [
 		"inventory_slots",
         "item_counts"
@@ -1071,18 +1044,17 @@
         "ui"
 	  ],
 	  "available_components": {
-		"panel_frame": "res://assets/generated/ui_skins_2026_05_29/backpack/items/panel_frame.png",
-		"slot_empty": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_empty.png",
-		"slot_highlighted": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_highlighted.png",
-		"slot_locked": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_locked.png",
-		"quantity_badge": "res://assets/generated/ui_skins_2026_05_29/backpack/items/quantity_badge.png"
+		"panel_frame": "res://assets/generated/sprites/ui/backpack/panel_frame.png",
+		"slot_empty": "res://assets/generated/sprites/ui/backpack/slot_empty.png",
+		"slot_highlighted": "res://assets/generated/sprites/ui/backpack/slot_highlighted.png",
+		"slot_locked": "res://assets/generated/sprites/ui/backpack/slot_locked.png",
+		"quantity_badge": "res://assets/generated/sprites/ui/backpack/quantity_badge.png"
 	  }
 	},
 	"ui.shop_panel": {
 	  "type": "ui_surface",
 	  "status": "placeholder",
 	  "current_implementation": "Godot PanelContainer and buttons",
-	  "available_skin_manifest": "res://assets/generated/ui_skins_2026_05_29/manifest.json",
 	  "usage": [
 		"buy_seed",
 		"buy_apple",
@@ -1098,18 +1070,18 @@
         "ui"
 	  ],
 	  "available_components": {
-		"panel_frame": "res://assets/generated/ui_skins_2026_05_29/shop/items/panel_frame.png",
-		"goods_shelf_card": "res://assets/generated/ui_skins_2026_05_29/shop/items/goods_shelf_card.png",
-		"buy_button": "res://assets/generated/ui_skins_2026_05_29/shop/items/buy_button.png",
-		"disabled_buy_button": "res://assets/generated/ui_skins_2026_05_29/shop/items/disabled_buy_button.png",
-		"price_tag_badge": "res://assets/generated/ui_skins_2026_05_29/shop/items/price_tag_badge.png"
+		"panel_frame": "res://assets/generated/sprites/ui/shop/panel_frame.png",
+		"goods_shelf_card": "res://assets/generated/sprites/ui/shop/goods_shelf_card.png",
+		"buy_button": "res://assets/generated/sprites/ui/shop/buy_button.png",
+		"disabled_buy_button": "res://assets/generated/sprites/ui/shop/disabled_buy_button.png",
+		"price_tag_badge": "res://assets/generated/sprites/ui/shop/price_tag_badge.png"
 	  }
 	},
 	"ui.price_panel": {
 	  "type": "ui_surface",
 	  "status": "placeholder",
 	  "current_implementation": "Godot PanelContainer and buttons",
-	  "available_icon": "res://assets/generated/prototype_v2/ui/price_tag_32.png",
+	  "available_icon": "res://assets/generated/sprites/ui/icons/price_tag_32.png",
 	  "usage": [
         "stall_price_selection"
 	  ],
@@ -1126,7 +1098,7 @@
 	  "type": "ui_surface",
 	  "status": "placeholder",
 	  "current_implementation": "Godot PanelContainer and text labels",
-	  "available_icon": "res://assets/generated/prototype_v2/ui/daily_summary_ledger_32.png",
+	  "available_icon": "res://assets/generated/sprites/ui/icons/daily_summary_ledger_32.png",
 	  "usage": [
         "day_summary"
 	  ],
@@ -1142,8 +1114,8 @@
 	"ui.purchase_countdown": {
 	  "type": "ui_icon",
 	  "status": "implemented",
-	  "path": "res://assets/generated/prototype_v1_32/props/apple_32.png",
-	  "available_path": "res://assets/generated/prototype_v2/ui/purchase_bubble_32.png",
+	  "path": "res://assets/generated/sprites/items/general/apple_32.png",
+	  "available_path": "res://assets/generated/sprites/ui/icons/purchase_bubble_32.png",
 	  "usage": [
         "customer_purchase_countdown"
 	  ],
@@ -1173,8 +1145,8 @@
         "fine"
 	  ],
 	  "available_icons": {
-		"warning": "res://assets/generated/critical_icons_2026_05_29/items/warning_badge_32.png",
-		"fine": "res://assets/generated/critical_icons_2026_05_29/items/fine_penalty_32.png"
+		"warning": "res://assets/generated/sprites/items/warning_badge_32.png",
+		"fine": "res://assets/generated/sprites/items/fine_penalty_32.png"
 	  },
 	  "size": [
 		32,
@@ -1186,7 +1158,7 @@
 	"prop.cash_box": {
 	  "type": "prop",
 	  "status": "available",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/11_cash_box.png",
+	  "path": "res://assets/generated/sprites/props/stall/11_cash_box.png",
 	  "usage": [
 		"stall_detail",
         "future_sale_feedback"
@@ -1201,8 +1173,8 @@
 	  "type": "prop",
 	  "status": "available",
 	  "paths": [
-		"res://assets/generated/props/street_stall_props_v2_cutouts/12_hanging_scale.png",
-        "res://assets/generated/props/street_stall_props_v2_cutouts/13_balance_scale.png"
+		"res://assets/generated/sprites/props/stall/12_hanging_scale.png",
+        "res://assets/generated/sprites/props/stall/13_balance_scale.png"
 	  ],
 	  "usage": [
 		"stall_detail",
@@ -1217,7 +1189,7 @@
 	"prop.market_umbrella": {
 	  "type": "prop",
 	  "status": "available",
-	  "path": "res://assets/generated/props/street_stall_props_v2_cutouts/27_market_umbrella.png",
+	  "path": "res://assets/generated/sprites/props/stall/27_market_umbrella.png",
 	  "usage": [
         "future_stall_upgrade"
 	  ],
@@ -1231,9 +1203,9 @@
 	  "type": "prop",
 	  "status": "available",
 	  "paths": [
-		"res://assets/generated/props/street_stall_props_v2_cutouts/31_brick_wall.png",
-		"res://assets/generated/props/street_stall_props_v2_cutouts/33_brick_pillar.png",
-        "res://assets/generated/props/street_stall_props_v2_cutouts/34_brick_corner_wall.png"
+		"res://assets/generated/sprites/props/stall/31_brick_wall.png",
+		"res://assets/generated/sprites/props/stall/33_brick_pillar.png",
+        "res://assets/generated/sprites/props/stall/34_brick_corner_wall.png"
 	  ],
 	  "usage": [
 		"town_decoration",
@@ -1249,9 +1221,9 @@
 	  "type": "prop",
 	  "status": "available",
 	  "paths": [
-		"res://assets/generated/props/street_stall_props_v2_cutouts/35_dirt_path_straight.png",
-		"res://assets/generated/props/street_stall_props_v2_cutouts/36_dirt_path_corner.png",
-        "res://assets/generated/props/street_stall_props_v2_cutouts/37_dirt_patch.png"
+		"res://assets/generated/sprites/props/stall/35_dirt_path_straight.png",
+		"res://assets/generated/sprites/props/stall/36_dirt_path_corner.png",
+        "res://assets/generated/sprites/props/stall/37_dirt_patch.png"
 	  ],
 	  "usage": [
 		"town_decoration",
@@ -1262,6 +1234,1110 @@
 	  "tags": [
         "town_props"
 	  ]
+	},
+	"prop.township.school_classroom_block": {
+	  "id": "prop.township.school_classroom_block",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/school_classroom_block.png",
+	  "size": [
+		128,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "school classroom block with courtyard wall"
+	},
+	"prop.township.hospital_outpatient": {
+	  "id": "prop.township.hospital_outpatient",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/hospital_outpatient.png",
+	  "size": [
+		128,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "hospital outpatient building"
+	},
+	"prop.township.supply_coop_shop_row": {
+	  "id": "prop.township.supply_coop_shop_row",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/supply_coop_shop_row.png",
+	  "size": [
+		128,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "supply and marketing cooperative shop row"
+	},
+	"prop.township.factory_workshop_smokestack": {
+	  "id": "prop.township.factory_workshop_smokestack",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/factory_workshop_smokestack.png",
+	  "size": [
+		160,
+		128
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "factory workshop with smokestack"
+	},
+	"prop.township.worker_dormitory": {
+	  "id": "prop.township.worker_dormitory",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/worker_dormitory.png",
+	  "size": [
+		128,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "worker dormitory block"
+	},
+	"prop.township.residential_apartment": {
+	  "id": "prop.township.residential_apartment",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/residential_apartment.png",
+	  "size": [
+		128,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "residential brick apartment block"
+	},
+	"prop.township.courtyard_house_cluster": {
+	  "id": "prop.township.courtyard_house_cluster",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/courtyard_house_cluster.png",
+	  "size": [
+		128,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "courtyard house cluster"
+	},
+	"prop.township.police_government_office": {
+	  "id": "prop.township.police_government_office",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/police_government_office.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "small police or government office"
+	},
+	"prop.township.post_office": {
+	  "id": "prop.township.post_office",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/post_office.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "small post office"
+	},
+	"prop.township.bus_station_canopy": {
+	  "id": "prop.township.bus_station_canopy",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/bus_station_canopy.png",
+	  "size": [
+		128,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "bus station with platform canopy"
+	},
+	"prop.township.cinema_cultural_hall": {
+	  "id": "prop.township.cinema_cultural_hall",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/cinema_cultural_hall.png",
+	  "size": [
+		128,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "cinema or cultural hall"
+	},
+	"prop.township.grain_depot_warehouse": {
+	  "id": "prop.township.grain_depot_warehouse",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/grain_depot_warehouse.png",
+	  "size": [
+		128,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "grain depot warehouse"
+	},
+	"prop.township.public_toilet_water_tap": {
+	  "id": "prop.township.public_toilet_water_tap",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/public_toilet_water_tap.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "public toilet and water tap block"
+	},
+	"prop.township.clinic_pharmacy_storefront": {
+	  "id": "prop.township.clinic_pharmacy_storefront",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/clinic_pharmacy_storefront.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "clinic or pharmacy storefront"
+	},
+	"prop.township.market_stall_row": {
+	  "id": "prop.township.market_stall_row",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/market_stall_row.png",
+	  "size": [
+		128,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "market stall row with awnings"
+	},
+	"prop.township.village_house_garden": {
+	  "id": "prop.township.village_house_garden",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/buildings/village_house_garden.png",
+	  "size": [
+		96,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"buildings",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "village house with vegetable garden edge"
+	},
+	"prop.township.asphalt_road_horizontal": {
+	  "id": "prop.township.asphalt_road_horizontal",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/asphalt_road_horizontal.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "horizontal asphalt road segment"
+	},
+	"prop.township.asphalt_road_vertical": {
+	  "id": "prop.township.asphalt_road_vertical",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/asphalt_road_vertical.png",
+	  "size": [
+		64,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "vertical asphalt road segment"
+	},
+	"prop.township.asphalt_four_way_intersection": {
+	  "id": "prop.township.asphalt_four_way_intersection",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/asphalt_four_way_intersection.png",
+	  "size": [
+		96,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "asphalt four-way intersection"
+	},
+	"prop.township.asphalt_t_junction": {
+	  "id": "prop.township.asphalt_t_junction",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/asphalt_t_junction.png",
+	  "size": [
+		96,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "asphalt T-junction"
+	},
+	"prop.township.curved_asphalt_corner": {
+	  "id": "prop.township.curved_asphalt_corner",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/curved_asphalt_corner.png",
+	  "size": [
+		96,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "curved asphalt road corner"
+	},
+	"prop.township.residential_alley": {
+	  "id": "prop.township.residential_alley",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/residential_alley.png",
+	  "size": [
+		64,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "narrow residential alley segment"
+	},
+	"prop.township.dirt_village_road": {
+	  "id": "prop.township.dirt_village_road",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/dirt_village_road.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "dirt village road segment"
+	},
+	"prop.township.field_path_track": {
+	  "id": "prop.township.field_path_track",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/field_path_track.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "field path or farm track"
+	},
+	"prop.township.concrete_bridge_horizontal": {
+	  "id": "prop.township.concrete_bridge_horizontal",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/concrete_bridge_horizontal.png",
+	  "size": [
+		128,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "concrete bridge over canal"
+	},
+	"prop.township.wooden_footbridge": {
+	  "id": "prop.township.wooden_footbridge",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/wooden_footbridge.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "small wooden footbridge"
+	},
+	"prop.township.canal_straight": {
+	  "id": "prop.township.canal_straight",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/canal_straight.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "irrigation canal straight segment"
+	},
+	"prop.township.canal_bend": {
+	  "id": "prop.township.canal_bend",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/canal_bend.png",
+	  "size": [
+		96,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "irrigation canal bend"
+	},
+	"prop.township.brick_wall_gate_gap": {
+	  "id": "prop.township.brick_wall_gate_gap",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/brick_wall_gate_gap.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "brick compound wall with gate gap"
+	},
+	"prop.township.factory_gate_guard_booth": {
+	  "id": "prop.township.factory_gate_guard_booth",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/factory_gate_guard_booth.png",
+	  "size": [
+		128,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "factory gate with guard booth"
+	},
+	"prop.township.institution_gate_pillars": {
+	  "id": "prop.township.institution_gate_pillars",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/institution_gate_pillars.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "school or hospital gate pillars"
+	},
+	"prop.township.utility_pole_lamp_cluster": {
+	  "id": "prop.township.utility_pole_lamp_cluster",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/infrastructure/utility_pole_lamp_cluster.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"infrastructure",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "utility pole and street lamp cluster"
+	},
+	"prop.township.large_roadside_tree": {
+	  "id": "prop.township.large_roadside_tree",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/large_roadside_tree.png",
+	  "size": [
+		96,
+		96
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "large roadside deciduous tree"
+	},
+	"prop.township.courtyard_tree": {
+	  "id": "prop.township.courtyard_tree",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/courtyard_tree.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "small courtyard tree"
+	},
+	"prop.township.poplar_row_cluster": {
+	  "id": "prop.township.poplar_row_cluster",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/poplar_row_cluster.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "poplar tree row cluster"
+	},
+	"prop.township.shrub_cluster": {
+	  "id": "prop.township.shrub_cluster",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/shrub_cluster.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "bush or shrub cluster"
+	},
+	"prop.township.vegetable_stall_awning": {
+	  "id": "prop.township.vegetable_stall_awning",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/vegetable_stall_awning.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "vegetable stall awning with baskets"
+	},
+	"prop.township.bicycle_parking_cluster": {
+	  "id": "prop.township.bicycle_parking_cluster",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/bicycle_parking_cluster.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "bicycle parking cluster"
+	},
+	"prop.township.cargo_tricycle_cart": {
+	  "id": "prop.township.cargo_tricycle_cart",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/cargo_tricycle_cart.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "cargo tricycle cart"
+	},
+	"prop.township.old_truck": {
+	  "id": "prop.township.old_truck",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/old_truck.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "small old truck"
+	},
+	"prop.township.coal_pile_sacks": {
+	  "id": "prop.township.coal_pile_sacks",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/coal_pile_sacks.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "coal pile with sacks"
+	},
+	"prop.township.grain_sacks_stack": {
+	  "id": "prop.township.grain_sacks_stack",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/grain_sacks_stack.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "stacked grain sacks"
+	},
+	"prop.township.public_water_pump": {
+	  "id": "prop.township.public_water_pump",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/public_water_pump.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "public water pump"
+	},
+	"prop.township.laundry_line": {
+	  "id": "prop.township.laundry_line",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/laundry_line.png",
+	  "size": [
+		96,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "laundry line with clothes"
+	},
+	"prop.township.utility_pole": {
+	  "id": "prop.township.utility_pole",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/utility_pole.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "utility pole with wires"
+	},
+	"prop.township.street_lamp": {
+	  "id": "prop.township.street_lamp",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/street_lamp.png",
+	  "size": [
+		32,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "street lamp"
+	},
+	"prop.township.notice_board": {
+	  "id": "prop.township.notice_board",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/notice_board.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "roadside notice board"
+	},
+	"prop.township.haystack_farm_tools": {
+	  "id": "prop.township.haystack_farm_tools",
+	  "type": "prop",
+	  "status": "available",
+	  "path": "res://assets/generated/sprites/props/township/daily_props/haystack_farm_tools.png",
+	  "size": [
+		64,
+		64
+	  ],
+	  "anchor": "center",
+	  "collision": "none",
+	  "usage": [
+		"township_map_reference",
+        "editor_placed_town_decoration"
+	  ],
+	  "tags": [
+		"township",
+		"daily_props",
+		"topdown_pixel",
+        "1990s_chinese_town"
+	  ],
+	  "notes": "haystack and farm tools bundle"
 	}
   },
   "debug_and_validation": {

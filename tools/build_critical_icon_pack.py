@@ -202,8 +202,7 @@ def update_assets(paths: dict[str, str]) -> None:
         "id": "pack.critical_icons_2026_05_29",
         "type": "icon_pack",
         "status": "available",
-        "manifest": "res://assets/generated/critical_icons_2026_05_29/manifest.json",
-        "path": "res://assets/generated/critical_icons_2026_05_29",
+        "path": "res://assets/generated/sprites/items",
         "notes": "Pear, per-crop seed packets, fertilizer, sickle, warning, and fine icons normalized to 32x32.",
     }
 

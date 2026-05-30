@@ -3,8 +3,8 @@
 [ext_resource type="TileSet" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="1_tileset"]
 [ext_resource type="Script" path="res://scripts/world/scene_exit.gd" id="2_exit"]
 [ext_resource type="Script" path="res://scripts/world/bed.gd" id="3_bed"]
-[ext_resource type="Texture2D" path="res://assets/generated/props/street_stall_props_v2_cutouts/21_folded_tarp.png" id="4_bed_tex"]
-[ext_resource type="Texture2D" path="res://assets/generated/props/street_stall_props_v2_cutouts/15_ledger_book.png" id="5_book_tex"]
+[ext_resource type="Texture2D" path="res://assets/generated/sprites/props/stall/21_folded_tarp.png" id="4_bed_tex"]
+[ext_resource type="Texture2D" path="res://assets/generated/sprites/props/stall/15_ledger_book.png" id="5_book_tex"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(88, 56)

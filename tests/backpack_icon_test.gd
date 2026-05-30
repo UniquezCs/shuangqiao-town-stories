@@ -1,7 +1,7 @@
 extends Node
 
 const BackpackPanelScript := preload("res://scripts/ui/backpack_panel.gd")
-const APPLE_ICON_PATH := "res://assets/generated/assistant_art_2026_05_29/crop_icons/items/apple_32.png"
+const APPLE_ICON_PATH := "res://assets/generated/sprites/items/crops/apple_32.png"
 
 
 func _ready() -> void:

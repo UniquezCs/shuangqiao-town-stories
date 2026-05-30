@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Godot 项目每日简报 - 2026-05-30</title>
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --card: #fffaf2;
+      --ink: #2b241c;
+      --muted: #6b6257;
+      --line: #d7c8ae;
+      --accent: #8d5b2d;
+      --accent-soft: #efe2cf;
+      --warn: #8a3b2e;
+      --ok: #356246;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(141, 91, 45, 0.12), transparent 28%),
+        linear-gradient(180deg, #f8f3ea 0%, var(--bg) 100%);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero, section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px 28px;
+      box-shadow: 0 12px 30px rgba(66, 42, 16, 0.06);
+    }
+
+    .hero h1, section h2 {
+      margin: 0 0 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 { font-size: 30px; }
+    section h2 { font-size: 20px; }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      border: 1px solid #e3cfb3;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    li + li { margin-top: 8px; }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      margin-right: 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .risk { color: var(--warn); }
+    .good { color: var(--ok); }
+
+    code {
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      background: #f2eadf;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #5b4025;
+    }
+
+    .paths {
+      display: grid;
+      gap: 8px;
+    }
+
+    .paths code {
+      display: inline-block;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <div class="meta">
+        <span>日期：2026-05-30</span>
+        <span>生成时间：2026-05-30 06:03:14 CST</span>
+        <span>回顾区间：自 2026-05-29 06:01:02 CST 上次自动化运行以来</span>
+      </div>
+      <p>
+        本次回顾覆盖 1 次已提交的大体量原型迭代，以及当前工作区尚未提交的城镇参考布局补充。整体方向明确：
+        项目从基础摆摊/农田原型继续推进到“原型 v2 + NPC 端点抽象 + 资产登记完善 + 参考城镇布局搭建”。
+      </p>
+      <div class="summary-grid">
+        <div class="stat"><strong>1</strong>次新提交</div>
+        <div class="stat"><strong>593</strong>个已提交新增文件</div>
+        <div class="stat"><strong>24</strong>个已提交修改文件</div>
+        <div class="stat"><strong>8</strong>个当前工作区变更文件</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>概览</h2>
+      <ul>
+        <li>核心提交主题为“实现第二版原型系统与 NPC 端点抽象”，新增配置、场景、脚本、测试和素材打包工具。</li>
+        <li>资产侧是本轮体量最大的变化源，新增内容主要集中在 <code>assets/generated/assistant_art_2026_05_29</code>、<code>assets/generated/prototype_v2</code>、<code>assets/generated/ui_skins_2026_05_29</code>。</li>
+        <li>逻辑侧完成了配置加载、农田/摊位/城管/NPC 端点相关结构补充，并为多项新行为补充测试场景。</li>
+        <li>未提交工作聚焦在 <code>scenes/town_scene.tscn</code> 挂接参考布局脚本，以及资源注册表对参考城镇道路、农田、水域、树木和地标用法的补录。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <ul>
+        <li><span class="tag">系统</span>引入原型 v2 所需的配置与自动加载能力，新增 <code>configs/crops.json</code>、<code>configs/items.json</code>、<code>configs/upgrades.json</code> 与 <code>scripts/autoload/config_loader.gd</code>。</li>
+        <li><span class="tag">场景</span>新增 <code>scenes/chengguan.tscn</code>、<code>scenes/farm_plot.tscn</code>、<code>scenes/house_scene.tscn</code>、<code>scenes/npc_endpoint.tscn</code>、<code>scenes/stall_spot.tscn</code>，并修改 <code>scenes/main.tscn</code>、<code>scenes/home_scene.tscn</code>、<code>scenes/town_scene.tscn</code>、<code>scenes/player.tscn</code>。</li>
+        <li><span class="tag">脚本</span>扩展了 <code>scripts/world</code>、<code>scripts/ui</code>、<code>scripts/autoload</code>，新增城管、农田、NPC 端点、背包面板、日总结面板等脚本。</li>
+        <li><span class="tag">测试</span>新增多组场景化测试，覆盖配置库存、农田创建、NPC 端点可视化、城管升级日逻辑、摊位区域层等新能力。</li>
+        <li><span class="tag">进行中</span>工作区正在把城镇场景升级为“参考图还原布局”，新增 <code>scripts/world/town_reference_layout.gd</code> 与 <code>tests/town_reference_layout_test.gd</code>，并将其挂入 TownScene。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li>素材包与清单：新增 500+ 个资源文件，包含作物图标、农田阶段贴图、乡镇道具、UI 皮肤、关键图标与参考地图素材。</li>
+        <li>工具脚本：新增 <code>tools/build_assistant_art_pack.py</code>、<code>tools/build_critical_icon_pack.py</code>、<code>tools/build_prototype_v2_assets.py</code>、<code>tools/build_ui_skin_pack.py</code>、<code>tools/normalize_asset_registry.py</code>。</li>
+        <li>文档：新增 <code>docs/prototype_v2_plan.html</code>，并生成 2026-05-28、2026-05-29 的日报档案。</li>
+        <li>测试资产：新增 <code>tests/farm_v2_test.tscn</code>、<code>tests/day_upgrade_chengguan_v2_test.tscn</code>、<code>tests/npc_endpoint_visual_test.tscn</code> 等测试入口。</li>
+        <li>未提交新增：<code>scripts/world/town_reference_layout.gd</code> 通过 TileMap 与占位建筑节点搭出 1990 年代大镇道路、农田、水域、广场与树木参考布局。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li><code>configs/assets.json</code> 补充了参考城镇道路/农田/水域用途、学校/工厂/住宅区地标用途，以及新的 <code>prop.apple_tree_96</code> 资源登记。</li>
+        <li><code>docs/asset_registry.md</code> 同步更新资产注册说明，明确参考城镇布局对现有地标和 tileset 的复用方式。</li>
+        <li><code>scenes/town_scene.tscn</code> 新挂接 <code>ReferenceTownLayout</code> 节点，开始在现有 TownScene 中叠加参考图还原层。</li>
+        <li>既有脚本如 <code>scripts/autoload/game_state.gd</code>、<code>scripts/world/customer.gd</code>、<code>scripts/world/stall.gd</code>、<code>scripts/ui/shop_panel.gd</code> 等已在提交中调整，以承接原型 v2 的行为扩展。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <ul>
+        <li class="good">本回顾区间内未发现已提交的删除文件。</li>
+        <li>从资产登记说明看，部分 v1 资源仍被保留并继续运行时复用，尚未进入真正清退阶段，更接近“并行过渡”而非“废弃完成”。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li class="risk">资源规模快速增长，仓库体积和 Godot 导入时间会继续上升；如果后续不分层管理，日常迭代成本会被拉高。</li>
+        <li class="risk">TownScene 现已开始叠加参考布局脚本，若节点层级、碰撞区、生成点位或镜头边界未同步校准，可能影响既有移动、生成和交互逻辑。</li>
+        <li class="risk">大量新素材当前仍处于 <code>available</code> 或 <code>placeholder</code> 状态，说明“资产已生成”不等于“玩法已接线”，后续需要持续做资源到场景/脚本的闭环。</li>
+        <li class="good">测试覆盖面明显扩大，后续如果持续保持场景级回归测试，原型迭代的可控性会更好。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>验证 <code>tests/town_reference_layout_test.gd</code> 对新参考布局的断言是否稳定，尤其是道路、农田、水域的 used cells 数量阈值。</li>
+        <li>确认 <code>ReferenceTownLayout</code> 与既有 <code>Spawns</code>、<code>NpcEndpoint</code>、<code>ChengguanSpawner</code>、玩家出入口之间没有遮挡或逻辑冲突。</li>
+        <li>继续梳理哪些 v2 资源应当从 <code>available</code> 提升到 <code>implemented</code>，避免注册表长期滞后于实际接入状态。</li>
+        <li>为大批量生成资源建立更清晰的分包与命名约束，减少后续人工检索和替换成本。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>用于回顾的关键文件路径</h2>
+      <div class="paths">
+        <code>docs/daily-briefs/2026-05-30.html</code>
+        <code>docs/asset_registry.md</code>
+        <code>configs/assets.json</code>
+        <code>configs/crops.json</code>
+        <code>configs/items.json</code>
+        <code>configs/upgrades.json</code>
+        <code>scenes/town_scene.tscn</code>
+        <code>scripts/world/town_reference_layout.gd</code>
+        <code>tests/town_reference_layout_test.gd</code>
+        <code>scripts/autoload/config_loader.gd</code>
+        <code>scripts/world/npc_endpoint.gd</code>
+        <code>assets/generated/prototype_v2/manifest.json</code>
+        <code>assets/generated/assistant_art_2026_05_29/manifest.json</code>
+        <code>assets/generated/ui_skins_2026_05_29/manifest.json</code>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

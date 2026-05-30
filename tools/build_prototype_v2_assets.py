@@ -281,8 +281,8 @@ def main() -> None:
         "raw": {name: res(OUT / "raw" / name) for name in RAW_SOURCES},
         "characters": {
             "vendor": {
-                "sheet": "res://assets/generated/prototype_v1_32/characters/vendor_walk_4dir_8f_48x64.png",
-                "spriteframes": "res://assets/generated/prototype_v1_32/characters/vendor_walk_spriteframes_48x64.tres",
+                "sheet": "res://assets/generated/sprites/characters/vendor_walk_4dir_8f_48x64.png",
+                "spriteframes": "res://assets/generated/sprites/characters/vendor_walk_spriteframes_48x64.tres",
                 "frames": 32,
                 "cell_size": [48, 64],
                 "animations": list(DIRECTIONS),
@@ -294,9 +294,8 @@ def main() -> None:
                 "tileset": "res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres",
                 "tile_size": [32, 32],
             },
-            "street_stall_props_v2_sheet": "res://assets/generated/tilesets/street_stall_props_v2.png",
-            "town_buildings_props_v2_sheet": "res://assets/generated/tilesets/town_buildings_props_v2.png",
-            "street_stall_cutouts": "res://assets/generated/props/street_stall_props_v2_cutouts/manifest.json",
+            "street_stall_props": "res://assets/generated/sprites/props/stall",
+            "town_props": "res://assets/generated/sprites/props/town",
         },
     }
 

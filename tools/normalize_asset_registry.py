@@ -179,7 +179,7 @@ def update_items_config(variants: dict[str, str]) -> None:
 
     replacements = {
         "apple": variants.get("crop_icons.apple"),
-        "apple_seed": "res://assets/generated/prototype_v2/ui/apple_seed_packet_32.png",
+        "apple_seed": "res://assets/generated/sprites/ui/icons/apple_seed_packet_32.png",
         "cabbage": variants.get("crop_icons.cabbage"),
         "cucumber": variants.get("crop_icons.cucumber"),
         "tomato": variants.get("crop_icons.tomato"),
@@ -210,8 +210,7 @@ def update_assets_registry(variants: dict[str, str]) -> None:
             "id": "pack.critical_icons_2026_05_29",
             "type": "icon_pack",
             "status": "available",
-            "manifest": "res://assets/generated/critical_icons_2026_05_29/manifest.json",
-            "path": "res://assets/generated/critical_icons_2026_05_29",
+            "path": "res://assets/generated/sprites/items",
             "notes": "Pear, per-crop seed packets, fertilizer, sickle, warning, and fine icons normalized to 32x32.",
         }
 
@@ -236,7 +235,7 @@ def update_assets_registry(variants: dict[str, str]) -> None:
 
     if "item.apple_seed" in items:
         items["item.apple_seed"]["status"] = "implemented"
-        items["item.apple_seed"]["path"] = "res://assets/generated/prototype_v2/ui/apple_seed_packet_32.png"
+        items["item.apple_seed"]["path"] = "res://assets/generated/sprites/ui/icons/apple_seed_packet_32.png"
         items["item.apple_seed"].pop("available_path", None)
         items["item.apple_seed"]["anchor"] = "center"
         items["item.apple_seed"]["collision"] = "none"
@@ -287,22 +286,20 @@ def update_assets_registry(variants: dict[str, str]) -> None:
 
     ui = data["ui"]
     if "ui.backpack_panel" in ui:
-        ui["ui.backpack_panel"]["available_skin_manifest"] = "res://assets/generated/ui_skins_2026_05_29/manifest.json"
         ui["ui.backpack_panel"]["available_components"] = {
-            "panel_frame": "res://assets/generated/ui_skins_2026_05_29/backpack/items/panel_frame.png",
-            "slot_empty": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_empty.png",
-            "slot_highlighted": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_highlighted.png",
-            "slot_locked": "res://assets/generated/ui_skins_2026_05_29/backpack/items/slot_locked.png",
-            "quantity_badge": "res://assets/generated/ui_skins_2026_05_29/backpack/items/quantity_badge.png",
+            "panel_frame": "res://assets/generated/sprites/ui/backpack/panel_frame.png",
+            "slot_empty": "res://assets/generated/sprites/ui/backpack/slot_empty.png",
+            "slot_highlighted": "res://assets/generated/sprites/ui/backpack/slot_highlighted.png",
+            "slot_locked": "res://assets/generated/sprites/ui/backpack/slot_locked.png",
+            "quantity_badge": "res://assets/generated/sprites/ui/backpack/quantity_badge.png",
         }
     if "ui.shop_panel" in ui:
-        ui["ui.shop_panel"]["available_skin_manifest"] = "res://assets/generated/ui_skins_2026_05_29/manifest.json"
         ui["ui.shop_panel"]["available_components"] = {
-            "panel_frame": "res://assets/generated/ui_skins_2026_05_29/shop/items/panel_frame.png",
-            "goods_shelf_card": "res://assets/generated/ui_skins_2026_05_29/shop/items/goods_shelf_card.png",
-            "buy_button": "res://assets/generated/ui_skins_2026_05_29/shop/items/buy_button.png",
-            "disabled_buy_button": "res://assets/generated/ui_skins_2026_05_29/shop/items/disabled_buy_button.png",
-            "price_tag_badge": "res://assets/generated/ui_skins_2026_05_29/shop/items/price_tag_badge.png",
+            "panel_frame": "res://assets/generated/sprites/ui/shop/panel_frame.png",
+            "goods_shelf_card": "res://assets/generated/sprites/ui/shop/goods_shelf_card.png",
+            "buy_button": "res://assets/generated/sprites/ui/shop/buy_button.png",
+            "disabled_buy_button": "res://assets/generated/sprites/ui/shop/disabled_buy_button.png",
+            "price_tag_badge": "res://assets/generated/sprites/ui/shop/price_tag_badge.png",
         }
 
     write_json(path, data)

@@ -3,11 +3,11 @@ extends Area2D
 @export var plot_id := "plot_1"
 
 const STATE_TEXTURES := {
-	"empty": preload("res://assets/generated/prototype_v1_32/objects/farm_empty_64.png"),
-	"tilled": preload("res://assets/generated/prototype_v1_32/objects/farm_seeded_64.png"),
-	"seeded": preload("res://assets/generated/prototype_v1_32/objects/farm_growing_64.png"),
-	"watered": preload("res://assets/generated/prototype_v1_32/objects/farm_growing_64.png"),
-	"ready": preload("res://assets/generated/prototype_v1_32/objects/farm_ready_64.png"),
+	"empty": preload("res://assets/generated/sprites/farm/farm_empty_64.png"),
+	"tilled": preload("res://assets/generated/sprites/farm/farm_seeded_64.png"),
+	"seeded": preload("res://assets/generated/sprites/farm/farm_growing_64.png"),
+	"watered": preload("res://assets/generated/sprites/farm/farm_growing_64.png"),
+	"ready": preload("res://assets/generated/sprites/farm/farm_ready_64.png"),
 }
 
 var state := "empty"

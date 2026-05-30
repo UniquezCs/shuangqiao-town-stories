@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const TEXTURE := preload("res://assets/generated/prototype_v1_32/characters/customer_worker_48x64.png")
+const TEXTURE := preload("res://assets/generated/sprites/characters/customer_worker_48x64.png")
 
 var route_points: Array[Vector2] = []
 var route_index := 0

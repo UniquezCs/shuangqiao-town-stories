@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=4]
+
+[ext_resource type="Script" path="res://tests/town_layer_structure_test.gd" id="1_layer_test"]
+
+[node name="TownLayerStructureTest" type="Node"]
+script = ExtResource("1_layer_test")

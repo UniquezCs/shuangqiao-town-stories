@@ -23,7 +23,7 @@ func _generate_stall_spots() -> void:
 
 
 func _clear_generated_spots() -> void:
-	var parent_node := get_parent()
+	var parent_node := _generated_spot_parent()
 	if parent_node == null:
 		return
 	for child in parent_node.get_children():
@@ -43,7 +43,7 @@ func _create_stall_spot(cells: Array[Vector2i], area_index: int) -> void:
 	spot.set("interaction_size", Vector2(rect.size) * _tile_size())
 	spot.set("interaction_offset", _interaction_offset_for(rect))
 	spot.position = Vector2.ZERO
-	get_parent().call_deferred("add_child", spot)
+	_generated_spot_parent().call_deferred("add_child", spot)
 
 
 func _connected_regions(cells: Array[Vector2i]) -> Array:
@@ -111,3 +111,10 @@ func _tile_size() -> Vector2:
 	if tile_set != null:
 		return Vector2(tile_set.tile_size)
 	return DEFAULT_TILE_SIZE
+
+
+func _generated_spot_parent() -> Node:
+	var parent_node := get_parent()
+	if parent_node != null and parent_node.name == "MapLayers" and parent_node.get_parent() != null:
+		return parent_node.get_parent()
+	return parent_node

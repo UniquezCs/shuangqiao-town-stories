@@ -19,13 +19,14 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Default anchor: center
 - Collision belongs to gameplay nodes, not bitmap files.
 - Missing resources should be represented with placeholders until art generation is explicitly requested.
+- Town map TileMapLayers are editor-authored scene content. Gameplay scripts may read these layers, but must not auto-fill or mutate their tile cells; changes to roads, water, fields, decorations, trees, and stall-area markers should be made in the Godot editor and saved in the scene.
 
 ## Generated Pack Metadata
 
-- `assistant_art_2026_05_29/manifest.json` now includes stable item IDs, type, path, size, anchor, collision, usage, and tags for generated farm plots, crop icons, UI icons, and props.
-- `ui_skins_2026_05_29/manifest.json` now includes stable component IDs, type, path, size, anchor, collision, usage, and tags for backpack and shop UI components.
-- `critical_icons_2026_05_29/manifest.json` includes stable IDs for pear, non-apple seed packets, fertilizer, sickle, warning, and fine icons.
-- Normalized `32x32` variants exist for generated crop icons and reusable UI icons. These are preferred for inventory/HUD usage.
+- `assets/generated` is intentionally limited to two top-level folders: `sprites` and `tilesets`.
+- `sprites` contains final game-ready character, item, farm, location, object, prop, and UI PNG/TRES resources.
+- `tilesets` contains final game-ready tile atlases and TileSet resources.
+- Raw generation images, contact sheets, prompt text, manifests, preview GIFs, and other intermediate process files should not be kept under `assets/generated`.
 
 ## Current Resource Needs By System
 
@@ -33,8 +34,8 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `tileset.rural_town_32` | implemented | `res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres` | Used by Home, Town, House ground layers, and the Town `StallAreaLayer` marker layer. |
-| `tileset.prototype_scene_32` | available | `res://assets/generated/prototype_v1_32/tiles/prototype_scene_tileset_32.tres` | Legacy/reference tileset. |
+| `tileset.rural_town_32` | implemented | `res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres` | Used by Home, House, and editor-authored `TownScene/MapLayers`: ground, water, field, road, decoration, tree placeholders, and `StallAreaLayer`. |
+| `tileset.prototype_scene_32` | available | `res://assets/generated/tilesets/prototype_scene_32/prototype_scene_tileset_32.tres` | Legacy/reference tileset. |
 | `location.house_interior_floor` | placeholder | rural town tileset | HouseScene now has a visible TileMapLayer background marker; needs proper 1990s rural house interior floor/wall tiles. |
 
 ### Characters And NPCs
@@ -50,28 +51,28 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `item.apple` | implemented | `assistant_art_2026_05_29/crop_icons/items/apple_32.png` | Also has v1 fallback. |
-| `item.apple_seed` | implemented | `prototype_v2/ui/apple_seed_packet_32.png` | Wired in `configs/items.json`. |
-| `item.cabbage` | implemented | `assistant_art_2026_05_29/crop_icons/items/cabbage_32.png` | Normalized from existing generated crop icon. |
-| `item.cucumber` | implemented | `assistant_art_2026_05_29/crop_icons/items/cucumber_32.png` | Normalized from existing generated crop icon. |
-| `item.tomato` | implemented | `assistant_art_2026_05_29/crop_icons/items/tomato_32.png` | Normalized from existing generated crop icon. |
-| `item.pear` | implemented | `critical_icons_2026_05_29/items/pear_32.png` | Wired in `configs/items.json`. |
-| `item.potato` | implemented | `assistant_art_2026_05_29/crop_icons/items/potato_32.png` | Normalized from existing generated crop icon. |
-| `item.cabbage_seed` | implemented | `critical_icons_2026_05_29/items/cabbage_seed_packet_32.png` | Dedicated seed packet. |
-| `item.cucumber_seed` | implemented | `critical_icons_2026_05_29/items/cucumber_seed_packet_32.png` | Dedicated seed packet. |
-| `item.tomato_seed` | implemented | `critical_icons_2026_05_29/items/tomato_seed_packet_32.png` | Dedicated seed packet. |
-| `item.pear_seed` | implemented | `critical_icons_2026_05_29/items/pear_seed_packet_32.png` | Dedicated seed packet. |
-| `item.potato_seed` | implemented | `critical_icons_2026_05_29/items/potato_seed_packet_32.png` | Dedicated seed packet. |
+| `item.apple` | implemented | `sprites/items/crops/apple_32.png` | Also has fallback `sprites/items/general/apple_32.png`. |
+| `item.apple_seed` | implemented | `sprites/ui/icons/apple_seed_packet_32.png` | Wired in `configs/items.json`. |
+| `item.cabbage` | implemented | `sprites/items/crops/cabbage_32.png` | Normalized generated crop icon. |
+| `item.cucumber` | implemented | `sprites/items/crops/cucumber_32.png` | Normalized generated crop icon. |
+| `item.tomato` | implemented | `sprites/items/crops/tomato_32.png` | Normalized generated crop icon. |
+| `item.pear` | implemented | `sprites/items/pear_32.png` | Wired in `configs/items.json`. |
+| `item.potato` | implemented | `sprites/items/crops/potato_32.png` | Normalized generated crop icon. |
+| `item.cabbage_seed` | implemented | `sprites/items/cabbage_seed_packet_32.png` | Dedicated seed packet. |
+| `item.cucumber_seed` | implemented | `sprites/items/cucumber_seed_packet_32.png` | Dedicated seed packet. |
+| `item.tomato_seed` | implemented | `sprites/items/tomato_seed_packet_32.png` | Dedicated seed packet. |
+| `item.pear_seed` | implemented | `sprites/items/pear_seed_packet_32.png` | Dedicated seed packet. |
+| `item.potato_seed` | implemented | `sprites/items/potato_seed_packet_32.png` | Dedicated seed packet. |
 | `item.generic_seed` | available | generic seed bag | Fallback only; active crop seeds have dedicated icons. |
-| `item.fertilizer` | implemented | `critical_icons_2026_05_29/items/fertilizer_bag_32.png` | Wired in `configs/items.json`. |
+| `item.fertilizer` | implemented | `sprites/items/fertilizer_bag_32.png` | Wired in `configs/items.json`. |
 
 ### Tools
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `tool.hoe` | available | `assistant_art_2026_05_29/ui_icons/items/hoe_32.png` | Normalized `32x32`; not wired into HUD yet. |
-| `tool.water` | available | `assistant_art_2026_05_29/ui_icons/items/watering_can_32.png` | Normalized `32x32`; not wired into HUD yet. |
-| `tool.sickle` | available | `critical_icons_2026_05_29/items/sickle_32.png` | Not wired into HUD yet. |
+| `tool.hoe` | available | `sprites/ui/icons/general/hoe_32.png` | Normalized `32x32`; not wired into HUD yet. |
+| `tool.water` | available | `sprites/ui/icons/general/watering_can_32.png` | Normalized `32x32`; not wired into HUD yet. |
+| `tool.sickle` | available | `sprites/items/sickle_32.png` | Not wired into HUD yet. |
 
 ### Farm Plots
 
@@ -101,11 +102,11 @@ Current gameplay uses `scenes/farm_plot.tscn` with a `Sprite2D` scaled to one `3
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `location.school_gate` | implemented | `school_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination; alternate cutout exists. |
-| `location.factory_gate` | implemented | `factory_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination; alternate cutout exists. |
-| `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual and centralized same-id home endpoint pool. |
-| `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists. |
-| `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists. |
+| `location.school_gate` | implemented | `school_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
+| `location.factory_gate` | implemented | `factory_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
+| `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual and same-id home endpoint pool. |
+| `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
+| `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |
 | `location.house_bed` | placeholder | folded tarp cutout | v2 bed roll exists. |
 | `location.house_ledger` | implemented | ledger book cutout | v2 ledger table exists. |
 
@@ -121,7 +122,7 @@ Current UI is mostly Godot `Control` nodes with text and panels. This is accepta
 | `ui.price_panel` | placeholder | Control nodes | Price tag icon exists. |
 | `ui.daily_summary_panel` | placeholder | Control nodes | Ledger icon exists. |
 | `ui.purchase_countdown` | implemented | v1 apple icon | Purchase bubble candidate exists. |
-| `ui.penalty_warning` | available | `critical_icons_2026_05_29/items/warning_badge_32.png`, `fine_penalty_32.png` | Not wired into Chengguan feedback yet. |
+| `ui.penalty_warning` | available | `sprites/items/warning_badge_32.png`, `fine_penalty_32.png` | Not wired into Chengguan feedback yet. |
 
 ### Town Props
 
@@ -135,6 +136,14 @@ The street stall cutout pack already contains many usable props:
 - baskets, sacks, stool, radio, thermos, enamel mug
 
 These are registered as available assets in `configs/assets.json`. They should be placed by scene design or map composition work, not directly by gameplay scripts.
+
+The township reference map now also has a dedicated top-down pixel prop set under `assets/generated/sprites/props/township/`. These assets are registered as `available` with stable `prop.township.*` IDs and are intended for editor-authored map composition:
+
+| Group | Count | Directory | Intended Use |
+| --- | ---: | --- | --- |
+| Buildings | 16 | `res://assets/generated/sprites/props/township/buildings/` | School, hospital, supply cooperative, factory, residential, government, bus station, grain depot, market, and village building footprints. |
+| Infrastructure | 16 | `res://assets/generated/sprites/props/township/infrastructure/` | Asphalt roads, intersections, dirt roads, bridges, canal pieces, compound walls, gates, and utility details. |
+| Daily Props And Trees | 16 | `res://assets/generated/sprites/props/township/daily_props/` | Trees, shrubs, bicycle parking, tricycle, truck, water pump, laundry line, notice board, sacks, coal, haystack, and market decoration. |
 
 ## Missing Or Weak Assets To Prioritize Later
 

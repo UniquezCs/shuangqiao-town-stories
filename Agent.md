@@ -156,16 +156,17 @@ Movement controls:
 - Prefer dedicated Godot nodes, collision shapes, signals, and timers for gameplay rules. Avoid per-frame polling or distance checks in `_process()` / `_physics_process()` when an `Area2D`, `StaticBody2D`, `CollisionShape2D`, signal, or timer can own the behavior. Use per-frame logic mainly for continuous movement, animation, and physics integration.
 - The current assistant role is main programmer. Do not proactively generate art assets. If a needed tile, prop, NPC, or animation asset does not exist, use a text/simple-tile/existing-asset placeholder, document the required asset specification, and continue implementing the logic. Use asset generation only when the user explicitly asks for it.
 - Follow the project pixel-size baseline: `32x32` tiles, `48x64` character/NPC frames, `32x32` small props, and larger objects in clean multiples of 32 pixels.
-- Integrate art through config or manifest-backed stable IDs. Do not scatter direct resource paths through gameplay scripts when a config or registry can own the mapping.
+- Integrate art through config or registry-backed stable IDs. Do not scatter direct resource paths through gameplay scripts when a config or registry can own the mapping.
+- Keep `assets/generated` organized with only two top-level directories: `sprites` and `tilesets`. Do not keep raw generation images, contact sheets, prompt text, preview GIFs, or generated manifest files there; register final usable assets in `configs/assets.json` instead.
 - Keep gameplay node templates stable when replacing art. Asset swaps should update textures, `SpriteFrames`, `TileSet`, or config paths without changing the gameplay node contract.
 - Treat `configs/assets.json` as part of the development baseline. After every programming change, check whether any scene, script, config, UI, NPC, prop, item, tool, map element, or feedback now uses a new/different art resource. If so, update `configs/assets.json`; update `docs/asset_registry.md` when the human-facing art plan changes.
 - Prefer small, playable loops over large abstract systems.
 - When adding gameplay, start from the first prototype plan: minimal apple planting, town selling, player-set price, NPC customer decisions, cash gain, seed purchase, and planting again.
 - Keep the main `docs/game_design.html` focused on the overall game direction. Keep prototype-specific goals in `docs/prototype_v1_plan.html`.
 - Keep UI and feedback focused on business pressure and sales satisfaction.
-- Use `assets/generated/sprites/characters_walk_cycle_v2.png` as the current protagonist walking reference. The previous character sheet did not have enough frame contrast.
-- Use `assets/generated/tilesets/street_stall_props_v2.png` as the current roadside stall and township prop reference.
-- Use `assets/generated/tilesets/town_buildings_props_v2.png` as the current township buildings, road, wall, gate, and street prop reference.
+- Use `assets/generated/sprites/characters/vendor_walk_spriteframes_48x64.tres` as the current protagonist walking animation.
+- Use `assets/generated/sprites/props/stall/` for current roadside stall and township prop cutouts.
+- Use `assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres` for current township tile layers.
 
 Useful local verification command:
 

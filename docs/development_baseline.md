@@ -72,11 +72,11 @@ explicitly changes the baseline.
 
 ### Asset Integration Protocol
 
-- 程序脚本不应该凭图片路径猜资源含义。所有正式接入的资源都应通过配置或 manifest 描述语义、尺寸、锚点和用途。
+- 程序脚本不应该凭图片路径猜资源含义。所有正式接入的资源都应通过配置或资源注册表描述语义、尺寸、锚点和用途。
 - 每次程序改动只要新增、删除、替换或改变资源用途，都必须同步检查并更新 `configs/assets.json` 和必要的人类可读说明文档。
 - 即使程序改动暂时只使用占位图，也必须在资源注册表中记录该占位资源、真实资源需求和当前使用位置。
 - 代码优先引用稳定 ID，例如 `item_id`、`crop_id`、`npc_id`、`prop_id`，再由配置映射到具体资源路径。
-- 新资源包应提供 manifest。最小字段包括：
+- 新资源应登记到 `configs/assets.json`。最小字段包括：
   - `id`
   - `type`
   - `path`
@@ -96,6 +96,38 @@ explicitly changes the baseline.
 - 资源接入后应通过 debug preview 场景或测试场景验证尺寸、锚点、路径、帧数、碰撞和场景加载。
 - `TileMapLayer` 对齐逻辑必须使用 Godot tile 坐标 API，例如 `local_to_map()` 和 `map_to_local()`，不要手写近似坐标去摆放 tile 对象，除非没有 TileMapLayer 可用。
 
+### Generated Asset Directory Rules
+
+- `assets/generated` 顶层只允许存在两个目录：
+  - `assets/generated/sprites`
+  - `assets/generated/tilesets`
+- `sprites` 用于保存可直接被 `Sprite2D`、`AnimatedSprite2D`、UI、NPC、道具、地点标识等节点引用的最终素材。
+- `tilesets` 用于保存可直接被 `TileMapLayer` 使用的最终 tileset 资源、tile 图片和对应 `.tres`。
+- 允许保留的文件类型：
+  - `.png`：最终可用的透明贴图、图标、切图、tile 图片、动画帧图集。
+  - `.tres`：Godot 可直接加载的 `SpriteFrames`、`TileSet` 等资源。
+  - `.import`：Godot 对最终资源的导入设置，应和对应 `.png`、`.tres` 一起保留。
+- 禁止把生成中间产物留在 `assets/generated` 中，包括：
+  - raw generation image
+  - prompt 文本
+  - manifest 或临时 JSON
+  - contact sheet
+  - preview GIF
+  - 调试截图
+  - 未切割的大图草稿
+  - `.DS_Store`
+- 如果生成流程需要中间文件，应放在项目外的临时目录，或在接入最终素材后立即删除。
+- 最终接入游戏前，素材必须移动到 `sprites` 或 `tilesets` 下的语义化子目录，例如：
+  - `sprites/characters`
+  - `sprites/items/crops`
+  - `sprites/props/stall`
+  - `sprites/locations`
+  - `sprites/ui`
+  - `tilesets/rural_town_32`
+- 任何进入 `assets/generated` 的最终素材，都必须同步登记到 `configs/assets.json`；如果它被设计文档或开发计划引用，也要同步更新 `docs/asset_registry.md`。
+- 程序和场景只能引用最终素材路径，不引用 raw、preview、manifest、prompt 或生成工具临时路径。
+- 每次整理或新增生成素材后，必须运行 `tests/generated_asset_layout_test.tscn`，确认目录结构没有回退。
+
 ## Practical Checklist
 
 Before implementing character animation:
@@ -104,14 +136,14 @@ Before implementing character animation:
 - Confirm the animation target is `AnimatedSprite2D`.
 - Confirm four-direction walking animations exist with 8 frames per direction.
 - If assets are missing, wire the gameplay with placeholders and document the
-  required asset manifest instead of generating art by default.
+  required asset registry entry instead of generating art by default.
 
 Before implementing map scenes:
 
 - Confirm the scene is built with `TileMapLayer`.
 - Confirm required map tiles/assets exist.
 - If tiles are missing, use placeholder tiles or existing assets and document
-  the required tileset manifest instead of generating art by default.
+  the required tileset registry entry instead of generating art by default.
 
 Before implementing gameplay constraints:
 
@@ -124,7 +156,7 @@ Before implementing gameplay constraints:
 
 Before integrating or replacing art assets:
 
-- Confirm the asset has a stable ID and an entry in config or manifest.
+- Confirm the asset has a stable ID and an entry in config or the asset registry.
 - Confirm the pixel size matches the baseline.
 - Confirm the anchor/pivot expectation is explicit.
 - Confirm collision is owned by the gameplay node, not implied by the bitmap.

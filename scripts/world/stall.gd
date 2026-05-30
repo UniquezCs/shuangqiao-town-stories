@@ -1,10 +1,10 @@
 extends Node2D
 
 const STALL_TEXTURES := [
-	preload("res://assets/generated/props/street_stall_props_v2_cutouts/01_stall_empty.png"),
-	preload("res://assets/generated/props/street_stall_props_v2_cutouts/04_stall_apple_1.png"),
-	preload("res://assets/generated/props/street_stall_props_v2_cutouts/03_stall_apples_3.png"),
-	preload("res://assets/generated/props/street_stall_props_v2_cutouts/02_stall_apples_6.png"),
+	preload("res://assets/generated/sprites/props/stall/01_stall_empty.png"),
+	preload("res://assets/generated/sprites/props/stall/04_stall_apple_1.png"),
+	preload("res://assets/generated/sprites/props/stall/03_stall_apples_3.png"),
+	preload("res://assets/generated/sprites/props/stall/02_stall_apples_6.png"),
 ]
 
 var spot_id := ""
