@@ -3,6 +3,8 @@ extends Node
 const CUSTOMER_SCENE := preload("res://scenes/customer.tscn")
 const STUDENT_FRAMES := preload("res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres")
 const WORKER_FRAMES := preload("res://assets/generated/sprites/characters/worker_walk_spriteframes_48x64.tres")
+const YOUTH_FEMALE_FRAMES := preload("res://assets/generated/sprites/characters/youth_female_walk_spriteframes_48x64.tres")
+const ELDER_MALE_FRAMES := preload("res://assets/generated/sprites/characters/elder_male_walk_spriteframes_48x64.tres")
 const FEMALE_ELDER_FRAMES := preload("res://assets/generated/sprites/characters/female_elder_walk_spriteframes_48x64.tres")
 const FEMALE_MIDDLE_FRAMES := preload("res://assets/generated/sprites/characters/female_middle_walk_spriteframes_48x64.tres")
 
@@ -25,11 +27,23 @@ func _ready() -> void:
 	customer.call("setup", PrototypeConstants.CUSTOMER_WORKER, null, Vector2.ZERO, Vector2(100, 0), [])
 	_assert_equal(visual.sprite_frames, WORKER_FRAMES, "工人顾客应使用工人四方向 SpriteFrames")
 
-	customer.call("setup", PrototypeConstants.CUSTOMER_STUDENT, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_FEMALE_ELDER)
-	_assert_equal(visual.sprite_frames, FEMALE_ELDER_FRAMES, "随机 NPC 女性老人外观应使用 6 帧四方向 SpriteFrames")
+	customer.call("setup", PrototypeConstants.CUSTOMER_STUDENT, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_YOUTH_MALE)
+	_assert_equal(visual.sprite_frames, STUDENT_FRAMES, "少年男性外观应使用学生 6 帧四方向 SpriteFrames")
 
-	customer.call("setup", PrototypeConstants.CUSTOMER_WORKER, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_FEMALE_MIDDLE)
-	_assert_equal(visual.sprite_frames, FEMALE_MIDDLE_FRAMES, "随机 NPC 女性中年外观应使用 6 帧四方向 SpriteFrames")
+	customer.call("setup", PrototypeConstants.CUSTOMER_STUDENT, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_YOUTH_FEMALE)
+	_assert_equal(visual.sprite_frames, YOUTH_FEMALE_FRAMES, "少年女性外观应使用 6 帧四方向 SpriteFrames")
+
+	customer.call("setup", PrototypeConstants.CUSTOMER_WORKER, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_MALE)
+	_assert_equal(visual.sprite_frames, WORKER_FRAMES, "中年男性外观应使用工人 6 帧四方向 SpriteFrames")
+
+	customer.call("setup", PrototypeConstants.CUSTOMER_WORKER, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_FEMALE)
+	_assert_equal(visual.sprite_frames, FEMALE_MIDDLE_FRAMES, "中年女性外观应使用 6 帧四方向 SpriteFrames")
+
+	customer.call("setup", PrototypeConstants.CUSTOMER_STUDENT, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_ELDER_MALE)
+	_assert_equal(visual.sprite_frames, ELDER_MALE_FRAMES, "老年男性外观应使用 6 帧四方向 SpriteFrames")
+
+	customer.call("setup", PrototypeConstants.CUSTOMER_STUDENT, null, Vector2.ZERO, Vector2(100, 0), [], PrototypeConstants.CUSTOMER_VISUAL_ELDER_FEMALE)
+	_assert_equal(visual.sprite_frames, FEMALE_ELDER_FRAMES, "老年女性外观应使用 6 帧四方向 SpriteFrames")
 
 	get_tree().quit()
 

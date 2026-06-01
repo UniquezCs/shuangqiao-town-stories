@@ -173,9 +173,6 @@ func _candidate_cells(world_position: Vector2) -> Array[Vector2i]:
 		if abs(cell.x - origin.x) <= endpoint_candidate_radius_tiles and abs(cell.y - origin.y) <= endpoint_candidate_radius_tiles:
 			candidates.append(cell)
 
-	if candidates.is_empty():
-		candidates.append(closest_road_cell(world_position))
-
 	candidates.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
 		return cell_to_world(a).distance_squared_to(world_position) < cell_to_world(b).distance_squared_to(world_position)
 	)

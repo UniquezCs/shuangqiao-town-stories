@@ -215,7 +215,7 @@ func _on_influence_body_exited(body: Node) -> void:
 
 
 func _profile_decision(customer_type: String, customer_profile: Dictionary) -> Dictionary:
-	var customer_label := "工人" if customer_type == PrototypeConstants.CUSTOMER_WORKER else "学生"
+	var customer_label := str(customer_profile.get("label", "工人" if customer_type == PrototypeConstants.CUSTOMER_WORKER else "学生"))
 	var budget := int(customer_profile.get("budget", _default_budget_for(customer_type)))
 	var preferences: Dictionary = customer_profile.get("preferences", {})
 	var preference := float(preferences.get(current_item_id, preferences.get(PrototypeConstants.ITEM_APPLE, 0.0)))

@@ -5,13 +5,99 @@ const DEMAND_THRESHOLD := 0.45
 const ROUTE_TIMEOUT_PADDING_SECONDS := 10.0
 const STUDENT_FRAMES := preload("res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres")
 const WORKER_FRAMES := preload("res://assets/generated/sprites/characters/worker_walk_spriteframes_48x64.tres")
+const YOUTH_FEMALE_FRAMES := preload("res://assets/generated/sprites/characters/youth_female_walk_spriteframes_48x64.tres")
+const ELDER_MALE_FRAMES := preload("res://assets/generated/sprites/characters/elder_male_walk_spriteframes_48x64.tres")
 const FEMALE_ELDER_FRAMES := preload("res://assets/generated/sprites/characters/female_elder_walk_spriteframes_48x64.tres")
 const FEMALE_MIDDLE_FRAMES := preload("res://assets/generated/sprites/characters/female_middle_walk_spriteframes_48x64.tres")
 const APPLE_ICON_TEXTURE := preload("res://assets/generated/sprites/items/general/apple_32.png")
 const PurchaseInteractionScript := preload("res://scripts/world/customer_purchase_interaction.gd")
+const PROFILE_ITEMS := [
+	PrototypeConstants.ITEM_APPLE,
+	"cabbage",
+	"cucumber",
+	"tomato",
+	"pear",
+	"potato",
+]
+const BASE_DEMOGRAPHIC_PROFILES := {
+	PrototypeConstants.CUSTOMER_AGE_YOUTH: {
+		PrototypeConstants.CUSTOMER_GENDER_MALE: {
+			"budget": 2,
+			"preferences": {
+				PrototypeConstants.ITEM_APPLE: 0.55,
+				"cabbage": 0.30,
+				"cucumber": 0.35,
+				"tomato": 0.45,
+				"pear": 0.50,
+				"potato": 0.25,
+			},
+		},
+		PrototypeConstants.CUSTOMER_GENDER_FEMALE: {
+			"budget": 2,
+			"preferences": {
+				PrototypeConstants.ITEM_APPLE: 0.60,
+				"cabbage": 0.38,
+				"cucumber": 0.42,
+				"tomato": 0.55,
+				"pear": 0.62,
+				"potato": 0.28,
+			},
+		},
+	},
+	PrototypeConstants.CUSTOMER_AGE_MIDDLE: {
+		PrototypeConstants.CUSTOMER_GENDER_MALE: {
+			"budget": 4,
+			"preferences": {
+				PrototypeConstants.ITEM_APPLE: 0.50,
+				"cabbage": 0.62,
+				"cucumber": 0.55,
+				"tomato": 0.50,
+				"pear": 0.45,
+				"potato": 0.70,
+			},
+		},
+		PrototypeConstants.CUSTOMER_GENDER_FEMALE: {
+			"budget": 4,
+			"preferences": {
+				PrototypeConstants.ITEM_APPLE: 0.58,
+				"cabbage": 0.68,
+				"cucumber": 0.62,
+				"tomato": 0.65,
+				"pear": 0.55,
+				"potato": 0.60,
+			},
+		},
+	},
+	PrototypeConstants.CUSTOMER_AGE_ELDER: {
+		PrototypeConstants.CUSTOMER_GENDER_MALE: {
+			"budget": 3,
+			"preferences": {
+				PrototypeConstants.ITEM_APPLE: 0.48,
+				"cabbage": 0.72,
+				"cucumber": 0.50,
+				"tomato": 0.42,
+				"pear": 0.52,
+				"potato": 0.74,
+			},
+		},
+		PrototypeConstants.CUSTOMER_GENDER_FEMALE: {
+			"budget": 3,
+			"preferences": {
+				PrototypeConstants.ITEM_APPLE: 0.62,
+				"cabbage": 0.76,
+				"cucumber": 0.56,
+				"tomato": 0.58,
+				"pear": 0.66,
+				"potato": 0.64,
+			},
+		},
+	},
+}
 
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
 @export var visual_variant := ""
+@export var age_group := ""
+@export var gender := ""
 
 var target_stall: Node = null
 var state := "walking"
@@ -31,9 +117,12 @@ var _rng := RandomNumberGenerator.new()
 @onready var visual: AnimatedSprite2D = $Visual
 
 
-func setup(next_type: String, stall: Node, start_position: Vector2, leave_position: Vector2, route_points: Array = [], next_visual_variant := "") -> void:
+func setup(next_type: String, stall: Node, start_position: Vector2, leave_position: Vector2, route_points: Array = [], next_visual_variant := "", next_age_group := "", next_gender := "") -> void:
 	customer_type = next_type
 	visual_variant = next_visual_variant
+	age_group = next_age_group
+	gender = next_gender
+	_apply_default_demographics()
 	target_stall = stall
 	global_position = start_position
 	exit_position = leave_position
@@ -233,10 +322,18 @@ func _apply_customer_spriteframes() -> void:
 
 func _spriteframes_for_visual() -> SpriteFrames:
 	match visual_variant:
-		PrototypeConstants.CUSTOMER_VISUAL_FEMALE_ELDER:
-			return FEMALE_ELDER_FRAMES
-		PrototypeConstants.CUSTOMER_VISUAL_FEMALE_MIDDLE:
+		PrototypeConstants.CUSTOMER_VISUAL_YOUTH_MALE:
+			return STUDENT_FRAMES
+		PrototypeConstants.CUSTOMER_VISUAL_YOUTH_FEMALE:
+			return YOUTH_FEMALE_FRAMES
+		PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_MALE:
+			return WORKER_FRAMES
+		PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_FEMALE:
 			return FEMALE_MIDDLE_FRAMES
+		PrototypeConstants.CUSTOMER_VISUAL_ELDER_MALE:
+			return ELDER_MALE_FRAMES
+		PrototypeConstants.CUSTOMER_VISUAL_ELDER_FEMALE:
+			return FEMALE_ELDER_FRAMES
 	return WORKER_FRAMES if customer_type == PrototypeConstants.CUSTOMER_WORKER else STUDENT_FRAMES
 
 
@@ -321,19 +418,84 @@ func _has_demand_for(item_id: String) -> bool:
 
 func _build_customer_profile() -> void:
 	_rng.randomize()
-	var budget := _rng.randi_range(1, 3)
-	var apple_preference := _rng.randf_range(0.25, 0.95)
-	if customer_type == PrototypeConstants.CUSTOMER_WORKER:
-		budget = _rng.randi_range(2, 5)
-		apple_preference = _rng.randf_range(0.2, 0.9)
+	var base_profile := _base_profile_for_demographic(age_group, gender)
+	var base_budget := int(base_profile.get("budget", 2))
+	var base_preferences: Dictionary = base_profile.get("preferences", {})
+	var personal_budget := _rng.randi_range(1, 5)
+	var personal_preferences := _build_personal_preferences()
+	var final_preferences := _blend_preferences(base_preferences, personal_preferences)
 	_customer_profile = {
-		"budget": budget,
-		"preferences": {
-			PrototypeConstants.ITEM_APPLE: apple_preference,
-			"cabbage": _rng.randf_range(0.2, 0.85),
-			"cucumber": _rng.randf_range(0.2, 0.85),
-			"tomato": _rng.randf_range(0.25, 0.9),
-			"pear": _rng.randf_range(0.25, 0.9),
-			"potato": _rng.randf_range(0.2, 0.85),
-		},
+		"age_group": age_group,
+		"gender": gender,
+		"label": _demographic_label(),
+		"budget": int(round((float(base_budget) + float(personal_budget)) * 0.5)),
+		"base_budget": base_budget,
+		"personal_budget": personal_budget,
+		"preferences": final_preferences,
+		"base_preferences": base_preferences.duplicate(true),
+		"personal_preferences": personal_preferences,
 	}
+
+
+func get_customer_profile() -> Dictionary:
+	return _customer_profile.duplicate(true)
+
+
+func _apply_default_demographics() -> void:
+	if age_group.is_empty():
+		age_group = _default_age_group()
+	if gender.is_empty():
+		gender = _default_gender()
+
+
+func _default_age_group() -> String:
+	match visual_variant:
+		PrototypeConstants.CUSTOMER_VISUAL_YOUTH_MALE, PrototypeConstants.CUSTOMER_VISUAL_YOUTH_FEMALE:
+			return PrototypeConstants.CUSTOMER_AGE_YOUTH
+		PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_MALE, PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_FEMALE:
+			return PrototypeConstants.CUSTOMER_AGE_MIDDLE
+		PrototypeConstants.CUSTOMER_VISUAL_ELDER_MALE, PrototypeConstants.CUSTOMER_VISUAL_ELDER_FEMALE:
+			return PrototypeConstants.CUSTOMER_AGE_ELDER
+	if customer_type == PrototypeConstants.CUSTOMER_STUDENT:
+		return PrototypeConstants.CUSTOMER_AGE_YOUTH
+	return PrototypeConstants.CUSTOMER_AGE_MIDDLE
+
+
+func _default_gender() -> String:
+	match visual_variant:
+		PrototypeConstants.CUSTOMER_VISUAL_YOUTH_FEMALE, PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_FEMALE, PrototypeConstants.CUSTOMER_VISUAL_ELDER_FEMALE:
+			return PrototypeConstants.CUSTOMER_GENDER_FEMALE
+		PrototypeConstants.CUSTOMER_VISUAL_YOUTH_MALE, PrototypeConstants.CUSTOMER_VISUAL_MIDDLE_MALE, PrototypeConstants.CUSTOMER_VISUAL_ELDER_MALE:
+			return PrototypeConstants.CUSTOMER_GENDER_MALE
+	return PrototypeConstants.CUSTOMER_GENDER_MALE
+
+
+func _base_profile_for_demographic(next_age_group: String, next_gender: String) -> Dictionary:
+	var age_profiles: Dictionary = BASE_DEMOGRAPHIC_PROFILES.get(next_age_group, BASE_DEMOGRAPHIC_PROFILES[PrototypeConstants.CUSTOMER_AGE_MIDDLE])
+	return age_profiles.get(next_gender, age_profiles[PrototypeConstants.CUSTOMER_GENDER_MALE])
+
+
+func _build_personal_preferences() -> Dictionary:
+	return {
+		PrototypeConstants.ITEM_APPLE: _rng.randf_range(0.20, 0.95),
+		"cabbage": _rng.randf_range(0.20, 0.90),
+		"cucumber": _rng.randf_range(0.20, 0.90),
+		"tomato": _rng.randf_range(0.20, 0.90),
+		"pear": _rng.randf_range(0.20, 0.95),
+		"potato": _rng.randf_range(0.20, 0.90),
+	}
+
+
+func _blend_preferences(base_preferences: Dictionary, personal_preferences: Dictionary) -> Dictionary:
+	var blended := {}
+	for item_id in PROFILE_ITEMS:
+		var base_value := float(base_preferences.get(item_id, 0.45))
+		var personal_value := float(personal_preferences.get(item_id, 0.45))
+		blended[item_id] = (base_value + personal_value) * 0.5
+	return blended
+
+
+func _demographic_label() -> String:
+	var age_label := str(PrototypeConstants.CUSTOMER_AGE_LABELS.get(age_group, "顾客"))
+	var gender_label := str(PrototypeConstants.CUSTOMER_GENDER_LABELS.get(gender, ""))
+	return "%s%s" % [age_label, gender_label]

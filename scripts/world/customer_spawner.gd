@@ -41,7 +41,7 @@ func _spawn_customer(route_mode: String) -> void:
 	if route.is_empty():
 		return
 	var customer := CUSTOMER_SCENE.instantiate()
-	customer.call("setup", customer_type, _player_stall_spot(), route["start"], route["end"], route["points"])
+	customer.call("setup", customer_type, _player_stall_spot(), route["start"], route["end"], route["points"], _random_visual_variant_for_customer_type())
 	if route_world != null:
 		route_world.add_child(customer)
 	else:
@@ -195,3 +195,12 @@ func _road_navigator() -> Node:
 		if node.is_inside_tree() and node.get_parent() == route_world:
 			return node
 	return null
+
+
+func _random_visual_variant_for_customer_type() -> String:
+	var variants: Array = PrototypeConstants.STUDENT_CUSTOMER_VISUAL_VARIANTS
+	if customer_type == PrototypeConstants.CUSTOMER_WORKER:
+		variants = PrototypeConstants.WORKER_CUSTOMER_VISUAL_VARIANTS
+	if variants.is_empty():
+		return ""
+	return str(variants[_rng.randi_range(0, variants.size() - 1)])

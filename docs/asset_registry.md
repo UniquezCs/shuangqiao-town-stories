@@ -28,6 +28,10 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Character walk QC requires one shared scale and one feet baseline per sheet;
   no cropped hair/feet, no split heads, no edge-touching body parts, and no
   detached shadow/noise fragments.
+- Customer NPCs also carry gameplay demographics. `age_group` is one of
+  `youth`, `middle`, `elder`; `gender` is one of `male`, `female`. Purchase
+  behavior blends the demographic base budget/preferences and per-NPC random
+  budget/preferences at `50% / 50%`.
 - Raw character rows that touch their source grid boundary fail QC. Regenerate
   the broken direction as a separate padded sheet instead of trying to repair a
   cropped row after slicing.
@@ -59,10 +63,12 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 | Asset ID | Status | Current Resource | Future Need |
 | --- | --- | --- | --- |
 | `character.vendor` | implemented | `vendor_walk_spriteframes_48x64.tres` | Regenerated 2026-06-01 as a 1990s township middle-aged vendor; `48x64`, 4 directions, 8 frames, shared scale and stable feet baseline. `walk_right` is mirrored from normalized `walk_left` to keep crop height and foot position consistent. |
-| `character.student_customer` | implemented | `student_walk_spriteframes_48x64.tres` | Converted to the NPC 6-frame standard on 2026-06-01 by using the middle six motion frames from the previous 8-frame sheet. |
-| `character.worker_customer` | implemented | `worker_walk_spriteframes_48x64.tres` | Converted to the NPC 6-frame standard on 2026-06-01 by using the middle six motion frames from the previous 8-frame sheet. |
-| `character.female_elder_customer` | implemented | `female_elder_walk_spriteframes_48x64.tres` | Random town NPC visual variant; `48x64`, 4 directions, 6 frames, no duplicated standing endpoints, shared scale and stable feet baseline. |
-| `character.female_middle_customer` | implemented | `female_middle_walk_spriteframes_48x64.tres` | Random town NPC visual variant; `48x64`, 4 directions, 6 frames, no duplicated standing endpoints, shared scale and stable feet baseline. |
+| `character.student_customer` | implemented | `student_walk_spriteframes_48x64.tres` | Student visual pool: `youth + male`; `48x64`, 4 directions, 6 frames. |
+| `character.youth_female_customer` | implemented | `youth_female_walk_spriteframes_48x64.tres` | Student visual pool: `youth + female`; restored to the earlier preferred raw image on 2026-06-02, then only cleaned magenta/purple fringe pixels. |
+| `character.worker_customer` | implemented | `worker_walk_spriteframes_48x64.tres` | Worker visual pool: `middle + male`; `48x64`, 4 directions, 6 frames. |
+| `character.female_middle_customer` | implemented | `female_middle_walk_spriteframes_48x64.tres` | Worker visual pool: `middle + female`; `48x64`, 4 directions, 6 frames. |
+| `character.elder_male_customer` | implemented | `elder_male_walk_spriteframes_48x64.tres` | Random town NPC visual pool: `elder + male`; restored to the earlier preferred raw image on 2026-06-02, then only cleaned magenta/purple fringe pixels. |
+| `character.female_elder_customer` | implemented | `female_elder_walk_spriteframes_48x64.tres` | Random town NPC visual pool: `elder + female`; `48x64`, 4 directions, 6 frames. |
 | `character.chengguan` | placeholder | worker texture reused | Needs dedicated chengguan NPC, 4 directions, 6 frames each, `48x64`. |
 
 ### Item Icons

@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-01",
+	"updated_at": "2026-06-02",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -27,7 +27,8 @@
 			"Gameplay code should reference stable asset ids through this registry or domain configs.",
 			"Collision belongs to gameplay nodes, not to bitmap files.",
 			"Missing assets should use placeholders until the user explicitly asks for art generation.",
-			"Customer/random/civilian NPC walk sheets use 4 rows x 6 columns, 48x64 cells, and no duplicated standing endpoints."
+			"Customer/random/civilian NPC walk sheets use 4 rows x 6 columns, 48x64 cells, and no duplicated standing endpoints.",
+			"Customer purchase profiles use age_group + gender base budget/preferences blended 50/50 with per-NPC random budget/preferences."
 		]
 	},
 	"packs": {
@@ -155,6 +156,7 @@
 			"usage": [
 				"customer_student",
 				"commute_customer",
+				"student_visual_pool",
 				"four_direction_walk_animation",
 				"six_frame_walk"
 			],
@@ -186,8 +188,68 @@
 				"left_recover",
 				"right_recover"
 			],
-			"notes": "Converted to the NPC 6-frame standard on 2026-06-01 by using the six middle motion frames from the previous 8-frame sheet. Active SpriteFrames no longer include duplicated standing endpoints.",
-			"legacy_source_sheet": "res://assets/generated/sprites/characters/student_walk_4dir_8f_48x64.png"
+			"notes": "Converted to the NPC 6-frame standard on 2026-06-01 by using the six middle motion frames from the previous 8-frame sheet. Used as the youth male student-pool visual. Purchase behavior blends this demographic base budget/preferences with per-NPC random budget/preferences at 50% each.",
+			"legacy_source_sheet": "res://assets/generated/sprites/characters/student_walk_4dir_8f_48x64.png",
+			"demographic": {
+				"age_group": "youth",
+				"gender": "male"
+			},
+			"visual_variant": "youth_male"
+		},
+		"character.youth_female_customer": {
+			"type": "npc",
+			"status": "implemented",
+			"node_template": "Customer(CharacterBody2D)/Visual(AnimatedSprite2D)",
+			"current_spriteframes": "res://assets/generated/sprites/characters/youth_female_walk_spriteframes_48x64.tres",
+			"available_sheet": "res://assets/generated/sprites/characters/youth_female_walk_4dir_6f_48x64.png",
+			"size": [
+				48,
+				64
+			],
+			"usage": [
+				"customer_student",
+				"commute_customer",
+				"student_visual_pool",
+				"four_direction_walk_animation",
+				"six_frame_walk"
+			],
+			"used_by": [
+				"scripts/world/customer.gd",
+				"scripts/world/customer_spawner.gd",
+				"scenes/customer.tscn"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"characters"
+			],
+			"frame_size": [
+				48,
+				64
+			],
+			"animations": [
+				"walk_down",
+				"walk_left",
+				"walk_right",
+				"walk_up"
+			],
+			"frames_per_direction": 6,
+			"gait_sequence": [
+				"left_step",
+				"right_step",
+				"left_high",
+				"right_high",
+				"left_recover",
+				"right_recover"
+			],
+			"demographic": {
+				"age_group": "youth",
+				"gender": "female"
+			},
+			"visual_variant": "youth_female",
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_009737741d2c050a016a1daeba62dc8191bf88e8a49a5923e5.png",
+			"source_report": "res://assets/source/customer_demographic_variants_2026_06_02/customer_demographic_variants_report.json",
+			"notes": "Restored 2026-06-02 to the earlier preferred schoolgirl raw image, then only removed magenta/purple chroma-key fringe pixels. Used as the youth female student-pool visual; final sheet remains normalized to 48x64 cells, four directions, and 6 frames per direction."
 		},
 		"character.worker_customer": {
 			"type": "npc",
@@ -202,6 +264,7 @@
 			"usage": [
 				"customer_worker",
 				"commute_customer",
+				"worker_visual_pool",
 				"four_direction_walk_animation",
 				"six_frame_walk"
 			],
@@ -233,8 +296,13 @@
 				"left_recover",
 				"right_recover"
 			],
-			"notes": "Converted to the NPC 6-frame standard on 2026-06-01 by using the six middle motion frames from the previous 8-frame sheet. Active SpriteFrames no longer include duplicated standing endpoints.",
-			"legacy_source_sheet": "res://assets/generated/sprites/characters/worker_walk_4dir_8f_48x64.png"
+			"notes": "Converted to the NPC 6-frame standard on 2026-06-01 by using the six middle motion frames from the previous 8-frame sheet. Used as the middle-aged male worker-pool visual. Purchase behavior blends this demographic base budget/preferences with per-NPC random budget/preferences at 50% each.",
+			"legacy_source_sheet": "res://assets/generated/sprites/characters/worker_walk_4dir_8f_48x64.png",
+			"demographic": {
+				"age_group": "middle",
+				"gender": "male"
+			},
+			"visual_variant": "middle_male"
 		},
 		"character.female_elder_customer": {
 			"type": "npc",
@@ -247,8 +315,9 @@
 				64
 			],
 			"usage": [
-				"random_town_customer_visual_variant",
-				"four_direction_walk_animation"
+				"random_town_customer_visual_pool",
+				"four_direction_walk_animation",
+				"six_frame_walk"
 			],
 			"used_by": [
 				"scripts/world/customer.gd",
@@ -283,7 +352,65 @@
 			],
 			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_0a37dd4b1fdbef95016a1da41befe481919cd7246557822ba7.png",
 			"source_report": "res://assets/source/random_npc_walk_variants_2026_06_01/random_npc_walk_variants_report.json",
-			"notes": "Generated 2026-06-01 as a 1990s township elderly woman random NPC visual variant. Final sheet is normalized to 48x64 cells, four directions, 6 frames per direction, stable feet baseline, and no duplicated standing endpoints."
+			"notes": "Generated 2026-06-01 as a 1990s township elderly woman random NPC visual variant. Used as the elder female random-town visual. Final sheet is normalized to 48x64 cells, four directions, 6 frames per direction, stable feet baseline, and no duplicated standing endpoints. Purchase behavior blends this demographic base budget/preferences with per-NPC random budget/preferences at 50% each.",
+			"demographic": {
+				"age_group": "elder",
+				"gender": "female"
+			},
+			"visual_variant": "elder_female"
+		},
+		"character.elder_male_customer": {
+			"type": "npc",
+			"status": "implemented",
+			"node_template": "Customer(CharacterBody2D)/Visual(AnimatedSprite2D)",
+			"current_spriteframes": "res://assets/generated/sprites/characters/elder_male_walk_spriteframes_48x64.tres",
+			"available_sheet": "res://assets/generated/sprites/characters/elder_male_walk_4dir_6f_48x64.png",
+			"size": [
+				48,
+				64
+			],
+			"usage": [
+				"random_town_customer_visual_pool",
+				"four_direction_walk_animation",
+				"six_frame_walk"
+			],
+			"used_by": [
+				"scripts/world/customer.gd",
+				"scripts/world/town_random_customer_spawner.gd",
+				"scenes/customer.tscn"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"characters"
+			],
+			"frame_size": [
+				48,
+				64
+			],
+			"animations": [
+				"walk_down",
+				"walk_left",
+				"walk_right",
+				"walk_up"
+			],
+			"frames_per_direction": 6,
+			"gait_sequence": [
+				"left_step",
+				"right_step",
+				"left_high",
+				"right_high",
+				"left_recover",
+				"right_recover"
+			],
+			"demographic": {
+				"age_group": "elder",
+				"gender": "male"
+			},
+			"visual_variant": "elder_male",
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_009737741d2c050a016a1daf4f6250819199a10ff2c132528a.png",
+			"source_report": "res://assets/source/customer_demographic_variants_2026_06_02/customer_demographic_variants_report.json",
+			"notes": "Restored 2026-06-02 to the earlier preferred elderly-man raw image, then only removed magenta/purple chroma-key fringe pixels. Used as the elder male random-town visual; final sheet remains normalized to 48x64 cells, four directions, and 6 frames per direction."
 		},
 		"character.female_middle_customer": {
 			"type": "npc",
@@ -296,8 +423,11 @@
 				64
 			],
 			"usage": [
-				"random_town_customer_visual_variant",
-				"four_direction_walk_animation"
+				"customer_worker",
+				"commute_customer",
+				"worker_visual_pool",
+				"four_direction_walk_animation",
+				"six_frame_walk"
 			],
 			"used_by": [
 				"scripts/world/customer.gd",
@@ -332,7 +462,12 @@
 			],
 			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_0a37dd4b1fdbef95016a1da465f0388191a1d9292e47d7b127.png",
 			"source_report": "res://assets/source/random_npc_walk_variants_2026_06_01/random_npc_walk_variants_report.json",
-			"notes": "Generated 2026-06-01 as a 1990s township middle-aged woman random NPC visual variant. Final sheet is normalized to 48x64 cells, four directions, 6 frames per direction, stable feet baseline, and no duplicated standing endpoints."
+			"notes": "Generated 2026-06-01 as a 1990s township middle-aged woman NPC visual variant. Used as the middle-aged female worker-pool visual. Final sheet is normalized to 48x64 cells, four directions, 6 frames per direction, stable feet baseline, and no duplicated standing endpoints. Purchase behavior blends this demographic base budget/preferences with per-NPC random budget/preferences at 50% each.",
+			"demographic": {
+				"age_group": "middle",
+				"gender": "female"
+			},
+			"visual_variant": "middle_female"
 		},
 		"character.chengguan": {
 			"type": "npc",
