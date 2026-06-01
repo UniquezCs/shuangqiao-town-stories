@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godot 项目每日简报 - 2026-06-01</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4efe7;
+      --card: #fffaf3;
+      --ink: #1f2933;
+      --muted: #52606d;
+      --line: #d9cbb8;
+      --accent: #8c3d1f;
+      --accent-soft: #f6dfd1;
+      --warn: #8a6d1d;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top right, #fbe9d8 0, transparent 28%),
+        linear-gradient(180deg, #f7f1e8 0%, var(--bg) 100%);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+
+    header, section {
+      background: color-mix(in srgb, var(--card) 92%, white 8%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(62, 39, 24, 0.06);
+      padding: 24px 28px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #5a2a16;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    p, li { margin: 0; color: var(--ink); }
+    ul { margin: 10px 0 0; padding-left: 20px; }
+    li + li { margin-top: 8px; }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .meta div, .stat {
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat strong, .meta strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .stat span, .meta span {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .note {
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .warn {
+      background: #fbf4dd;
+      border-left: 4px solid var(--warn);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.95em;
+      background: #f1e7db;
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>日期：2026-06-01</p>
+      <p>统计口径：以上次自动化运行时间 <code>2026-05-30 22:00:42 UTC</code>（北京时间 <code>2026-05-31 06:00:42 CST</code>）为边界。本次区间内未发现新的 git 提交，因此以下内容主要基于工作区改动、删除项与未跟踪文件整理。</p>
+      <div class="meta">
+        <div><strong>生成时间</strong><span>2026-06-01 06:01:11 CST</span></div>
+        <div><strong>简报文件</strong><span>docs/daily-briefs/2026-06-01.html</span></div>
+        <div><strong>回顾基准</strong><span>自 2026-05-31 06:00:42 起</span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>已修改</strong><span>47</span></div>
+        <div class="stat"><strong>已删除</strong><span>4</span></div>
+        <div class="stat"><strong>未跟踪</strong><span>37</span></div>
+        <div class="stat"><strong>新增提交</strong><span>0</span></div>
+      </div>
+    </header>
+
+    <section>
+      <h2>概览</h2>
+      <ul>
+        <li><strong>插件层面：</strong><code>addons/godot_ai</code> 出现大规模重构，重点集中在调试器消息链路、游戏侧 <code>eval</code> 处理、日志加载兼容性，以及编辑器设置/遥测的拆分整理。</li>
+        <li><strong>玩法层面：</strong>顾客 NPC 已从静态 <code>Sprite2D</code> 迁移为四方向 <code>AnimatedSprite2D</code>，并开始引入动态路线超时与城镇随机顾客刷新逻辑。</li>
+        <li><strong>资源层面：</strong>学生与工人顾客的四方向行走图重新生成并配套更新 <code>SpriteFrames</code>、QC 文档、诊断素材和自动化测试。</li>
+        <li><strong>文档/配置层面：</strong><code>configs/assets.json</code> 和资产注册文档发生较大改写，说明资产登记状态已随动画接入同步调整。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <ul>
+        <li><strong>MCP 调试器与运行时日志兼容性：</strong><code>addons/godot_ai/debugger/mcp_debugger_plugin.gd</code> 新增对 <code>mcp:eval_ack</code>、<code>mcp:eval_compiled</code>、<code>mcp:eval_runtime_error</code>、<code>mcp:game_command_response</code> 等消息的处理；同时通过 <code>addons/godot_ai/runtime/logger_loader.gd</code> + <code>runtime/loggers/.gdignore</code> 规避 Godot 4.3/4.4 对 <code>extends Logger</code> 的解析报错。</li>
+        <li><strong>顾客动画正式接入：</strong><code>scenes/customer.tscn</code> 将视觉节点切换为 <code>AnimatedSprite2D</code>，<code>scripts/world/customer.gd</code> 增加朝向判定、行走/暂停动画控制、基于路径长度的超时计算，摆脱过去的静态贴图占位实现。</li>
+        <li><strong>城镇随机客流系统：</strong><code>scripts/world/town_random_customer_spawner.gd</code> 新增按日程分钟表刷新的随机顾客生成器；<code>scenes/town_scene.tscn</code> 为多个 <code>npc_endpoint</code> 标注 <code>endpoint_type</code>，并挂载 <code>TownRandomCustomerSpawner</code>。</li>
+        <li><strong>角色行走图重做与质检：</strong>学生/工人顾客四方向动作图、对应 <code>.tres</code>、重建脚本、可视化诊断图、<code>docs/character_animation_qc.md</code> 与两套测试场景共同落地，重点修复 <code>walk_up</code> 行头发被裁切的问题。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li><code>addons/godot_ai/runtime/logger_loader.gd</code>、<code>addons/godot_ai/runtime/loggers/editor_logger.gd</code>、<code>addons/godot_ai/runtime/loggers/game_logger.gd</code>：运行时动态编译日志脚本的新方案。</li>
+        <li><code>addons/godot_ai/utils/settings.gd</code>：沉淀 <code>godot_ai/*</code> EditorSettings 键和遥测开关判断逻辑。</li>
+        <li><code>scripts/world/town_random_customer_spawner.gd</code>：支持按时间表、端点权重和端点类型筛选的随机顾客刷新器。</li>
+        <li><code>tests/customer_animation_test.gd</code>、<code>tests/customer_walk_cycle_quality_test.gd</code> 及对应 <code>.tscn</code>：覆盖顾客动画接入正确性与角色行走图质量规则。</li>
+        <li><code>tools/rebuild_customer_walk_cycles.py</code>、<code>docs/character_animation_qc.md</code>、<code>assets/source/customer_walk_rework_2026_05_31/*</code>：记录和复现本轮顾客行走图修复过程。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li><code>addons/godot_ai/plugin.gd</code>、<code>mcp_dock.gd</code>、<code>editor_handler.gd</code>、<code>project_handler.gd</code>、<code>server_lifecycle.gd</code>、<code>update_manager.gd</code>、<code>telemetry.gd</code> 等文件被集中调整，说明插件入口、生命周期和调试交互都有联动变更。</li>
+        <li><code>addons/godot_ai/runtime/game_helper.gd</code> 是本次最大变更点之一，结合调试器端新增消息，推测游戏进程内的命令执行与错误回传路径被显著强化。</li>
+        <li><code>assets/generated/sprites/characters/student_walk_4dir_8f_48x64.png</code>、<code>worker_walk_4dir_8f_48x64.png</code> 以及对应 <code>SpriteFrames</code> 已更新；<code>vendor_walk_spriteframes_48x64.tres</code> 也有轻微调整。</li>
+        <li><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、<code>docs/development_baseline.md</code> 与 <code>project.godot</code> 同步更新，资产状态与开发基线说明已发生变化。</li>
+        <li><code>scenes/town_scene.tscn</code>、<code>scripts/world/npc_endpoint.gd</code>、<code>scripts/world/customer_spawner.gd</code>、<code>tests/customer_parenting_test.gd</code> 共同反映城镇客流与端点定义的扩展。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <ul>
+        <li><code>addons/godot_ai/runtime/editor_logger.gd</code> 与 <code>addons/godot_ai/runtime/game_logger.gd</code>（及其 <code>.uid</code>）已从原位置删除。</li>
+        <li><code>addons/godot_ai/handlers/animation_handler.gd</code> 与 <code>curve_handler.gd</code> 的 diff 表现为大段删除，需确认是能力下沉、职责迁移，还是尚未完成的重构中间态。</li>
+      </ul>
+      <div class="warn">当前删除项看起来更像“迁移重组”而不是纯删除，提交前应确认引用路径、预加载脚本和插件注册表是否全部更新完毕。</div>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li>调试器与 <code>game_eval</code> 链路的改造会直接影响插件稳定性；如果 ack/compiled/probe 的时序判断有遗漏，可能导致误报超时或丢失真实运行时错误。</li>
+        <li>日志脚本迁移到 <code>.gdignore</code> 目录后，理论上能消除低版本 Godot 的启动报错，但也要求运行时加载路径、导出包文件和热重载场景全部验证一遍。</li>
+        <li>顾客动画从静态贴图切换为 <code>AnimatedSprite2D</code> 后，NPC 的视觉表现会明显改善，但也引入了动画状态、朝向判定和路线超时的新行为差异。</li>
+        <li>随机顾客生成器会改变城镇内 NPC 密度与路线分布；若端点权重、端点类型或刷新增量未调平，可能影响性能、可读性或玩法节奏。</li>
+        <li><code>configs/assets.json</code> 的大体量重写增加了合并冲突概率，建议后续提交时与逻辑代码改动分离。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>运行并确认 <code>tests/customer_walk_cycle_quality_test.tscn</code>、<code>tests/customer_animation_test.tscn</code>、<code>tests/customer_parenting_test.gd</code> 对应场景/套件全部通过。</li>
+        <li>在目标 Godot 版本矩阵（至少 4.3/4.4 与 4.5+）验证 <code>logger_loader.gd</code> 方案是否真正清除了启动期 <code>Logger</code> 解析错误。</li>
+        <li>补做 <code>town_random_customer_spawner.gd</code> 的端点不足、权重为零、无有效摊位等边界测试。</li>
+        <li>确认 <code>handlers/animation_handler.gd</code> 与 <code>curve_handler.gd</code> 的大段删除是否已被其他处理器或工具目录完整接管。</li>
+        <li>决定 <code>docs/daily-briefs/2026-05-31.html</code> 是否应纳入版本控制，避免每日简报目录持续出现未跟踪文件。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>用于回顾的关键文件路径</h2>
+      <ul>
+        <li><code>addons/godot_ai/debugger/mcp_debugger_plugin.gd</code></li>
+        <li><code>addons/godot_ai/runtime/game_helper.gd</code></li>
+        <li><code>addons/godot_ai/runtime/logger_loader.gd</code></li>
+        <li><code>addons/godot_ai/runtime/loggers/editor_logger.gd</code></li>
+        <li><code>addons/godot_ai/runtime/loggers/game_logger.gd</code></li>
+        <li><code>addons/godot_ai/utils/settings.gd</code></li>
+        <li><code>scenes/customer.tscn</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>scripts/world/customer.gd</code></li>
+        <li><code>scripts/world/npc_endpoint.gd</code></li>
+        <li><code>scripts/world/town_random_customer_spawner.gd</code></li>
+        <li><code>assets/generated/sprites/characters/student_walk_4dir_8f_48x64.png</code></li>
+        <li><code>assets/generated/sprites/characters/worker_walk_4dir_8f_48x64.png</code></li>
+        <li><code>assets/source/customer_walk_rework_2026_05_31/customer_walk_rework_report.json</code></li>
+        <li><code>configs/assets.json</code></li>
+        <li><code>docs/character_animation_qc.md</code></li>
+        <li><code>tests/customer_animation_test.gd</code></li>
+        <li><code>tests/customer_walk_cycle_quality_test.gd</code></li>
+      </ul>
+      <p class="note">备注：本简报未覆盖二进制资源的逐像素细节，只基于文件差异、脚本内容和文档说明进行归纳。</p>
+    </section>
+  </main>
+</body>
+</html>

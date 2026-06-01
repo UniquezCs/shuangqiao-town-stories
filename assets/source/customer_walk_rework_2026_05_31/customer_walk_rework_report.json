@@ -1,0 +1,66 @@
+{
+  "frame_size": [
+    48,
+    64
+  ],
+  "directions": [
+    "walk_down",
+    "walk_left",
+    "walk_right",
+    "walk_up"
+  ],
+  "gait_sequence": [
+    "standing",
+    "left_low",
+    "right_low",
+    "left_high",
+    "right_high",
+    "left_lower",
+    "right_lower",
+    "standing"
+  ],
+  "characters": {
+    "student": {
+      "source": "res://assets/source/customer_walk_rework_2026_05_31/student_walk_raw.png",
+      "back_source": "res://assets/source/customer_walk_rework_2026_05_31/student_walk_up_raw.png",
+      "sheet": "res://assets/generated/sprites/characters/student_walk_4dir_8f_48x64.png",
+      "frames": 32,
+      "group_scales": {
+        "back": 0.16842105263157894,
+        "main": 0.25263157894736843
+      },
+      "group_max_source_bbox": {
+        "back": [
+          135,
+          285
+        ],
+        "main": [
+          104,
+          190
+        ]
+      },
+      "feet_baseline": 61
+    },
+    "worker": {
+      "source": "res://assets/source/customer_walk_rework_2026_05_31/worker_walk_raw.png",
+      "back_source": "res://assets/source/customer_walk_rework_2026_05_31/worker_walk_up_raw.png",
+      "sheet": "res://assets/generated/sprites/characters/worker_walk_4dir_8f_48x64.png",
+      "frames": 32,
+      "group_scales": {
+        "back": 0.16666666666666666,
+        "main": 0.24242424242424243
+      },
+      "group_max_source_bbox": {
+        "back": [
+          140,
+          288
+        ],
+        "main": [
+          108,
+          198
+        ]
+      },
+      "feet_baseline": 61
+    }
+  }
+}

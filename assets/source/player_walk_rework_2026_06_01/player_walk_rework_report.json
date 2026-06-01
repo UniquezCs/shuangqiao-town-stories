@@ -1,0 +1,919 @@
+{
+  "source_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_0c151a03bae83ade016a1d87ee4b688191a360deb40669f956.png",
+  "output": "res://assets/generated/sprites/characters/vendor_walk_4dir_8f_48x64.png",
+  "sheet_size": [
+    384,
+    256
+  ],
+  "cell_size": [
+    48,
+    64
+  ],
+  "directions": [
+    "walk_down",
+    "walk_left",
+    "walk_right",
+    "walk_up"
+  ],
+  "frames_per_direction": 8,
+  "scale": 0.23628691983122363,
+  "feet_baseline": 61,
+  "target_body_height": 56,
+  "frame_8_matches_frame_1": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "metrics": [
+    {
+      "index": 0,
+      "source_bbox": [
+        46,
+        49,
+        155,
+        240
+      ],
+      "output_size": [
+        26,
+        45
+      ],
+      "paste": [
+        11,
+        16
+      ]
+    },
+    {
+      "index": 1,
+      "source_bbox": [
+        35,
+        46,
+        143,
+        235
+      ],
+      "output_size": [
+        26,
+        45
+      ],
+      "paste": [
+        11,
+        16
+      ]
+    },
+    {
+      "index": 2,
+      "source_bbox": [
+        37,
+        46,
+        148,
+        243
+      ],
+      "output_size": [
+        26,
+        47
+      ],
+      "paste": [
+        11,
+        14
+      ]
+    },
+    {
+      "index": 3,
+      "source_bbox": [
+        41,
+        49,
+        155,
+        243
+      ],
+      "output_size": [
+        27,
+        46
+      ],
+      "paste": [
+        10,
+        15
+      ]
+    },
+    {
+      "index": 4,
+      "source_bbox": [
+        38,
+        47,
+        159,
+        244
+      ],
+      "output_size": [
+        29,
+        47
+      ],
+      "paste": [
+        9,
+        14
+      ]
+    },
+    {
+      "index": 5,
+      "source_bbox": [
+        35,
+        46,
+        154,
+        243
+      ],
+      "output_size": [
+        28,
+        47
+      ],
+      "paste": [
+        10,
+        14
+      ]
+    },
+    {
+      "index": 6,
+      "source_bbox": [
+        40,
+        49,
+        154,
+        244
+      ],
+      "output_size": [
+        27,
+        46
+      ],
+      "paste": [
+        10,
+        15
+      ]
+    },
+    {
+      "index": 7,
+      "source_bbox": [
+        48,
+        49,
+        154,
+        242
+      ],
+      "output_size": [
+        25,
+        46
+      ],
+      "paste": [
+        11,
+        15
+      ]
+    },
+    {
+      "index": 8,
+      "source_bbox": [
+        60,
+        33,
+        129,
+        223
+      ],
+      "output_size": [
+        16,
+        45
+      ],
+      "paste": [
+        16,
+        16
+      ]
+    },
+    {
+      "index": 9,
+      "source_bbox": [
+        48,
+        33,
+        136,
+        222
+      ],
+      "output_size": [
+        21,
+        45
+      ],
+      "paste": [
+        13,
+        16
+      ]
+    },
+    {
+      "index": 10,
+      "source_bbox": [
+        31,
+        32,
+        138,
+        222
+      ],
+      "output_size": [
+        25,
+        45
+      ],
+      "paste": [
+        11,
+        16
+      ]
+    },
+    {
+      "index": 11,
+      "source_bbox": [
+        59,
+        33,
+        152,
+        222
+      ],
+      "output_size": [
+        22,
+        45
+      ],
+      "paste": [
+        13,
+        16
+      ]
+    },
+    {
+      "index": 12,
+      "source_bbox": [
+        60,
+        32,
+        160,
+        222
+      ],
+      "output_size": [
+        24,
+        45
+      ],
+      "paste": [
+        12,
+        16
+      ]
+    },
+    {
+      "index": 13,
+      "source_bbox": [
+        56,
+        33,
+        143,
+        222
+      ],
+      "output_size": [
+        21,
+        45
+      ],
+      "paste": [
+        13,
+        16
+      ]
+    },
+    {
+      "index": 14,
+      "source_bbox": [
+        60,
+        34,
+        152,
+        222
+      ],
+      "output_size": [
+        22,
+        44
+      ],
+      "paste": [
+        13,
+        17
+      ]
+    },
+    {
+      "index": 15,
+      "source_bbox": [
+        63,
+        33,
+        133,
+        224
+      ],
+      "output_size": [
+        17,
+        45
+      ],
+      "paste": [
+        15,
+        16
+      ]
+    },
+    {
+      "index": 16,
+      "source_bbox": [
+        62,
+        19,
+        132,
+        256
+      ],
+      "output_size": [
+        17,
+        56
+      ],
+      "paste": [
+        15,
+        5
+      ]
+    },
+    {
+      "index": 17,
+      "source_bbox": [
+        48,
+        19,
+        131,
+        256
+      ],
+      "output_size": [
+        20,
+        56
+      ],
+      "paste": [
+        14,
+        5
+      ]
+    },
+    {
+      "index": 18,
+      "source_bbox": [
+        34,
+        19,
+        132,
+        256
+      ],
+      "output_size": [
+        23,
+        56
+      ],
+      "paste": [
+        12,
+        5
+      ]
+    },
+    {
+      "index": 19,
+      "source_bbox": [
+        47,
+        19,
+        138,
+        256
+      ],
+      "output_size": [
+        22,
+        56
+      ],
+      "paste": [
+        13,
+        5
+      ]
+    },
+    {
+      "index": 20,
+      "source_bbox": [
+        53,
+        19,
+        144,
+        256
+      ],
+      "output_size": [
+        22,
+        56
+      ],
+      "paste": [
+        13,
+        5
+      ]
+    },
+    {
+      "index": 21,
+      "source_bbox": [
+        57,
+        19,
+        144,
+        256
+      ],
+      "output_size": [
+        21,
+        56
+      ],
+      "paste": [
+        13,
+        5
+      ]
+    },
+    {
+      "index": 22,
+      "source_bbox": [
+        54,
+        19,
+        139,
+        256
+      ],
+      "output_size": [
+        20,
+        56
+      ],
+      "paste": [
+        14,
+        5
+      ]
+    },
+    {
+      "index": 23,
+      "source_bbox": [
+        62,
+        19,
+        131,
+        256
+      ],
+      "output_size": [
+        16,
+        56
+      ],
+      "paste": [
+        16,
+        5
+      ]
+    },
+    {
+      "index": 24,
+      "source_bbox": [
+        44,
+        0,
+        144,
+        182
+      ],
+      "output_size": [
+        24,
+        43
+      ],
+      "paste": [
+        12,
+        18
+      ]
+    },
+    {
+      "index": 25,
+      "source_bbox": [
+        42,
+        0,
+        142,
+        182
+      ],
+      "output_size": [
+        24,
+        43
+      ],
+      "paste": [
+        12,
+        18
+      ]
+    },
+    {
+      "index": 26,
+      "source_bbox": [
+        44,
+        0,
+        148,
+        185
+      ],
+      "output_size": [
+        25,
+        44
+      ],
+      "paste": [
+        11,
+        17
+      ]
+    },
+    {
+      "index": 27,
+      "source_bbox": [
+        47,
+        0,
+        157,
+        185
+      ],
+      "output_size": [
+        26,
+        44
+      ],
+      "paste": [
+        11,
+        17
+      ]
+    },
+    {
+      "index": 28,
+      "source_bbox": [
+        48,
+        0,
+        157,
+        183
+      ],
+      "output_size": [
+        26,
+        43
+      ],
+      "paste": [
+        11,
+        18
+      ]
+    },
+    {
+      "index": 29,
+      "source_bbox": [
+        42,
+        0,
+        146,
+        183
+      ],
+      "output_size": [
+        25,
+        43
+      ],
+      "paste": [
+        11,
+        18
+      ]
+    },
+    {
+      "index": 30,
+      "source_bbox": [
+        46,
+        0,
+        152,
+        185
+      ],
+      "output_size": [
+        25,
+        44
+      ],
+      "paste": [
+        11,
+        17
+      ]
+    },
+    {
+      "index": 31,
+      "source_bbox": [
+        48,
+        0,
+        144,
+        182
+      ],
+      "output_size": [
+        23,
+        43
+      ],
+      "paste": [
+        12,
+        18
+      ]
+    }
+  ],
+  "alignment_fix_2026_06_01": {
+    "reason": "walk_right raw crop drift caused several frames to use a different top/bottom transparent bbox, making the character visually lift while walking right.",
+    "method": "Rebuilt walk_right by mirroring normalized walk_left frames, then snapped all frames to the same feet baseline inside 48x64 cells.",
+    "cell_size": [
+      48,
+      64
+    ],
+    "feet_baseline_exclusive_y": 61,
+    "row_order": [
+      "walk_down",
+      "walk_left",
+      "walk_right",
+      "walk_up"
+    ],
+    "qc": {
+      "walk_down": {
+        "bboxes": [
+          [
+            11,
+            16,
+            37,
+            61
+          ],
+          [
+            11,
+            16,
+            37,
+            61
+          ],
+          [
+            11,
+            14,
+            37,
+            61
+          ],
+          [
+            10,
+            15,
+            37,
+            61
+          ],
+          [
+            9,
+            14,
+            38,
+            61
+          ],
+          [
+            10,
+            14,
+            38,
+            61
+          ],
+          [
+            10,
+            15,
+            37,
+            61
+          ],
+          [
+            11,
+            16,
+            37,
+            61
+          ]
+        ],
+        "heights": [
+          45,
+          45,
+          47,
+          46,
+          47,
+          47,
+          46,
+          45
+        ],
+        "bottoms": [
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61
+        ],
+        "tops": [
+          16,
+          16,
+          14,
+          15,
+          14,
+          14,
+          15,
+          16
+        ]
+      },
+      "walk_left": {
+        "bboxes": [
+          [
+            16,
+            16,
+            32,
+            61
+          ],
+          [
+            13,
+            16,
+            34,
+            61
+          ],
+          [
+            11,
+            16,
+            36,
+            61
+          ],
+          [
+            13,
+            16,
+            35,
+            61
+          ],
+          [
+            12,
+            16,
+            36,
+            61
+          ],
+          [
+            13,
+            16,
+            34,
+            61
+          ],
+          [
+            13,
+            17,
+            35,
+            61
+          ],
+          [
+            16,
+            16,
+            32,
+            61
+          ]
+        ],
+        "heights": [
+          45,
+          45,
+          45,
+          45,
+          45,
+          45,
+          44,
+          45
+        ],
+        "bottoms": [
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61
+        ],
+        "tops": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          17,
+          16
+        ]
+      },
+      "walk_right": {
+        "bboxes": [
+          [
+            16,
+            16,
+            32,
+            61
+          ],
+          [
+            14,
+            16,
+            35,
+            61
+          ],
+          [
+            12,
+            16,
+            37,
+            61
+          ],
+          [
+            13,
+            16,
+            35,
+            61
+          ],
+          [
+            12,
+            16,
+            36,
+            61
+          ],
+          [
+            14,
+            16,
+            35,
+            61
+          ],
+          [
+            13,
+            17,
+            35,
+            61
+          ],
+          [
+            16,
+            16,
+            32,
+            61
+          ]
+        ],
+        "heights": [
+          45,
+          45,
+          45,
+          45,
+          45,
+          45,
+          44,
+          45
+        ],
+        "bottoms": [
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61
+        ],
+        "tops": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          17,
+          16
+        ]
+      },
+      "walk_up": {
+        "bboxes": [
+          [
+            12,
+            18,
+            36,
+            61
+          ],
+          [
+            12,
+            18,
+            36,
+            61
+          ],
+          [
+            11,
+            17,
+            36,
+            61
+          ],
+          [
+            11,
+            17,
+            37,
+            61
+          ],
+          [
+            11,
+            18,
+            37,
+            61
+          ],
+          [
+            11,
+            18,
+            36,
+            61
+          ],
+          [
+            11,
+            17,
+            36,
+            61
+          ],
+          [
+            12,
+            18,
+            36,
+            61
+          ]
+        ],
+        "heights": [
+          43,
+          43,
+          44,
+          44,
+          43,
+          43,
+          44,
+          43
+        ],
+        "bottoms": [
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61,
+          61
+        ],
+        "tops": [
+          18,
+          18,
+          17,
+          17,
+          18,
+          18,
+          17,
+          18
+        ]
+      }
+    }
+  }
+}

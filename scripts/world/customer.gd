@@ -2,31 +2,38 @@ extends CharacterBody2D
 
 const SPEED := 55.0
 const DEMAND_THRESHOLD := 0.45
-const STUDENT_TEXTURE := preload("res://assets/generated/sprites/characters/customer_student_48x64.png")
-const WORKER_TEXTURE := preload("res://assets/generated/sprites/characters/customer_worker_48x64.png")
+const ROUTE_TIMEOUT_PADDING_SECONDS := 10.0
+const STUDENT_FRAMES := preload("res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres")
+const WORKER_FRAMES := preload("res://assets/generated/sprites/characters/worker_walk_spriteframes_48x64.tres")
+const FEMALE_ELDER_FRAMES := preload("res://assets/generated/sprites/characters/female_elder_walk_spriteframes_48x64.tres")
+const FEMALE_MIDDLE_FRAMES := preload("res://assets/generated/sprites/characters/female_middle_walk_spriteframes_48x64.tres")
 const APPLE_ICON_TEXTURE := preload("res://assets/generated/sprites/items/general/apple_32.png")
 const PurchaseInteractionScript := preload("res://scripts/world/customer_purchase_interaction.gd")
 
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
+@export var visual_variant := ""
 
 var target_stall: Node = null
 var state := "walking"
 var exit_position := Vector2.ZERO
+var facing := "down"
 var _started_at := 0.0
 var _customer_profile := {}
 var _influence_stall: Node = null
 var _route_points: Array[Vector2] = []
 var _route_index := 0
+var _route_timeout_seconds := 18.0
 var _tree_entered_position: Vector2
 var _purchase_stall: Node = null
 var _purchase_deadline_msec := 0
 var _rng := RandomNumberGenerator.new()
 
-@onready var visual: Sprite2D = $Visual
+@onready var visual: AnimatedSprite2D = $Visual
 
 
-func setup(next_type: String, stall: Node, start_position: Vector2, leave_position: Vector2, route_points: Array = []) -> void:
+func setup(next_type: String, stall: Node, start_position: Vector2, leave_position: Vector2, route_points: Array = [], next_visual_variant := "") -> void:
 	customer_type = next_type
+	visual_variant = next_visual_variant
 	target_stall = stall
 	global_position = start_position
 	exit_position = leave_position
@@ -35,8 +42,9 @@ func setup(next_type: String, stall: Node, start_position: Vector2, leave_positi
 		_route_points.append(point as Vector2)
 	_route_points.append(exit_position)
 	_route_index = 0
+	_route_timeout_seconds = _calculate_route_timeout(start_position, _route_points)
 	_build_customer_profile()
-	_apply_customer_texture()
+	_apply_customer_spriteframes()
 
 
 func _enter_tree() -> void:
@@ -45,7 +53,8 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_started_at = Time.get_ticks_msec() / 1000.0
-	_apply_customer_texture()
+	_apply_customer_spriteframes()
+	_pause_current_animation()
 
 
 func _physics_process(_delta: float) -> void:
@@ -63,14 +72,14 @@ func _physics_process(_delta: float) -> void:
 		_walk_to_exit()
 	else:
 		velocity = Vector2.ZERO
+		_pause_current_animation()
 		move_and_slide()
 
 
 func _move_towards(target: Vector2) -> void:
 	var direction := global_position.direction_to(target)
 	velocity = direction * SPEED
-	if abs(direction.x) > 0.05:
-		visual.flip_h = direction.x < 0.0
+	_play_walk_animation(direction)
 	move_and_slide()
 
 
@@ -94,6 +103,7 @@ func _begin_purchase_request(active_stall: Node) -> void:
 
 	state = "waiting_for_player"
 	velocity = Vector2.ZERO
+	_pause_current_animation()
 	_purchase_stall = active_stall
 	_create_purchase_interaction()
 	_create_purchase_countdown()
@@ -212,10 +222,45 @@ func _clear_purchase_request() -> void:
 			node.queue_free()
 
 
-func _apply_customer_texture() -> void:
+func _apply_customer_spriteframes() -> void:
 	if not is_node_ready():
 		return
-	visual.texture = WORKER_TEXTURE if customer_type == PrototypeConstants.CUSTOMER_WORKER else STUDENT_TEXTURE
+	visual.sprite_frames = _spriteframes_for_visual()
+	var animation := "walk_%s" % facing
+	if visual.sprite_frames != null and visual.sprite_frames.has_animation(animation):
+		visual.play(animation)
+
+
+func _spriteframes_for_visual() -> SpriteFrames:
+	match visual_variant:
+		PrototypeConstants.CUSTOMER_VISUAL_FEMALE_ELDER:
+			return FEMALE_ELDER_FRAMES
+		PrototypeConstants.CUSTOMER_VISUAL_FEMALE_MIDDLE:
+			return FEMALE_MIDDLE_FRAMES
+	return WORKER_FRAMES if customer_type == PrototypeConstants.CUSTOMER_WORKER else STUDENT_FRAMES
+
+
+func _play_walk_animation(direction: Vector2) -> void:
+	if direction.length() <= 0.0:
+		_pause_current_animation()
+		return
+	if abs(direction.x) > abs(direction.y):
+		facing = "right" if direction.x > 0.0 else "left"
+	else:
+		facing = "down" if direction.y > 0.0 else "up"
+	var animation := "walk_%s" % facing
+	if visual.animation != animation:
+		visual.play(animation)
+	elif not visual.is_playing():
+		visual.play()
+
+
+func _pause_current_animation() -> void:
+	var animation := "walk_%s" % facing
+	if visual.animation != animation:
+		visual.play(animation)
+	visual.frame = 0
+	visual.pause()
 
 
 func _walk_to_exit() -> void:
@@ -225,8 +270,17 @@ func _walk_to_exit() -> void:
 	_move_towards(target)
 	if global_position.distance_to(target) < 10.0:
 		_route_index += 1
-	if _route_index >= _route_points.size() or (Time.get_ticks_msec() / 1000.0) - _started_at > 18.0:
+	if _route_index >= _route_points.size() or (Time.get_ticks_msec() / 1000.0) - _started_at > _route_timeout_seconds:
 		queue_free()
+
+
+func _calculate_route_timeout(start_position: Vector2, route_points: Array[Vector2]) -> float:
+	var distance := 0.0
+	var previous := start_position
+	for point in route_points:
+		distance += previous.distance_to(point)
+		previous = point
+	return max(18.0, distance / SPEED + ROUTE_TIMEOUT_PADDING_SECONDS)
 
 
 func _should_visit_stall(active_stall: Node) -> bool:

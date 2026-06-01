@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dyg08j0ruv6ak"]
 
 [ext_resource type="Script" uid="uid://cn8cuj4ys65oh" path="res://scripts/world/customer.gd" id="1_customer"]
-[ext_resource type="Texture2D" path="res://assets/generated/sprites/characters/customer_student_48x64.png" id="2_xss0h"]
+[ext_resource type="SpriteFrames" uid="uid://bni04kv8biee8" path="res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres" id="2_student_frames"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_customer"]
 size = Vector2(22, 50)
@@ -11,10 +11,12 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_customer")
 
-[node name="Visual" type="Sprite2D" parent="." unique_id=249639336]
+[node name="Visual" type="AnimatedSprite2D" parent="." unique_id=249639336]
 texture_filter = 1
 position = Vector2(0, -18)
-texture = ExtResource("2_xss0h")
+sprite_frames = ExtResource("2_student_frames")
+animation = &"walk_down"
+frame_progress = 0.84374326
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=841213487]
 position = Vector2(0, -21)

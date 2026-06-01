@@ -7,7 +7,7 @@ const WAYPOINT_ROUTE_JITTER := Vector2(90, 75)
 
 @export var spot_id := PrototypeConstants.SPOT_SCHOOL
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
-@export var home_endpoint_id := "residential_area"
+@export var home_endpoint_id := "residential"
 @export var destination_endpoint_id := "school_gate"
 @export var spawn_offset := Vector2(-260, 0)
 @export var exit_offset := Vector2(260, 0)
@@ -38,6 +38,8 @@ func _spawn_customer(route_mode: String) -> void:
 	if route_mode == CustomerSchedule.ROUTE_NONE:
 		return
 	var route := _route_for_mode(route_mode)
+	if route.is_empty():
+		return
 	var customer := CUSTOMER_SCENE.instantiate()
 	customer.call("setup", customer_type, _player_stall_spot(), route["start"], route["end"], route["points"])
 	if route_world != null:
@@ -50,8 +52,8 @@ func _route_for_mode(route_mode: String) -> Dictionary:
 	var residence := _residential_position()
 	var destination := _destination_position()
 	if route_mode == CustomerSchedule.ROUTE_HOME_TO_DESTINATION:
-		return {"start": residence, "end": destination, "points": _random_route_points(residence, destination)}
-	return {"start": destination, "end": residence, "points": _random_route_points(destination, residence)}
+		return _route_for_positions(residence, destination)
+	return _route_for_positions(destination, residence)
 
 
 func _residential_position() -> Vector2:
@@ -147,6 +149,27 @@ func _random_route_points(start: Vector2, end: Vector2) -> Array[Vector2]:
 	return points
 
 
+func _route_for_positions(start: Vector2, end: Vector2) -> Dictionary:
+	var navigator := _road_navigator()
+	if navigator != null and navigator.has_method("find_randomized_path"):
+		var road_path: Array = navigator.call("find_randomized_path", start, end, _rng)
+		if road_path.size() < 2:
+			return {}
+		return _route_from_path(road_path)
+	return {"start": start, "end": end, "points": _random_route_points(start, end)}
+
+
+func _route_from_path(path: Array) -> Dictionary:
+	var points: Array[Vector2] = []
+	for index in range(1, path.size() - 1):
+		points.append(path[index] as Vector2)
+	return {
+		"start": path.front() as Vector2,
+		"end": path.back() as Vector2,
+		"points": points,
+	}
+
+
 func _player_stall_spot() -> Node:
 	var world := route_world
 	if world == null:
@@ -160,3 +183,15 @@ func _player_stall_spot() -> Node:
 				return node
 	var destination := _destination_endpoint()
 	return fallback if fallback != null else destination
+
+
+func _road_navigator() -> Node:
+	if route_world == null:
+		return null
+	var navigator := route_world.get_node_or_null("RoadNavigator")
+	if navigator != null:
+		return navigator
+	for node in get_tree().get_nodes_in_group("road_navigator"):
+		if node.is_inside_tree() and node.get_parent() == route_world:
+			return node
+	return null

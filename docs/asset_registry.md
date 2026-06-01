@@ -18,8 +18,24 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Texture filtering: nearest-neighbor
 - Default anchor: center
 - Collision belongs to gameplay nodes, not bitmap files.
+- Player/main-character walk sheets may use 4 rows x 8 columns in this order:
+  down, left, right, up. Each row should use the sequence standing, left leg
+  low, right leg low, left leg high, right leg high, left leg lowering, right
+  leg lowering, standing.
+- Customer/random/civilian NPC walk sheets use 4 rows x 6 columns, `48x64`
+  cells, in the same row order. They must not duplicate a standing pose at the
+  first and last frame.
+- Character walk QC requires one shared scale and one feet baseline per sheet;
+  no cropped hair/feet, no split heads, no edge-touching body parts, and no
+  detached shadow/noise fragments.
+- Raw character rows that touch their source grid boundary fail QC. Regenerate
+  the broken direction as a separate padded sheet instead of trying to repair a
+  cropped row after slicing.
 - Missing resources should be represented with placeholders until art generation is explicitly requested.
 - Town map TileMapLayers are editor-authored scene content. Gameplay scripts may read these layers, but must not auto-fill or mutate their tile cells; changes to roads, water, fields, decorations, trees, and stall-area markers should be made in the Godot editor and saved in the scene.
+- `TownScene/MapLayers/RoadLayer` is also the source of truth for NPC walking
+  routes. `RoadNavigator` reads the painted road cells and returns path points
+  on those cells only.
 
 ## Generated Pack Metadata
 
@@ -42,10 +58,12 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 | Asset ID | Status | Current Resource | Future Need |
 | --- | --- | --- | --- |
-| `character.vendor` | implemented | `vendor_walk_spriteframes_48x64.tres` | Already usable as `AnimatedSprite2D`. |
-| `character.student_customer` | placeholder | static `customer_student_48x64.png` | v2 animated SpriteFrames exists; integrate when Customer uses animation. |
-| `character.worker_customer` | placeholder | static `customer_worker_48x64.png` | v2 animated SpriteFrames exists; integrate when Customer uses animation. |
-| `character.chengguan` | placeholder | worker texture reused | Needs dedicated chengguan NPC, 4 directions, 8 frames each, `48x64`. |
+| `character.vendor` | implemented | `vendor_walk_spriteframes_48x64.tres` | Regenerated 2026-06-01 as a 1990s township middle-aged vendor; `48x64`, 4 directions, 8 frames, shared scale and stable feet baseline. `walk_right` is mirrored from normalized `walk_left` to keep crop height and foot position consistent. |
+| `character.student_customer` | implemented | `student_walk_spriteframes_48x64.tres` | Converted to the NPC 6-frame standard on 2026-06-01 by using the middle six motion frames from the previous 8-frame sheet. |
+| `character.worker_customer` | implemented | `worker_walk_spriteframes_48x64.tres` | Converted to the NPC 6-frame standard on 2026-06-01 by using the middle six motion frames from the previous 8-frame sheet. |
+| `character.female_elder_customer` | implemented | `female_elder_walk_spriteframes_48x64.tres` | Random town NPC visual variant; `48x64`, 4 directions, 6 frames, no duplicated standing endpoints, shared scale and stable feet baseline. |
+| `character.female_middle_customer` | implemented | `female_middle_walk_spriteframes_48x64.tres` | Random town NPC visual variant; `48x64`, 4 directions, 6 frames, no duplicated standing endpoints, shared scale and stable feet baseline. |
+| `character.chengguan` | placeholder | worker texture reused | Needs dedicated chengguan NPC, 4 directions, 6 frames each, `48x64`. |
 
 ### Item Icons
 
@@ -104,7 +122,7 @@ Current gameplay uses `scenes/farm_plot.tscn` with a `Sprite2D` scaled to one `3
 | --- | --- | --- | --- |
 | `location.school_gate` | implemented | `school_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
 | `location.factory_gate` | implemented | `factory_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
-| `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual and same-id home endpoint pool. |
+| `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |
 | `location.house_bed` | placeholder | folded tarp cutout | v2 bed roll exists. |
@@ -147,7 +165,7 @@ The township reference map now also has a dedicated top-down pixel prop set unde
 
 ## Missing Or Weak Assets To Prioritize Later
 
-1. Dedicated chengguan NPC animation, `48x64`, 4 directions, 8 frames.
+1. Dedicated chengguan NPC animation, `48x64`, 4 directions, 6 frames.
 2. Proper house interior tiles.
 3. Home exterior replacement using the v2 rural house facade.
 4. Stall upgrade level visuals.

@@ -48,6 +48,12 @@ const SPOT_SOUTH_STREET := "south_street"
 
 const CUSTOMER_STUDENT := "student"
 const CUSTOMER_WORKER := "worker"
+const CUSTOMER_VISUAL_FEMALE_ELDER := "female_elder"
+const CUSTOMER_VISUAL_FEMALE_MIDDLE := "female_middle"
+const RANDOM_CUSTOMER_VISUAL_VARIANTS := [
+	CUSTOMER_VISUAL_FEMALE_ELDER,
+	CUSTOMER_VISUAL_FEMALE_MIDDLE,
+]
 
 const WINDOW_LABELS := {
 	WINDOW_PREP: "准备",

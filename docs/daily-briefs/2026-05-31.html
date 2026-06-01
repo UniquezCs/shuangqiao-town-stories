@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Godot 项目每日简报 - 2026-05-31</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --card: #fffaf3;
+      --ink: #2c241d;
+      --muted: #6d6258;
+      --line: #d8ccb8;
+      --accent: #9a5d24;
+      --accent-soft: #f1e2cf;
+      --warn: #9d3f32;
+      --ok: #2f6a47;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      line-height: 1.7;
+      background:
+        radial-gradient(circle at top left, rgba(154, 93, 36, 0.12), transparent 26%),
+        linear-gradient(180deg, #f8f4ec 0%, var(--bg) 100%);
+    }
+
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px 28px;
+      box-shadow: 0 12px 28px rgba(64, 39, 16, 0.06);
+    }
+
+    h1, h2 {
+      margin: 0 0 12px;
+      letter-spacing: 0.02em;
+    }
+
+    h1 { font-size: 30px; }
+    h2 { font-size: 20px; }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid #e4d4bf;
+      background: var(--accent-soft);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      color: var(--accent);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    li + li { margin-top: 8px; }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      margin-right: 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .risk { color: var(--warn); }
+    .good { color: var(--ok); }
+
+    code {
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      background: #f2e9dc;
+      color: #5d4224;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .paths {
+      display: grid;
+      gap: 8px;
+    }
+
+    .paths code {
+      display: inline-block;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <div class="meta">
+        <span>日期：2026-05-31</span>
+        <span>生成时间：2026-05-31 06:01:47 CST</span>
+        <span>回顾区间：自 2026-05-29 22:02:10 UTC 上次自动化运行以来</span>
+      </div>
+      <p>
+        本轮变化由两部分组成：一是 2026-05-30 晚间已提交的资源目录整理与引用迁移，二是当前工作区正在推进的
+        “顾客四方向行走动画修复 + 城镇随机路人生成”改动。整体趋势从“先把生成资源归档干净”转到“让顾客/NPC
+        行为与动画质量真正可用”。
+      </p>
+      <div class="summary-grid">
+        <div class="stat"><strong>1</strong>次新提交</div>
+        <div class="stat"><strong>123</strong>个已提交新增文件</div>
+        <div class="stat"><strong>401</strong>个已提交重命名文件</div>
+        <div class="stat"><strong>404</strong>个已提交删除文件</div>
+        <div class="stat"><strong>11</strong>个当前新增文件</div>
+        <div class="stat"><strong>15</strong>个当前修改文件</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>概览</h2>
+      <ul>
+        <li>已提交部分以 <code>232b3ed</code> 为主，核心目的是压缩中间产物、统一生成资源目录，并同步更新资产注册和引用路径。</li>
+        <li>当前未提交部分集中在顾客系统：<code>Customer</code> 从静态贴图切到 <code>AnimatedSprite2D</code>，同时增加随机城镇行人路线生成。</li>
+        <li>文档和测试也跟进了动画质量标准，说明这轮不是单纯换素材，而是在补一套可回归验证的动画生产/QC 流程。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <ul>
+        <li><span class="tag">资源整理</span><code>assets/generated</code> 下大量原始生成稿、清洗中间文件、旧原型目录被删除或重命名到稳定路径，新增 <code>assets/source/township_tiles_2026_05_30</code> 保存乡镇素材原稿。</li>
+        <li><span class="tag">顾客动画</span><code>scenes/customer.tscn</code> 的 <code>Visual</code> 从 <code>Sprite2D</code> 改为 <code>AnimatedSprite2D</code>，<code>scripts/world/customer.gd</code> 增加方向动画播放、停帧和基于路线长度的超时控制。</li>
+        <li><span class="tag">NPC 端点</span><code>scripts/world/npc_endpoint.gd</code> 新增 <code>endpoint_type</code>、<code>can_spawn_customer</code>、<code>spawn_weight</code>，TownScene 里多个建筑点位同步补齐类型。</li>
+        <li><span class="tag">随机路人</span>新增 <code>scripts/world/town_random_customer_spawner.gd</code>，在白天时间段内按计划从建筑端点池随机生成普通城镇顾客路线。</li>
+        <li><span class="tag">质量保障</span>新增动画重建脚本、QC 文档和两组测试场景，开始把“头发被裁切、站立帧不闭环、脚底基线漂移”这类问题收进自动检查。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li><code>assets/source/customer_walk_rework_2026_05_31/</code>：新增学生/工人原始行走图、背视补帧源图、预览图和诊断图，用于记录本次动画返工证据。</li>
+        <li><code>tools/rebuild_customer_walk_cycles.py</code>：新增重建脚本，负责重新切分原图、镜像右行、替换独立背视行，并输出报告 JSON。</li>
+        <li><code>docs/character_animation_qc.md</code>：沉淀本次裁切事故的根因、禁忌操作和验证命令。</li>
+        <li><code>tests/customer_animation_test.tscn</code> 与 <code>tests/customer_walk_cycle_quality_test.tscn</code>：新增顾客动画功能测试与贴图质量测试入口。</li>
+        <li><code>scripts/world/town_random_customer_spawner.gd</code>：新增普通城镇随机客流生成器，和通勤型 Student/Worker Spawner 分开。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li><code>configs/assets.json</code> 与 <code>docs/asset_registry.md</code> 将学生/工人顾客从 placeholder 更新为已实现动画资源，并补录更多乡镇建筑与日常道具条目。</li>
+        <li><code>docs/development_baseline.md</code> 写入更严格的角色动画基线：固定 4x8 帧序、首尾站立帧一致、统一脚底基线、原始分格不能贴边。</li>
+        <li><code>scenes/town_scene.tscn</code> 新挂接 <code>TownRandomCustomerSpawner</code>，并将住宅、学校、工厂、医院、公交站、政府等点位加上 <code>endpoint_type</code>。</li>
+        <li><code>scripts/world/customer_spawner.gd</code> 将住宅端点 ID 从 <code>residential_area</code> 调整为 <code>residential</code>，和新的端点池逻辑对齐。</li>
+        <li><code>tests/customer_parenting_test.gd</code> 扩展断言，检查住宅端点池、多路由变化和随机路人生成器是否都已接线。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <ul>
+        <li>已提交改动清退了大量中间产物与旧原型目录，例如 <code>assets/generated/assistant_art_2026_05_29/</code>、<code>assets/generated/prototype_v1/</code>、<code>assets/generated/prototype_v2/raw/</code>、<code>assets/generated/ui_skins_2026_05_29/</code> 下的清洗稿和 manifest。</li>
+        <li>旧的角色静态顾客贴图虽然仍在仓库中，但从当前代码走向看，已处于被四方向 SpriteFrames 替代的过渡阶段。</li>
+        <li class="good">本轮未见工作区内新增的删除操作，删除主要来自昨天的目录整理提交。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li class="risk">随机路人生成器当前默认日客流范围写成 <code>300-500</code>，而场景实例上覆写为 <code>35-55</code>；若未来漏配场景导出值，TownScene 可能突然出现过量顾客。</li>
+        <li class="risk">顾客超时改为按路线长度动态计算，能减少长路线顾客过早消失，但也意味着异常路线点如果拉得太远，场景驻留时间会显著增加。</li>
+        <li class="risk">TownScene 的端点 ID 和类型体系正在收口，如果仍有旧脚本或测试写死 <code>residential_area</code> 这类旧值，后续会出现漏生成或回家路由失败。</li>
+        <li class="good">动画质量规则已经文档化并配套测试，这会明显降低后续继续生成 NPC 行走图时重复踩同一类裁切问题的概率。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>运行并确认 <code>tests/customer_walk_cycle_quality_test.tscn</code>、<code>tests/customer_animation_test.tscn</code>、<code>tests/customer_parenting_test.gd</code> 在当前工作区都通过。</li>
+        <li>确认 <code>TownRandomCustomerSpawner</code> 的实际客流规模、起止时间和允许端点类型是否符合 TownScene 玩法节奏，而不是仅满足技术连通。</li>
+        <li>决定是否清理 <code>customer_student_48x64.png</code> / <code>customer_worker_48x64.png</code> 等静态过渡资源，避免注册表和仓库长期双轨。</li>
+        <li>如果后续还会继续批量生成 NPC 动画，建议把当前 QC 规则抽到更通用的角色资产流水线，而不是只覆盖 customer。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>用于回顾的关键文件路径</h2>
+      <div class="paths">
+        <code>docs/daily-briefs/2026-05-31.html</code>
+        <code>docs/daily-briefs/2026-05-30.html</code>
+        <code>configs/assets.json</code>
+        <code>docs/asset_registry.md</code>
+        <code>docs/development_baseline.md</code>
+        <code>docs/character_animation_qc.md</code>
+        <code>scenes/customer.tscn</code>
+        <code>scenes/town_scene.tscn</code>
+        <code>scripts/world/customer.gd</code>
+        <code>scripts/world/customer_spawner.gd</code>
+        <code>scripts/world/npc_endpoint.gd</code>
+        <code>scripts/world/town_random_customer_spawner.gd</code>
+        <code>tools/rebuild_customer_walk_cycles.py</code>
+        <code>tests/customer_animation_test.gd</code>
+        <code>tests/customer_walk_cycle_quality_test.gd</code>
+        <code>tests/customer_parenting_test.gd</code>
+        <code>assets/source/customer_walk_rework_2026_05_31/customer_walk_rework_report.json</code>
+        <code>assets/source/township_tiles_2026_05_30/township_asset_pack_summary.json</code>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

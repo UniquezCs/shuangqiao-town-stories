@@ -2,7 +2,9 @@
 
 ## Project Overview
 
-This is a Godot 4.6 project for a 2D pixel-art management simulation game set in a Chinese township during the late 1980s and early 1990s.
+This is a Godot 4.6 project for a 2D pixel-art management simulation game tentatively titled `双桥镇往事`.
+
+The game is set in `双桥镇`, a Chinese township during the late 1980s and early 1990s.
 
 The player is a middle-aged person who starts a small business after entering the private market economy. The long-term fantasy is not instant wealth, but earning money through labor, selling real goods, judging risk and reward, surviving family and cash-flow pressure, and gradually growing from doing everything alone into managing goods, money, locations, people, and risk.
 
@@ -156,6 +158,8 @@ Movement controls:
 - Prefer dedicated Godot nodes, collision shapes, signals, and timers for gameplay rules. Avoid per-frame polling or distance checks in `_process()` / `_physics_process()` when an `Area2D`, `StaticBody2D`, `CollisionShape2D`, signal, or timer can own the behavior. Use per-frame logic mainly for continuous movement, animation, and physics integration.
 - The current assistant role is main programmer. Do not proactively generate art assets. If a needed tile, prop, NPC, or animation asset does not exist, use a text/simple-tile/existing-asset placeholder, document the required asset specification, and continue implementing the logic. Use asset generation only when the user explicitly asks for it.
 - Follow the project pixel-size baseline: `32x32` tiles, `48x64` character/NPC frames, `32x32` small props, and larger objects in clean multiples of 32 pixels.
+- Character/NPC walk sheets must be `4x8` frames ordered as down, left, right, up rows, with 8 columns per row: standing, left leg low, right leg low, left leg high, right leg high, left leg lowering, right leg lowering, standing. Use stable final scale and one feet baseline per sheet; cropped hair/feet, split heads, detached noise, or edge-touching body parts fail QC. If a raw direction row is already cropped or touches its source grid boundary, regenerate that direction separately with padding instead of trying to salvage it after slicing.
+- Before rebuilding character walk cycles, check `docs/character_animation_qc.md` for recorded failure modes, especially the 2026-05-31 `walk_up` cropped-hair incident.
 - Integrate art through config or registry-backed stable IDs. Do not scatter direct resource paths through gameplay scripts when a config or registry can own the mapping.
 - Keep `assets/generated` organized with only two top-level directories: `sprites` and `tilesets`. Do not keep raw generation images, contact sheets, prompt text, preview GIFs, or generated manifest files there; register final usable assets in `configs/assets.json` instead.
 - Keep gameplay node templates stable when replacing art. Asset swaps should update textures, `SpriteFrames`, `TileSet`, or config paths without changing the gameplay node contract.

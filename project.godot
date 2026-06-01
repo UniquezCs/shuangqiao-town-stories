@@ -24,8 +24,8 @@ PrototypeConstants="*res://scripts/core/prototype_constants.gd"
 SignalBus="*res://scripts/autoload/signal_bus.gd"
 Inventory="*res://scripts/autoload/inventory.gd"
 GameState="*res://scripts/autoload/game_state.gd"
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 ConfigLoader="*res://scripts/autoload/config_loader.gd"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 

@@ -34,6 +34,10 @@ func _ready() -> void:
 		_assert_true(layer.tile_set != null, "%s 应绑定城镇 tileset，方便编辑器继续绘制" % layer_name)
 		_assert_equal(layer.z_index, expected_layers[layer_name], "%s 的 z_index 应符合地图层级约定" % layer_name)
 
+	var road_navigator := town.get_node_or_null("RoadNavigator")
+	_assert_true(road_navigator != null, "TownScene 应包含 RoadNavigator 读取 RoadLayer 生成 NPC 道路路径")
+	_assert_true(road_navigator.has_method("find_randomized_path"), "RoadNavigator 应暴露随机道路路径接口给 NPC spawner")
+
 	var town_script := FileAccess.get_file_as_string("res://scripts/scenes/town_scene.gd")
 	_assert_true(not town_script.begins_with("@tool"), "TownScene 脚本不能使用 @tool，避免编辑器打开时改写 TileMapLayer")
 	_assert_true(not town_script.contains("set_cell("), "TownScene 脚本不能写入 TileMapLayer，地图内容必须由编辑器绘制保存")
