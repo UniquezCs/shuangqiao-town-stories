@@ -6,11 +6,14 @@ var route_points: Array[Vector2] = []
 var route_index := 0
 var state := "patrolling"
 var facing := "down"
+var _return_route_points: Array[Vector2] = []
+var _resume_route_state := "patrolling"
 var _has_penalized := false
 var _last_penalty_text := ""
 var _target_player: Node2D = null
 var _target_stall: Node = null
 var _violation_confirmed := false
+var _tree_entered_position: Vector2
 
 @onready var visual: AnimatedSprite2D = $Visual
 @onready var detection_area: Area2D = $DetectionArea
@@ -30,10 +33,16 @@ func _ready() -> void:
 		]
 
 
-func setup(start_position: Vector2, patrol_points: Array[Vector2]) -> void:
+func setup(start_position: Vector2, patrol_points: Array[Vector2], return_points: Array[Vector2] = []) -> void:
 	global_position = start_position
 	route_points = patrol_points.duplicate()
+	_return_route_points = return_points.duplicate()
 	route_index = 0
+	state = "patrolling"
+
+
+func _enter_tree() -> void:
+	_tree_entered_position = global_position
 
 
 func _physics_process(_delta: float) -> void:
@@ -51,12 +60,22 @@ func _patrol() -> void:
 	if global_position.distance_to(target) < 10.0:
 		route_index += 1
 	if route_index >= route_points.size():
+		if state == "patrolling" and not _return_route_points.is_empty():
+			_begin_return_route()
+			return
 		queue_free()
+
+
+func _begin_return_route() -> void:
+	route_points = _return_route_points.duplicate()
+	_return_route_points.clear()
+	route_index = 0
+	state = "returning"
 
 
 func _chase_player() -> void:
 	if _target_player == null or not is_instance_valid(_target_player):
-		state = "patrolling"
+		state = _resume_route_state
 		return
 	_move_towards(_target_player.global_position, PrototypeConstants.CHENGGUAN_CHASE_SPEED)
 
@@ -103,6 +122,7 @@ func _on_detection_area_entered(area: Area2D) -> void:
 	_target_stall = stall
 	_target_player = player
 	_violation_confirmed = true
+	_resume_route_state = state
 	state = "chasing"
 	SignalBus.sale_feedback.emit("城管发现摊位，快跑！", global_position)
 	_show_penalty_label("站住！")
@@ -116,7 +136,7 @@ func _on_catch_area_body_entered(body: Node) -> void:
 
 func _penalize_if_stall_is_open() -> void:
 	if not _violation_confirmed:
-		state = "patrolling"
+		state = _resume_route_state
 		_target_player = null
 		_target_stall = null
 		return
@@ -127,7 +147,7 @@ func _penalize_if_stall_is_open() -> void:
 	_last_penalty_text = "被城管抓住，罚款 %d 元" % fine
 	SignalBus.sale_feedback.emit(_last_penalty_text, global_position)
 	_show_penalty_label(_last_penalty_text)
-	state = "patrolling"
+	state = _resume_route_state
 	_target_player = null
 	_target_stall = null
 	_violation_confirmed = false

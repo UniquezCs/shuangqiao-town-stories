@@ -37,9 +37,11 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
   cropped row after slicing.
 - Missing resources should be represented with placeholders until art generation is explicitly requested.
 - Town map TileMapLayers are editor-authored scene content. Gameplay scripts may read these layers, but must not auto-fill or mutate their tile cells; changes to roads, water, fields, decorations, trees, and stall-area markers should be made in the Godot editor and saved in the scene.
-- `TownScene/MapLayers/RoadLayer` is also the source of truth for NPC walking
-  routes. `RoadNavigator` reads the painted road cells and returns path points
-  on those cells only.
+- `TownScene/MapLayers/RoadLayer` is the main source of truth for NPC walking
+  routes. Small additive road connector layers, such as
+  `PoliceRoadConnectionLayer`, may be registered on `RoadNavigator` when a new
+  building entrance needs to connect to the existing road grid without rewriting
+  the main RoadLayer.
 
 ## Generated Pack Metadata
 
@@ -128,7 +130,7 @@ Current gameplay uses `scenes/farm_plot.tscn` with a `Sprite2D` scaled to one `3
 | --- | --- | --- | --- |
 | `location.school_gate` | implemented | `school_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
 | `location.factory_gate` | implemented | `factory_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
-| `location.police_station` | available | `police_station_256x128.png` | 1990s township police station building; available for future town placement, patrol origin, or endpoint visual. |
+| `location.police_station` | implemented | `police_station_256x128.png` | Used as the Town `PoliceStation` endpoint visual and chengguan patrol origin/return point. |
 | `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |

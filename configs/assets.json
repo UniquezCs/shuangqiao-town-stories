@@ -1198,7 +1198,7 @@
 		},
 		"location.police_station": {
 			"type": "landmark",
-			"status": "available",
+			"status": "implemented",
 			"path": "res://assets/generated/sprites/locations/police_station_256x128.png",
 			"size": [
 				256,
@@ -1206,8 +1206,13 @@
 			],
 			"usage": [
 				"town_landmark",
-				"chengguan_patrol_origin_candidate",
-				"future_npc_endpoint_visual"
+				"chengguan_patrol_origin",
+				"npc_endpoint_visual",
+				"centralized_route_origin"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn",
+				"scripts/world/chengguan_spawner.gd"
 			],
 			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e6f0f-656f-78f2-8e70-808e59466a9e/ig_0eea1b9436e23a21016a1e65b3b4cc81918cd026432b6072c0.png",
 			"notes": "Generated 2026-06-02 as a late-1980s/early-1990s township police station with red brick, white plaster, courtyard wall, flagpole, notice boards, and a blue institutional signboard shape without readable generated text.",
