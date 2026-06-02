@@ -193,6 +193,11 @@ func get_stall_stock_limit() -> int:
 	return int(entry.get("stock_limit", PrototypeConstants.APPLE_HARVEST_COUNT))
 
 
+func get_stall_slot_count() -> int:
+	var entry := ConfigLoader.get_upgrade_entry("stall", stall_level)
+	return int(entry.get("stall_slots", 4))
+
+
 func get_stall_influence_radius() -> float:
 	var entry := ConfigLoader.get_upgrade_entry("stall", stall_level)
 	return float(entry.get("influence_radius", 160))

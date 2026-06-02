@@ -38,6 +38,10 @@ func get_item_icon(item_id: String) -> String:
 	return str(get_item(item_id).get("icon", ""))
 
 
+func get_base_sell_price(item_id: String) -> int:
+	return clampi(int(get_item(item_id).get("base_sell_price", PrototypeConstants.MIN_APPLE_PRICE)), PrototypeConstants.MIN_APPLE_PRICE, PrototypeConstants.MAX_APPLE_PRICE)
+
+
 func is_sellable_item(item_id: String) -> bool:
 	return str(get_item(item_id).get("category", "")) == "crop"
 

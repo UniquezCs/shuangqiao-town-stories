@@ -36,11 +36,15 @@ func interact(player: Node) -> void:
 	if stall.get("is_open"):
 		stall.call("close")
 	else:
-		SignalBus.price_panel_requested.emit(self)
+		SignalBus.stall_setup_requested.emit(self)
 
 
 func open_stall(price: int) -> void:
 	stall.call("open", spot_id, price, _last_interacting_player)
+
+
+func open_stall_with_slots(prepared_slots: Array) -> bool:
+	return bool(stall.call("open_with_slots", spot_id, prepared_slots, _last_interacting_player))
 
 
 func get_active_stall() -> Node:

@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const InventorySlotControl := preload("res://scripts/ui/inventory_slot_control.gd")
+
 var _panel: PanelContainer
 var _grid: GridContainer
 var _title: Label
@@ -66,59 +68,29 @@ func _on_backpack_changed(_slots: Array, _slot_count: int) -> void:
 
 
 func _refresh() -> void:
-	_title.text = "背包 %d / %d 格" % [Inventory.slots.size(), Inventory.slot_count]
+	_title.text = "背包 %d / %d 格" % [Inventory.occupied_slot_count(), Inventory.slot_count]
 	for child in _grid.get_children():
 		child.queue_free()
-	for slot in Inventory.get_slots_with_empty():
-		_grid.add_child(_make_slot(slot))
+	var slots := Inventory.get_slots_with_empty()
+	for index in range(slots.size()):
+		_grid.add_child(_make_slot(index, slots[index]))
 
 
-func _make_slot(slot: Dictionary) -> Control:
-	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(78, 72)
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 6)
-	margin.add_theme_constant_override("margin_top", 6)
-	margin.add_theme_constant_override("margin_right", 6)
-	margin.add_theme_constant_override("margin_bottom", 6)
-	panel.add_child(margin)
-	if slot.is_empty():
-		var label := Label.new()
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		label.text = "空"
-		margin.add_child(label)
-	else:
-		var item_id := str(slot.get("item_id", ""))
-		var icon_texture := _load_item_icon(item_id)
-		if icon_texture != null:
-			var box := VBoxContainer.new()
-			box.alignment = BoxContainer.ALIGNMENT_CENTER
-			margin.add_child(box)
-
-			var icon := TextureRect.new()
-			icon.custom_minimum_size = Vector2(42, 38)
-			icon.texture = icon_texture
-			icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			box.add_child(icon)
-
-			var count_label := Label.new()
-			count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			count_label.text = "x%d" % int(slot.get("count", 0))
-			box.add_child(count_label)
-		else:
-			var label := Label.new()
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			label.text = "%s\nx%d" % [ConfigLoader.get_item_name(item_id), int(slot.get("count", 0))]
-			margin.add_child(label)
+func _make_slot(index: int, slot: Dictionary) -> Control:
+	var panel := InventorySlotControl.new()
+	panel.setup(self, "backpack", index, slot)
 	return panel
 
 
-func _load_item_icon(item_id: String) -> Texture2D:
-	var icon_path := ConfigLoader.get_item_icon(item_id)
-	if icon_path.is_empty() or not ResourceLoader.exists(icon_path):
-		return null
-	return load(icon_path) as Texture2D
+func can_drop_slot_data(data: Variant, target_container: String, _target_index: int) -> bool:
+	if typeof(data) != TYPE_DICTIONARY:
+		return false
+	return str((data as Dictionary).get("source", "")) == "backpack" and target_container == "backpack"
+
+
+func handle_slot_drop(data: Variant, target_container: String, target_index: int) -> void:
+	if not can_drop_slot_data(data, target_container, target_index):
+		return
+	var drag_data: Dictionary = data
+	Inventory.move_slot(int(drag_data.get("slot_index", -1)), target_index)
+	_refresh()

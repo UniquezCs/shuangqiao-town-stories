@@ -1,7 +1,6 @@
 extends Node
 
 @export var road_layer_path := NodePath("../MapLayers/RoadLayer")
-@export var extra_road_layer_paths: Array[NodePath] = []
 @export_range(1, 16, 1) var endpoint_candidate_radius_tiles := 5
 @export_range(1, 24, 1) var endpoint_candidate_limit := 8
 @export_range(0.0, 1.0, 0.05) var random_midpoint_chance := 0.35
@@ -31,15 +30,7 @@ func rebuild() -> void:
 			push_warning("RoadNavigator 找不到 RoadLayer：%s" % str(road_layer_path))
 		return
 
-	_append_road_cells_from_layer(_road_layer)
-	for path in extra_road_layer_paths:
-		var extra_layer: TileMapLayer = get_node_or_null(path) as TileMapLayer
-		if extra_layer == null:
-			if log_navigation_warnings:
-				push_warning("RoadNavigator 找不到额外道路层：%s" % str(path))
-			continue
-		_append_road_cells_from_layer(extra_layer)
-
+	_road_cells = _road_layer.get_used_cells()
 	if _road_cells.is_empty():
 		if log_navigation_warnings:
 			push_warning("RoadNavigator 的 RoadLayer 没有绘制任何道路 tile")
@@ -70,16 +61,6 @@ func rebuild() -> void:
 		_astar.set_point_solid(cell, false)
 
 	_is_built = true
-
-
-func _append_road_cells_from_layer(layer: TileMapLayer) -> void:
-	for source_cell: Vector2i in layer.get_used_cells():
-		var world_position: Vector2 = layer.to_global(layer.map_to_local(source_cell))
-		var primary_cell: Vector2i = _road_layer.local_to_map(_road_layer.to_local(world_position))
-		if _road_lookup.has(primary_cell):
-			continue
-		_road_cells.append(primary_cell)
-		_road_lookup[primary_cell] = true
 
 
 func get_road_cell_count() -> int:

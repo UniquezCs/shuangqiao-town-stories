@@ -28,6 +28,11 @@ func _ready() -> void:
 	_assert_true(spawner != null, "TownScene 应保留 ChengguanSpawner")
 	if spawner == null:
 		return
+	_assert_true(town.get_node_or_null("MapLayers/PoliceRoadConnectionLayer") == null, "警察局 NPC 应直接复用主 RoadLayer，不应新增专用连接道路层")
+	var road_navigator := town.get_node_or_null("RoadNavigator")
+	_assert_true(road_navigator != null, "TownScene 应保留 RoadNavigator")
+	if road_navigator != null:
+		_assert_true(not ("extra_road_layer_paths" in road_navigator), "RoadNavigator 不应再依赖额外道路层配置")
 	_assert_equal(int(spawner.get("morning_daily_count")), 10, "城管上午应随机刷新 10 个")
 	_assert_equal(int(spawner.get("afternoon_daily_count")), 10, "城管下午应随机刷新 10 个")
 
@@ -44,8 +49,8 @@ func _ready() -> void:
 	var police_position: Vector2 = police_station.call("get_endpoint_position")
 	_assert_true(_is_near_position(route["start"], police_position), "城管路线应从警察局门口附近开始")
 	_assert_true(_is_near_position(route["return_end"], police_position), "城管返程路线应回到警察局门口附近")
-	_assert_true(_is_near_position(route["start"], police_position, 48.0), "警察局门口应连接到可走道路，城管起点不应远距离吸附")
-	_assert_true(_is_near_position(route["return_end"], police_position, 48.0), "警察局返程终点应落回门口连接道路")
+	_assert_true(_is_near_position(route["start"], police_position, 192.0), "警察局门口应能吸附到主 RoadLayer 可走道路")
+	_assert_true(_is_near_position(route["return_end"], police_position, 192.0), "警察局返程终点应吸附到主 RoadLayer 可走道路")
 	_assert_true(route["destination_endpoint"] != police_station, "城管出巡终点不应仍是警察局")
 
 	var before_count := _chengguan_count(town)

@@ -37,11 +37,10 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
   cropped row after slicing.
 - Missing resources should be represented with placeholders until art generation is explicitly requested.
 - Town map TileMapLayers are editor-authored scene content. Gameplay scripts may read these layers, but must not auto-fill or mutate their tile cells; changes to roads, water, fields, decorations, trees, and stall-area markers should be made in the Godot editor and saved in the scene.
-- `TownScene/MapLayers/RoadLayer` is the main source of truth for NPC walking
-  routes. Small additive road connector layers, such as
-  `PoliceRoadConnectionLayer`, may be registered on `RoadNavigator` when a new
-  building entrance needs to connect to the existing road grid without rewriting
-  the main RoadLayer.
+- `TownScene/MapLayers/RoadLayer` is the source of truth for NPC walking
+  routes. New building entrances should be connected by painting road tiles on
+  this layer in the editor, so every NPC, including chengguan, uses one road
+  grid.
 
 ## Generated Pack Metadata
 
@@ -145,6 +144,7 @@ Current UI is mostly Godot `Control` nodes with text and panels. This is accepta
 | --- | --- | --- | --- |
 | `ui.hud` | placeholder | text labels | v2 UI icons exist. |
 | `ui.backpack_panel` | placeholder | Control nodes | UI skin pack exists with registered component IDs. |
+| `ui.stall_setup_panel` | placeholder | Control nodes + item icons from `configs/items.json` | Added in the 2026-06-02 backpack/stall programming pass. No new art was required; it reuses registered item icons and text controls. |
 | `ui.shop_panel` | placeholder | Control nodes | UI skin pack exists with registered component IDs. |
 | `ui.price_panel` | placeholder | Control nodes | Price tag icon exists. |
 | `ui.daily_summary_panel` | placeholder | Control nodes | Ledger icon exists. |
