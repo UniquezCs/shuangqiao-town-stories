@@ -3,10 +3,18 @@ extends CharacterBody2D
 signal interactable_changed(prompt: String)
 
 const SPEED := 120.0
+const FARMING_ACTIONS := {
+	"hoe": true,
+	"water": true,
+	"harvest": true,
+}
+const CircularCountdownScript := preload("res://scripts/ui/circular_countdown_indicator.gd")
 
 var facing := "down"
 var _nearby_interactables: Array[Area2D] = []
 var _current_interactable: Area2D = null
+var _is_farming_action_playing := false
+var _hold_interactable: Area2D = null
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_area: Area2D = $InteractionArea
@@ -16,13 +24,27 @@ func _ready() -> void:
 	add_to_group("player")
 	animated_sprite.play("walk_down")
 	animated_sprite.pause()
+	animated_sprite.animation_finished.connect(_on_animation_finished)
 	interaction_area.area_entered.connect(_on_interaction_area_entered)
 	interaction_area.area_exited.connect(_on_interaction_area_exited)
 	SignalBus.current_tool_changed.connect(_on_current_tool_changed)
+	SignalBus.sale_completed.connect(_on_sale_completed)
 	_update_interactable()
 
 
 func _physics_process(_delta: float) -> void:
+	if _hold_interactable != null:
+		if not Input.is_action_pressed("interact") or not is_instance_valid(_hold_interactable):
+			_cancel_hold_interact()
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+
+	if _is_farming_action_playing:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+
 	var direction := _input_direction()
 	velocity = direction * SPEED
 	
@@ -30,7 +52,10 @@ func _physics_process(_delta: float) -> void:
 	_update_animation(direction)
 
 	if Input.is_action_just_pressed("interact") and _current_interactable != null:
-		_current_interactable.call("interact", self)
+		if _requires_hold_interact(_current_interactable):
+			_start_hold_interact(_current_interactable)
+		else:
+			_current_interactable.call("interact", self)
 
 	_update_interactable()
 
@@ -42,7 +67,22 @@ func _input_direction() -> Vector2:
 	return direction.normalized()
 
 
+func play_farming_action(action_id: String) -> void:
+	var action := action_id.strip_edges()
+	if not FARMING_ACTIONS.has(action):
+		return
+	var animation := "%s_%s" % [action, facing]
+	if animated_sprite.sprite_frames == null or not animated_sprite.sprite_frames.has_animation(animation):
+		return
+	_is_farming_action_playing = true
+	velocity = Vector2.ZERO
+	animated_sprite.play(animation)
+
+
 func _update_animation(direction: Vector2) -> void:
+	if _is_farming_action_playing:
+		return
+
 	if direction.length() > 0.0:
 		if abs(direction.x) > abs(direction.y):
 			facing = "right" if direction.x > 0.0 else "left"
@@ -65,6 +105,8 @@ func _on_interaction_area_entered(area: Area2D) -> void:
 
 func _on_interaction_area_exited(area: Area2D) -> void:
 	_nearby_interactables.erase(area)
+	if area == _hold_interactable:
+		_cancel_hold_interact()
 	_update_interactable()
 
 
@@ -101,3 +143,112 @@ func _refresh_overlapping_interactables() -> void:
 		if area.is_in_group("interactable") and not _nearby_interactables.has(area):
 			_nearby_interactables.append(area)
 	_update_interactable()
+
+
+func _requires_hold_interact(area: Area2D) -> bool:
+	return area.has_method("requires_hold_interact") and bool(area.call("requires_hold_interact"))
+
+
+func _start_hold_interact(area: Area2D) -> void:
+	if _hold_interactable != null:
+		_cancel_hold_interact()
+	_hold_interactable = area
+	if area.has_method("begin_hold_interact"):
+		area.call("begin_hold_interact", self)
+
+	var duration := PrototypeConstants.STALL_CLOSE_HOLD_SECONDS
+	if area.has_method("get_hold_interact_duration"):
+		duration = maxf(0.1, float(area.call("get_hold_interact_duration")))
+
+	var timer := Timer.new()
+	timer.name = "StallCloseHoldTimer"
+	timer.one_shot = true
+	timer.wait_time = duration
+	timer.timeout.connect(_complete_hold_interact)
+	add_child(timer)
+	timer.start()
+
+	var tick_timer := Timer.new()
+	tick_timer.name = "StallCloseHoldTickTimer"
+	tick_timer.wait_time = 0.05
+	tick_timer.timeout.connect(_update_hold_countdown)
+	add_child(tick_timer)
+	tick_timer.start()
+
+	var countdown := Node2D.new()
+	countdown.name = "StallCloseCountdown"
+	countdown.set_script(CircularCountdownScript)
+	countdown.position = Vector2(0, -96)
+	add_child(countdown)
+	countdown.call("set_remaining_fraction", 1.0)
+
+
+func _cancel_hold_interact() -> void:
+	var area := _hold_interactable
+	_hold_interactable = null
+	if area != null and is_instance_valid(area) and area.has_method("cancel_hold_interact"):
+		area.call("cancel_hold_interact", self)
+	_clear_hold_countdown()
+
+
+func _complete_hold_interact() -> void:
+	var area := _hold_interactable
+	_hold_interactable = null
+	_clear_hold_countdown()
+	if area == null or not is_instance_valid(area):
+		return
+	if area.has_method("complete_hold_interact"):
+		area.call("complete_hold_interact", self)
+	elif area.has_method("interact"):
+		area.call("interact", self)
+
+
+func _update_hold_countdown() -> void:
+	var timer := get_node_or_null("StallCloseHoldTimer") as Timer
+	var countdown := get_node_or_null("StallCloseCountdown")
+	if timer == null or countdown == null or not countdown.has_method("set_remaining_fraction"):
+		return
+	var fraction := 0.0 if timer.wait_time <= 0.0 else timer.time_left / timer.wait_time
+	countdown.call("set_remaining_fraction", fraction)
+
+
+func _clear_hold_countdown() -> void:
+	for node_name in ["StallCloseHoldTimer", "StallCloseHoldTickTimer", "StallCloseCountdown"]:
+		var node := get_node_or_null(node_name)
+		if node != null:
+			remove_child(node)
+			node.queue_free()
+
+
+func _on_animation_finished() -> void:
+	if not _is_farming_action_playing:
+		return
+	_is_farming_action_playing = false
+	_update_animation(Vector2.ZERO)
+
+
+func _on_sale_completed(_item_id: String, price: int, _remaining_stock: int) -> void:
+	var old_popup := get_node_or_null("SaleAmountPopup")
+	if old_popup != null:
+		old_popup.queue_free()
+
+	var popup := Label.new()
+	popup.name = "SaleAmountPopup"
+	popup.text = "+%d 元" % price
+	popup.position = Vector2(-24, -76)
+	popup.z_index = 100
+	popup.add_theme_font_size_override("font_size", 18)
+	popup.add_theme_color_override("font_color", Color(1.0, 0.86, 0.25, 1.0))
+	popup.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.8))
+	popup.add_theme_constant_override("shadow_offset_x", 1)
+	popup.add_theme_constant_override("shadow_offset_y", 1)
+	add_child(popup)
+
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(popup, "position:y", popup.position.y - 28.0, 0.8).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(popup, "modulate:a", 0.0, 0.8).set_delay(0.15)
+	tween.finished.connect(func() -> void:
+		if is_instance_valid(popup):
+			popup.queue_free()
+	)

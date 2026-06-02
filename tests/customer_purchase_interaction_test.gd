@@ -1,6 +1,7 @@
 extends Node
 
 const CUSTOMER_SCENE := preload("res://scenes/customer.tscn")
+const StallScript := preload("res://scripts/world/stall.gd")
 
 
 class TestStall:
@@ -10,10 +11,13 @@ class TestStall:
 	var stock := 1
 	var sold_count := 0
 
+	func can_sell_to(_customer_type: String, _customer_profile: Dictionary = {}) -> Dictionary:
+		return {"bought": true, "reason": "想买梨", "item_id": "pear", "price": 3, "slot_index": 0}
+
 	func sell_one(_customer_type: String, _customer_profile: Dictionary = {}) -> Dictionary:
 		sold_count += 1
 		stock -= 1
-		return {"bought": true, "reason": "测试成交"}
+		return {"bought": true, "reason": "测试成交", "item_id": "pear", "price": 3}
 
 
 func _ready() -> void:
@@ -34,7 +38,12 @@ func _ready() -> void:
 	_assert_true(interaction.is_in_group("interactable"), "购买确认 Area2D 应加入 interactable 组")
 
 	var countdown := customer.get_node_or_null("PurchaseCountdown") as Node2D
-	_assert_true(countdown != null and countdown.visible, "等待购买时头顶应显示苹果倒计时图标")
+	_assert_true(countdown != null and countdown.visible, "等待购买时头顶应显示商品倒计时图标")
+	_assert_true(countdown.has_method("set_remaining_fraction"), "倒计时应使用圈形进度接口，而不是数字文本")
+	_assert_true(customer.get_node_or_null("PurchaseCountdown/SecondsLabel") == null, "倒计时不应再显示数字 Label")
+	var icon := customer.get_node_or_null("PurchaseCountdown/Icon") as Sprite2D
+	_assert_true(icon != null, "倒计时应包含商品图标")
+	_assert_equal(icon.texture.resource_path, ConfigLoader.get_item_icon("pear"), "顾客想买梨时应显示梨的图标")
 	var timer := customer.get_node_or_null("PurchaseTimer") as Timer
 	_assert_true(
 		timer != null and timer.wait_time >= PrototypeConstants.CUSTOMER_PURCHASE_WAIT_MIN_SECONDS and timer.wait_time <= PrototypeConstants.CUSTOMER_PURCHASE_WAIT_MAX_SECONDS,
@@ -57,10 +66,33 @@ func _ready() -> void:
 	_assert_equal(timeout_stall.sold_count, 0, "倒计时结束未互动时不应完成交易")
 	_assert_equal(timeout_customer.get("state"), "leaving", "倒计时结束后顾客应离开")
 
+	var real_stall := Node2D.new()
+	real_stall.name = "RealStall"
+	real_stall.set_script(StallScript)
+	var visual := Sprite2D.new()
+	visual.name = "Visual"
+	real_stall.add_child(visual)
+	add_child(real_stall)
+	await get_tree().process_frame
+	_assert_true(real_stall.call("open_with_slots", PrototypeConstants.SPOT_STREET, [{"item_id": "pear", "count": 1, "price": 3}], null), "测试应能打开真实摊位")
+	var closing_customer := CUSTOMER_SCENE.instantiate()
+	add_child(closing_customer)
+	closing_customer.call("setup", PrototypeConstants.CUSTOMER_WORKER, real_stall, Vector2.ZERO, Vector2(96, 0), [], "", PrototypeConstants.CUSTOMER_AGE_MIDDLE, PrototypeConstants.CUSTOMER_GENDER_FEMALE)
+	await get_tree().process_frame
+	closing_customer.call("_begin_purchase_request", real_stall)
+	_assert_equal(closing_customer.get("state"), "waiting_for_player", "真实摊位顾客应进入等待购买")
+	_assert_true(real_stall.call("close"), "真实摊位应能收摊")
+	await get_tree().process_frame
+	_assert_equal(closing_customer.get("state"), "leaving", "顾客等待购买时收摊应立刻离开")
+	_assert_true(closing_customer.get_node_or_null("PurchaseInteraction") == null, "收摊后应清理顾客购买交互")
+	_assert_true(closing_customer.get_node_or_null("PurchaseCountdown") == null, "收摊后应清理顾客购买倒计时")
+
 	customer.queue_free()
 	stall.queue_free()
 	timeout_customer.queue_free()
 	timeout_stall.queue_free()
+	closing_customer.queue_free()
+	real_stall.queue_free()
 	await get_tree().process_frame
 	get_tree().quit()
 

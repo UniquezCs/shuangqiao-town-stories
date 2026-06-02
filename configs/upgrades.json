@@ -5,8 +5,8 @@
 	{ "level": 3, "slots": 16, "price": 80 }
   ],
   "stall": [
-	{ "level": 1, "stall_slots": 4, "stock_limit": 5, "influence_radius": 160, "price": 0 },
-	{ "level": 2, "stall_slots": 6, "stock_limit": 10, "influence_radius": 220, "price": 50 },
-	{ "level": 3, "stall_slots": 8, "stock_limit": 15, "influence_radius": 280, "price": 120 }
+	{ "level": 1, "stall_slots": 4, "influence_radius": 160, "price": 0 },
+	{ "level": 2, "stall_slots": 6, "influence_radius": 220, "price": 50 },
+	{ "level": 3, "stall_slots": 8, "influence_radius": 280, "price": 120 }
   ]
 }

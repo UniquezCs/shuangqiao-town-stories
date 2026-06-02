@@ -74,7 +74,7 @@ func can_drop_slot_data(data: Variant, target_container: String, target_index: i
 		return false
 	if source == "backpack":
 		var slot: Dictionary = drag_data.get("slot", {})
-		return _stall_slots[target_index].is_empty() and ConfigLoader.is_sellable_item(str(slot.get("item_id", ""))) and _remaining_stall_capacity() > 0
+		return _stall_slots[target_index].is_empty() and ConfigLoader.is_sellable_item(str(slot.get("item_id", "")))
 	return source == "stall"
 
 
@@ -211,8 +211,8 @@ func _build_transfer_dialog() -> void:
 
 
 func _refresh() -> void:
-	_title.text = "摆摊准备：%d / %d 件" % [_stock_total(_stall_slots), GameState.get_stall_stock_limit()]
-	_summary.text = "拖拽背包农产品到摊位格，选择数量和单价后开始营业"
+	_title.text = "摆摊准备：%d 件" % _stock_total(_stall_slots)
+	_summary.text = "拖拽背包农产品到摊位格，选择数量和单价后开始营业；摊位等级决定商品格数"
 	for child in _backpack_grid.get_children():
 		child.queue_free()
 	for child in _stall_grid.get_children():
@@ -239,7 +239,7 @@ func _begin_backpack_to_stall_transfer(drag_data: Dictionary, target_index: int)
 	var source_index := int(drag_data.get("slot_index", -1))
 	var source_slot: Dictionary = drag_data.get("slot", {})
 	var item_id := str(source_slot.get("item_id", ""))
-	var max_amount := mini(int(source_slot.get("count", 0)), _remaining_stall_capacity())
+	var max_amount := int(source_slot.get("count", 0))
 	if source_index < 0 or max_amount <= 0:
 		return
 	_pending_transfer = {
@@ -328,10 +328,6 @@ func _return_all_stall_slots() -> bool:
 		SignalBus.sale_feedback.emit("背包空间不够，无法全部退回", Vector2.ZERO)
 		_refresh()
 	return returned_all
-
-
-func _remaining_stall_capacity() -> int:
-	return maxi(0, GameState.get_stall_stock_limit() - _stock_total(_stall_slots))
 
 
 func _stock_total(slots_to_count: Array) -> int:

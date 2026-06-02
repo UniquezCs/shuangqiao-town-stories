@@ -37,7 +37,7 @@ func open(spot: String, chosen_price: int, owner: Node2D = null) -> bool:
 	if available <= 0:
 		SignalBus.sale_feedback.emit("背包里没有可卖的商品", global_position)
 		return false
-	var prepared_stock := mini(available, GameState.get_stall_stock_limit())
+	var prepared_stock := available
 	if not Inventory.remove_item(current_item_id, prepared_stock):
 		return false
 	var prepared_slots: Array[Dictionary] = [
@@ -60,9 +60,6 @@ func open_with_slots(spot: String, prepared_slots: Array, owner: Node2D = null) 
 	var total_stock := _stock_total(sanitized_slots)
 	if total_stock <= 0:
 		SignalBus.sale_feedback.emit("摊位上没有可卖的商品", global_position)
-		return false
-	if total_stock > GameState.get_stall_stock_limit():
-		SignalBus.sale_feedback.emit("上架数量超过摊位容量", global_position)
 		return false
 	if owner != null and is_instance_valid(owner):
 		global_position = owner.global_position
@@ -94,6 +91,7 @@ func close() -> bool:
 	if returned > 0 and not _can_return_all_stock():
 		SignalBus.sale_feedback.emit("背包空间不够，无法收摊", global_position)
 		return false
+	SignalBus.stall_closed_node.emit(self)
 	for slot in stall_slots:
 		if slot.is_empty():
 			continue

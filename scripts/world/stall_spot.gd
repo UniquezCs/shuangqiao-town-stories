@@ -25,7 +25,7 @@ func get_prompt() -> String:
 		return ""
 	var typed_stall := stall as Node
 	if typed_stall and typed_stall.get("is_open"):
-		return "收摊"
+		return "长按收摊"
 	return "在%s摆摊" % label
 
 
@@ -34,9 +34,36 @@ func interact(player: Node) -> void:
 		return
 	_last_interacting_player = player as Node2D
 	if stall.get("is_open"):
-		stall.call("close")
+		var player_node := player as Node2D
+		var feedback_position := player_node.global_position if player_node != null else global_position
+		SignalBus.sale_feedback.emit("长按 E 3 秒收摊", feedback_position)
 	else:
 		SignalBus.stall_setup_requested.emit(self)
+
+
+func requires_hold_interact() -> bool:
+	return can_open_stall and bool(stall.get("is_open"))
+
+
+func get_hold_interact_duration() -> float:
+	return PrototypeConstants.STALL_CLOSE_HOLD_SECONDS
+
+
+func begin_hold_interact(player: Node) -> void:
+	var player_node := player as Node2D
+	var feedback_position := player_node.global_position if player_node != null else global_position
+	SignalBus.sale_feedback.emit("正在收摊...", feedback_position)
+
+
+func cancel_hold_interact(player: Node) -> void:
+	var player_node := player as Node2D
+	var feedback_position := player_node.global_position if player_node != null else global_position
+	SignalBus.sale_feedback.emit("收摊取消", feedback_position)
+
+
+func complete_hold_interact(_player: Node) -> void:
+	if bool(stall.get("is_open")):
+		stall.call("close")
 
 
 func open_stall(price: int) -> void:

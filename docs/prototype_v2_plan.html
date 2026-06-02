@@ -335,7 +335,7 @@
       <ul>
         <li>玩家在镇街可摆摊区域内交互开摊，定价范围仍是 <code>1-5</code> 元。</li>
         <li>摊位读取背包中的第一个可售商品，当前版本先支持单商品上架。</li>
-        <li>摊位容量和影响范围来自摊位升级配置。</li>
+        <li>摊位商品格数和影响范围来自摊位升级配置；不再设置总上架数量上限。</li>
         <li>开摊后生成三个关键节点：顾客影响范围 <code>InfluenceArea</code>、城管检测目标 <code>InspectionTarget</code>、玩家活动空气墙 <code>PlayerBoundary</code>。</li>
         <li><code>InspectionTarget</code> 的范围与摊位影响范围一致。</li>
         <li><code>PlayerBoundary</code> 使用玩家专用碰撞层，只限制玩家，不阻挡城管。</li>

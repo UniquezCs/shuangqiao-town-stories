@@ -6,12 +6,22 @@
 	"yield_min": 3,
 	"yield_max": 5,
 	"requires_water": true,
+	"seed_shop_enabled": true,
+	"seed_price": 2,
+	"state_textures": {
+	  "tilled": "res://assets/generated/sprites/farm/crops/apple/apple_empty_tilled_32.png",
+	  "seed_dry": "res://assets/generated/sprites/farm/crops/apple/apple_seed_dry_32.png",
+	  "seed_watered": "res://assets/generated/sprites/farm/crops/apple/apple_seed_watered_32.png",
+	  "growing_dry": "res://assets/generated/sprites/farm/crops/apple/apple_growing_dry_32.png",
+	  "growing_watered": "res://assets/generated/sprites/farm/crops/apple/apple_growing_watered_32.png",
+	  "ready": "res://assets/generated/sprites/farm/crops/apple/apple_mature_32.png"
+	},
 	"fertilizer_bonus": 1
   },
   "cabbage": {
 	"seed_item_id": "cabbage_seed",
 	"harvest_item_id": "cabbage",
-	"growth_days": 1,
+	"growth_days": 0,
 	"yield_min": 2,
 	"yield_max": 4,
 	"requires_water": true,
@@ -20,7 +30,7 @@
   "cucumber": {
 	"seed_item_id": "cucumber_seed",
 	"harvest_item_id": "cucumber",
-	"growth_days": 2,
+	"growth_days": 0,
 	"yield_min": 2,
 	"yield_max": 5,
 	"requires_water": true,
@@ -29,7 +39,7 @@
   "tomato": {
 	"seed_item_id": "tomato_seed",
 	"harvest_item_id": "tomato",
-	"growth_days": 2,
+	"growth_days": 0,
 	"yield_min": 3,
 	"yield_max": 5,
 	"requires_water": true,
@@ -38,16 +48,64 @@
   "pear": {
 	"seed_item_id": "pear_seed",
 	"harvest_item_id": "pear",
-	"growth_days": 3,
+	"growth_days": 0,
 	"yield_min": 2,
 	"yield_max": 4,
 	"requires_water": true,
+	"seed_shop_enabled": true,
+	"seed_price": 3,
+	"state_textures": {
+	  "tilled": "res://assets/generated/sprites/farm/crops/pear/pear_empty_tilled_32.png",
+	  "seed_dry": "res://assets/generated/sprites/farm/crops/pear/pear_seed_dry_32.png",
+	  "seed_watered": "res://assets/generated/sprites/farm/crops/pear/pear_seed_watered_32.png",
+	  "growing_dry": "res://assets/generated/sprites/farm/crops/pear/pear_growing_dry_32.png",
+	  "growing_watered": "res://assets/generated/sprites/farm/crops/pear/pear_growing_watered_32.png",
+	  "ready": "res://assets/generated/sprites/farm/crops/pear/pear_mature_32.png"
+	},
+	"fertilizer_bonus": 1
+  },
+  "banana": {
+	"seed_item_id": "banana_seed",
+	"harvest_item_id": "banana",
+	"growth_days": 0,
+	"yield_min": 2,
+	"yield_max": 4,
+	"requires_water": true,
+	"seed_shop_enabled": true,
+	"seed_price": 4,
+	"state_textures": {
+	  "tilled": "res://assets/generated/sprites/farm/crops/banana/banana_empty_tilled_32.png",
+	  "seed_dry": "res://assets/generated/sprites/farm/crops/banana/banana_seed_dry_32.png",
+	  "seed_watered": "res://assets/generated/sprites/farm/crops/banana/banana_seed_watered_32.png",
+	  "growing_dry": "res://assets/generated/sprites/farm/crops/banana/banana_growing_dry_32.png",
+	  "growing_watered": "res://assets/generated/sprites/farm/crops/banana/banana_growing_watered_32.png",
+	  "ready": "res://assets/generated/sprites/farm/crops/banana/banana_mature_32.png"
+	},
+	"fertilizer_bonus": 1
+  },
+  "grape": {
+	"seed_item_id": "grape_seed",
+	"harvest_item_id": "grape",
+	"growth_days": 0,
+	"yield_min": 3,
+	"yield_max": 6,
+	"requires_water": true,
+	"seed_shop_enabled": true,
+	"seed_price": 4,
+	"state_textures": {
+	  "tilled": "res://assets/generated/sprites/farm/crops/grape/grape_empty_tilled_32.png",
+	  "seed_dry": "res://assets/generated/sprites/farm/crops/grape/grape_seed_dry_32.png",
+	  "seed_watered": "res://assets/generated/sprites/farm/crops/grape/grape_seed_watered_32.png",
+	  "growing_dry": "res://assets/generated/sprites/farm/crops/grape/grape_growing_dry_32.png",
+	  "growing_watered": "res://assets/generated/sprites/farm/crops/grape/grape_growing_watered_32.png",
+	  "ready": "res://assets/generated/sprites/farm/crops/grape/grape_mature_32.png"
+	},
 	"fertilizer_bonus": 1
   },
   "potato": {
 	"seed_item_id": "potato_seed",
 	"harvest_item_id": "potato",
-	"growth_days": 1,
+	"growth_days": 0,
 	"yield_min": 3,
 	"yield_max": 6,
 	"requires_water": true,

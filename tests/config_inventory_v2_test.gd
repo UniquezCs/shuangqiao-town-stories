@@ -5,6 +5,12 @@ func _ready() -> void:
 	GameState.reset_game()
 	_assert_equal(ConfigLoader.get_item_name(PrototypeConstants.ITEM_APPLE), "苹果", "应能读取商品配置名称")
 	_assert_equal(ConfigLoader.get_stack_size(PrototypeConstants.ITEM_APPLE), 20, "应能读取商品堆叠上限")
+	_assert_true(ConfigLoader.get_seed_shop_seed_items().has("pear_seed"), "种子商店应包含梨种子")
+	_assert_true(ConfigLoader.get_seed_shop_seed_items().has("banana_seed"), "种子商店应包含香蕉种子")
+	_assert_true(ConfigLoader.get_seed_shop_seed_items().has("grape_seed"), "种子商店应包含葡萄种子")
+	_assert_true(ResourceLoader.exists(ConfigLoader.get_crop_state_texture("pear", "ready")), "梨成熟状态素材应可加载")
+	_assert_true(ResourceLoader.exists(ConfigLoader.get_crop_state_texture("banana", "ready")), "香蕉成熟状态素材应可加载")
+	_assert_true(ResourceLoader.exists(ConfigLoader.get_crop_state_texture("grape", "ready")), "葡萄成熟状态素材应可加载")
 	_assert_true(not ConfigLoader.get_asset("character.vendor").is_empty(), "应能读取资源注册表中的主角资源")
 	_assert_equal(
 		ConfigLoader.get_asset_path("tileset.rural_town_32"),

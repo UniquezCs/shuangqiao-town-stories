@@ -22,6 +22,19 @@ func _ready() -> void:
 
 	var shop := SeedShop.new()
 	add_child(shop)
+	GameState.cash = (
+		ConfigLoader.get_seed_price("pear_seed")
+		+ ConfigLoader.get_seed_price("banana_seed")
+		+ ConfigLoader.get_seed_price("grape_seed")
+	)
+	_assert_true(shop.buy_seed("pear_seed"), "现金足够时应能买梨种子")
+	_assert_true(shop.buy_seed("banana_seed"), "现金足够时应能买香蕉种子")
+	_assert_true(shop.buy_seed("grape_seed"), "现金足够时应能买葡萄种子")
+	_assert_equal(Inventory.get_count("pear_seed"), 1, "买梨种子后背包应增加")
+	_assert_equal(Inventory.get_count("banana_seed"), 1, "买香蕉种子后背包应增加")
+	_assert_equal(Inventory.get_count("grape_seed"), 1, "买葡萄种子后背包应增加")
+	_assert_equal(GameState.cash, 0, "买完三种新增种子后现金应正确扣完")
+
 	GameState.cash = GameState.seed_shop_apple_price
 	var starting_stock: int = GameState.seed_shop_apple_stock
 	_assert_true(shop.buy_apple(), "现金足够且有库存时应能直接买苹果")

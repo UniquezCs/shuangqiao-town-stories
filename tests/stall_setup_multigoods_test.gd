@@ -18,6 +18,21 @@ func _ready() -> void:
 	setup_panel.set_script(setup_script)
 	add_child(setup_panel)
 	await get_tree().process_frame
+
+	Inventory.set_count(PrototypeConstants.ITEM_APPLE, 12)
+	setup_panel.call("open_for_stall", null)
+	var large_apple_slot_index := _slot_index_for(PrototypeConstants.ITEM_APPLE)
+	setup_panel.call("handle_slot_drop", {
+		"source": "backpack",
+		"slot_index": large_apple_slot_index,
+		"slot": Inventory.slots[large_apple_slot_index].duplicate(),
+	}, "stall", 0)
+	_assert_equal(int(setup_panel.get("_amount_spin").get("max_value")), 12, "摆摊准备不应再被摊位总上架数量限制")
+	setup_panel.get("_amount_spin").set("value", 12)
+	setup_panel.call("_confirm_transfer")
+	_assert_equal(int(((setup_panel.get("_stall_slots") as Array)[0] as Dictionary).get("count", 0)), 12, "摊位草稿应允许超过旧总上限的商品数量")
+	setup_panel.call("cancel_setup")
+
 	Inventory.set_count(PrototypeConstants.ITEM_APPLE, 5)
 	setup_panel.call("open_for_stall", null)
 	_assert_true(not get_tree().paused, "打开摆摊准备面板时不应暂停游戏")
@@ -70,11 +85,11 @@ func _ready() -> void:
 	Inventory.set_count("cabbage", 0)
 
 	var prepared_slots: Array[Dictionary] = [
-		{"item_id": PrototypeConstants.ITEM_APPLE, "count": 2, "price": 5},
+		{"item_id": PrototypeConstants.ITEM_APPLE, "count": 12, "price": 5},
 		{"item_id": "cabbage", "count": 3, "price": 1},
 	]
 	_assert_true(stall.call("open_with_slots", PrototypeConstants.SPOT_STREET, prepared_slots, null), "摊位应能用多商品格开摊")
-	_assert_equal(stall.get("stock"), 5, "摊位兼容 stock 应等于所有商品总数")
+	_assert_equal(stall.get("stock"), 15, "摊位兼容 stock 应等于所有商品总数，且不再限制总件数")
 	_assert_equal((stall.get("stall_slots") as Array).size(), GameState.get_stall_slot_count(), "摊位实际格数应跟随等级")
 
 	var customer_profile := {
@@ -93,10 +108,10 @@ func _ready() -> void:
 	_assert_true(bool(result.get("bought", false)), "顾客应能完成多商品成交")
 	_assert_equal(str(result.get("item_id", "")), "cabbage", "成交商品应来自被选中的摊位格")
 	_assert_equal(GameState.cash, cash_before_sale + 1, "现金应按成交格价格增加")
-	_assert_equal(stall.get("stock"), 4, "成交后总库存应减少 1")
+	_assert_equal(stall.get("stock"), 14, "成交后总库存应减少 1")
 
 	stall.call("close")
-	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 2, "收摊后未卖苹果应返回背包")
+	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 12, "收摊后未卖苹果应返回背包")
 	_assert_equal(Inventory.get_count("cabbage"), 2, "收摊后未卖白菜应返回背包")
 
 	Inventory.set_count(PrototypeConstants.ITEM_APPLE, 0)

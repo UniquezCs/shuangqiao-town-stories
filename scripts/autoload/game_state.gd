@@ -188,11 +188,6 @@ func get_backpack_slot_count() -> int:
 	return int(entry.get("slots", 8))
 
 
-func get_stall_stock_limit() -> int:
-	var entry := ConfigLoader.get_upgrade_entry("stall", stall_level)
-	return int(entry.get("stock_limit", PrototypeConstants.APPLE_HARVEST_COUNT))
-
-
 func get_stall_slot_count() -> int:
 	var entry := ConfigLoader.get_upgrade_entry("stall", stall_level)
 	return int(entry.get("stall_slots", 4))
@@ -256,18 +251,31 @@ func end_day(reason := "sleep") -> Dictionary:
 func advance_farm_plots_for_new_day() -> void:
 	for plot_id in farm_plot_states.keys():
 		var data := get_farm_plot_data(str(plot_id))
-		var state := str(data.get("state", "empty"))
-		if state != "watered":
+		var days_grown := int(data.get("days_grown", 0))
+		var state := _normalize_farm_plot_state(str(data.get("state", "tilled")), days_grown)
+		data["state"] = state
+		if not ["seed_watered", "growing_watered"].has(state):
 			continue
 		var crop_id := str(data.get("crop_id", PrototypeConstants.ITEM_APPLE))
 		var crop := ConfigLoader.get_crop(crop_id)
-		var days_grown := int(data.get("days_grown", 0)) + 1
+		days_grown += 1
 		data["days_grown"] = days_grown
 		if days_grown >= int(crop.get("growth_days", 1)):
 			data["state"] = "ready"
 		else:
-			data["state"] = "seeded"
+			data["state"] = "growing_dry"
 		set_farm_plot_data(str(plot_id), data)
+
+
+func _normalize_farm_plot_state(raw_state: String, days_grown: int) -> String:
+	match raw_state:
+		"empty":
+			return "tilled"
+		"seeded":
+			return "growing_dry" if days_grown > 0 else "seed_dry"
+		"watered":
+			return "growing_watered" if days_grown > 0 else "seed_watered"
+	return raw_state
 
 
 func build_settlement(remaining_apples: int) -> Dictionary:

@@ -1,8 +1,6 @@
 extends CanvasLayer
 
 var _cash_label: Label
-var _apple_label: Label
-var _seed_label: Label
 var _objective_label: Label
 var _window_label: Label
 var _clock_label: Label
@@ -40,7 +38,7 @@ func _build_ui() -> void:
 
 	var panel := PanelContainer.new()
 	panel.position = Vector2(16, 16)
-	panel.custom_minimum_size = Vector2(360, 132)
+	panel.custom_minimum_size = Vector2(360, 104)
 	root.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -54,14 +52,12 @@ func _build_ui() -> void:
 	margin.add_child(box)
 
 	_cash_label = Label.new()
-	_apple_label = Label.new()
-	_seed_label = Label.new()
 	_day_label = Label.new()
 	_clock_label = Label.new()
 	_window_label = Label.new()
 	_tool_label = Label.new()
 	_objective_label = Label.new()
-	for label in [_cash_label, _apple_label, _seed_label, _day_label, _clock_label, _window_label, _tool_label, _objective_label]:
+	for label in [_cash_label, _day_label, _clock_label, _window_label, _tool_label, _objective_label]:
 		box.add_child(label)
 
 	_prompt_label = Label.new()
@@ -80,10 +76,7 @@ func _on_cash_changed(amount: int) -> void:
 
 
 func _on_inventory_changed(item_id: String, count: int) -> void:
-	if item_id == PrototypeConstants.ITEM_APPLE:
-		_apple_label.text = "背包苹果：%d" % count
-	elif item_id == PrototypeConstants.ITEM_APPLE_SEED:
-		_seed_label.text = "苹果种子：%d" % count
+	pass
 
 
 func _on_objective_changed(text: String) -> void:

@@ -16,20 +16,18 @@ func _ready() -> void:
 	add_child(plot)
 	await get_tree().process_frame
 
-	GameState.set_current_tool(PrototypeConstants.TOOL_HOE)
-	plot.call("interact", null)
-	_assert_equal(plot.get("state"), "tilled", "锄头应把空地变为耕地")
+	_assert_equal(plot.get("state"), "tilled", "新农田应从空耕地状态开始")
 
 	GameState.set_current_tool(PrototypeConstants.TOOL_SEED)
 	plot.call("interact", null)
-	_assert_equal(plot.get("state"), "seeded", "种子应把耕地变为已播种")
+	_assert_equal(plot.get("state"), "seed_dry", "种子应把耕地变为种子无水状态")
 
 	GameState.set_current_tool(PrototypeConstants.TOOL_WATER)
 	plot.call("interact", null)
-	_assert_equal(plot.get("state"), "watered", "水壶应把已播种变为已浇水")
+	_assert_equal(plot.get("state"), "ready", "测试期 growth_days 为 0，浇水后作物应立即成熟")
 
 	GameState.advance_farm_plots_for_new_day()
-	_assert_true(["seeded", "ready"].has(GameState.get_farm_plot_state("plot_1")), "睡觉后应推进作物成长")
+	_assert_equal(GameState.get_farm_plot_state("plot_1"), "ready", "已成熟作物睡觉后应保持成熟状态")
 	get_tree().quit()
 
 

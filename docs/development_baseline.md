@@ -134,6 +134,8 @@ Detailed incident notes and prevention rules are maintained in
 - 商品、作物和升级数据必须优先放在 `configs/*.json` 中驱动。
 - 代码可以保留兼容接口，但不要把新增作物、售价、堆叠数、成长天数或升级数值硬编码进玩法脚本。
 - 背包、摊位、商店、顾客需求和农田系统读取同一套商品/作物配置，避免出现多份名称或数值。
+- 顾客对作物的基础喜好、基础预算、个人随机预算范围和个人随机喜好范围必须通过 `configs/customer_preferences.json` 配置；新增可售作物时必须同步加入该配置的 `items` 和各年龄/性别偏好表。
+- 每新增一种可种植作物，都必须作为一组完整变更处理：在 `configs/crops.json` 配置作物和 `seed_item_id`、在 `configs/items.json` 配置作物商品和种子、在种子商店开启售卖并配置价格、在 `configs/customer_preferences.json` 配置所有年龄/性别顾客对该作物的喜好度，并补充对应测试。
 
 ### Asset Integration Protocol
 
@@ -153,6 +155,9 @@ Detailed incident notes and prevention rules are maintained in
 - 资源路径应集中放在 `configs/*.json` 或专用资源 registry 中，避免散落在玩法脚本里。
 - 缺少正式美术时，主程序应使用文字、简单图块、已有资源或明显占位资源继续实现逻辑，并记录后续美术需求。
 - 不主动生成美术资源。只有用户明确要求生成资源时，才使用图像或资源生成 skill。
+- 种植地块状态统一为 6 种：`tilled`（空耕地）、`seed_dry`（种子无水）、`seed_watered`（种子有水）、`growing_dry`（成长中无水）、`growing_watered`（成长中有水）、`ready`（成熟）。
+- 每种作物最终应提供 8 个 `32x32` 素材：6 个地块状态图、1 个背包商品图标、1 个背包种子图标。地块状态图路径应配置在 `configs/crops.json` 的 `state_textures` 中；商品和种子图标路径应配置在 `configs/items.json` 中。
+- 后续新增作物时，至少必须同步准备并接入该作物对应的 6 个 `32x32` 地块状态素材；如果商品图标或种子图标暂时缺失，主程序可以用占位图继续接线，但必须在 `configs/assets.json` 和 `docs/asset_registry.md` 记录缺口。
 - 资源替换必须不改变玩法节点结构。美术接入只能替换 `Sprite2D.texture`、`AnimatedSprite2D.sprite_frames`、`TileSet` 或配置路径。
 - 重要资源类型应有固定节点模板：
   - `FarmPlot(Area2D)` -> `Visual(Sprite2D)` -> `CollisionShape2D`

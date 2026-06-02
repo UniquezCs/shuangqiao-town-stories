@@ -3,14 +3,15 @@ extends Area2D
 @export var plot_id := "plot_1"
 
 const STATE_TEXTURES := {
-	"empty": preload("res://assets/generated/sprites/farm/farm_empty_64.png"),
-	"tilled": preload("res://assets/generated/sprites/farm/farm_seeded_64.png"),
-	"seeded": preload("res://assets/generated/sprites/farm/farm_growing_64.png"),
-	"watered": preload("res://assets/generated/sprites/farm/farm_growing_64.png"),
-	"ready": preload("res://assets/generated/sprites/farm/farm_ready_64.png"),
+	"tilled": preload("res://assets/generated/sprites/farm/crops/apple/apple_empty_tilled_32.png"),
+	"seed_dry": preload("res://assets/generated/sprites/farm/crops/apple/apple_seed_dry_32.png"),
+	"seed_watered": preload("res://assets/generated/sprites/farm/crops/apple/apple_seed_watered_32.png"),
+	"growing_dry": preload("res://assets/generated/sprites/farm/crops/apple/apple_growing_dry_32.png"),
+	"growing_watered": preload("res://assets/generated/sprites/farm/crops/apple/apple_growing_watered_32.png"),
+	"ready": preload("res://assets/generated/sprites/farm/crops/apple/apple_mature_32.png"),
 }
 
-var state := "empty"
+var state := "tilled"
 var crop_id := ""
 var days_grown := 0
 var fertilized := false
@@ -29,31 +30,27 @@ func _ready() -> void:
 
 func get_prompt() -> String:
 	match state:
-		"empty":
-			return "用锄头开垦"
 		"tilled":
 			return "用种子播种"
-		"seeded":
+		"seed_dry", "growing_dry":
 			return "用水壶浇水"
-		"watered":
+		"seed_watered", "growing_watered":
 			return "明天再来看"
 		"ready":
 			return "收获作物"
 	return ""
 
 
-func interact(_player: Node) -> void:
+func interact(player: Node) -> void:
 	match state:
-		"empty":
-			_try_till()
 		"tilled":
 			_try_seed()
-		"seeded":
-			_try_water_or_fertilize()
-		"watered":
+		"seed_dry", "growing_dry":
+			_try_water_or_fertilize(player)
+		"seed_watered", "growing_watered":
 			SignalBus.sale_feedback.emit("已经浇过水，睡觉后会继续生长", global_position)
 		"ready":
-			_harvest()
+			_harvest(player)
 
 
 func _try_till() -> void:
@@ -78,7 +75,7 @@ func _try_seed() -> void:
 	if crop_id.is_empty():
 		crop_id = PrototypeConstants.ITEM_APPLE
 	_set_data({
-		"state": "seeded",
+		"state": "seed_dry",
 		"crop_id": crop_id,
 		"days_grown": 0,
 		"fertilized": false,
@@ -86,20 +83,23 @@ func _try_seed() -> void:
 	GameState.set_objective("按 3 选择水壶，给作物浇水")
 
 
-func _try_water_or_fertilize() -> void:
+func _try_water_or_fertilize(player: Node) -> void:
 	if GameState.current_tool == PrototypeConstants.TOOL_FERTILIZER:
 		_try_fertilize()
 		return
 	if GameState.current_tool != PrototypeConstants.TOOL_WATER:
 		SignalBus.sale_feedback.emit("先按 3 选择水壶", global_position)
 		return
+	var crop := ConfigLoader.get_crop(crop_id)
+	var next_state := "ready" if int(crop.get("growth_days", 1)) <= 0 else _watered_state_for_growth()
 	_set_data({
-		"state": "watered",
+		"state": next_state,
 		"crop_id": crop_id,
 		"days_grown": days_grown,
 		"fertilized": fertilized,
 	})
-	GameState.set_objective("晚上回屋睡觉，第二天作物会继续成长")
+	_play_player_farming_action(player, "water")
+	GameState.set_objective("作物成熟了，按 4 选择镰刀收获" if next_state == "ready" else "晚上回屋睡觉，第二天作物会继续成长")
 
 
 func _try_fertilize() -> void:
@@ -119,7 +119,7 @@ func _try_fertilize() -> void:
 	SignalBus.sale_feedback.emit("施肥完成", global_position)
 
 
-func _harvest() -> void:
+func _harvest(player: Node) -> void:
 	if GameState.current_tool != PrototypeConstants.TOOL_SICKLE:
 		SignalBus.sale_feedback.emit("先按 4 选择镰刀收获", global_position)
 		return
@@ -137,7 +137,13 @@ func _harvest() -> void:
 		return
 	else:
 		SignalBus.sale_feedback.emit("收获 %s x%d" % [ConfigLoader.get_item_name(harvest_item_id), amount], global_position)
-	_set_data({"state": "empty"})
+	_play_player_farming_action(player, "harvest")
+	_set_data({
+		"state": "tilled",
+		"crop_id": "",
+		"days_grown": 0,
+		"fertilized": false,
+	})
 	GameState.set_objective("带着作物去镇街摆摊")
 	if GameState.sales_count > 0:
 		GameState.complete_prototype()
@@ -153,7 +159,7 @@ func _first_available_seed() -> String:
 
 func _load_state() -> void:
 	var data := GameState.get_farm_plot_data(plot_id)
-	state = str(data.get("state", "empty"))
+	state = _normalize_state(str(data.get("state", "tilled")), int(data.get("days_grown", 0)))
 	crop_id = str(data.get("crop_id", PrototypeConstants.ITEM_APPLE))
 	days_grown = int(data.get("days_grown", 0))
 	fertilized = bool(data.get("fertilized", false))
@@ -164,7 +170,7 @@ func _set_data(data: Dictionary) -> void:
 	var next_data := saved.duplicate(true)
 	for key in data.keys():
 		next_data[key] = data[key]
-	state = str(next_data.get("state", "empty"))
+	state = _normalize_state(str(next_data.get("state", "tilled")), int(next_data.get("days_grown", 0)))
 	crop_id = str(next_data.get("crop_id", ""))
 	days_grown = int(next_data.get("days_grown", 0))
 	fertilized = bool(next_data.get("fertilized", false))
@@ -179,4 +185,32 @@ func _set_data(data: Dictionary) -> void:
 
 
 func _refresh_visual() -> void:
-	visual.texture = STATE_TEXTURES.get(state, STATE_TEXTURES["empty"])
+	var state_texture_path := ConfigLoader.get_crop_state_texture(_visual_crop_id(), state)
+	if not state_texture_path.is_empty() and ResourceLoader.exists(state_texture_path):
+		visual.texture = load(state_texture_path) as Texture2D
+	else:
+		visual.texture = STATE_TEXTURES.get(state, STATE_TEXTURES["tilled"])
+
+
+func _watered_state_for_growth() -> String:
+	return "growing_watered" if days_grown > 0 else "seed_watered"
+
+
+func _visual_crop_id() -> String:
+	return crop_id if not crop_id.is_empty() else PrototypeConstants.ITEM_APPLE
+
+
+func _normalize_state(raw_state: String, saved_days_grown: int) -> String:
+	match raw_state:
+		"empty":
+			return "tilled"
+		"seeded":
+			return "growing_dry" if saved_days_grown > 0 else "seed_dry"
+		"watered":
+			return "growing_watered" if saved_days_grown > 0 else "seed_watered"
+	return raw_state
+
+
+func _play_player_farming_action(player: Node, action_id: String) -> void:
+	if player != null and player.has_method("play_farming_action"):
+		player.call("play_farming_action", action_id)

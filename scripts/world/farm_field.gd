@@ -26,6 +26,7 @@ func interact(player: Node) -> void:
 	if _has_plot_at_cell(cell):
 		SignalBus.sale_feedback.emit("这格已经是农田", player_node.global_position)
 		return
+	_play_player_farming_action(player, "hoe")
 	var plot := FARM_PLOT_SCENE.instantiate()
 	plot.name = "FarmPlot_%d_%d" % [cell.x, cell.y]
 	var plot_id := _plot_id_for_cell(cell)
@@ -106,3 +107,8 @@ func _refresh_interactable_state() -> void:
 			add_to_group("interactable")
 	elif is_in_group("interactable"):
 		remove_from_group("interactable")
+
+
+func _play_player_farming_action(player: Node, action_id: String) -> void:
+	if player != null and player.has_method("play_farming_action"):
+		player.call("play_farming_action", action_id)

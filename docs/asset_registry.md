@@ -29,9 +29,10 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
   no cropped hair/feet, no split heads, no edge-touching body parts, and no
   detached shadow/noise fragments.
 - Customer NPCs also carry gameplay demographics. `age_group` is one of
-  `youth`, `middle`, `elder`; `gender` is one of `male`, `female`. Purchase
-  behavior blends the demographic base budget/preferences and per-NPC random
-  budget/preferences at `50% / 50%`.
+  `youth`, `middle`, `elder`; `gender` is one of `male`, `female`. Crop
+  preference items, demographic base budget/preferences, and personal random
+  ranges are configured in `configs/customer_preferences.json`; runtime behavior
+  blends demographic and per-NPC values at `50% / 50%`.
 - Raw character rows that touch their source grid boundary fail QC. Regenerate
   the broken direction as a separate padded sheet instead of trying to repair a
   cropped row after slicing.
@@ -63,7 +64,7 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 | Asset ID | Status | Current Resource | Future Need |
 | --- | --- | --- | --- |
-| `character.vendor` | implemented | `vendor_walk_spriteframes_48x64.tres` | Regenerated 2026-06-01 as a 1990s township middle-aged vendor; `48x64`, 4 directions, 8 frames, shared scale and stable feet baseline. `walk_right` is mirrored from normalized `walk_left` to keep crop height and foot position consistent. |
+| `character.vendor` | implemented | `player_spriteframes_48x64.tres` | Regenerated 2026-06-01 as a 1990s township middle-aged vendor; `48x64`, 4-direction walk plus 2026-06-02 farming actions: hoe, water, harvest, each 4 directions x 4 frames. |
 | `character.student_customer` | implemented | `student_walk_spriteframes_48x64.tres` | Student visual pool: `youth + male`; `48x64`, 4 directions, 6 frames. |
 | `character.youth_female_customer` | implemented | `youth_female_walk_spriteframes_48x64.tres` | Student visual pool: `youth + female`; restored to the earlier preferred raw image on 2026-06-02, then only cleaned magenta/purple fringe pixels. |
 | `character.worker_customer` | implemented | `worker_walk_spriteframes_48x64.tres` | Worker visual pool: `middle + male`; `48x64`, 4 directions, 6 frames. |
@@ -76,17 +77,21 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `item.apple` | implemented | `sprites/items/crops/apple_32.png` | Also has fallback `sprites/items/general/apple_32.png`. |
-| `item.apple_seed` | implemented | `sprites/ui/icons/apple_seed_packet_32.png` | Wired in `configs/items.json`. |
+| `item.apple` | implemented | `sprites/items/crops/apple_32.png` | Regenerated 2026-06-02 as part of the apple 8-resource crop pack. |
+| `item.apple_seed` | implemented | `sprites/items/apple_seed_packet_32.png` | Regenerated 2026-06-02 as part of the apple 8-resource crop pack. |
 | `item.cabbage` | implemented | `sprites/items/crops/cabbage_32.png` | Normalized generated crop icon. |
 | `item.cucumber` | implemented | `sprites/items/crops/cucumber_32.png` | Normalized generated crop icon. |
 | `item.tomato` | implemented | `sprites/items/crops/tomato_32.png` | Normalized generated crop icon. |
-| `item.pear` | implemented | `sprites/items/pear_32.png` | Wired in `configs/items.json`. |
+| `item.pear` | implemented | `sprites/items/crops/pear_32.png` | Regenerated 2026-06-02 as part of the pear 8-resource crop pack. |
+| `item.banana` | implemented | `sprites/items/crops/banana_32.png` | Generated 2026-06-02 as part of the banana 8-resource crop pack. |
+| `item.grape` | implemented | `sprites/items/crops/grape_32.png` | Generated 2026-06-02 as part of the grape 8-resource crop pack. |
 | `item.potato` | implemented | `sprites/items/crops/potato_32.png` | Normalized generated crop icon. |
 | `item.cabbage_seed` | implemented | `sprites/items/cabbage_seed_packet_32.png` | Dedicated seed packet. |
 | `item.cucumber_seed` | implemented | `sprites/items/cucumber_seed_packet_32.png` | Dedicated seed packet. |
 | `item.tomato_seed` | implemented | `sprites/items/tomato_seed_packet_32.png` | Dedicated seed packet. |
-| `item.pear_seed` | implemented | `sprites/items/pear_seed_packet_32.png` | Dedicated seed packet. |
+| `item.pear_seed` | implemented | `sprites/items/pear_seed_packet_32.png` | Regenerated 2026-06-02 as part of the pear 8-resource crop pack. |
+| `item.banana_seed` | implemented | `sprites/items/banana_seed_packet_32.png` | Generated 2026-06-02 as part of the banana 8-resource crop pack. |
+| `item.grape_seed` | implemented | `sprites/items/grape_seed_packet_32.png` | Generated 2026-06-02 as part of the grape 8-resource crop pack. |
 | `item.potato_seed` | implemented | `sprites/items/potato_seed_packet_32.png` | Dedicated seed packet. |
 | `item.generic_seed` | available | generic seed bag | Fallback only; active crop seeds have dedicated icons. |
 | `item.fertilizer` | implemented | `sprites/items/fertilizer_bag_32.png` | Wired in `configs/items.json`. |
@@ -101,15 +106,30 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 ### Farm Plots
 
-Current gameplay uses `scenes/farm_plot.tscn` with a `Sprite2D` scaled to one `32x32` tile.
+Current gameplay uses `scenes/farm_plot.tscn` with a `Sprite2D` and one `32x32` texture per farm state.
 
-| Asset ID | Status | Current Resource | Better Available Candidate |
+Farm plot runtime states are standardized to:
+
+- `tilled`: 空耕地
+- `seed_dry`: 种子无水
+- `seed_watered`: 种子有水
+- `growing_dry`: 成长中无水
+- `growing_watered`: 成长中有水
+- `ready`: 成熟
+
+Each crop should eventually provide 8 resources: the 6 farm-state textures above plus one inventory crop icon and one inventory seed icon.
+
+| Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `farm_plot.empty` | implemented | `farm_empty_64.png` | `grass_patch.png` |
-| `farm_plot.tilled` | placeholder | `farm_seeded_64.png` | `freshly_hoed.png` |
-| `farm_plot.seeded` | placeholder | `farm_growing_64.png` | `seeded.png` |
-| `farm_plot.watered` | placeholder | `farm_growing_64.png` | `watered_seeded.png` |
-| `farm_plot.ready` | implemented | `farm_ready_64.png` | `harvest_ready.png` |
+| `farm_plot.apple.tilled` | implemented | `farm/crops/apple/apple_empty_tilled_32.png` | Apple 8-resource pack. |
+| `farm_plot.apple.seed_dry` | implemented | `farm/crops/apple/apple_seed_dry_32.png` | Apple 8-resource pack. |
+| `farm_plot.apple.seed_watered` | implemented | `farm/crops/apple/apple_seed_watered_32.png` | Water is intentionally visible as blue puddles. |
+| `farm_plot.apple.growing_dry` | implemented | `farm/crops/apple/apple_growing_dry_32.png` | Apple 8-resource pack. |
+| `farm_plot.apple.growing_watered` | implemented | `farm/crops/apple/apple_growing_watered_32.png` | Water is intentionally visible as blue puddles. |
+| `farm_plot.apple.ready` | implemented | `farm/crops/apple/apple_mature_32.png` | Apple 8-resource pack. |
+| `farm_plot.pear.*` | implemented | `farm/crops/pear/*.png` | Pear 8-resource pack; all six state textures wired in `configs/crops.json`. |
+| `farm_plot.banana.*` | implemented | `farm/crops/banana/*.png` | Banana 8-resource pack; all six state textures wired in `configs/crops.json`. |
+| `farm_plot.grape.*` | implemented | `farm/crops/grape/*.png` | Grape 8-resource pack; all six state textures wired in `configs/crops.json`. |
 
 ### Stall Visuals
 
@@ -179,8 +199,7 @@ The township reference map now also has a dedicated top-down pixel prop set unde
 2. Proper house interior tiles.
 3. Home exterior replacement using the v2 rural house facade.
 4. Stall upgrade level visuals.
-5. Main character farming action animations: watering, hoeing, harvesting.
-6. Wire available HUD/tool/warning icons into UI and Chengguan feedback.
+5. Wire available HUD/tool/warning icons into UI and Chengguan feedback.
 
 ## Debug And Validation
 

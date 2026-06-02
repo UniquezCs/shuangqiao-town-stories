@@ -2,7 +2,30 @@
 
 This document records character animation failures and the required prevention
 rules. Use it before generating or rebuilding any `48x64` character/NPC walk
-sheet.
+or action sheet.
+
+## 2026-06-02 Player Farming Actions
+
+### Affected Assets
+
+- `assets/generated/sprites/characters/player_hoe_4dir_4f_48x64.png`
+- `assets/generated/sprites/characters/player_water_4dir_4f_48x64.png`
+- `assets/generated/sprites/characters/player_harvest_4dir_4f_48x64.png`
+- `assets/generated/sprites/characters/player_spriteframes_48x64.tres`
+
+### Required Result
+
+- Each action sheet is `192x256`, split into `4x4` frames at `48x64`.
+- Rows are `down`, `left`, `right`, `up`; animation names are
+  `hoe_*`, `water_*`, and `harvest_*`.
+- Every action frame must have a non-null `Texture2D`, exact `48x64` size, and
+  visible alpha pixels after loading through Godot `SpriteFrames`.
+- Component cleanup must preserve the held tool and small effects such as water
+  drops. Do not keep only the largest component.
+- Magenta/chroma source backgrounds and low-alpha purple fringe pixels must be
+  removed before importing.
+- `Player/AnimatedSprite2D` uses `player_spriteframes_48x64.tres`, which
+  combines the original walk animations with these farming action animations.
 
 ## 2026-06-01 Random NPC 6-Frame Standard
 
@@ -39,6 +62,7 @@ sheet.
 
 - `assets/generated/sprites/characters/vendor_walk_4dir_8f_48x64.png`
 - `assets/generated/sprites/characters/vendor_walk_spriteframes_48x64.tres`
+- `assets/generated/sprites/characters/player_spriteframes_48x64.tres`
 
 ### Required Result
 
@@ -47,8 +71,9 @@ sheet.
 - Each row has 8 frames and frame 8 is an exact copy of frame 1.
 - The protagonist keeps a stable middle-aged 1990s township vendor identity:
   blue work jacket, dark trousers, black cloth shoes, and white towel.
-- The sheet is used by `Player/AnimatedSprite2D` through SpriteFrames; no
-  script-generated character animation is involved.
+- The walk sheet is copied into `player_spriteframes_48x64.tres` for
+  `Player/AnimatedSprite2D`; no runtime script-generated character animation is
+  involved.
 - Every frame snaps to the same feet baseline in its `48x64` cell.
 - `walk_right` is mirrored from the normalized `walk_left` row so the two side
   directions keep matching crop height, top padding, and foot position.

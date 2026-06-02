@@ -1,14 +1,6 @@
 extends Node
 
 const CUSTOMER_SCENE := preload("res://scenes/customer.tscn")
-const PROFILE_ITEMS := [
-	PrototypeConstants.ITEM_APPLE,
-	"cabbage",
-	"cucumber",
-	"tomato",
-	"pear",
-	"potato",
-]
 const DEMOGRAPHICS := [
 	[PrototypeConstants.CUSTOMER_AGE_YOUTH, PrototypeConstants.CUSTOMER_GENDER_MALE],
 	[PrototypeConstants.CUSTOMER_AGE_YOUTH, PrototypeConstants.CUSTOMER_GENDER_FEMALE],
@@ -21,6 +13,7 @@ const DEMOGRAPHICS := [
 
 func _ready() -> void:
 	_assert_visual_default_demographics()
+	_assert_customer_preference_config_covers_sellable_crops()
 	_assert_demographic_profiles_are_distinct_and_blended()
 	get_tree().quit()
 
@@ -64,6 +57,7 @@ func _assert_visual_default_demographics() -> void:
 
 func _assert_demographic_profiles_are_distinct_and_blended() -> void:
 	var signatures := {}
+	var profile_items: Array[String] = ConfigLoader.get_customer_preference_items()
 	for demographic in DEMOGRAPHICS:
 		var customer := CUSTOMER_SCENE.instantiate()
 		customer.call("setup", PrototypeConstants.CUSTOMER_STUDENT, null, Vector2.ZERO, Vector2(100, 0), [], "", demographic[0], demographic[1])
@@ -78,7 +72,7 @@ func _assert_demographic_profiles_are_distinct_and_blended() -> void:
 		_assert_equal(profile["gender"], demographic[1], "显式性别应写入顾客画像")
 		_assert_equal(int(profile["budget"]), int(round((float(base_budget) + float(personal_budget)) * 0.5)), "最终预算应由基础预算和个体预算各占一半")
 
-		for item_id in PROFILE_ITEMS:
+		for item_id in profile_items:
 			var expected := (float(base_preferences[item_id]) + float(personal_preferences[item_id])) * 0.5
 			_assert_almost_equal(float(final_preferences[item_id]), expected, "%s 最终喜好应由基础喜好和个体喜好各占一半" % item_id)
 
@@ -86,6 +80,20 @@ func _assert_demographic_profiles_are_distinct_and_blended() -> void:
 		_assert_true(not signatures.has(signature), "每种年龄和性别组合应有不同的基础预算/喜好")
 		signatures[signature] = true
 		customer.queue_free()
+
+
+func _assert_customer_preference_config_covers_sellable_crops() -> void:
+	var profile_items: Array[String] = ConfigLoader.get_customer_preference_items()
+	for item_id in ConfigLoader.items.keys():
+		if not ConfigLoader.is_sellable_item(str(item_id)):
+			continue
+		_assert_true(profile_items.has(str(item_id)), "顾客喜好配置应覆盖可售作物：%s" % str(item_id))
+
+	for demographic in DEMOGRAPHICS:
+		var base_profile: Dictionary = ConfigLoader.get_customer_base_profile(demographic[0], demographic[1])
+		var preferences: Dictionary = base_profile.get("preferences", {})
+		for item_id in profile_items:
+			_assert_true(preferences.has(item_id), "%s/%s 基础喜好应包含：%s" % [demographic[0], demographic[1], item_id])
 
 
 func _assert_almost_equal(actual: float, expected: float, message: String) -> void:

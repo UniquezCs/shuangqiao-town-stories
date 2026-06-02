@@ -1,0 +1,102 @@
+{
+  "items": [
+	"apple",
+	"cabbage",
+	"cucumber",
+	"tomato",
+	"pear",
+	"banana",
+	"grape",
+	"potato"
+  ],
+  "default_budget": 3,
+  "default_preference": 0.45,
+  "personal_budget_range": [1, 5],
+  "personal_preference_range": [0.2, 0.95],
+  "demographics": {
+	"youth": {
+	  "male": {
+		"budget": 2,
+		"preferences": {
+		  "apple": 0.62,
+		  "cabbage": 0.30,
+		  "cucumber": 0.42,
+		  "tomato": 0.48,
+		  "pear": 0.58,
+		  "banana": 0.78,
+		  "grape": 0.80,
+		  "potato": 0.25
+		}
+	  },
+	  "female": {
+		"budget": 2,
+		"preferences": {
+		  "apple": 0.68,
+		  "cabbage": 0.38,
+		  "cucumber": 0.46,
+		  "tomato": 0.55,
+		  "pear": 0.70,
+		  "banana": 0.74,
+		  "grape": 0.86,
+		  "potato": 0.28
+		}
+	  }
+	},
+	"middle": {
+	  "male": {
+		"budget": 4,
+		"preferences": {
+		  "apple": 0.52,
+		  "cabbage": 0.65,
+		  "cucumber": 0.56,
+		  "tomato": 0.54,
+		  "pear": 0.50,
+		  "banana": 0.55,
+		  "grape": 0.58,
+		  "potato": 0.72
+		}
+	  },
+	  "female": {
+		"budget": 4,
+		"preferences": {
+		  "apple": 0.60,
+		  "cabbage": 0.70,
+		  "cucumber": 0.64,
+		  "tomato": 0.68,
+		  "pear": 0.64,
+		  "banana": 0.58,
+		  "grape": 0.68,
+		  "potato": 0.62
+		}
+	  }
+	},
+	"elder": {
+	  "male": {
+		"budget": 3,
+		"preferences": {
+		  "apple": 0.50,
+		  "cabbage": 0.74,
+		  "cucumber": 0.48,
+		  "tomato": 0.44,
+		  "pear": 0.56,
+		  "banana": 0.35,
+		  "grape": 0.48,
+		  "potato": 0.76
+		}
+	  },
+	  "female": {
+		"budget": 3,
+		"preferences": {
+		  "apple": 0.64,
+		  "cabbage": 0.78,
+		  "cucumber": 0.54,
+		  "tomato": 0.60,
+		  "pear": 0.70,
+		  "banana": 0.42,
+		  "grape": 0.60,
+		  "potato": 0.66
+		}
+	  }
+	}
+  }
+}

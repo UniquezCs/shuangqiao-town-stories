@@ -9,90 +9,8 @@ const YOUTH_FEMALE_FRAMES := preload("res://assets/generated/sprites/characters/
 const ELDER_MALE_FRAMES := preload("res://assets/generated/sprites/characters/elder_male_walk_spriteframes_48x64.tres")
 const FEMALE_ELDER_FRAMES := preload("res://assets/generated/sprites/characters/female_elder_walk_spriteframes_48x64.tres")
 const FEMALE_MIDDLE_FRAMES := preload("res://assets/generated/sprites/characters/female_middle_walk_spriteframes_48x64.tres")
-const APPLE_ICON_TEXTURE := preload("res://assets/generated/sprites/items/general/apple_32.png")
 const PurchaseInteractionScript := preload("res://scripts/world/customer_purchase_interaction.gd")
-const PROFILE_ITEMS := [
-	PrototypeConstants.ITEM_APPLE,
-	"cabbage",
-	"cucumber",
-	"tomato",
-	"pear",
-	"potato",
-]
-const BASE_DEMOGRAPHIC_PROFILES := {
-	PrototypeConstants.CUSTOMER_AGE_YOUTH: {
-		PrototypeConstants.CUSTOMER_GENDER_MALE: {
-			"budget": 2,
-			"preferences": {
-				PrototypeConstants.ITEM_APPLE: 0.55,
-				"cabbage": 0.30,
-				"cucumber": 0.35,
-				"tomato": 0.45,
-				"pear": 0.50,
-				"potato": 0.25,
-			},
-		},
-		PrototypeConstants.CUSTOMER_GENDER_FEMALE: {
-			"budget": 2,
-			"preferences": {
-				PrototypeConstants.ITEM_APPLE: 0.60,
-				"cabbage": 0.38,
-				"cucumber": 0.42,
-				"tomato": 0.55,
-				"pear": 0.62,
-				"potato": 0.28,
-			},
-		},
-	},
-	PrototypeConstants.CUSTOMER_AGE_MIDDLE: {
-		PrototypeConstants.CUSTOMER_GENDER_MALE: {
-			"budget": 4,
-			"preferences": {
-				PrototypeConstants.ITEM_APPLE: 0.50,
-				"cabbage": 0.62,
-				"cucumber": 0.55,
-				"tomato": 0.50,
-				"pear": 0.45,
-				"potato": 0.70,
-			},
-		},
-		PrototypeConstants.CUSTOMER_GENDER_FEMALE: {
-			"budget": 4,
-			"preferences": {
-				PrototypeConstants.ITEM_APPLE: 0.58,
-				"cabbage": 0.68,
-				"cucumber": 0.62,
-				"tomato": 0.65,
-				"pear": 0.55,
-				"potato": 0.60,
-			},
-		},
-	},
-	PrototypeConstants.CUSTOMER_AGE_ELDER: {
-		PrototypeConstants.CUSTOMER_GENDER_MALE: {
-			"budget": 3,
-			"preferences": {
-				PrototypeConstants.ITEM_APPLE: 0.48,
-				"cabbage": 0.72,
-				"cucumber": 0.50,
-				"tomato": 0.42,
-				"pear": 0.52,
-				"potato": 0.74,
-			},
-		},
-		PrototypeConstants.CUSTOMER_GENDER_FEMALE: {
-			"budget": 3,
-			"preferences": {
-				PrototypeConstants.ITEM_APPLE: 0.62,
-				"cabbage": 0.76,
-				"cucumber": 0.56,
-				"tomato": 0.58,
-				"pear": 0.66,
-				"potato": 0.64,
-			},
-		},
-	},
-}
+const PurchaseCountdownScript := preload("res://scripts/ui/circular_countdown_indicator.gd")
 
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
 @export var visual_variant := ""
@@ -111,6 +29,7 @@ var _route_index := 0
 var _route_timeout_seconds := 18.0
 var _tree_entered_position: Vector2
 var _purchase_stall: Node = null
+var _purchase_preview: Dictionary = {}
 var _purchase_deadline_msec := 0
 var _rng := RandomNumberGenerator.new()
 
@@ -142,6 +61,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_started_at = Time.get_ticks_msec() / 1000.0
+	SignalBus.stall_closed_node.connect(_on_stall_closed_node)
 	_apply_customer_spriteframes()
 	_pause_current_animation()
 
@@ -189,6 +109,9 @@ func _begin_purchase_request(active_stall: Node) -> void:
 		if not bool(preview.get("bought", false)):
 			_reject_without_trade(str(preview.get("reason", "顾客离开")))
 			return
+		_purchase_preview = preview.duplicate(true)
+	else:
+		_purchase_preview = {}
 
 	state = "waiting_for_player"
 	velocity = Vector2.ZERO
@@ -243,21 +166,17 @@ func _create_purchase_countdown() -> void:
 		return
 	var indicator := Node2D.new()
 	indicator.name = "PurchaseCountdown"
+	indicator.set_script(PurchaseCountdownScript)
 	indicator.position = Vector2(0, -72)
 	add_child(indicator)
 
-	var icon := Sprite2D.new()
-	icon.name = "AppleIcon"
-	icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	icon.texture = APPLE_ICON_TEXTURE
-	icon.scale = Vector2(0.75, 0.75)
-	indicator.add_child(icon)
-
-	var label := Label.new()
-	label.name = "SecondsLabel"
-	label.position = Vector2(12, -12)
-	label.add_theme_font_size_override("font_size", 14)
-	indicator.add_child(label)
+	var item_id := str(_purchase_preview.get("item_id", PrototypeConstants.ITEM_APPLE))
+	var icon_path := ConfigLoader.get_item_icon(item_id)
+	var texture: Texture2D = null
+	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
+		texture = load(icon_path) as Texture2D
+	indicator.call("set_icon_texture", texture)
+	indicator.call("set_remaining_fraction", 1.0)
 
 
 func _start_purchase_timer() -> void:
@@ -277,7 +196,7 @@ func _start_purchase_timer() -> void:
 
 	var tick_timer := Timer.new()
 	tick_timer.name = "PurchaseTickTimer"
-	tick_timer.wait_time = 1.0
+	tick_timer.wait_time = 0.1
 	tick_timer.timeout.connect(_update_purchase_countdown)
 	add_child(tick_timer)
 	tick_timer.start()
@@ -285,11 +204,13 @@ func _start_purchase_timer() -> void:
 
 
 func _update_purchase_countdown() -> void:
-	var label := get_node_or_null("PurchaseCountdown/SecondsLabel") as Label
-	if label == null:
+	var indicator: Node = get_node_or_null("PurchaseCountdown")
+	var timer := get_node_or_null("PurchaseTimer") as Timer
+	if indicator == null or not indicator.has_method("set_remaining_fraction") or timer == null:
 		return
-	var remaining: int = max(0, int(ceil(float(_purchase_deadline_msec - Time.get_ticks_msec()) / 1000.0)))
-	label.text = str(remaining)
+	var remaining_seconds: float = maxf(0.0, float(_purchase_deadline_msec - Time.get_ticks_msec()) / 1000.0)
+	var fraction: float = 0.0 if timer.wait_time <= 0.0 else remaining_seconds / timer.wait_time
+	indicator.call("set_remaining_fraction", fraction)
 
 
 func _on_purchase_timeout() -> void:
@@ -302,8 +223,21 @@ func _on_purchase_timeout() -> void:
 	state = "leaving"
 
 
+func _on_stall_closed_node(closed_stall: Node) -> void:
+	if state != "waiting_for_player" or _purchase_stall != closed_stall:
+		return
+	_clear_purchase_request()
+	GameState.record_rejection()
+	GameState.record_customer_served()
+	var reason := "顾客看到收摊离开了"
+	SignalBus.sale_feedback.emit(reason, global_position)
+	SignalBus.customer_decision.emit(customer_type, false, reason)
+	state = "leaving"
+
+
 func _clear_purchase_request() -> void:
 	_purchase_stall = null
+	_purchase_preview = {}
 	for node_name in ["PurchaseInteraction", "PurchaseCountdown", "PurchaseTimer", "PurchaseTickTimer"]:
 		var node := get_node_or_null(node_name)
 		if node != null:
@@ -421,7 +355,8 @@ func _build_customer_profile() -> void:
 	var base_profile := _base_profile_for_demographic(age_group, gender)
 	var base_budget := int(base_profile.get("budget", 2))
 	var base_preferences: Dictionary = base_profile.get("preferences", {})
-	var personal_budget := _rng.randi_range(1, 5)
+	var budget_range := ConfigLoader.get_customer_personal_budget_range()
+	var personal_budget := _rng.randi_range(budget_range.x, budget_range.y)
 	var personal_preferences := _build_personal_preferences()
 	var final_preferences := _blend_preferences(base_preferences, personal_preferences)
 	_customer_profile = {
@@ -471,24 +406,20 @@ func _default_gender() -> String:
 
 
 func _base_profile_for_demographic(next_age_group: String, next_gender: String) -> Dictionary:
-	var age_profiles: Dictionary = BASE_DEMOGRAPHIC_PROFILES.get(next_age_group, BASE_DEMOGRAPHIC_PROFILES[PrototypeConstants.CUSTOMER_AGE_MIDDLE])
-	return age_profiles.get(next_gender, age_profiles[PrototypeConstants.CUSTOMER_GENDER_MALE])
+	return ConfigLoader.get_customer_base_profile(next_age_group, next_gender)
 
 
 func _build_personal_preferences() -> Dictionary:
-	return {
-		PrototypeConstants.ITEM_APPLE: _rng.randf_range(0.20, 0.95),
-		"cabbage": _rng.randf_range(0.20, 0.90),
-		"cucumber": _rng.randf_range(0.20, 0.90),
-		"tomato": _rng.randf_range(0.20, 0.90),
-		"pear": _rng.randf_range(0.20, 0.95),
-		"potato": _rng.randf_range(0.20, 0.90),
-	}
+	var preferences := {}
+	for item_id in ConfigLoader.get_customer_preference_items():
+		var preference_range := ConfigLoader.get_customer_personal_preference_range(item_id)
+		preferences[item_id] = _rng.randf_range(preference_range.x, preference_range.y)
+	return preferences
 
 
 func _blend_preferences(base_preferences: Dictionary, personal_preferences: Dictionary) -> Dictionary:
 	var blended := {}
-	for item_id in PROFILE_ITEMS:
+	for item_id in ConfigLoader.get_customer_preference_items():
 		var base_value := float(base_preferences.get(item_id, 0.45))
 		var personal_value := float(personal_preferences.get(item_id, 0.45))
 		blended[item_id] = (base_value + personal_value) * 0.5

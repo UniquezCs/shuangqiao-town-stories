@@ -11,7 +11,7 @@
 	"category": "seed",
 	"stack_size": 20,
 	"base_sell_price": 0,
-	"icon": "res://assets/generated/sprites/ui/icons/apple_seed_packet_32.png"
+	"icon": "res://assets/generated/sprites/items/apple_seed_packet_32.png"
   },
   "cabbage": {
 	"name": "白菜",
@@ -60,7 +60,7 @@
 	"category": "crop",
 	"stack_size": 20,
 	"base_sell_price": 3,
-	"icon": "res://assets/generated/sprites/items/pear_32.png"
+	"icon": "res://assets/generated/sprites/items/crops/pear_32.png"
   },
   "pear_seed": {
 	"name": "梨种子",
@@ -68,6 +68,34 @@
 	"stack_size": 20,
 	"base_sell_price": 0,
 	"icon": "res://assets/generated/sprites/items/pear_seed_packet_32.png"
+  },
+  "banana": {
+	"name": "香蕉",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 4,
+	"icon": "res://assets/generated/sprites/items/crops/banana_32.png"
+  },
+  "banana_seed": {
+	"name": "香蕉种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/sprites/items/banana_seed_packet_32.png"
+  },
+  "grape": {
+	"name": "葡萄",
+	"category": "crop",
+	"stack_size": 20,
+	"base_sell_price": 4,
+	"icon": "res://assets/generated/sprites/items/crops/grape_32.png"
+  },
+  "grape_seed": {
+	"name": "葡萄种子",
+	"category": "seed",
+	"stack_size": 20,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/sprites/items/grape_seed_packet_32.png"
   },
   "potato": {
 	"name": "土豆",
