@@ -471,10 +471,11 @@
 		},
 		"character.chengguan": {
 			"type": "npc",
-			"status": "placeholder",
-			"node_template": "Chengguan(CharacterBody2D)/Visual(Sprite2D)",
-			"current_texture": "res://assets/generated/sprites/characters/customer_worker_48x64.png",
-			"required_size": [
+			"status": "implemented",
+			"node_template": "Chengguan(CharacterBody2D)/Visual(AnimatedSprite2D)",
+			"current_spriteframes": "res://assets/generated/sprites/characters/chengguan_walk_spriteframes_48x64.tres",
+			"available_sheet": "res://assets/generated/sprites/characters/chengguan_walk_4dir_6f_48x64.png",
+			"size": [
 				48,
 				64
 			],
@@ -487,7 +488,27 @@
 				"scripts/world/chengguan.gd",
 				"scenes/chengguan.tscn"
 			],
-			"generation_need": "Dedicated 1990s township chengguan NPC, 4-direction walk animation, 6 frames per direction, 48x64.",
+			"animations": [
+				"walk_down",
+				"walk_left",
+				"walk_right",
+				"walk_up"
+			],
+			"frames_per_direction": 6,
+			"frame_size": [
+				48,
+				64
+			],
+			"gait_sequence": [
+				"left_step",
+				"right_step",
+				"left_high",
+				"right_high",
+				"left_recover",
+				"right_recover"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e6f0f-656f-78f2-8e70-808e59466a9e/ig_0eea1b9436e23a21016a1e65edf87c819180478896045f20fe.png",
+			"notes": "Generated 2026-06-02 as a 1990s Chinese township chengguan patrol officer. Final sheet is normalized to 48x64 cells, four directions, 6 frames per direction, stable feet baseline, and cleaned per-frame to one primary connected body component.",
 			"anchor": "center",
 			"collision": "none",
 			"tags": [
@@ -1173,6 +1194,30 @@
 			"collision": "none",
 			"tags": [
 				"locations"
+			]
+		},
+		"location.police_station": {
+			"type": "landmark",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/police_station_256x128.png",
+			"size": [
+				256,
+				128
+			],
+			"usage": [
+				"town_landmark",
+				"chengguan_patrol_origin_candidate",
+				"future_npc_endpoint_visual"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e6f0f-656f-78f2-8e70-808e59466a9e/ig_0eea1b9436e23a21016a1e65b3b4cc81918cd026432b6072c0.png",
+			"notes": "Generated 2026-06-02 as a late-1980s/early-1990s township police station with red brick, white plaster, courtyard wall, flagpole, notice boards, and a blue institutional signboard shape without readable generated text.",
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"locations",
+				"township",
+				"building",
+				"1990s_chinese_town"
 			]
 		},
 		"location.residential_area": {

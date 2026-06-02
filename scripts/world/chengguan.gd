@@ -1,23 +1,25 @@
 extends CharacterBody2D
 
-const TEXTURE := preload("res://assets/generated/sprites/characters/customer_worker_48x64.png")
+const SPRITE_FRAMES := preload("res://assets/generated/sprites/characters/chengguan_walk_spriteframes_48x64.tres")
 
 var route_points: Array[Vector2] = []
 var route_index := 0
 var state := "patrolling"
+var facing := "down"
 var _has_penalized := false
 var _last_penalty_text := ""
 var _target_player: Node2D = null
 var _target_stall: Node = null
 var _violation_confirmed := false
 
-@onready var visual: Sprite2D = $Visual
+@onready var visual: AnimatedSprite2D = $Visual
 @onready var detection_area: Area2D = $DetectionArea
 @onready var catch_area: Area2D = get_node_or_null("CatchArea") as Area2D
 
 
 func _ready() -> void:
-	visual.texture = TEXTURE
+	visual.sprite_frames = SPRITE_FRAMES
+	_pause_current_animation()
 	detection_area.area_entered.connect(_on_detection_area_entered)
 	if catch_area != null:
 		catch_area.body_entered.connect(_on_catch_area_body_entered)
@@ -62,9 +64,31 @@ func _chase_player() -> void:
 func _move_towards(target: Vector2, speed: float) -> void:
 	var direction := global_position.direction_to(target)
 	velocity = direction * speed
-	if abs(direction.x) > 0.05:
-		visual.flip_h = direction.x < 0.0
+	_play_walk_animation(direction)
 	move_and_slide()
+
+
+func _play_walk_animation(direction: Vector2) -> void:
+	if direction.length() <= 0.0:
+		_pause_current_animation()
+		return
+	if abs(direction.x) > abs(direction.y):
+		facing = "right" if direction.x > 0.0 else "left"
+	else:
+		facing = "down" if direction.y > 0.0 else "up"
+	var animation := "walk_%s" % facing
+	if visual.animation != animation:
+		visual.play(animation)
+	elif not visual.is_playing():
+		visual.play()
+
+
+func _pause_current_animation() -> void:
+	var animation := "walk_%s" % facing
+	if visual.animation != animation:
+		visual.play(animation)
+	visual.frame = 0
+	visual.pause()
 
 
 func _on_detection_area_entered(area: Area2D) -> void:

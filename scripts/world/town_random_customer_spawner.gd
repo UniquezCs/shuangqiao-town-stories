@@ -5,6 +5,7 @@ const WAYPOINT_ROUTE_JITTER := Vector2(120, 90)
 
 @export var enabled := true
 @export var daily_customer_count_range := Vector2i(300, 500)
+@export_range(1, 200, 1) var max_daily_customer_count: int = 100
 @export var start_minute := 6 * 60
 @export var end_minute := 21 * 60
 @export var customer_type_pool: Array[String] = [
@@ -67,7 +68,11 @@ func build_random_route() -> Dictionary:
 
 func _build_daily_spawn_plan() -> Array[Dictionary]:
 	var plan: Array[Dictionary] = []
-	var count := _rng.randi_range(daily_customer_count_range.x, daily_customer_count_range.y)
+	var lower_bound: int = min(daily_customer_count_range.x, daily_customer_count_range.y)
+	var upper_bound: int = max(daily_customer_count_range.x, daily_customer_count_range.y)
+	var capped_upper_bound: int = min(upper_bound, max_daily_customer_count)
+	var capped_lower_bound: int = min(max(0, lower_bound), capped_upper_bound)
+	var count := _rng.randi_range(capped_lower_bound, capped_upper_bound)
 	for _index in range(count):
 		plan.append({"minute": _rng.randi_range(start_minute, end_minute - 1)})
 	plan.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:

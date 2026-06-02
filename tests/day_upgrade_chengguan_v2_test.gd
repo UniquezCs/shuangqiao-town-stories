@@ -34,7 +34,7 @@ func _ready() -> void:
 
 	var chengguan := CharacterBody2D.new()
 	chengguan.set_script(ChengguanScript)
-	var cg_visual := Sprite2D.new()
+	var cg_visual := AnimatedSprite2D.new()
 	cg_visual.name = "Visual"
 	chengguan.add_child(cg_visual)
 	var detection := Area2D.new()
@@ -77,7 +77,7 @@ func _ready() -> void:
 
 	var second_chengguan := CharacterBody2D.new()
 	second_chengguan.set_script(ChengguanScript)
-	var second_cg_visual := Sprite2D.new()
+	var second_cg_visual := AnimatedSprite2D.new()
 	second_cg_visual.name = "Visual"
 	second_chengguan.add_child(second_cg_visual)
 	var second_detection := Area2D.new()

@@ -18,6 +18,19 @@ explicitly changes the baseline.
 
 ## Required Rules
 
+### GodotPrompter Skill Requirement
+
+- Any work that involves Godot development standards must use the user-level
+  `using-godot-prompter` skill before implementation decisions are made.
+- After loading `using-godot-prompter`, identify and use the matching
+  GodotPrompter domain skill when the change touches Godot-specific systems,
+  such as scenes, nodes, TileMapLayer, UI/HUD, inventory, input, animation,
+  resources, signals, testing, debugging, export, performance, or editor tools.
+- GodotPrompter is development guidance only. It does not replace this project
+  baseline, the asset rules in this document, or user instructions.
+- When GodotPrompter guidance conflicts with this baseline, stop and make the
+  conflict explicit before implementing.
+
 ### Pixel Asset Size Standard
 
 - The baseline world tile size is `32x32` pixels.
@@ -43,6 +56,11 @@ Detailed incident notes and prevention rules are maintained in
   primary implementation.
 - Character movement animations must be authored for Godot `AnimatedSprite2D`.
 - Character animation frames must be `48x64` pixels.
+- `SpriteFrames` resources must be saved by Godot itself, either through the
+  editor or a Godot API tool such as `scripts/tools/build_walk_spriteframes.gd`.
+  Do not handwrite raw `.tres` animation resources for production character
+  sheets, because missing resource UIDs or stale import metadata can make
+  editor previews appear blank even when tests only check animation names.
 - If suitable character animation assets do not exist, use a clearly marked
   placeholder and document the asset requirement. Do not block programming
   work on final art.
@@ -217,6 +235,9 @@ Before integrating or replacing art assets:
 
 Before finishing any programming change:
 
+- If the change involved Godot development standards or implementation
+  patterns, confirm `using-godot-prompter` and the matching GodotPrompter
+  domain skill were consulted.
 - Check whether the change touched scenes, scripts, configs, UI, NPCs, props,
   map elements, tools, items, or feedback that use art assets.
 - If yes, update `configs/assets.json`.

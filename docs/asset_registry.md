@@ -69,7 +69,7 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 | `character.female_middle_customer` | implemented | `female_middle_walk_spriteframes_48x64.tres` | Worker visual pool: `middle + female`; `48x64`, 4 directions, 6 frames. |
 | `character.elder_male_customer` | implemented | `elder_male_walk_spriteframes_48x64.tres` | Random town NPC visual pool: `elder + male`; restored to the earlier preferred raw image on 2026-06-02, then only cleaned magenta/purple fringe pixels. |
 | `character.female_elder_customer` | implemented | `female_elder_walk_spriteframes_48x64.tres` | Random town NPC visual pool: `elder + female`; `48x64`, 4 directions, 6 frames. |
-| `character.chengguan` | placeholder | worker texture reused | Needs dedicated chengguan NPC, 4 directions, 6 frames each, `48x64`. |
+| `character.chengguan` | implemented | `chengguan_walk_spriteframes_48x64.tres` | 1990s township patrol officer; `48x64`, 4 directions, 6 frames, wired into `scenes/chengguan.tscn`. |
 
 ### Item Icons
 
@@ -128,6 +128,7 @@ Current gameplay uses `scenes/farm_plot.tscn` with a `Sprite2D` scaled to one `3
 | --- | --- | --- | --- |
 | `location.school_gate` | implemented | `school_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
 | `location.factory_gate` | implemented | `factory_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
+| `location.police_station` | available | `police_station_256x128.png` | 1990s township police station building; available for future town placement, patrol origin, or endpoint visual. |
 | `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |
@@ -171,7 +172,8 @@ The township reference map now also has a dedicated top-down pixel prop set unde
 
 ## Missing Or Weak Assets To Prioritize Later
 
-1. Dedicated chengguan NPC animation, `48x64`, 4 directions, 6 frames.
+1. Place the available police station landmark into TownScene when the town
+   layout pass decides its final location.
 2. Proper house interior tiles.
 3. Home exterior replacement using the v2 rural house facade.
 4. Stall upgrade level visuals.

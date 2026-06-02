@@ -169,9 +169,11 @@ func _randomized_path_cells(start_cell: Vector2i, end_cell: Vector2i, rng: Rando
 func _candidate_cells(world_position: Vector2) -> Array[Vector2i]:
 	var origin := world_to_cell(world_position)
 	var candidates: Array[Vector2i] = []
-	for cell in _road_cells:
-		if abs(cell.x - origin.x) <= endpoint_candidate_radius_tiles and abs(cell.y - origin.y) <= endpoint_candidate_radius_tiles:
-			candidates.append(cell)
+	for x in range(origin.x - endpoint_candidate_radius_tiles, origin.x + endpoint_candidate_radius_tiles + 1):
+		for y in range(origin.y - endpoint_candidate_radius_tiles, origin.y + endpoint_candidate_radius_tiles + 1):
+			var cell := Vector2i(x, y)
+			if _road_lookup.has(cell):
+				candidates.append(cell)
 
 	candidates.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
 		return cell_to_world(a).distance_squared_to(world_position) < cell_to_world(b).distance_squared_to(world_position)

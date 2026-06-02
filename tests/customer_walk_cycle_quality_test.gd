@@ -34,6 +34,12 @@ const SHEETS := {
 		"cols": 6,
 		"standing_loop": false,
 	},
+	"chengguan": {
+		"path": "res://assets/generated/sprites/characters/chengguan_walk_4dir_6f_48x64.png",
+		"cols": 6,
+		"standing_loop": false,
+		"max_significant_components": 3,
+	},
 }
 const FRAMESETS := {
 	"student": preload("res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres"),
@@ -42,6 +48,7 @@ const FRAMESETS := {
 	"elder_male": preload("res://assets/generated/sprites/characters/elder_male_walk_spriteframes_48x64.tres"),
 	"female_elder": preload("res://assets/generated/sprites/characters/female_elder_walk_spriteframes_48x64.tres"),
 	"female_middle": preload("res://assets/generated/sprites/characters/female_middle_walk_spriteframes_48x64.tres"),
+	"chengguan": preload("res://assets/generated/sprites/characters/chengguan_walk_spriteframes_48x64.tres"),
 }
 const ANIMATIONS := ["walk_down", "walk_left", "walk_right", "walk_up"]
 const CELL_SIZE := Vector2i(48, 64)

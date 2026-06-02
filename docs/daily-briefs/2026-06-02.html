@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godot 项目每日简报 - 2026-06-02</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3eee6;
+      --card: #fffaf2;
+      --ink: #1f2a33;
+      --muted: #5a6872;
+      --line: #d8c7af;
+      --accent: #8f3f1c;
+      --accent-soft: #f5dfd0;
+      --tag: #efe4d5;
+      --warn: #8a6b17;
+      --good: #2d6a4f;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      line-height: 1.68;
+      background:
+        radial-gradient(circle at top right, #faead8 0, transparent 30%),
+        linear-gradient(180deg, #f8f2e9 0%, var(--bg) 100%);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+
+    header, section {
+      background: color-mix(in srgb, var(--card) 94%, white 6%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(62, 39, 24, 0.06);
+      padding: 24px 28px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 21px;
+      color: #5c2917;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 17px;
+      color: #6d3118;
+    }
+
+    p, li { margin: 0; }
+    ul, ol { margin: 10px 0 0; padding-left: 20px; }
+    li + li { margin-top: 8px; }
+
+    .meta, .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .meta div, .stat, .panel {
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .meta strong, .stat strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .meta span, .stat span {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--tag);
+      color: #6a4026;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .priority {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .p0 { background: #b42318; }
+    .p1 { background: #c2410c; }
+    .p2 { background: #1d4ed8; }
+    .p3 { background: #5b21b6; }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      background: #fffdf9;
+      margin-top: 12px;
+    }
+
+    .item p + p {
+      margin-top: 8px;
+    }
+
+    .warn {
+      background: #fbf4dd;
+      border-left: 4px solid var(--warn);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    .good {
+      background: #eaf6ef;
+      border-left: 4px solid var(--good);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.95em;
+      background: #f1e7db;
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>日期：2026-06-02</p>
+      <p>统计口径：以上次自动化运行时间 <code>2026-05-31 22:00:21 UTC</code>（北京时间 <code>2026-06-01 06:00:21 CST</code>）为边界。本次简报优先回顾该时间点之后的 git 提交，并补充当前工作区未提交变更。</p>
+      <div class="meta">
+        <div><strong>生成时间</strong><span>2026-06-02 06:01:33 CST</span></div>
+        <div><strong>简报文件</strong><span>docs/daily-briefs/2026-06-02.html</span></div>
+        <div><strong>新增提交</strong><span>2</span></div>
+        <div><strong>工作区改动</strong><span>1</span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>涉及文件</strong><span>123</span></div>
+        <div class="stat"><strong>新增</strong><span>67</span></div>
+        <div class="stat"><strong>修改</strong><span>52</span></div>
+        <div class="stat"><strong>删除/迁移</strong><span>4</span></div>
+      </div>
+    </header>
+
+    <section>
+      <h2>概览</h2>
+      <ul>
+        <li><strong>已发生改动：</strong>过去一个日报周期内出现两次提交，主线主题分别是 <code>Godot AI</code> 插件日志/调试兼容性重构，以及城镇随机顾客、道路导航、顾客画像与素材池扩展。</li>
+        <li><strong>玩法层结论：</strong>城镇场景已经从“固定刷客”推进到“道路吸附 + 端点类型 + 随机客流”的阶段，顾客也从简单学生/工人标签演进到年龄、性别、预算、偏好联合画像。</li>
+        <li><strong>资源层结论：</strong>顾客素材池从学生/工人两类扩展到少年女性、中年女性、老年男女，且为 6 帧四方向 NPC 行走标准补齐了测试与 QC 文档。</li>
+        <li><strong>当前风险：</strong><code>scripts/world/customer.gd</code>、<code>addons/godot_ai/plugin.gd</code>、<code>addons/godot_ai/mcp_dock.gd</code> 等核心文件继续膨胀，随机客流与道路寻路也开始引入性能和验证压力。</li>
+      </ul>
+      <div class="good">本简报明确区分三类内容：已发生改动、基于当前代码状态推断的优化建议、以及面向游戏体验的创意性新增功能建议。</div>
+    </section>
+
+    <section>
+      <h2>已发生的项目改动</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>提交 1：NPC 动画、道路导航、插件更新</h3>
+          <p><span class="pill">2026-06-01 23:44 CST</span><span class="pill">c349053</span></p>
+          <p>新增 <code>scripts/world/road_navigator.gd</code> 与 <code>scripts/world/town_random_customer_spawner.gd</code>，重做学生/工人顾客行走图，补充动画和寻路测试，同时重构 <code>addons/godot_ai</code> 的日志与调试链路。</p>
+        </div>
+        <div class="panel">
+          <h3>提交 2：顾客画像与 NPC 素材池</h3>
+          <p><span class="pill">2026-06-02 03:01 CST</span><span class="pill">bc20247</span></p>
+          <p>扩展顾客年龄/性别维度，新增老年男性、少年女性等素材与测试，修改 <code>customer.gd</code>、<code>customer_spawner.gd</code>、<code>stall.gd</code> 和 <code>town_scene.tscn</code>，让顾客偏好与外观池更贴近“城镇画像”。</p>
+        </div>
+        <div class="panel">
+          <h3>当前未提交内容</h3>
+          <p><span class="pill">工作区</span></p>
+          <p><code>docs/development_baseline.md</code> 追加了 GodotPrompter 使用要求，说明项目正在把 Godot 开发规范进一步流程化。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <ul>
+        <li><strong>道路导航正式落地：</strong><code>scripts/world/road_navigator.gd</code> 读取 <code>TownScene/MapLayers/RoadLayer</code> 的道路 tile，使用 <code>AStarGrid2D</code> 进行吸附、寻路与路径压缩；<code>tests/road_navigator_test.gd</code> 已覆盖“道路外起终点吸附到最近路网”的核心规则。</li>
+        <li><strong>随机顾客从静态刷点升级为端点式客流：</strong><code>scenes/town_scene.tscn</code> 新增 <code>RoadNavigator</code>、<code>TownRandomCustomerSpawner</code>、空气墙和更完整的 <code>endpoint_type</code> 标注；<code>customer_spawner.gd</code> 与 <code>town_random_customer_spawner.gd</code> 开始按住宅、学校、工厂、公共设施等端点生成路线。</li>
+        <li><strong>顾客画像系统更细分：</strong><code>scripts/core/prototype_constants.gd</code> 增加年龄/性别/外观变体常量；<code>scripts/world/customer.gd</code> 在单文件中同时承载人物画像、喜好预算混合、动画帧绑定、购买等待、移动超时等逻辑。</li>
+        <li><strong>Godot AI 插件兼容性重构继续推进：</strong><code>addons/godot_ai/plugin.gd</code> 引入 <code>logger_loader.gd</code> 动态编译日志脚本，清理旧版 <code>runtime/*.gd</code> Logger 文件，避免 Godot 4.3/4.4 对 <code>extends Logger</code> 的启动报错。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li><code>scripts/world/road_navigator.gd</code> 与 <code>tests/road_navigator_test.gd</code>：形成了可复用的道路路由基础设施。</li>
+        <li><code>scripts/world/town_random_customer_spawner.gd</code>：支持按时间表、端点权重、端点类型和随机外观池生成城镇随机顾客。</li>
+        <li><code>tests/customer_demographic_profile_test.gd</code>、<code>tests/customer_visual_pool_test.gd</code>：开始对“外观默认画像绑定”和“不同刷客器的素材池边界”做自动化约束。</li>
+        <li><code>assets/generated/sprites/characters/*elder*</code>、<code>*female*</code> 与 <code>assets/source/customer_demographic_variants_2026_06_02/customer_demographic_variants_report.json</code>：顾客素材池显著扩容。</li>
+        <li><code>addons/godot_ai/runtime/logger_loader.gd</code>、<code>addons/godot_ai/runtime/loggers/</code>、<code>addons/godot_ai/utils/settings.gd</code>：插件把日志兼容、设置判断和运行时脚本组织得更清晰。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li><code>scripts/world/customer.gd</code> 现已超过 500 行，新增了 <code>BASE_DEMOGRAPHIC_PROFILES</code>、外观到画像的默认映射、购买等待态和路线超时计算。</li>
+        <li><code>scripts/world/customer_spawner.gd</code> 从“线性抖动路点”转向“调用 RoadNavigator 的随机化道路路径”，使固定通勤客流也走路网。</li>
+        <li><code>scripts/world/stall.gd</code> 的交易接口继续向画像化决策靠拢，顾客不再只按学生/工人两种规则购买。</li>
+        <li><code>scenes/town_scene.tscn</code> 调整了住宅/工厂等端点位置、类型、碰撞边界和随机刷客节点，说明镇街布局正在向“真实客流模拟”过渡。</li>
+        <li><code>configs/assets.json</code> 与 <code>docs/asset_registry.md</code> 被持续更新，资源接入流程基本遵守当前基线。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <ul>
+        <li><code>addons/godot_ai/runtime/editor_logger.gd</code>、<code>addons/godot_ai/runtime/game_logger.gd</code> 及对应 <code>.uid</code> 已从旧路径移除，迁移到 <code>runtime/loggers/</code> 目录下。</li>
+        <li><code>addons/godot_ai/handlers/animation_handler.gd</code> 与 <code>curve_handler.gd</code> 在本周期 diff 中出现大段删改，反映插件内部职责正在重排。</li>
+      </ul>
+      <div class="warn">这里更像“迁移重组”而不是最终删减。若后续继续改插件，建议优先检查工具注册、热更新、导出包和低版本 Godot 启动日志是否还有残留路径引用。</div>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li><strong>性能：</strong><code>TownRandomCustomerSpawner</code> 默认脚本值仍是 <code>300-500</code>，虽然当前场景实例把它压到 <code>35-55</code>，但一旦其他场景复用默认值，可能把 NPC 密度和寻路开销直接拉高。</li>
+        <li><strong>可维护性：</strong><code>customer.gd</code> 同时处理动画、移动、交易、画像、计时、交互节点创建，后续任何一个需求都容易牵动全文件。</li>
+        <li><strong>资源一致性：</strong>顾客外观池已经跨越学生/工人/中年/老年多个组合，后续如果继续接入更多商品偏好或剧情身份，单靠常量数组维护会越来越脆。</li>
+        <li><strong>插件稳定性：</strong><code>addons/godot_ai/plugin.gd</code> 与 <code>mcp_dock.gd</code> 都处于超大文件状态，日志兼容性修复虽有进展，但回归面很广。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>基于当前代码状态推断的优化建议</h2>
+      <p>以下内容不是“本周期已完成的改动”，而是基于当前仓库状态得出的结构化优化建议。</p>
+
+      <div class="item">
+        <div class="priority p0">P0</div>
+        <h3>为随机客流建立数量上限与性能回归基线</h3>
+        <p><strong>依据：</strong><code>scripts/world/town_random_customer_spawner.gd</code> 默认日刷客数仍为 <code>300-500</code>，而当前 <code>scenes/town_scene.tscn</code> 实例配置为 <code>35-55</code>；同时 <code>road_navigator.gd</code> 的候选点与最近道路点查找都依赖遍历道路数组。</p>
+        <p><strong>预期收益：</strong>避免新场景复用默认值时出现 NPC 暴涨、路径计算频繁和帧率不可控的问题，为后续客流系统扩展建立性能护栏。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scripts/world/town_random_customer_spawner.gd</code>、<code>scripts/world/road_navigator.gd</code>、新增性能 smoke test。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>需要。先在当前城镇场景记录 35/55/100 刷客量下的运行帧率和峰值 NPC 数，再决定阈值。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p1">P1</div>
+        <h3>拆分 customer.gd 的画像、移动、交易职责</h3>
+        <p><strong>依据：</strong><code>scripts/world/customer.gd</code> 已达 501 行，混合了基础画像表、随机个体参数、路线推进、购买等待态、动画控制和节点动态创建。</p>
+        <p><strong>预期收益：</strong>降低改顾客行为时的回归半径，让“顾客画像调参”和“NPC 行走/购买交互”能够独立演化，也更利于测试覆盖。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scripts/world/customer.gd</code> 拆为 <code>customer_profile</code>、<code>customer_motion</code>、<code>customer_purchase_interaction</code> 等模块，或下沉到 Resource/辅助脚本。</p>
+        <p><strong>粗略实施成本：</strong>中到高。</p>
+        <p><strong>是否需要先验证：</strong>建议先验证。先列出现有对外接口，避免拆分时破坏测试场景和场景脚本绑定。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p1">P1</div>
+        <h3>把顾客画像与外观池从常量迁移为配置驱动</h3>
+        <p><strong>依据：</strong><code>prototype_constants.gd</code>、<code>customer.gd</code> 和两个 spawner 都在维护年龄、性别、素材池、预算和偏好；这与项目“配置优先”的基线已经开始产生张力。</p>
+        <p><strong>预期收益：</strong>新增顾客类型、新商品偏好或新素材时不必继续扩写脚本常量，策划调参和素材接入成本都会下降。</p>
+        <p><strong>建议落点文件或模块：</strong>新增 <code>configs/customers.json</code> 或 <code>configs/npc_profiles.json</code>，接入 <code>scripts/autoload/config_loader.gd</code>、<code>scripts/world/customer.gd</code>、两个 spawner。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>建议先验证。需要先确认画像数据是否会继续扩展到职业、剧情身份、时间段偏好。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p2">P2</div>
+        <h3>为城镇场景建立更明确的子场景边界</h3>
+        <p><strong>依据：</strong><code>scenes/town_scene.tscn</code> 已同时承载道路层、装饰层、多个端点、刷客器、空气墙、城管刷怪与场景出口；内容继续增长后会让场景编辑和 diff 审阅变重。</p>
+        <p><strong>预期收益：</strong>把路网、端点、刷怪和边界拆成可组合子场景后，地图编辑、关卡复用和测试挂载都会更顺手。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scenes/town_scene.tscn</code>，可拆为 <code>town_route_endpoints.tscn</code>、<code>town_spawn_systems.tscn</code>、<code>town_boundaries.tscn</code>。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>不需要先做原型验证，但需要先梳理当前节点路径依赖。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p2">P2</div>
+        <h3>给 Godot AI 插件的大文件补模块化和回归清单</h3>
+        <p><strong>依据：</strong><code>addons/godot_ai/mcp_dock.gd</code> 2496 行、<code>plugin.gd</code> 1687 行，且本周期继续修改日志、设置、生命周期和调试链路。</p>
+        <p><strong>预期收益：</strong>降低插件维护门槛，减少低版本兼容修复时的连锁回归，并让日志/调试/生命周期问题更容易定位。</p>
+        <p><strong>建议落点文件或模块：</strong><code>addons/godot_ai/plugin.gd</code>、<code>mcp_dock.gd</code>、<code>utils/server_lifecycle.gd</code>，补启动/自更新/低版本日志回归脚本。</p>
+        <p><strong>粗略实施成本：</strong>高。</p>
+        <p><strong>是否需要先验证：</strong>需要。先把当前 4.3/4.4/4.5+ 行为矩阵整理出来。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p3">P3</div>
+        <h3>统一日志与调试输出的项目级入口</h3>
+        <p><strong>依据：</strong>现在既有插件运行时日志链路，也有游戏侧测试场景、QC 报告 JSON 和文档说明，但主游戏脚本层缺少统一的“开发态诊断面板/日志聚合”入口。</p>
+        <p><strong>预期收益：</strong>后续排查顾客刷怪、路径、库存、城管处罚等问题时，不必只靠散落测试场景和临时输出。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scripts/debug/</code>、<code>scenes/debug/asset_preview_scene.tscn</code>、新增客流/交易诊断面板。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>不需要，可以从轻量面板开始。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>结合当前状态的新增功能建议</h2>
+      <p>以下内容是创意性功能建议，不代表仓库内已经实现；但都尽量基于现有系统和最近改动落地，而不是泛泛罗列。</p>
+
+      <div class="item">
+        <div class="priority p1">P1</div>
+        <h3>顾客画像驱动的“商品偏好与定价反馈”系统</h3>
+        <p><strong>依据：</strong>当前顾客已有年龄、性别、预算、商品偏好，<code>stall.gd</code> 已按画像判定成交；但玩家侧仍缺少把这些画像信息转化为经营策略的可见反馈。</p>
+        <p><strong>预期收益：</strong>让“看客下菜碟”成为可学习的经营玩法，而不是隐藏随机数；也能强化小镇人群差异感。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scripts/world/stall.gd</code>、<code>scripts/ui/daily_summary_panel.gd</code>、<code>scripts/ui/hud.gd</code>、昨日结算文案。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>建议先验证。先做简单提示词或日结统计，不必一开始就上复杂图表。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p1">P1</div>
+        <h3>按端点类型与时段变化的客流热点系统</h3>
+        <p><strong>依据：</strong><code>TownRandomCustomerSpawner</code> 已支持端点权重和时间分钟表，<code>town_scene.tscn</code> 也有学校、工厂、住宅、公共设施等端点。</p>
+        <p><strong>预期收益：</strong>可把“早上学校口、午后工厂门口、傍晚住宅区”的客流规律做成真实经营决策，提升场景生命力。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scripts/world/town_random_customer_spawner.gd</code>、<code>scripts/world/customer_schedule.gd</code>、端点配置数据。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>需要。先验证不同热点切换会不会造成 NPC 堆积或路径拥堵。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p2">P2</div>
+        <h3>围绕客群画像的种子店/进货扩展</h3>
+        <p><strong>依据：</strong>项目已经有作物、背包、种子店、摆摊和顾客偏好，但经营闭环仍偏苹果单品；画像系统刚好提供“不同客群偏好不同商品”的扩展支点。</p>
+        <p><strong>预期收益：</strong>把当前原型从“卖苹果”推进到“根据人群搭配货品和库存”，增强长期可玩性。</p>
+        <p><strong>建议落点文件或模块：</strong><code>configs/items.json</code>、<code>configs/crops.json</code>、<code>scripts/world/seed_shop.gd</code>、<code>scripts/world/stall.gd</code>。</p>
+        <p><strong>粗略实施成本：</strong>中到高。</p>
+        <p><strong>是否需要先验证：</strong>建议先验证。先做 2-3 个差异明显的新商品，观察日结数据变化。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p2">P2</div>
+        <h3>顾客等待、围观与错失成交的现场反馈</h3>
+        <p><strong>依据：</strong><code>customer.gd</code> 已经有 <code>waiting_for_player</code>、购买倒计时和拒绝分支，但目前玩家感知层可能仍然偏弱。</p>
+        <p><strong>预期收益：</strong>把“人来了但你没招呼”“价高被嫌弃”“同类顾客在旁围观”的经营压力做出来，提升临场感。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scripts/world/customer.gd</code>、<code>scripts/ui/hud.gd</code>、反馈图标资源、可能的气泡提示。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>不一定。可以先用现有反馈事件和 UI 图标做轻量版本。</p>
+      </div>
+
+      <div class="item">
+        <div class="priority p3">P3</div>
+        <h3>镇街事件与城管风险联动</h3>
+        <p><strong>依据：</strong>项目已有城管、摆摊位置和客流路网，但“风险”和“收益”的时空变化还没有真正联动。</p>
+        <p><strong>预期收益：</strong>让摆摊选址不只是找人多的地方，还要考虑巡逻、罚款和临时事件，贴合题材里的小镇生存感。</p>
+        <p><strong>建议落点文件或模块：</strong><code>scripts/world/chengguan_spawner.gd</code>、<code>scripts/world/stall_spot.gd</code>、<code>scripts/ui/daily_summary_panel.gd</code>。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>建议先验证。需要先确认不会把早期原型节奏拉得过重。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>优先确认 <code>TownRandomCustomerSpawner</code> 的默认刷客范围是否要从 <code>300-500</code> 下调，或至少在脚本级注明“仅供高密度压测”。</li>
+        <li>为 <code>customer.gd</code> 的拆分或配置化做一次接口盘点，避免继续在单文件上叠加需求。</li>
+        <li>补跑与随机客流直接相关的测试/场景验证，特别是刷客密度、端点不足、无有效摊位和路径堵塞等边界。</li>
+        <li>决定是否把 <code>docs/development_baseline.md</code> 中的 GodotPrompter 要求作为后续自动化/提交检查项。</li>
+        <li>若继续维护 <code>addons/godot_ai</code>，建议单独开回归清单，覆盖 4.3/4.4/4.5+、插件热重载、自更新和日志采集。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>用于回顾的关键文件路径</h2>
+      <ul>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>scripts/world/road_navigator.gd</code></li>
+        <li><code>scripts/world/town_random_customer_spawner.gd</code></li>
+        <li><code>scripts/world/customer_spawner.gd</code></li>
+        <li><code>scripts/world/customer.gd</code></li>
+        <li><code>scripts/world/stall.gd</code></li>
+        <li><code>scripts/core/prototype_constants.gd</code></li>
+        <li><code>tests/customer_demographic_profile_test.gd</code></li>
+        <li><code>tests/customer_visual_pool_test.gd</code></li>
+        <li><code>tests/road_navigator_test.gd</code></li>
+        <li><code>configs/assets.json</code></li>
+        <li><code>docs/asset_registry.md</code></li>
+        <li><code>docs/development_baseline.md</code></li>
+        <li><code>addons/godot_ai/plugin.gd</code></li>
+        <li><code>addons/godot_ai/runtime/logger_loader.gd</code></li>
+        <li><code>addons/godot_ai/runtime/loggers/editor_logger.gd</code></li>
+        <li><code>addons/godot_ai/runtime/loggers/game_logger.gd</code></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
