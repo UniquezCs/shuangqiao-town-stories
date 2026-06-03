@@ -187,6 +187,12 @@ Current UI is mostly Godot `Control` nodes with text and panels. This is accepta
 | `ui.purchase_countdown` | implemented | v1 apple icon | Purchase bubble candidate exists. |
 | `ui.penalty_warning` | available | `sprites/items/warning_badge_32.png`, `fine_penalty_32.png` | Not wired into Chengguan feedback yet. |
 
+### Audio
+
+| Asset ID | Status | Current Resource | Notes |
+| --- | --- | --- | --- |
+| `audio.bgm.shuangqiao_town_loop` | implemented | `res://assets/audio/bgm/shuangqiao_town_loop.wav` | Generated 2026-06-04; about 83 seconds, looped by `MusicManager` from title screen through gameplay. |
+
 ### Town Props
 
 The street stall cutout pack already contains many usable props:

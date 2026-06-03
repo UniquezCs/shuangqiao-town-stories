@@ -212,6 +212,20 @@ Detailed incident notes and prevention rules are maintained in
 - 程序和场景只能引用最终素材路径，不引用 raw、preview、manifest、prompt 或生成工具临时路径。
 - 每次整理或新增生成素材后，必须运行 `tests/generated_asset_layout_test.tscn`，确认目录结构没有回退。
 
+### Audio Asset Rules
+
+- BGM and sound effects should live under `assets/audio`, not under
+  `assets/generated`, because `assets/generated` is reserved for visual
+  sprites and tilesets.
+- Long-form music should go under `assets/audio/bgm`; short interaction sounds
+  should go under `assets/audio/sfx`.
+- Global background music should be routed through `MusicManager` so it keeps
+  playing across scene changes instead of being duplicated in individual scenes.
+- Every newly added audio asset must be registered in `configs/assets.json`;
+  important production audio should also be listed in `docs/asset_registry.md`.
+- Looping BGM must have an explicit runtime or import-loop setting and a test
+  that verifies the stream is loaded by the audio manager.
+
 ## Practical Checklist
 
 Before implementing character animation:

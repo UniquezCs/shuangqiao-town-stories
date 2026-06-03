@@ -12,6 +12,8 @@ var _sleep_transition_layer: CanvasLayer = null
 var _sleep_transition_rect: ColorRect = null
 var _sleep_transition_running := false
 var _sleep_transition_seconds := PrototypeConstants.SLEEP_TRANSITION_SECONDS
+var _scene_transition_running := false
+var _scene_transition_seconds := PrototypeConstants.SCENE_TRANSITION_SECONDS
 var _startup_spawn_id := "default"
 
 @onready var world_root: Node2D = $WorldRoot
@@ -51,7 +53,25 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_scene_change_requested(target_scene: String, spawn_id: String) -> void:
-	_load_world(target_scene, spawn_id)
+	if _sleep_transition_running or _scene_transition_running:
+		return
+	_run_scene_transition(target_scene, spawn_id)
+
+
+func _run_scene_transition(target_scene: String, spawn_id: String) -> void:
+	_scene_transition_running = true
+	_set_player_transition_locked(true)
+	await _fade_sleep_overlay(0.0, 1.0, _scene_transition_seconds * 0.5)
+	await _load_world(target_scene, spawn_id)
+	_apply_scene_entry_state(target_scene)
+	await _fade_sleep_overlay(1.0, 0.0, _scene_transition_seconds * 0.5)
+	if _sleep_transition_rect != null:
+		_sleep_transition_rect.visible = false
+	_set_player_transition_locked(false)
+	_scene_transition_running = false
+
+
+func _apply_scene_entry_state(target_scene: String) -> void:
 	if target_scene == PrototypeConstants.SCENE_TOWN:
 		_enter_town()
 	elif target_scene == PrototypeConstants.SCENE_HOME:
@@ -72,6 +92,8 @@ func _load_world(target_scene: String, spawn_id: String) -> void:
 		spawn = current_world.get_node_or_null("Spawns/default")
 	if spawn != null:
 		player.global_position = spawn.global_position
+		player.reset_physics_interpolation()
+		await _snap_player_camera_to_player()
 
 
 func _on_price_panel_requested(stall_spot: Node) -> void:
@@ -188,8 +210,23 @@ func is_sleep_transition_running() -> bool:
 	return _sleep_transition_running
 
 
+func is_scene_transition_running() -> bool:
+	return _scene_transition_running
+
+
 func set_sleep_transition_seconds_for_test(seconds: float) -> void:
 	_sleep_transition_seconds = maxf(0.0, seconds)
+
+
+func set_scene_transition_seconds_for_test(seconds: float) -> void:
+	_scene_transition_seconds = maxf(0.0, seconds)
+
+
+func get_player_camera_screen_center_for_test() -> Vector2:
+	var camera := _get_player_camera()
+	if camera == null:
+		return Vector2.INF
+	return camera.get_screen_center_position()
 
 
 func _fade_sleep_overlay(from_alpha: float, to_alpha: float, duration: float) -> void:
@@ -203,6 +240,35 @@ func _fade_sleep_overlay(from_alpha: float, to_alpha: float, duration: float) ->
 	var tween := create_tween()
 	tween.tween_property(_sleep_transition_rect, "color:a", to_alpha, duration)
 	await tween.finished
+
+
+func _set_player_transition_locked(locked: bool) -> void:
+	if player == null:
+		return
+	if locked:
+		player.velocity = Vector2.ZERO
+	player.set_physics_process(not locked)
+
+
+func _snap_player_camera_to_player() -> void:
+	var camera := _get_player_camera()
+	if camera == null:
+		return
+	var smoothing_was_enabled := camera.position_smoothing_enabled
+	camera.position_smoothing_enabled = false
+	camera.reset_physics_interpolation()
+	camera.reset_smoothing()
+	camera.force_update_scroll()
+	await get_tree().physics_frame
+	camera.reset_smoothing()
+	camera.force_update_scroll()
+	camera.position_smoothing_enabled = smoothing_was_enabled
+
+
+func _get_player_camera() -> Camera2D:
+	if player == null:
+		return null
+	return player.get_node_or_null("Camera2D") as Camera2D
 
 
 func _close_all_stalls() -> void:

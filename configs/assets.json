@@ -3241,6 +3241,35 @@
 			"notes": "haystack and farm tools bundle"
 		}
 	},
+	"audio": {
+		"audio.bgm.shuangqiao_town_loop": {
+			"id": "audio.bgm.shuangqiao_town_loop",
+			"type": "bgm",
+			"status": "implemented",
+			"path": "res://assets/audio/bgm/shuangqiao_town_loop.wav",
+			"duration_seconds": 83.48,
+			"loop": true,
+			"usage": [
+				"global_background_music",
+				"title_screen",
+				"gameplay"
+			],
+			"used_by": [
+				"scripts/autoload/music_manager.gd",
+				"project.godot"
+			],
+			"anchor": "none",
+			"collision": "none",
+			"tags": [
+				"audio",
+				"bgm",
+				"music",
+				"1990s_chinese_town",
+				"loop"
+			],
+			"notes": "Generated 2026-06-04 as a local synthesized pure music loop for 双桥镇往事. Uses a calm pentatonic township-market mood and is looped by MusicManager at runtime."
+		}
+	},
 	"debug_and_validation": {
 		"road_navigator_test": {
 			"type": "test_scene",

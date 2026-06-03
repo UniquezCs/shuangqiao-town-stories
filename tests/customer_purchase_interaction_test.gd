@@ -78,6 +78,13 @@ func _ready() -> void:
 	var closing_customer := CUSTOMER_SCENE.instantiate()
 	add_child(closing_customer)
 	closing_customer.call("setup", PrototypeConstants.CUSTOMER_WORKER, real_stall, Vector2.ZERO, Vector2(96, 0), [], "", PrototypeConstants.CUSTOMER_AGE_MIDDLE, PrototypeConstants.CUSTOMER_GENDER_FEMALE)
+	closing_customer.set("_customer_profile", {
+		"age_group": PrototypeConstants.CUSTOMER_AGE_MIDDLE,
+		"gender": PrototypeConstants.CUSTOMER_GENDER_FEMALE,
+		"label": "测试顾客",
+		"budget": 5,
+		"preferences": {"pear": 0.95},
+	})
 	await get_tree().process_frame
 	closing_customer.call("_begin_purchase_request", real_stall)
 	_assert_equal(closing_customer.get("state"), "waiting_for_player", "真实摊位顾客应进入等待购买")
