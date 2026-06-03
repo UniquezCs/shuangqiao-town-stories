@@ -13,7 +13,7 @@ var stock := 0
 var price := 2
 var current_item_id := PrototypeConstants.ITEM_APPLE
 var stall_slots: Array[Dictionary] = []
-@export var influence_radius := 160.0
+var influence_radius := 160.0
 
 var _influence_area: Area2D = null
 var _inspection_target: Area2D = null
@@ -63,6 +63,7 @@ func open_with_slots(spot: String, prepared_slots: Array, owner: Node2D = null) 
 		return false
 	if owner != null and is_instance_valid(owner):
 		global_position = owner.global_position
+	_apply_upgrade_config()
 	spot_id = spot
 	stall_slots = sanitized_slots
 	stock = total_stock
@@ -82,6 +83,10 @@ func open_with_slots(spot: String, prepared_slots: Array, owner: Node2D = null) 
 	_create_player_boundary()
 	_refresh_visual()
 	return true
+
+
+func _apply_upgrade_config() -> void:
+	influence_radius = GameState.get_stall_influence_radius()
 
 
 func close() -> bool:

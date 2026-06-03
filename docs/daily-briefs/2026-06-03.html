@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godot 项目每日简报 - 2026-06-03</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3eee6;
+      --card: #fffaf2;
+      --ink: #1f2a33;
+      --muted: #5a6872;
+      --line: #d8c7af;
+      --accent: #8f3f1c;
+      --accent-soft: #f5dfd0;
+      --tag: #efe4d5;
+      --warn: #8a6b17;
+      --good: #2d6a4f;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      line-height: 1.68;
+      background:
+        radial-gradient(circle at top right, #faead8 0, transparent 30%),
+        linear-gradient(180deg, #f8f2e9 0%, var(--bg) 100%);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+
+    header, section {
+      background: color-mix(in srgb, var(--card) 94%, white 6%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(62, 39, 24, 0.06);
+      padding: 24px 28px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 21px;
+      color: #5c2917;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 17px;
+      color: #6d3118;
+    }
+
+    p, li { margin: 0; }
+    ul { margin: 10px 0 0; padding-left: 20px; }
+    li + li { margin-top: 8px; }
+
+    .meta, .stats, .grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .meta, .stats {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .meta div, .stat, .panel {
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .meta strong, .stat strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .meta span, .stat span {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--tag);
+      color: #6a4026;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .priority {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .p0 { background: #b42318; }
+    .p1 { background: #c2410c; }
+    .p2 { background: #1d4ed8; }
+    .p3 { background: #5b21b6; }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      background: #fffdf9;
+      margin-top: 12px;
+    }
+
+    .item p + p {
+      margin-top: 8px;
+    }
+
+    .warn, .good {
+      border-left: 4px solid;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    .warn {
+      background: #fbf4dd;
+      border-left-color: var(--warn);
+    }
+
+    .good {
+      background: #eaf6ef;
+      border-left-color: var(--good);
+    }
+
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.95em;
+      background: #f1e7db;
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>日期：2026-06-03</p>
+      <p>统计口径：以上次自动化运行时间 <code>2026-06-01 22:00:17 UTC</code>（北京时间 <code>2026-06-02 06:00:17 CST</code>）为边界。本次简报回顾该时间点之后的 git 提交，并补充当前工作区未提交变更。</p>
+      <div class="meta">
+        <div><strong>生成时间</strong><span>2026-06-03 06:02:25 CST</span></div>
+        <div><strong>简报文件</strong><span>docs/daily-briefs/2026-06-03.html</span></div>
+        <div><strong>新增提交</strong><span>4</span></div>
+        <div><strong>工作区改动</strong><span>4</span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>涉及唯一文件</strong><span>156</span></div>
+        <div class="stat"><strong>提交层新增</strong><span>109</span></div>
+        <div class="stat"><strong>提交层修改</strong><span>67</span></div>
+        <div class="stat"><strong>删除/重命名</strong><span>0</span></div>
+      </div>
+    </header>
+
+    <section>
+      <h2>概览</h2>
+      <ul>
+        <li><strong>已发生改动：</strong>本周期主线从“城管素材接入”推进到“警察局巡逻路线 + 道路接入 + 背包摆摊多格位 + 多作物经营 + 玩家农作动画”。</li>
+        <li><strong>系统状态：</strong>项目已形成 <code>农地/种子/浇水/收获</code>、<code>背包/摆摊多槽位</code>、<code>顾客画像偏好</code>、<code>城管巡逻与检测</code> 四条可联动链路，原型从单一苹果售卖转向“多作物经营循环”。</li>
+        <li><strong>新增内容密度最高的区域：</strong><code>assets/generated/sprites</code>、<code>scripts/world</code>、<code>scripts/ui</code>、<code>tests</code>。</li>
+        <li><strong>当前风险：</strong>摆摊、UI、GameState、玩家交互和配置加载继续向大文件堆积，近期改动虽快，但模块边界和自动化验证还没有同步升级。</li>
+      </ul>
+      <div class="good">下文明确区分三类内容：已发生的项目改动、基于代码状态推断出的优化建议、以及创意性新增功能建议。</div>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>2026-06-02 13:37</h3>
+          <p><span class="pill">72827c6</span><span class="pill">素材接入</span></p>
+          <p>新增警察局与城管角色素材，补充 <code>chengguan</code> 行走图、地点贴图、角色动画测试与随机顾客性能测试，为“巡逻系统”铺底。</p>
+        </div>
+        <div class="panel">
+          <h3>2026-06-02 14:07</h3>
+          <p><span class="pill">b3a140c</span><span class="pill">路线接入</span></p>
+          <p>把警察局端点并入 <code>town_scene.tscn</code> 与 <code>chengguan_spawner.gd</code>，让城管巡逻不再只依赖抽象刷新点，而是基于道路和端点运行。</p>
+        </div>
+        <div class="panel">
+          <h3>2026-06-02 21:21</h3>
+          <p><span class="pill">cf07be7</span><span class="pill">摆摊升级</span></p>
+          <p>新增 <code>inventory_slot_control.gd</code>、<code>stall_setup_panel.gd</code>，把背包与摊位改为拖拽式多槽位配置；同时更新升级表、道路导航和相关测试。</p>
+        </div>
+        <div class="panel">
+          <h3>2026-06-03 00:08</h3>
+          <p><span class="pill">7dd3004</span><span class="pill">多作物经营</span></p>
+          <p>新增香蕉、葡萄、梨等作物与种子图集、玩家锄地/浇水/收获动作、顾客偏好配置、HUD 与农地逻辑改动，原型玩法正式转为多品类经营。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li><strong>资源：</strong>新增大量多作物农地状态贴图、种子包、收获物图标，以及玩家农作动作图与城管/警察局相关素材。</li>
+        <li><strong>配置：</strong>新增 <code>configs/customer_preferences.json</code>，为年龄/性别人群配置预算与作物偏好。</li>
+        <li><strong>脚本：</strong>新增 <code>scripts/ui/inventory_slot_control.gd</code>、<code>scripts/ui/stall_setup_panel.gd</code>、<code>scripts/ui/circular_countdown_indicator.gd</code>、<code>scripts/tools/build_player_spriteframes.gd</code>。</li>
+        <li><strong>测试：</strong>新增 HUD、玩家农作动画、售卖金额浮字、收摊长按、摆摊多商品、背包槽位、城管动画与性能等测试场景/脚本。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <ul>
+        <li><strong>农作经营链：</strong><code>scripts/world/farm_field.gd</code>、<code>scripts/world/farm_plot.gd</code>、<code>scripts/player.gd</code>、<code>configs/crops.json</code>、<code>configs/items.json</code> 被改造为可支持多作物播种、浇水、施肥、收获与动作表现。</li>
+        <li><strong>摆摊链：</strong><code>scripts/world/stall.gd</code>、<code>scripts/world/stall_spot.gd</code>、<code>scripts/ui/stall_setup_panel.gd</code>、<code>scripts/autoload/inventory.gd</code>、<code>configs/upgrades.json</code> 被扩展为多槽位库存、拖拽摆摊和升级驱动的摊位半径。</li>
+        <li><strong>顾客链：</strong><code>scripts/world/customer.gd</code>、<code>scripts/world/seed_shop.gd</code>、<code>scripts/autoload/config_loader.gd</code> 被扩展为“画像偏好 + 预算 + 购买等待”交互模型。</li>
+        <li><strong>巡逻链：</strong><code>scripts/world/chengguan.gd</code>、<code>scripts/world/chengguan_spawner.gd</code>、<code>scripts/world/road_navigator.gd</code>、<code>scenes/town_scene.tscn</code> 继续向“端点驱动的道路巡逻”收敛。</li>
+        <li><strong>文档与资产登记：</strong><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、<code>docs/development_baseline.md</code>、<code>docs/prototype_v2_plan.html</code> 被更新以同步新系统。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <ul>
+        <li><strong>显式删除：</strong>本周期 git 提交中没有看到脚本、场景或资源的删除记录。</li>
+        <li><strong>隐式废弃趋势：</strong><code>scripts/world/stall.gd</code> 里的手工导出半径已被当前工作区改为从 <code>configs/upgrades.json</code> 动态读取，说明“场景手调参数”正在被“升级配置驱动”替代。</li>
+        <li><strong>交互主路径迁移：</strong>旧的单商品/单价格摆摊入口仍保留兼容，但主流程已经转向 <code>open_with_slots</code> + <code>stall_setup_panel.gd</code> 的多商品摆摊准备。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>工作区未提交变更</h2>
+      <ul>
+        <li><code>scripts/world/stall.gd</code>：把摊位影响半径切到升级配置驱动。</li>
+        <li><code>tests/player_stall_tether_test.gd</code>：补测升级后 <code>InfluenceArea</code> 与 <code>InspectionTarget</code> 半径一致性。</li>
+        <li><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>：同步记录摊位影响半径的配置来源。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <div class="warn">
+        多作物、顾客偏好和多槽位摆摊已经把经济系统复杂度抬高，但当前多数作物 <code>growth_days = 0</code>，意味着新系统已接通、平衡尚未展开；如果继续堆功能而不先做节奏与验证，经营体验会停留在“功能可跑”而非“循环成立”。
+      </div>
+      <ul>
+        <li><strong>玩家体验：</strong>现在已经能感知“种什么、卖什么、卖给谁、在哪里摆摊、会不会被查”的差异，原型方向更清晰。</li>
+        <li><strong>维护成本：</strong>核心逻辑集中在 <code>stall.gd</code>、<code>game_state.gd</code>、<code>player.gd</code>、<code>stall_setup_panel.gd</code>，未来回归风险会随功能迭代一起上升。</li>
+        <li><strong>性能与调试：</strong>顾客等待倒计时、路线计算、动态图标加载和随机刷客已开始进入需要专门观察性能和日志的阶段。</li>
+        <li><strong>测试价值：</strong>当前已有约 35 个测试相关文件，测试意识明显增强，但仓库里未看到 CI 工作流，回归仍依赖本地执行。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>优化点（基于当前代码状态推断）</h2>
+
+      <div class="item">
+        <span class="priority p0">P0</span>
+        <h3>拆分摆摊域逻辑，停止继续把规则堆进 <code>stall.gd</code></h3>
+        <p><strong>依据：</strong><code>scripts/world/stall.gd</code> 已达 454 行，同时承担库存装载、顾客定价决策、碰撞体创建、城管检测目标、玩家空气墙和收摊回仓模拟。</p>
+        <p><strong>预期收益：</strong>降低摆摊回归 bug 概率，后续接“许可证/执法/促销/摊位升级视觉”时更容易定位问题。</p>
+        <p><strong>建议落点：</strong><code>scripts/world/stall.gd</code>，可拆为 <code>stall_inventory</code>、<code>stall_sales_policy</code>、<code>stall_runtime_nodes</code> 或等价子模块。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>是，需要先跑现有摆摊相关测试并补一个“开摊-售卖-收摊”端到端冒烟用例。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p1">P1</span>
+        <h3>把经营数值从“功能通路”推进到“可调平衡”</h3>
+        <p><strong>依据：</strong><code>configs/crops.json</code> 中多种作物已接入，但当前样本里几乎都为 <code>growth_days = 0</code>；系统有了，经营节奏还没有真正拉开。</p>
+        <p><strong>预期收益：</strong>让玩家在种植、补货、摆摊、等待与收益之间出现明确取舍，避免多作物最后只是不同贴图的同一件事。</p>
+        <p><strong>建议落点：</strong><code>configs/crops.json</code>、<code>scripts/world/farm_plot.gd</code>、<code>scripts/autoload/game_state.gd</code>。</p>
+        <p><strong>粗略实施成本：</strong>小到中。</p>
+        <p><strong>是否需要先验证：</strong>是，建议先用固定随机种子做 3 到 5 天经营模拟。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p1">P1</span>
+        <h3>收紧资源与配置一致性校验，减少“苹果兜底”掩盖问题</h3>
+        <p><strong>依据：</strong><code>scripts/world/farm_plot.gd</code> 和 <code>scripts/autoload/config_loader.gd</code> 在缺配置时会退回苹果资源，这能保证不中断，但也会把多作物资源缺口静默吞掉。</p>
+        <p><strong>预期收益：</strong>更早暴露漏图、漏配置、错路径，避免后续内容扩张后出现“玩法正常但资产挂错”的隐性缺陷。</p>
+        <p><strong>建议落点：</strong><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、<code>scripts/autoload/config_loader.gd</code>、<code>tests/generated_asset_layout_test.gd</code>。</p>
+        <p><strong>粗略实施成本：</strong>小。</p>
+        <p><strong>是否需要先验证：</strong>否，可以直接先补校验脚本和失败测试。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p2">P2</span>
+        <h3>把 <code>GameState</code> 拆成进度、日结和农地状态子域</h3>
+        <p><strong>依据：</strong><code>scripts/autoload/game_state.gd</code> 已达 333 行，既管现金/升级，也管农地、时间窗、日结、原型完成条件。</p>
+        <p><strong>预期收益：</strong>降低跨系统副作用，后续做存档、失败条件、结算面板时不会继续扩大单例耦合。</p>
+        <p><strong>建议落点：</strong><code>scripts/autoload/game_state.gd</code>，拆出日统计或农地状态辅助对象。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>是，需要先梳理信号和外部调用面。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p2">P2</span>
+        <h3>补一层可开关的经营/巡逻调试日志</h3>
+        <p><strong>依据：</strong><code>road_navigator.gd</code> 只有有限导航警告开关，顾客偏好决策、购买等待、城管刷点与抓捕原因目前都缺统一诊断出口。</p>
+        <p><strong>预期收益：</strong>调平衡与复现问题会快很多，尤其是“为什么这个顾客不买”“为什么今天城管太密”这类体验问题。</p>
+        <p><strong>建议落点：</strong><code>scripts/world/customer.gd</code>、<code>scripts/world/chengguan_spawner.gd</code>、<code>scripts/world/stall.gd</code>。</p>
+        <p><strong>粗略实施成本：</strong>小。</p>
+        <p><strong>是否需要先验证：</strong>否。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p2">P2</span>
+        <h3>把本地测试接到 CI，避免“测试很多但回归靠手跑”</h3>
+        <p><strong>依据：</strong>仓库已有大量测试文件，但未看到 <code>.github/workflows</code> 里的 Godot 测试流水线。</p>
+        <p><strong>预期收益：</strong>对最近这种高频改动节奏更有价值，尤其能卡住配置、场景结构和交互回归。</p>
+        <p><strong>建议落点：</strong>新增 <code>.github/workflows</code>，并补一份测试运行说明到 <code>docs/development_baseline.md</code>。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>是，需要先确认当前测试命令和 headless 环境可稳定跑通。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>新增功能建议（创意性建议，结合当前项目状态）</h2>
+
+      <div class="item">
+        <span class="priority p1">P1</span>
+        <h3>人群需求看板：把顾客画像转成可读市场信息</h3>
+        <p><strong>依据：</strong>项目已经有 <code>customer_preferences.json</code>、学校/工厂/住宅等端点和多作物体系，但玩家还看不到“哪些人喜欢什么”。</p>
+        <p><strong>预期收益：</strong>把目前隐藏在代码里的偏好系统转成策略层信息，形成“选作物 - 选时段 - 选摊点”的经营决策。</p>
+        <p><strong>建议落点：</strong><code>scripts/ui/hud.gd</code> 或新增市场情报面板，数据源来自 <code>ConfigLoader</code> 与日结。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>是，先验证玩家能否理解并利用该信息。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p1">P1</span>
+        <h3>合法摆摊/风险经营分支：把城管系统变成玩法而非惩罚动画</h3>
+        <p><strong>依据：</strong>已有警察局端点、城管巡逻、摊位影响半径和升级系统，适合自然长出“许可证、罚款、低风险摊位、高收益黑摊”机制。</p>
+        <p><strong>预期收益：</strong>让城管不只是阻断玩家，而是推动选址、升级和资金分配的核心经营抉择。</p>
+        <p><strong>建议落点：</strong><code>scripts/world/chengguan.gd</code>、<code>scripts/world/stall_spot.gd</code>、<code>configs/upgrades.json</code>、新增许可证配置。</p>
+        <p><strong>粗略实施成本：</strong>中到大。</p>
+        <p><strong>是否需要先验证：</strong>是，先验证罚款频率与挫败感平衡。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p1">P1</span>
+        <h3>种子店轮换库存与节日行情</h3>
+        <p><strong>依据：</strong><code>GameState.refresh_seed_shop_goods()</code>、多作物配置和顾客画像已经具备基础，但种子店与市场价格变化还不够形成经营周期。</p>
+        <p><strong>预期收益：</strong>增强“今天该囤什么、明天该卖什么”的计划感，让日循环更像经营游戏而不是流程演示。</p>
+        <p><strong>建议落点：</strong><code>scripts/world/seed_shop.gd</code>、<code>scripts/autoload/game_state.gd</code>、<code>configs/crops.json</code>。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>是，先做一个轻量版价格波动表。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p2">P2</span>
+        <h3>家庭仓库与出摊备货台</h3>
+        <p><strong>依据：</strong>背包和摊位都已升级为多槽位，但玩家仍主要在“背包即全部库存”的简化模型里操作，多作物后会很快显得局促。</p>
+        <p><strong>预期收益：</strong>增强种植、囤货、出摊准备的层次，让升级背包和升级摊位的价值更明显。</p>
+        <p><strong>建议落点：</strong><code>scripts/autoload/inventory.gd</code>、家中场景、<code>scripts/ui/backpack_panel.gd</code>。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>否，可以先做单仓库版本。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p2">P2</span>
+        <h3>镇街热力图与摊点客流提示</h3>
+        <p><strong>依据：</strong>现在已有学校、工厂、住宅、医院、公交站等端点，也有 <code>RoadNavigator</code> 和随机刷客，完全可以把客流差异外显。</p>
+        <p><strong>预期收益：</strong>让“去哪里摆摊”不再只看美术摆位，而是形成真实路线选择。</p>
+        <p><strong>建议落点：</strong><code>scenes/town_scene.tscn</code>、<code>scripts/world/town_random_customer_spawner.gd</code>、HUD 提示层。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>是，先确认客流提示不会过度剧透。</p>
+      </div>
+
+      <div class="item">
+        <span class="priority p3">P3</span>
+        <h3>作物品质与施肥差异化收益</h3>
+        <p><strong>依据：</strong>施肥已进入 <code>farm_plot.gd</code>，但当前主要只是简单增产；这条链路很适合延伸为“品质/售价/偏好加成”。</p>
+        <p><strong>预期收益：</strong>让种植阶段也能影响摆摊阶段，而不是只在收获数量上体现。</p>
+        <p><strong>建议落点：</strong><code>configs/crops.json</code>、<code>scripts/world/farm_plot.gd</code>、<code>scripts/world/stall.gd</code>。</p>
+        <p><strong>粗略实施成本：</strong>中。</p>
+        <p><strong>是否需要先验证：</strong>否。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>确认当前工作区中的摊位影响半径改动是否准备提交；这会影响升级后的顾客吸引范围和城管检测范围。</li>
+        <li>为多作物经营做第一轮数值整理，至少补出不同成长时长、收益和目标人群差异。</li>
+        <li>决定是否先优先做“需求看板”还是“合法摆摊/风险经营”；这两条都是当前系统最顺手的下一步。</li>
+        <li>把摆摊和库存相关测试整理成一条可重复执行的测试命令，并考虑接入 CI。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>用于回顾的关键文件路径</h2>
+      <ul>
+        <li><code>configs/crops.json</code></li>
+        <li><code>configs/customer_preferences.json</code></li>
+        <li><code>configs/upgrades.json</code></li>
+        <li><code>configs/assets.json</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>scenes/farm_plot.tscn</code></li>
+        <li><code>scenes/player.tscn</code></li>
+        <li><code>scripts/world/stall.gd</code></li>
+        <li><code>scripts/world/stall_spot.gd</code></li>
+        <li><code>scripts/world/farm_plot.gd</code></li>
+        <li><code>scripts/world/farm_field.gd</code></li>
+        <li><code>scripts/world/customer.gd</code></li>
+        <li><code>scripts/world/chengguan.gd</code></li>
+        <li><code>scripts/world/chengguan_spawner.gd</code></li>
+        <li><code>scripts/world/road_navigator.gd</code></li>
+        <li><code>scripts/autoload/game_state.gd</code></li>
+        <li><code>scripts/autoload/config_loader.gd</code></li>
+        <li><code>scripts/autoload/inventory.gd</code></li>
+        <li><code>scripts/ui/hud.gd</code></li>
+        <li><code>scripts/ui/backpack_panel.gd</code></li>
+        <li><code>scripts/ui/stall_setup_panel.gd</code></li>
+        <li><code>tests/stall_setup_multigoods_test.gd</code></li>
+        <li><code>tests/player_stall_tether_test.gd</code></li>
+        <li><code>tests/farm_v2_test.gd</code></li>
+        <li><code>tests/customer_demographic_profile_test.gd</code></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

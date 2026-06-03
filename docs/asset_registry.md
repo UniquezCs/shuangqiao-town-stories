@@ -143,6 +143,10 @@ Each crop should eventually provide 8 resources: the 6 farm-state textures above
 | `stall.upgraded_level_2` | missing | none | Needs higher-capacity stall visual. |
 | `stall.upgraded_level_3` | missing | none | Needs larger stall visual. |
 
+Runtime note: `stall.influence_radius` is configured per stall upgrade level in
+`configs/upgrades.json`. `scripts/world/stall.gd` reads it when opening a stall
+and applies the same radius to `InfluenceArea` and `InspectionTarget`.
+
 ### Locations And Buildings
 
 | Asset ID | Status | Current Resource | Notes |

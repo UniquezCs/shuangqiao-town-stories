@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-02",
+	"updated_at": "2026-06-03",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -28,7 +28,8 @@
 			"Collision belongs to gameplay nodes, not to bitmap files.",
 			"Missing assets should use placeholders until the user explicitly asks for art generation.",
 			"Customer/random/civilian NPC walk sheets use 4 rows x 6 columns, 48x64 cells, and no duplicated standing endpoints.",
-			"Customer purchase profiles read crop preference items, demographic base budget/preferences, and personal random ranges from res://configs/customer_preferences.json, then blend demographic and per-NPC values 50/50."
+			"Customer purchase profiles read crop preference items, demographic base budget/preferences, and personal random ranges from res://configs/customer_preferences.json, then blend demographic and per-NPC values 50/50.",
+			"Stall influence radius is configured per upgrade level in res://configs/upgrades.json and drives both customer InfluenceArea and chengguan InspectionTarget in scripts/world/stall.gd."
 		]
 	},
 	"packs": {
