@@ -9,12 +9,17 @@ const FARMING_ACTIONS := {
 	"harvest": true,
 }
 const CircularCountdownScript := preload("res://scripts/ui/circular_countdown_indicator.gd")
+const BEGGING_KNEEL_TEXTURE_PATH := "res://assets/generated/sprites/characters/vendor_beg_kneel_48x64.png"
+const BEGGING_KOWTOW_TEXTURE_PATH := "res://assets/generated/sprites/characters/vendor_beg_kowtow_48x64.png"
 
 var facing := "down"
 var _nearby_interactables: Array[Area2D] = []
 var _current_interactable: Area2D = null
 var _is_farming_action_playing := false
 var _hold_interactable: Area2D = null
+var _is_begging := false
+var _begging_pose: Sprite2D = null
+var _begging_pose_token := 0
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_area: Area2D = $InteractionArea
@@ -45,6 +50,17 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 		return
 
+	if _is_begging:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		if Input.is_action_just_pressed("interact") and _current_interactable != null:
+			if _requires_hold_interact(_current_interactable):
+				_start_hold_interact(_current_interactable)
+			else:
+				_current_interactable.call("interact", self)
+		_update_interactable()
+		return
+
 	var direction := _input_direction()
 	velocity = direction * SPEED
 	
@@ -68,6 +84,8 @@ func _input_direction() -> Vector2:
 
 
 func play_farming_action(action_id: String) -> void:
+	if _is_begging:
+		return
 	var action := action_id.strip_edges()
 	if not FARMING_ACTIONS.has(action):
 		return
@@ -228,13 +246,49 @@ func _on_animation_finished() -> void:
 
 
 func _on_sale_completed(_item_id: String, price: int, _remaining_stock: int) -> void:
+	show_cash_popup(price)
+
+
+func enter_begging_state() -> void:
+	_is_begging = true
+	velocity = Vector2.ZERO
+	animated_sprite.visible = false
+	_ensure_begging_pose().texture = _load_texture(BEGGING_KNEEL_TEXTURE_PATH)
+
+
+func exit_begging_state() -> void:
+	_is_begging = false
+	if _begging_pose != null and is_instance_valid(_begging_pose):
+		_begging_pose.queue_free()
+	_begging_pose = null
+	animated_sprite.visible = true
+	_update_animation(Vector2.ZERO)
+
+
+func is_begging() -> bool:
+	return _is_begging
+
+
+func play_begging_kowtow() -> void:
+	if not _is_begging:
+		return
+	var pose := _ensure_begging_pose()
+	_begging_pose_token += 1
+	var token := _begging_pose_token
+	pose.texture = _load_texture(BEGGING_KOWTOW_TEXTURE_PATH)
+	await get_tree().create_timer(0.35).timeout
+	if _is_begging and _begging_pose != null and is_instance_valid(_begging_pose) and token == _begging_pose_token:
+		_begging_pose.texture = _load_texture(BEGGING_KNEEL_TEXTURE_PATH)
+
+
+func show_cash_popup(amount: int) -> void:
 	var old_popup := get_node_or_null("SaleAmountPopup")
 	if old_popup != null:
 		old_popup.queue_free()
 
 	var popup := Label.new()
 	popup.name = "SaleAmountPopup"
-	popup.text = "+%d 元" % price
+	popup.text = "+%d 元" % amount
 	popup.position = Vector2(-24, -76)
 	popup.z_index = 100
 	popup.add_theme_font_size_override("font_size", 18)
@@ -252,3 +306,21 @@ func _on_sale_completed(_item_id: String, price: int, _remaining_stock: int) -> 
 		if is_instance_valid(popup):
 			popup.queue_free()
 	)
+
+
+func _ensure_begging_pose() -> Sprite2D:
+	if _begging_pose != null and is_instance_valid(_begging_pose):
+		return _begging_pose
+	_begging_pose = Sprite2D.new()
+	_begging_pose.name = "BeggingPose"
+	_begging_pose.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_begging_pose.position = animated_sprite.position
+	_begging_pose.z_index = animated_sprite.z_index
+	add_child(_begging_pose)
+	return _begging_pose
+
+
+func _load_texture(path: String) -> Texture2D:
+	if path.is_empty() or not ResourceLoader.exists(path):
+		return null
+	return load(path) as Texture2D

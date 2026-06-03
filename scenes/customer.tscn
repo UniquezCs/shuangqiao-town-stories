@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://dyg08j0ruv6ak"]
 
 [ext_resource type="Script" uid="uid://cn8cuj4ys65oh" path="res://scripts/world/customer.gd" id="1_customer"]
-[ext_resource type="SpriteFrames" uid="uid://bni04kv8biee8" path="res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres" id="2_student_frames"]
+[ext_resource type="SpriteFrames" uid="uid://djh7yrbppudn8" path="res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres" id="2_student_frames"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_customer"]
 size = Vector2(22, 50)
 
 [node name="Customer" type="CharacterBody2D" unique_id=1683121132]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 3
 script = ExtResource("1_customer")
 
 [node name="Visual" type="AnimatedSprite2D" parent="." unique_id=249639336]
@@ -19,5 +19,5 @@ animation = &"walk_down"
 frame_progress = 0.84374326
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=841213487]
-position = Vector2(0, -21)
+position = Vector2(0, -13)
 shape = SubResource("RectangleShape2D_customer")

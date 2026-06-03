@@ -37,8 +37,9 @@ func _ready() -> void:
 
 	GameState.cash = GameState.seed_shop_apple_price
 	var starting_stock: int = GameState.seed_shop_apple_stock
+	var starting_apples: int = Inventory.get_count(PrototypeConstants.ITEM_APPLE)
 	_assert_true(shop.buy_apple(), "现金足够且有库存时应能直接买苹果")
-	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 1, "买苹果后背包苹果应增加")
+	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), starting_apples + 1, "买苹果后背包苹果应增加 1 个")
 	_assert_equal(GameState.cash, 0, "买苹果后应扣除今日苹果进价")
 	_assert_equal(GameState.seed_shop_apple_stock, starting_stock - 1, "买苹果后商店库存应减少")
 

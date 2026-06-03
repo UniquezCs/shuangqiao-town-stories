@@ -11,6 +11,7 @@ const FEMALE_ELDER_FRAMES := preload("res://assets/generated/sprites/characters/
 const FEMALE_MIDDLE_FRAMES := preload("res://assets/generated/sprites/characters/female_middle_walk_spriteframes_48x64.tres")
 const PurchaseInteractionScript := preload("res://scripts/world/customer_purchase_interaction.gd")
 const PurchaseCountdownScript := preload("res://scripts/ui/circular_countdown_indicator.gd")
+const GameplayDebugLog := preload("res://scripts/debug/gameplay_debug_log.gd")
 
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
 @export var visual_variant := ""
@@ -32,6 +33,7 @@ var _purchase_stall: Node = null
 var _purchase_preview: Dictionary = {}
 var _purchase_deadline_msec := 0
 var _rng := RandomNumberGenerator.new()
+var _begging_session_ids := {}
 
 @onready var visual: AnimatedSprite2D = $Visual
 
@@ -107,6 +109,10 @@ func _begin_purchase_request(active_stall: Node) -> void:
 	if active_stall.has_method("can_sell_to"):
 		var preview: Dictionary = active_stall.call("can_sell_to", customer_type, _customer_profile)
 		if not bool(preview.get("bought", false)):
+			GameplayDebugLog.log("customer", "reject_preview", {
+				"customer_type": customer_type,
+				"reason": str(preview.get("reason", "顾客离开")),
+			})
 			_reject_without_trade(str(preview.get("reason", "顾客离开")))
 			return
 		_purchase_preview = preview.duplicate(true)
@@ -117,6 +123,11 @@ func _begin_purchase_request(active_stall: Node) -> void:
 	velocity = Vector2.ZERO
 	_pause_current_animation()
 	_purchase_stall = active_stall
+	GameplayDebugLog.log("customer", "waiting_for_player", {
+		"customer_type": customer_type,
+		"item_id": str(_purchase_preview.get("item_id", "")),
+		"price": int(_purchase_preview.get("price", 0)),
+	})
 	_create_purchase_interaction()
 	_create_purchase_countdown()
 	_start_purchase_timer()
@@ -216,10 +227,15 @@ func _update_purchase_countdown() -> void:
 func _on_purchase_timeout() -> void:
 	if state != "waiting_for_player":
 		return
+	var debug_item_id := str(_purchase_preview.get("item_id", ""))
 	_clear_purchase_request()
 	GameState.record_rejection()
 	GameState.record_customer_served()
 	SignalBus.sale_feedback.emit("顾客等不及走了", global_position)
+	GameplayDebugLog.log("customer", "purchase_timeout", {
+		"customer_type": customer_type,
+		"item_id": debug_item_id,
+	})
 	state = "leaving"
 
 
@@ -232,6 +248,10 @@ func _on_stall_closed_node(closed_stall: Node) -> void:
 	var reason := "顾客看到收摊离开了"
 	SignalBus.sale_feedback.emit(reason, global_position)
 	SignalBus.customer_decision.emit(customer_type, false, reason)
+	GameplayDebugLog.log("customer", "stall_closed_while_waiting", {
+		"customer_type": customer_type,
+		"reason": reason,
+	})
 	state = "leaving"
 
 
@@ -345,9 +365,39 @@ func exit_stall_influence(stall: Node) -> void:
 		_influence_stall = null
 
 
+func consider_begging_donation(begging_session: Node) -> void:
+	if state != "walking" or begging_session == null or not is_instance_valid(begging_session):
+		return
+	var session_id := begging_session.get_instance_id()
+	if _begging_session_ids.has(session_id):
+		return
+	_begging_session_ids[session_id] = true
+	if _rng.randf() > _begging_donation_chance():
+		return
+	if begging_session.has_method("receive_donation"):
+		begging_session.call("receive_donation", self)
+
+
 func _has_demand_for(item_id: String) -> bool:
 	var preferences: Dictionary = _customer_profile.get("preferences", {})
 	return float(preferences.get(item_id, 0.0)) >= DEMAND_THRESHOLD
+
+
+func _begging_donation_chance() -> float:
+	var budget := int(_customer_profile.get("budget", 2))
+	if budget <= 0:
+		return 0.0
+	var chance := 0.05 + clampf(float(budget) / 10.0, 0.0, 1.0) * 0.25
+	match age_group:
+		PrototypeConstants.CUSTOMER_AGE_YOUTH:
+			chance -= 0.02
+		PrototypeConstants.CUSTOMER_AGE_MIDDLE:
+			chance += 0.04
+		PrototypeConstants.CUSTOMER_AGE_ELDER:
+			chance += 0.08
+	if gender == PrototypeConstants.CUSTOMER_GENDER_FEMALE:
+		chance += 0.03
+	return clampf(chance, 0.02, 0.50)
 
 
 func _build_customer_profile() -> void:

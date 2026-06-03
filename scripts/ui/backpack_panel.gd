@@ -1,10 +1,12 @@
 extends CanvasLayer
 
 const InventorySlotControl := preload("res://scripts/ui/inventory_slot_control.gd")
+const BACKPACK_PANEL_TEXTURE_PATH := "res://assets/generated/sprites/ui/panels/backpack_panel_360x420.png"
 
 var _panel: PanelContainer
 var _grid: GridContainer
 var _title: Label
+var _dragging := false
 
 
 func _ready() -> void:
@@ -42,6 +44,7 @@ func _build_ui() -> void:
 	_panel = PanelContainer.new()
 	_panel.position = Vector2(1420, 72)
 	_panel.custom_minimum_size = Vector2(360, 420)
+	_apply_panel_style(_panel, BACKPACK_PANEL_TEXTURE_PATH)
 	add_child(_panel)
 
 	var margin := MarginContainer.new()
@@ -55,6 +58,8 @@ func _build_ui() -> void:
 	margin.add_child(box)
 
 	_title = Label.new()
+	_title.mouse_filter = Control.MOUSE_FILTER_STOP
+	_title.gui_input.connect(_on_drag_handle_gui_input)
 	box.add_child(_title)
 
 	_grid = GridContainer.new()
@@ -80,6 +85,36 @@ func _make_slot(index: int, slot: Dictionary) -> Control:
 	var panel := InventorySlotControl.new()
 	panel.setup(self, "backpack", index, slot)
 	return panel
+
+
+func get_panel_position() -> Vector2:
+	return _panel.position if _panel != null else Vector2.ZERO
+
+
+func move_panel_by(delta: Vector2) -> void:
+	if _panel == null:
+		return
+	_panel.position += delta
+
+
+func _on_drag_handle_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		_dragging = event.pressed
+		get_viewport().set_input_as_handled()
+	elif _dragging and event is InputEventMouseMotion:
+		move_panel_by(event.relative)
+		get_viewport().set_input_as_handled()
+
+
+func _apply_panel_style(panel: PanelContainer, texture_path: String) -> void:
+	if panel == null or not ResourceLoader.exists(texture_path):
+		return
+	var texture := load(texture_path) as Texture2D
+	if texture == null:
+		return
+	var stylebox := StyleBoxTexture.new()
+	stylebox.texture = texture
+	panel.add_theme_stylebox_override("panel", stylebox)
 
 
 func can_drop_slot_data(data: Variant, target_container: String, _target_index: int) -> bool:

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/begging_feature_test.gd" id="1_begging_feature"]
+
+[node name="BeggingFeatureTest" type="Node"]
+script = ExtResource("1_begging_feature")

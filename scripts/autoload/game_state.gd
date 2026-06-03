@@ -49,6 +49,56 @@ func reset_game() -> void:
 	set_objective("出门整理农田，或去镇街做买卖")
 
 
+func to_save_data() -> Dictionary:
+	return {
+		"cash": cash,
+		"current_scene": current_scene,
+		"current_time_window": current_time_window,
+		"current_game_minute": current_game_minute,
+		"day_clock_started": day_clock_started,
+		"objective": objective,
+		"prototype_completed": prototype_completed,
+		"day_index": day_index,
+		"backpack_level": backpack_level,
+		"stall_level": stall_level,
+		"current_tool": current_tool,
+		"used_spots": used_spots.duplicate(),
+		"farm_plot_states": farm_plot_states.duplicate(true),
+		"yesterday_summary": yesterday_summary.duplicate(true),
+		"seed_shop_apple_price": seed_shop_apple_price,
+		"seed_shop_apple_stock": seed_shop_apple_stock,
+	}
+
+
+func apply_save_data(data: Dictionary) -> void:
+	cash = int(data.get("cash", 0))
+	current_scene = str(data.get("current_scene", PrototypeConstants.SCENE_HOUSE))
+	current_time_window = str(data.get("current_time_window", PrototypeConstants.WINDOW_MORNING))
+	current_game_minute = int(data.get("current_game_minute", PrototypeConstants.DAY_START_MINUTE))
+	day_clock_started = bool(data.get("day_clock_started", true))
+	objective = str(data.get("objective", "新的一天开始了，先看看背包和农田"))
+	prototype_completed = bool(data.get("prototype_completed", false))
+	day_index = maxi(1, int(data.get("day_index", 1)))
+	backpack_level = maxi(1, int(data.get("backpack_level", 1)))
+	stall_level = maxi(1, int(data.get("stall_level", 1)))
+	current_tool = str(data.get("current_tool", PrototypeConstants.TOOL_HOE))
+	used_spots = []
+	for spot in data.get("used_spots", []):
+		used_spots.append(str(spot))
+	var saved_plots: Variant = data.get("farm_plot_states", {})
+	farm_plot_states = saved_plots.duplicate(true) if typeof(saved_plots) == TYPE_DICTIONARY else {}
+	var saved_summary: Variant = data.get("yesterday_summary", {})
+	yesterday_summary = saved_summary.duplicate(true) if typeof(saved_summary) == TYPE_DICTIONARY else {}
+	seed_shop_apple_price = int(data.get("seed_shop_apple_price", PrototypeConstants.SHOP_APPLE_PRICE_MIN))
+	seed_shop_apple_stock = int(data.get("seed_shop_apple_stock", 0))
+	_reset_daily_stats()
+	SignalBus.cash_changed.emit(cash)
+	SignalBus.game_time_changed.emit(current_game_minute, format_game_time(current_game_minute))
+	SignalBus.current_tool_changed.emit(current_tool)
+	set_time_window(current_time_window)
+	set_objective(objective)
+
+
 func set_objective(text: String) -> void:
 	objective = text
 	SignalBus.objective_changed.emit(text)

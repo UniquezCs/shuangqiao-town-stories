@@ -1,11 +1,12 @@
 extends Node2D
 
-const STALL_TEXTURES := [
-	preload("res://assets/generated/sprites/props/stall/01_stall_empty.png"),
-	preload("res://assets/generated/sprites/props/stall/04_stall_apple_1.png"),
-	preload("res://assets/generated/sprites/props/stall/03_stall_apples_3.png"),
-	preload("res://assets/generated/sprites/props/stall/02_stall_apples_6.png"),
-]
+const StallInventory := preload("res://scripts/world/stall_inventory.gd")
+const StallRuntimeNodes := preload("res://scripts/world/stall_runtime_nodes.gd")
+const StallSalesPolicy := preload("res://scripts/world/stall_sales_policy.gd")
+const GameplayDebugLog := preload("res://scripts/debug/gameplay_debug_log.gd")
+const STALL_EMPTY_TEXTURE := preload("res://assets/generated/sprites/props/stall/01_stall_empty.png")
+const STOCK_ICON_SPACING := 20.0
+const STOCK_ICON_SIZE := Vector2(18, 18)
 
 var spot_id := ""
 var is_open := false
@@ -18,6 +19,7 @@ var influence_radius := 160.0
 var _influence_area: Area2D = null
 var _inspection_target: Area2D = null
 var _player_boundary: StaticBody2D = null
+var _stock_overlay: Node2D = null
 
 @onready var visual: Sprite2D = $Visual
 
@@ -78,6 +80,11 @@ func open_with_slots(spot: String, prepared_slots: Array, owner: Node2D = null) 
 	SignalBus.stall_stock_changed.emit(stock)
 	SignalBus.stall_inventory_changed.emit(_visible_stall_slots(), stock)
 	SignalBus.price_changed.emit(price)
+	GameplayDebugLog.log("stall", "open", {
+		"spot_id": spot_id,
+		"stock": stock,
+		"slots": _visible_stall_slots(),
+	})
 	_create_influence_area()
 	_create_inspection_target()
 	_create_player_boundary()
@@ -108,6 +115,10 @@ func close() -> bool:
 	SignalBus.stall_closed.emit(spot_id, returned)
 	SignalBus.stall_stock_changed.emit(stock)
 	SignalBus.stall_inventory_changed.emit(_visible_stall_slots(), stock)
+	GameplayDebugLog.log("stall", "close", {
+		"spot_id": spot_id,
+		"returned": returned,
+	})
 	GameState.set_objective("可以换点摆摊，或回家买种子")
 	_remove_influence_area()
 	_remove_inspection_target()
@@ -117,24 +128,7 @@ func close() -> bool:
 
 
 func can_sell_to(customer_type: String, customer_profile: Dictionary = {}) -> Dictionary:
-	if not is_open or stock <= 0:
-		return {"bought": false, "reason": "没货了"}
-	if not customer_profile.is_empty():
-		return _profile_decision(customer_type, customer_profile)
-	var cheapest_slot := _cheapest_stock_slot()
-	var item_name := ConfigLoader.get_item_name(str(cheapest_slot.get("item_id", current_item_id)))
-	var slot_price := int(cheapest_slot.get("price", price))
-	if customer_type == PrototypeConstants.CUSTOMER_STUDENT:
-		if slot_price <= 2:
-			return _decision_for_slot(cheapest_slot, "学生买下%s" % item_name)
-		if slot_price == 3:
-			return {"bought": false, "reason": "学生觉得有点贵"}
-		return {"bought": false, "reason": "学生买不起"}
-	if customer_type == PrototypeConstants.CUSTOMER_WORKER:
-		if slot_price <= 4:
-			return _decision_for_slot(cheapest_slot, "工人买下%s" % item_name)
-		return {"bought": false, "reason": "工人觉得贵"}
-	return {"bought": false, "reason": "顾客离开"}
+	return StallSalesPolicy.can_sell_to(is_open, stock, stall_slots, current_item_id, price, customer_type, customer_profile)
 
 
 func sell_one(customer_type: String, customer_profile: Dictionary = {}) -> Dictionary:
@@ -166,6 +160,14 @@ func sell_one(customer_type: String, customer_profile: Dictionary = {}) -> Dicti
 		GameState.record_rejection()
 		GameState.record_customer_served()
 		SignalBus.sale_feedback.emit(str(decision["reason"]), global_position)
+	GameplayDebugLog.log("stall", "customer_decision", {
+		"customer_type": customer_type,
+		"bought": bool(decision["bought"]),
+		"reason": str(decision["reason"]),
+		"item_id": str(decision.get("item_id", "")),
+		"price": int(decision.get("price", 0)),
+		"stock": stock,
+	})
 	SignalBus.customer_decision.emit(customer_type, bool(decision["bought"]), str(decision["reason"]))
 	return decision
 
@@ -173,92 +175,42 @@ func sell_one(customer_type: String, customer_profile: Dictionary = {}) -> Dicti
 func _create_influence_area() -> void:
 	if _influence_area != null and is_instance_valid(_influence_area):
 		return
-	_influence_area = Area2D.new()
-	_influence_area.name = "InfluenceArea"
-	_influence_area.collision_layer = 0
-	_influence_area.collision_mask = 4
-	_influence_area.monitorable = false
-	_influence_area.monitoring = true
-	_influence_area.body_entered.connect(_on_influence_body_entered)
-	_influence_area.body_exited.connect(_on_influence_body_exited)
-
-	var collision_shape := CollisionShape2D.new()
-	collision_shape.name = "CollisionShape2D"
-	var circle := CircleShape2D.new()
-	circle.radius = influence_radius
-	collision_shape.shape = circle
-	_influence_area.add_child(collision_shape)
-	add_child(_influence_area)
+	_influence_area = StallRuntimeNodes.create_influence_area(self, influence_radius, _on_influence_body_entered, _on_influence_body_exited)
 
 
 func _remove_influence_area() -> void:
 	if _influence_area == null or not is_instance_valid(_influence_area):
 		_influence_area = null
 		return
-	_influence_area.queue_free()
+	StallRuntimeNodes.remove_runtime_node(_influence_area)
 	_influence_area = null
 
 
 func _create_inspection_target() -> void:
 	if _inspection_target != null and is_instance_valid(_inspection_target):
 		return
-	_inspection_target = Area2D.new()
-	_inspection_target.name = "InspectionTarget"
-	_inspection_target.add_to_group("open_stall_inspection_target")
-	_inspection_target.collision_layer = 8
-	_inspection_target.collision_mask = 0
-	_inspection_target.monitoring = false
-	_inspection_target.monitorable = true
-
-	var collision_shape := CollisionShape2D.new()
-	collision_shape.name = "CollisionShape2D"
-	var circle := CircleShape2D.new()
-	circle.radius = influence_radius
-	collision_shape.shape = circle
-	_inspection_target.add_child(collision_shape)
-	add_child(_inspection_target)
+	_inspection_target = StallRuntimeNodes.create_inspection_target(self, influence_radius)
 
 
 func _remove_inspection_target() -> void:
 	if _inspection_target == null or not is_instance_valid(_inspection_target):
 		_inspection_target = null
 		return
-	_inspection_target.queue_free()
+	StallRuntimeNodes.remove_runtime_node(_inspection_target)
 	_inspection_target = null
 
 
 func _create_player_boundary() -> void:
 	if _player_boundary != null and is_instance_valid(_player_boundary):
 		return
-	_player_boundary = StaticBody2D.new()
-	_player_boundary.name = "PlayerBoundary"
-	_player_boundary.collision_layer = PrototypeConstants.PLAYER_BOUNDARY_COLLISION_LAYER
-	_player_boundary.collision_mask = 0
-	add_child(_player_boundary)
-
-	var half_size := PrototypeConstants.STALL_PLAYER_BOUNDARY_HALF_SIZE
-	var thickness := PrototypeConstants.STALL_PLAYER_BOUNDARY_WALL_THICKNESS
-	_add_boundary_wall(Vector2(0, -half_size - thickness * 0.5), Vector2(half_size * 2.0 + thickness * 2.0, thickness))
-	_add_boundary_wall(Vector2(0, half_size + thickness * 0.5), Vector2(half_size * 2.0 + thickness * 2.0, thickness))
-	_add_boundary_wall(Vector2(-half_size - thickness * 0.5, 0), Vector2(thickness, half_size * 2.0))
-	_add_boundary_wall(Vector2(half_size + thickness * 0.5, 0), Vector2(thickness, half_size * 2.0))
-
-
-func _add_boundary_wall(local_position: Vector2, size: Vector2) -> void:
-	var collision_shape := CollisionShape2D.new()
-	collision_shape.name = "CollisionShape2D"
-	collision_shape.position = local_position
-	var rectangle := RectangleShape2D.new()
-	rectangle.size = size
-	collision_shape.shape = rectangle
-	_player_boundary.add_child(collision_shape)
+	_player_boundary = StallRuntimeNodes.create_player_boundary(self)
 
 
 func _remove_player_boundary() -> void:
 	if _player_boundary == null or not is_instance_valid(_player_boundary):
 		_player_boundary = null
 		return
-	_player_boundary.queue_free()
+	StallRuntimeNodes.remove_runtime_node(_player_boundary)
 	_player_boundary = null
 
 
@@ -272,136 +224,104 @@ func _on_influence_body_exited(body: Node) -> void:
 		body.call("exit_stall_influence", self)
 
 
-func _profile_decision(customer_type: String, customer_profile: Dictionary) -> Dictionary:
-	var customer_label := str(customer_profile.get("label", "工人" if customer_type == PrototypeConstants.CUSTOMER_WORKER else "学生"))
-	var budget := int(customer_profile.get("budget", _default_budget_for(customer_type)))
-	var preferences: Dictionary = customer_profile.get("preferences", {})
-	var best_slot: Dictionary = {}
-	var best_score := -INF
-	var wanted_any := false
-	for index in range(stall_slots.size()):
-		var slot: Dictionary = stall_slots[index]
+func _refresh_visual() -> void:
+	visual.texture = STALL_EMPTY_TEXTURE
+	_refresh_stock_overlay()
+
+
+func _refresh_stock_overlay() -> void:
+	var overlay := _ensure_stock_overlay()
+	for child in overlay.get_children():
+		child.free()
+	var display_entries := _stock_display_entries()
+	overlay.visible = is_open and not display_entries.is_empty()
+	if not overlay.visible:
+		return
+	for index in range(display_entries.size()):
+		_add_stock_overlay_item(overlay, display_entries[index], Vector2(index * STOCK_ICON_SPACING, 0))
+
+
+func _ensure_stock_overlay() -> Node2D:
+	if _stock_overlay != null and is_instance_valid(_stock_overlay):
+		return _stock_overlay
+	_stock_overlay = Node2D.new()
+	_stock_overlay.name = "StockOverlay"
+	_stock_overlay.position = visual.position + Vector2(-30, 8)
+	_stock_overlay.z_index = visual.z_index
+	add_child(_stock_overlay)
+	return _stock_overlay
+
+
+func _stock_display_entries() -> Array[Dictionary]:
+	var totals := {}
+	var order: Array[String] = []
+	for slot in stall_slots:
 		if slot.is_empty():
 			continue
 		var item_id := str(slot.get("item_id", ""))
-		var item_price := int(slot.get("price", ConfigLoader.get_base_sell_price(item_id)))
-		var preference := float(preferences.get(item_id, preferences.get(PrototypeConstants.ITEM_APPLE, 0.0)))
-		if preference < 0.45:
-			continue
-		wanted_any = true
-		var acceptable_price := clampi(int(floor(float(budget) * (0.55 + preference))), 1, budget)
-		if item_price > acceptable_price:
-			continue
-		var score := preference * 100.0 - float(item_price)
-		if score > best_score:
-			best_score = score
-			best_slot = slot.duplicate()
-			best_slot["slot_index"] = index
-
-	if not best_slot.is_empty():
-		var item_id := str(best_slot.get("item_id", current_item_id))
-		return _decision_for_slot(best_slot, "%s买下%s" % [customer_label, ConfigLoader.get_item_name(item_id)])
-	if not wanted_any:
-		return {"bought": false, "reason": "%s暂时不想买这些商品" % customer_label}
-	if _cheapest_price() > budget:
-		return {"bought": false, "reason": "%s预算不够" % customer_label}
-	return {"bought": false, "reason": "%s觉得不划算" % customer_label}
-
-
-func _default_budget_for(customer_type: String) -> int:
-	if customer_type == PrototypeConstants.CUSTOMER_WORKER:
-		return 4
-	return 2
-
-
-func _refresh_visual() -> void:
-	if stock <= 0:
-		visual.texture = STALL_TEXTURES[0]
-	elif stock == 1:
-		visual.texture = STALL_TEXTURES[1]
-	elif stock <= 3:
-		visual.texture = STALL_TEXTURES[2]
-	else:
-		visual.texture = STALL_TEXTURES[3]
-
-
-func _reset_stall_slots() -> void:
-	stall_slots = []
-	for _index in range(GameState.get_stall_slot_count()):
-		stall_slots.append({})
-
-
-func _sanitize_prepared_slots(prepared_slots: Array) -> Array[Dictionary]:
-	var result: Array[Dictionary] = []
-	var max_slots := GameState.get_stall_slot_count()
-	for entry in prepared_slots:
-		if result.size() >= max_slots:
-			break
-		if typeof(entry) != TYPE_DICTIONARY:
-			continue
-		var slot: Dictionary = entry
-		var item_id := str(slot.get("item_id", ""))
 		var count := int(slot.get("count", 0))
-		if item_id.is_empty() or count <= 0 or not ConfigLoader.is_sellable_item(item_id):
+		if item_id.is_empty() or count <= 0:
 			continue
-		result.append({
-			"item_id": item_id,
-			"count": count,
-			"price": clampi(int(slot.get("price", ConfigLoader.get_base_sell_price(item_id))), PrototypeConstants.MIN_APPLE_PRICE, PrototypeConstants.MAX_APPLE_PRICE),
-		})
-	while result.size() < max_slots:
-		result.append({})
+		if not totals.has(item_id):
+			totals[item_id] = 0
+			order.append(item_id)
+		totals[item_id] = int(totals[item_id]) + count
+	var result: Array[Dictionary] = []
+	for item_id in order:
+		result.append({"item_id": item_id, "count": int(totals[item_id])})
 	return result
 
 
+func _add_stock_overlay_item(parent: Node2D, entry: Dictionary, local_position: Vector2) -> void:
+	var item_root := Node2D.new()
+	item_root.name = "StockItem%d" % parent.get_child_count()
+	item_root.position = local_position
+	parent.add_child(item_root)
+
+	var item_id := str(entry.get("item_id", ""))
+	var icon_texture := _load_item_icon(item_id)
+	if icon_texture != null:
+		var icon := Sprite2D.new()
+		icon.name = "Icon"
+		icon.texture = icon_texture
+		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		var texture_size := icon_texture.get_size()
+		if texture_size.x > 0 and texture_size.y > 0:
+			icon.scale = Vector2(STOCK_ICON_SIZE.x / texture_size.x, STOCK_ICON_SIZE.y / texture_size.y)
+		item_root.add_child(icon)
+
+	var count_label := Label.new()
+	count_label.name = "CountLabel"
+	count_label.text = "x%d" % int(entry.get("count", 0))
+	count_label.position = Vector2(-12, 9)
+	count_label.size = Vector2(24, 14)
+	count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	count_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	count_label.add_theme_font_size_override("font_size", 10)
+	item_root.add_child(count_label)
+
+
+func _load_item_icon(item_id: String) -> Texture2D:
+	var icon_path := ConfigLoader.get_item_icon(item_id)
+	if icon_path.is_empty() or not ResourceLoader.exists(icon_path):
+		return null
+	return load(icon_path) as Texture2D
+
+
+func _reset_stall_slots() -> void:
+	stall_slots = StallInventory.reset_slots(GameState.get_stall_slot_count())
+
+
+func _sanitize_prepared_slots(prepared_slots: Array) -> Array[Dictionary]:
+	return StallInventory.sanitize_prepared_slots(prepared_slots, GameState.get_stall_slot_count())
+
+
 func _stock_total(slots_to_count: Array) -> int:
-	var total := 0
-	for slot in slots_to_count:
-		if typeof(slot) == TYPE_DICTIONARY:
-			total += int((slot as Dictionary).get("count", 0))
-	return total
+	return StallInventory.stock_total(slots_to_count)
 
 
 func _first_stock_slot() -> Dictionary:
-	for index in range(stall_slots.size()):
-		var slot: Dictionary = stall_slots[index]
-		if not slot.is_empty() and int(slot.get("count", 0)) > 0:
-			var copy := slot.duplicate()
-			copy["slot_index"] = index
-			return copy
-	return {}
-
-
-func _cheapest_stock_slot() -> Dictionary:
-	var best_slot: Dictionary = {}
-	var best_price := INF
-	for index in range(stall_slots.size()):
-		var slot: Dictionary = stall_slots[index]
-		if slot.is_empty() or int(slot.get("count", 0)) <= 0:
-			continue
-		var slot_price := int(slot.get("price", ConfigLoader.get_base_sell_price(str(slot.get("item_id", "")))))
-		if slot_price < best_price:
-			best_price = slot_price
-			best_slot = slot.duplicate()
-			best_slot["slot_index"] = index
-	return best_slot
-
-
-func _cheapest_price() -> int:
-	var cheapest := _cheapest_stock_slot()
-	if cheapest.is_empty():
-		return 0
-	return int(cheapest.get("price", 0))
-
-
-func _decision_for_slot(slot: Dictionary, reason: String) -> Dictionary:
-	return {
-		"bought": true,
-		"reason": reason,
-		"item_id": str(slot.get("item_id", current_item_id)),
-		"price": int(slot.get("price", price)),
-		"slot_index": int(slot.get("slot_index", 0)),
-	}
+	return StallInventory.first_stock_slot(stall_slots)
 
 
 func _is_valid_stall_slot(index: int) -> bool:
@@ -409,46 +329,8 @@ func _is_valid_stall_slot(index: int) -> bool:
 
 
 func _visible_stall_slots() -> Array:
-	var result := []
-	for slot in stall_slots:
-		result.append(slot.duplicate() if typeof(slot) == TYPE_DICTIONARY else {})
-	return result
+	return StallInventory.visible_slots(stall_slots)
 
 
 func _can_return_all_stock() -> bool:
-	var simulated_slots: Array[Dictionary] = []
-	for slot in Inventory.get_slots_with_empty():
-		simulated_slots.append(slot.duplicate())
-	for slot in stall_slots:
-		if slot.is_empty():
-			continue
-		if not _simulate_insert_all(simulated_slots, str(slot.get("item_id", "")), int(slot.get("count", 0))):
-			return false
-	return true
-
-
-func _simulate_insert_all(simulated_slots: Array[Dictionary], item_id: String, amount: int) -> bool:
-	var remaining := amount
-	var stack_size := ConfigLoader.get_stack_size(item_id)
-	for index in range(simulated_slots.size()):
-		if remaining <= 0:
-			return true
-		var slot: Dictionary = simulated_slots[index]
-		if str(slot.get("item_id", "")) != item_id:
-			continue
-		var space := stack_size - int(slot.get("count", 0))
-		if space <= 0:
-			continue
-		var added := mini(space, remaining)
-		slot["count"] = int(slot.get("count", 0)) + added
-		simulated_slots[index] = slot
-		remaining -= added
-	for index in range(simulated_slots.size()):
-		if remaining <= 0:
-			return true
-		if not simulated_slots[index].is_empty():
-			continue
-		var added := mini(stack_size, remaining)
-		simulated_slots[index] = {"item_id": item_id, "count": added}
-		remaining -= added
-	return remaining <= 0
+	return StallInventory.can_return_all_stock(stall_slots, Inventory.get_slots_with_empty())

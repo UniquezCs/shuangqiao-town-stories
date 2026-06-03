@@ -3,6 +3,8 @@ extends Node
 
 func _ready() -> void:
 	GameState.reset_game()
+	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 1, "新游戏初始应给玩家 1 个苹果")
+	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_PEAR), 1, "新游戏初始应给玩家 1 个梨")
 	_assert_equal(ConfigLoader.get_item_name(PrototypeConstants.ITEM_APPLE), "苹果", "应能读取商品配置名称")
 	_assert_equal(ConfigLoader.get_stack_size(PrototypeConstants.ITEM_APPLE), 20, "应能读取商品堆叠上限")
 	_assert_true(ConfigLoader.get_seed_shop_seed_items().has("pear_seed"), "种子商店应包含梨种子")
@@ -18,8 +20,10 @@ func _ready() -> void:
 		"应能通过资源 ID 读取资源路径"
 	)
 
-	Inventory.configure_slot_count(1)
 	Inventory.set_count(PrototypeConstants.ITEM_APPLE_SEED, 0)
+	Inventory.set_count(PrototypeConstants.ITEM_APPLE, 0)
+	Inventory.set_count(PrototypeConstants.ITEM_PEAR, 0)
+	Inventory.configure_slot_count(1)
 	_assert_true(Inventory.add_item(PrototypeConstants.ITEM_APPLE, 20), "一个格子应能装满一组苹果")
 	_assert_true(not Inventory.add_item(PrototypeConstants.ITEM_APPLE, 1), "背包满时应拒绝新增物品")
 	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 20, "满包失败不应偷偷增加物品")

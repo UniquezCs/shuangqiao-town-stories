@@ -29,7 +29,8 @@
 			"Missing assets should use placeholders until the user explicitly asks for art generation.",
 			"Customer/random/civilian NPC walk sheets use 4 rows x 6 columns, 48x64 cells, and no duplicated standing endpoints.",
 			"Customer purchase profiles read crop preference items, demographic base budget/preferences, and personal random ranges from res://configs/customer_preferences.json, then blend demographic and per-NPC values 50/50.",
-			"Stall influence radius is configured per upgrade level in res://configs/upgrades.json and drives both customer InfluenceArea and chengguan InspectionTarget in scripts/world/stall.gd."
+			"Stall influence radius is configured per upgrade level in res://configs/upgrades.json and drives both customer InfluenceArea and chengguan InspectionTarget in scripts/world/stall.gd.",
+			"StallSpot StaticBody2D collision is a runtime open-stall blocker: scripts/world/stall_spot.gd keeps the template size/offset relative to Stall, disables it before opening, and enables/repositions it after a stall opens."
 		]
 	},
 	"packs": {
@@ -111,7 +112,9 @@
 			"action_sheets": {
 				"hoe": "res://assets/generated/sprites/characters/player_hoe_4dir_4f_48x64.png",
 				"water": "res://assets/generated/sprites/characters/player_water_4dir_4f_48x64.png",
-				"harvest": "res://assets/generated/sprites/characters/player_harvest_4dir_4f_48x64.png"
+				"harvest": "res://assets/generated/sprites/characters/player_harvest_4dir_4f_48x64.png",
+				"beg_kneel": "res://assets/generated/sprites/characters/vendor_beg_kneel_48x64.png",
+				"beg_kowtow": "res://assets/generated/sprites/characters/vendor_beg_kowtow_48x64.png"
 			},
 			"size": [
 				48,
@@ -155,9 +158,10 @@
 			"action_source_generated_images": {
 				"hoe": "/Users/zhangcong/.codex/generated_images/019e6f0f-656f-78f2-8e70-808e59466a9e/ig_0eea1b9436e23a21016a1ee9b01a748191a7b2c516ab0b36a0.png",
 				"water": "/Users/zhangcong/.codex/generated_images/019e6f0f-656f-78f2-8e70-808e59466a9e/ig_0eea1b9436e23a21016a1eea03ef9881919d1a6b6d758f4100.png",
-				"harvest": "/Users/zhangcong/.codex/generated_images/019e6f0f-656f-78f2-8e70-808e59466a9e/ig_0eea1b9436e23a21016a1eea589ae48191a10e0910b4046e05.png"
+				"harvest": "/Users/zhangcong/.codex/generated_images/019e6f0f-656f-78f2-8e70-808e59466a9e/ig_0eea1b9436e23a21016a1eea589ae48191a10e0910b4046e05.png",
+				"begging": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_00f1a137aebf366a016a2045dacb848191abb4a36bb9ccc52f.png"
 			},
-			"notes": "Regenerated 2026-06-01 as a 1990s township middle-aged vendor. Final walk sheet is normalized to 48x64 cells, shared scale, fixed feet baseline, and exact standing loop frame. Added 2026-06-02 farming action sheets for hoeing, watering, and harvesting; player_spriteframes_48x64.tres combines walk and action animations for Player.",
+			"notes": "Regenerated 2026-06-01 as a 1990s township middle-aged vendor. Final walk sheet is normalized to 48x64 cells, shared scale, fixed feet baseline, and exact standing loop frame. Added 2026-06-02 farming action sheets for hoeing, watering, and harvesting; player_spriteframes_48x64.tres combines walk and action animations for Player. Added 2026-06-03 begging kneel/kowtow Sprite2D pose textures matched to the current vendor design.",
 			"used_by": [
 				"scenes/player.tscn"
 			],
@@ -553,11 +557,13 @@
 			"usage": [
 				"inventory_icon",
 				"stall_item",
-				"customer_purchase_countdown"
+				"customer_purchase_countdown",
+				"initial_inventory"
 			],
 				"used_by": [
 					"configs/items.json",
-					"scripts/world/customer.gd"
+					"scripts/world/customer.gd",
+					"scripts/autoload/inventory.gd"
 				],
 				"notes": "Regenerated 2026-06-02 as part of the apple 8-resource crop pack.",
 				"anchor": "center",
@@ -667,10 +673,12 @@
 				"path": "res://assets/generated/sprites/items/crops/pear_32.png",
 				"usage": [
 					"inventory_icon",
-					"sellable_crop"
+					"sellable_crop",
+					"initial_inventory"
 			],
 			"used_by": [
-				"configs/items.json"
+				"configs/items.json",
+				"scripts/autoload/inventory.gd"
 			],
 			"size": [
 				32,
@@ -1384,7 +1392,8 @@
 			"status": "implemented",
 			"path": "res://assets/generated/sprites/props/stall/01_stall_empty.png",
 			"usage": [
-				"stall_stock_0"
+				"stall_base_visual",
+				"stall_stock_overlay_base"
 			],
 			"used_by": [
 				"scripts/world/stall.gd",
@@ -1399,14 +1408,12 @@
 		},
 		"stall.stock_1": {
 			"type": "stall_visual",
-			"status": "implemented",
+			"status": "available",
 			"path": "res://assets/generated/sprites/props/stall/04_stall_apple_1.png",
 			"usage": [
-				"stall_stock_1"
+				"legacy_stall_stock_1"
 			],
-			"used_by": [
-				"scripts/world/stall.gd"
-			],
+			"notes": "Legacy stock-specific visual. Runtime now uses stall.empty plus item icon/count overlay.",
 			"anchor": "center",
 			"collision": "none",
 			"tags": [
@@ -1415,14 +1422,12 @@
 		},
 		"stall.stock_3": {
 			"type": "stall_visual",
-			"status": "implemented",
+			"status": "available",
 			"path": "res://assets/generated/sprites/props/stall/03_stall_apples_3.png",
 			"usage": [
-				"stall_stock_2_to_3"
+				"legacy_stall_stock_2_to_3"
 			],
-			"used_by": [
-				"scripts/world/stall.gd"
-			],
+			"notes": "Legacy stock-specific visual. Runtime now uses stall.empty plus item icon/count overlay.",
 			"anchor": "center",
 			"collision": "none",
 			"tags": [
@@ -1431,14 +1436,12 @@
 		},
 		"stall.stock_6": {
 			"type": "stall_visual",
-			"status": "implemented",
+			"status": "available",
 			"path": "res://assets/generated/sprites/props/stall/02_stall_apples_6.png",
 			"usage": [
-				"stall_stock_4_plus"
+				"legacy_stall_stock_4_plus"
 			],
-			"used_by": [
-				"scripts/world/stall.gd"
-			],
+			"notes": "Legacy stock-specific visual. Runtime now uses stall.empty plus item icon/count overlay.",
 			"anchor": "center",
 			"collision": "none",
 			"tags": [
@@ -1694,6 +1697,56 @@
 		}
 	},
 	"ui": {
+		"ui.title_screen": {
+			"type": "ui_surface",
+			"status": "implemented",
+			"current_implementation": "Godot Control title menu with generated 1920x1080 background",
+			"usage": [
+				"game_entry",
+				"new_game",
+				"load_autosave",
+				"quit_game"
+			],
+			"used_by": [
+				"scenes/title_screen.tscn",
+				"scripts/ui/title_screen.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"title",
+				"save_load"
+			],
+			"available_components": {
+				"background": "res://assets/generated/sprites/ui/title/title_background_1920x1080.png"
+			}
+		},
+		"ui.title_background": {
+			"type": "ui_background",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/title/title_background_1920x1080.png",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"title_screen_background"
+			],
+			"used_by": [
+				"scenes/title_screen.tscn"
+			],
+			"anchor": "full_rect",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"title",
+				"background",
+				"1990s_chinese_town"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_00f1a137aebf366a016a206e374dec81918be5d36590cd65c9.png",
+			"notes": "Generated 2026-06-04 for the title screen of 双桥镇往事."
+		},
 		"ui.hud": {
 			"type": "ui_surface",
 			"status": "placeholder",
@@ -1723,10 +1776,11 @@
 		"ui.backpack_panel": {
 			"type": "ui_surface",
 			"status": "placeholder",
-			"current_implementation": "Godot PanelContainer and text labels",
+			"current_implementation": "Godot PanelContainer and text labels with textured inventory slots",
 			"usage": [
 				"inventory_slots",
-				"item_counts"
+				"item_counts",
+				"draggable_inventory_window"
 			],
 			"used_by": [
 				"scripts/ui/backpack_panel.gd"
@@ -1737,12 +1791,141 @@
 				"ui"
 			],
 			"available_components": {
+				"panel_current": "res://assets/generated/sprites/ui/panels/backpack_panel_360x420.png",
+				"slot_current": "res://assets/generated/sprites/ui/slots/backpack_slot_78x72.png",
 				"panel_frame": "res://assets/generated/sprites/ui/backpack/panel_frame.png",
 				"slot_empty": "res://assets/generated/sprites/ui/backpack/slot_empty.png",
 				"slot_highlighted": "res://assets/generated/sprites/ui/backpack/slot_highlighted.png",
 				"slot_locked": "res://assets/generated/sprites/ui/backpack/slot_locked.png",
 				"quantity_badge": "res://assets/generated/sprites/ui/backpack/quantity_badge.png"
 			}
+		},
+		"ui.backpack_panel_background": {
+			"type": "ui_component",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/panels/backpack_panel_360x420.png",
+			"size": [
+				360,
+				420
+			],
+			"usage": [
+				"backpack_panel_background",
+				"stall_setup_backpack_panel_background"
+			],
+			"used_by": [
+				"scripts/ui/backpack_panel.gd",
+				"scripts/ui/stall_setup_panel.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"inventory",
+				"panel"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_00f1a137aebf366a016a2057109d988191865ca89410c28f8b.png",
+			"notes": "Generated 2026-06-04. Used as StyleBoxTexture for standalone backpack panel and stall setup backpack panel."
+		},
+		"ui.backpack_slot": {
+			"type": "ui_component",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/slots/backpack_slot_78x72.png",
+			"size": [
+				78,
+				72
+			],
+			"usage": [
+				"backpack_inventory_slot",
+				"InventorySlotControl_backpack"
+			],
+			"used_by": [
+				"scripts/ui/inventory_slot_control.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"inventory",
+				"slot"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_00f1a137aebf366a016a2054d8f4708191970898b9308fb2e5.png",
+			"notes": "Generated 2026-06-04. Used as StyleBoxTexture for backpack slots."
+		},
+		"ui.stall_slot": {
+			"type": "ui_component",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/slots/stall_slot_78x72.png",
+			"size": [
+				78,
+				72
+			],
+			"usage": [
+				"stall_setup_slot",
+				"InventorySlotControl_stall"
+			],
+			"used_by": [
+				"scripts/ui/inventory_slot_control.gd",
+				"scripts/ui/stall_setup_panel.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"stall",
+				"slot"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_00f1a137aebf366a016a2054d8f4708191970898b9308fb2e5.png",
+			"notes": "Generated 2026-06-04. Used as StyleBoxTexture for stall setup slots."
+		},
+		"ui.stall_setup_panel": {
+			"type": "ui_surface",
+			"status": "placeholder",
+			"current_implementation": "Two draggable Godot PanelContainers: backpack goods source panel and stall goods panel",
+			"usage": [
+				"stall_setup",
+				"backpack_to_stall_transfer",
+				"price_and_amount_input"
+			],
+			"used_by": [
+				"scripts/ui/stall_setup_panel.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"stall",
+				"inventory"
+			],
+			"available_components": {
+				"backpack_panel_current": "res://assets/generated/sprites/ui/panels/backpack_panel_360x420.png",
+				"stall_panel_current": "res://assets/generated/sprites/ui/panels/stall_panel_420x520.png",
+				"backpack_slot_current": "res://assets/generated/sprites/ui/slots/backpack_slot_78x72.png",
+				"stall_slot_current": "res://assets/generated/sprites/ui/slots/stall_slot_78x72.png"
+			}
+		},
+		"ui.stall_panel_background": {
+			"type": "ui_component",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/panels/stall_panel_420x520.png",
+			"size": [
+				420,
+				520
+			],
+			"usage": [
+				"stall_setup_goods_panel_background"
+			],
+			"used_by": [
+				"scripts/ui/stall_setup_panel.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"stall",
+				"panel"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_00f1a137aebf366a016a2057109d988191865ca89410c28f8b.png",
+			"notes": "Generated 2026-06-04. Used as StyleBoxTexture for the stall goods setup panel."
 		},
 		"ui.shop_panel": {
 			"type": "ui_surface",
@@ -1848,6 +2031,31 @@
 		}
 	},
 	"town_props": {
+		"prop.begging_bowl": {
+			"id": "prop.begging_bowl",
+			"type": "prop",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/props/begging/begging_bowl_32.png",
+			"size": [
+				32,
+				32
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"begging_mode",
+				"BeggingSession/Bowl"
+			],
+			"used_by": [
+				"scripts/world/begging_session.gd"
+			],
+			"tags": [
+				"begging",
+				"props",
+				"small_prop"
+			],
+			"notes": "Generated 2026-06-03 from the vendor-matched begging sheet; used as the bowl in front of the player during begging."
+		},
 		"prop.cash_box": {
 			"type": "prop",
 			"status": "available",

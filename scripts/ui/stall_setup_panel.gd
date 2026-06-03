@@ -1,16 +1,24 @@
 extends CanvasLayer
 
 const InventorySlotControl := preload("res://scripts/ui/inventory_slot_control.gd")
+const BACKPACK_PANEL_TEXTURE_PATH := "res://assets/generated/sprites/ui/panels/backpack_panel_360x420.png"
+const STALL_PANEL_TEXTURE_PATH := "res://assets/generated/sprites/ui/panels/stall_panel_420x520.png"
 
-var _panel: PanelContainer
+var _panel: Control
+var _setup_backpack_panel: PanelContainer
+var _stall_panel: PanelContainer
 var _backpack_grid: GridContainer
 var _stall_grid: GridContainer
 var _title: Label
 var _summary: Label
 var _dialog: PanelContainer
 var _dialog_title: Label
+var _amount_label: Label
 var _amount_spin: SpinBox
+var _price_label: Label
 var _price_spin: SpinBox
+var _dragging_backpack := false
+var _dragging_stall := false
 
 var _stall_spot: Node = null
 var _stall_slots: Array[Dictionary] = []
@@ -107,47 +115,75 @@ func start_stall() -> void:
 
 
 func _build_ui() -> void:
-	_panel = PanelContainer.new()
-	_panel.position = Vector2(300, 76)
-	_panel.custom_minimum_size = Vector2(900, 520)
+	_panel = Control.new()
+	_panel.name = "StallSetupRoot"
 	add_child(_panel)
+
+	_build_setup_backpack_panel()
+	_build_stall_goods_panel()
+	_build_transfer_dialog()
+
+
+func _build_setup_backpack_panel() -> void:
+	_setup_backpack_panel = PanelContainer.new()
+	_setup_backpack_panel.name = "SetupBackpackPanel"
+	_setup_backpack_panel.position = Vector2(300, 76)
+	_setup_backpack_panel.custom_minimum_size = Vector2(360, 420)
+	_apply_panel_style(_setup_backpack_panel, BACKPACK_PANEL_TEXTURE_PATH)
+	_panel.add_child(_setup_backpack_panel)
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 14)
 	margin.add_theme_constant_override("margin_top", 14)
 	margin.add_theme_constant_override("margin_right", 14)
 	margin.add_theme_constant_override("margin_bottom", 14)
-	_panel.add_child(margin)
-
-	var root_box := VBoxContainer.new()
-	margin.add_child(root_box)
-
-	_title = Label.new()
-	_title.text = "摆摊准备"
-	root_box.add_child(_title)
-
-	var grids := HBoxContainer.new()
-	root_box.add_child(grids)
+	_setup_backpack_panel.add_child(margin)
 
 	var backpack_box := VBoxContainer.new()
-	grids.add_child(backpack_box)
+	margin.add_child(backpack_box)
+
 	var backpack_title := Label.new()
 	backpack_title.text = "背包"
+	backpack_title.mouse_filter = Control.MOUSE_FILTER_STOP
+	backpack_title.gui_input.connect(_on_backpack_drag_handle_gui_input)
 	backpack_box.add_child(backpack_title)
+
 	_backpack_grid = GridContainer.new()
 	_backpack_grid.columns = 4
 	backpack_box.add_child(_backpack_grid)
 
-	var stall_box := VBoxContainer.new()
-	grids.add_child(stall_box)
-	var stall_title := Label.new()
-	stall_title.text = "摊位"
-	stall_box.add_child(stall_title)
+
+func _build_stall_goods_panel() -> void:
+	_stall_panel = PanelContainer.new()
+	_stall_panel.name = "StallGoodsPanel"
+	_stall_panel.position = Vector2(700, 76)
+	_stall_panel.custom_minimum_size = Vector2(420, 520)
+	_apply_panel_style(_stall_panel, STALL_PANEL_TEXTURE_PATH)
+	_panel.add_child(_stall_panel)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 18)
+	margin.add_theme_constant_override("margin_top", 18)
+	margin.add_theme_constant_override("margin_right", 18)
+	margin.add_theme_constant_override("margin_bottom", 18)
+	_stall_panel.add_child(margin)
+
+	var root_box := VBoxContainer.new()
+	root_box.add_theme_constant_override("separation", 8)
+	margin.add_child(root_box)
+
+	_title = Label.new()
+	_title.text = "摆摊准备"
+	_title.mouse_filter = Control.MOUSE_FILTER_STOP
+	_title.gui_input.connect(_on_stall_drag_handle_gui_input)
+	root_box.add_child(_title)
+
 	_stall_grid = GridContainer.new()
 	_stall_grid.columns = 4
-	stall_box.add_child(_stall_grid)
+	root_box.add_child(_stall_grid)
 
 	_summary = Label.new()
+	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root_box.add_child(_summary)
 
 	var buttons := HBoxContainer.new()
@@ -162,8 +198,6 @@ func _build_ui() -> void:
 	cancel_button.text = "取消"
 	cancel_button.pressed.connect(cancel_setup)
 	buttons.add_child(cancel_button)
-
-	_build_transfer_dialog()
 
 
 func _build_transfer_dialog() -> void:
@@ -184,11 +218,17 @@ func _build_transfer_dialog() -> void:
 	_dialog_title = Label.new()
 	box.add_child(_dialog_title)
 
+	_amount_label = Label.new()
+	_amount_label.text = "数量"
+	box.add_child(_amount_label)
 	_amount_spin = SpinBox.new()
 	_amount_spin.min_value = 1
 	_amount_spin.step = 1
 	box.add_child(_amount_spin)
 
+	_price_label = Label.new()
+	_price_label.text = "单价"
+	box.add_child(_price_label)
 	_price_spin = SpinBox.new()
 	_price_spin.min_value = PrototypeConstants.MIN_APPLE_PRICE
 	_price_spin.max_value = PrototypeConstants.MAX_APPLE_PRICE
@@ -233,6 +273,66 @@ func _refresh() -> void:
 func _on_backpack_changed(_slots: Array, _slot_count: int) -> void:
 	if _panel != null and _panel.visible:
 		_refresh()
+
+
+func get_panel_position() -> Vector2:
+	return _panel.position if _panel != null else Vector2.ZERO
+
+
+func move_panel_by(delta: Vector2) -> void:
+	move_backpack_panel_by(delta)
+	move_stall_panel_by(delta)
+	if _dialog != null:
+		_dialog.position += delta
+
+
+func get_backpack_panel_position() -> Vector2:
+	return _setup_backpack_panel.position if _setup_backpack_panel != null else Vector2.ZERO
+
+
+func get_stall_panel_position() -> Vector2:
+	return _stall_panel.position if _stall_panel != null else Vector2.ZERO
+
+
+func move_backpack_panel_by(delta: Vector2) -> void:
+	if _setup_backpack_panel == null:
+		return
+	_setup_backpack_panel.position += delta
+
+
+func move_stall_panel_by(delta: Vector2) -> void:
+	if _stall_panel == null:
+		return
+	_stall_panel.position += delta
+
+
+func _on_backpack_drag_handle_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		_dragging_backpack = event.pressed
+		get_viewport().set_input_as_handled()
+	elif _dragging_backpack and event is InputEventMouseMotion:
+		move_backpack_panel_by(event.relative)
+		get_viewport().set_input_as_handled()
+
+
+func _on_stall_drag_handle_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		_dragging_stall = event.pressed
+		get_viewport().set_input_as_handled()
+	elif _dragging_stall and event is InputEventMouseMotion:
+		move_stall_panel_by(event.relative)
+		get_viewport().set_input_as_handled()
+
+
+func _apply_panel_style(panel: PanelContainer, texture_path: String) -> void:
+	if panel == null or not ResourceLoader.exists(texture_path):
+		return
+	var texture := load(texture_path) as Texture2D
+	if texture == null:
+		return
+	var stylebox := StyleBoxTexture.new()
+	stylebox.texture = texture
+	panel.add_theme_stylebox_override("panel", stylebox)
 
 
 func _begin_backpack_to_stall_transfer(drag_data: Dictionary, target_index: int) -> void:

@@ -64,7 +64,7 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 | Asset ID | Status | Current Resource | Future Need |
 | --- | --- | --- | --- |
-| `character.vendor` | implemented | `player_spriteframes_48x64.tres` | Regenerated 2026-06-01 as a 1990s township middle-aged vendor; `48x64`, 4-direction walk plus 2026-06-02 farming actions: hoe, water, harvest, each 4 directions x 4 frames. |
+| `character.vendor` | implemented | `player_spriteframes_48x64.tres`; `vendor_beg_kneel_48x64.png`; `vendor_beg_kowtow_48x64.png` | Regenerated 2026-06-01 as a 1990s township middle-aged vendor; `48x64`, 4-direction walk plus 2026-06-02 farming actions. Added 2026-06-03 kneel/kowtow Sprite2D poses for begging mode, matched to the current vendor design. |
 | `character.student_customer` | implemented | `student_walk_spriteframes_48x64.tres` | Student visual pool: `youth + male`; `48x64`, 4 directions, 6 frames. |
 | `character.youth_female_customer` | implemented | `youth_female_walk_spriteframes_48x64.tres` | Student visual pool: `youth + female`; restored to the earlier preferred raw image on 2026-06-02, then only cleaned magenta/purple fringe pixels. |
 | `character.worker_customer` | implemented | `worker_walk_spriteframes_48x64.tres` | Worker visual pool: `middle + male`; `48x64`, 4 directions, 6 frames. |
@@ -77,12 +77,12 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `item.apple` | implemented | `sprites/items/crops/apple_32.png` | Regenerated 2026-06-02 as part of the apple 8-resource crop pack. |
+| `item.apple` | implemented | `sprites/items/crops/apple_32.png` | Regenerated 2026-06-02 as part of the apple 8-resource crop pack; new games start with 1 apple. |
 | `item.apple_seed` | implemented | `sprites/items/apple_seed_packet_32.png` | Regenerated 2026-06-02 as part of the apple 8-resource crop pack. |
 | `item.cabbage` | implemented | `sprites/items/crops/cabbage_32.png` | Normalized generated crop icon. |
 | `item.cucumber` | implemented | `sprites/items/crops/cucumber_32.png` | Normalized generated crop icon. |
 | `item.tomato` | implemented | `sprites/items/crops/tomato_32.png` | Normalized generated crop icon. |
-| `item.pear` | implemented | `sprites/items/crops/pear_32.png` | Regenerated 2026-06-02 as part of the pear 8-resource crop pack. |
+| `item.pear` | implemented | `sprites/items/crops/pear_32.png` | Regenerated 2026-06-02 as part of the pear 8-resource crop pack; new games start with 1 pear. |
 | `item.banana` | implemented | `sprites/items/crops/banana_32.png` | Generated 2026-06-02 as part of the banana 8-resource crop pack. |
 | `item.grape` | implemented | `sprites/items/crops/grape_32.png` | Generated 2026-06-02 as part of the grape 8-resource crop pack. |
 | `item.potato` | implemented | `sprites/items/crops/potato_32.png` | Normalized generated crop icon. |
@@ -135,10 +135,10 @@ Each crop should eventually provide 8 resources: the 6 farm-state textures above
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `stall.empty` | implemented | `01_stall_empty.png` | Stock 0. |
-| `stall.stock_1` | implemented | `04_stall_apple_1.png` | Stock 1. |
-| `stall.stock_3` | implemented | `03_stall_apples_3.png` | Stock 2-3. |
-| `stall.stock_6` | implemented | `02_stall_apples_6.png` | Stock 4+. |
+| `stall.empty` | implemented | `01_stall_empty.png` | Runtime base visual for every open stall. Current selling goods are displayed by item icon/count overlay nodes. |
+| `stall.stock_1` | available | `04_stall_apple_1.png` | Legacy stock-specific visual; no longer used by runtime. |
+| `stall.stock_3` | available | `03_stall_apples_3.png` | Legacy stock-specific visual; no longer used by runtime. |
+| `stall.stock_6` | available | `02_stall_apples_6.png` | Legacy stock-specific visual; no longer used by runtime. |
 | `stall.dirty_or_confiscated` | available | `05_stall_dirty.png` | Candidate for future chengguan feedback. |
 | `stall.upgraded_level_2` | missing | none | Needs higher-capacity stall visual. |
 | `stall.upgraded_level_3` | missing | none | Needs larger stall visual. |
@@ -146,6 +146,12 @@ Each crop should eventually provide 8 resources: the 6 farm-state textures above
 Runtime note: `stall.influence_radius` is configured per stall upgrade level in
 `configs/upgrades.json`. `scripts/world/stall.gd` reads it when opening a stall
 and applies the same radius to `InfluenceArea` and `InspectionTarget`.
+
+Runtime collision note: `scenes/stall_spot.tscn` may include a
+`StaticBody2D/CollisionShape2D` for the physical stall blocker. The template
+size and offset are preserved relative to `Stall`; `scripts/world/stall_spot.gd`
+keeps it disabled before opening, then enables and repositions it when a stall
+opens at the player's position.
 
 ### Locations And Buildings
 
@@ -166,9 +172,15 @@ Current UI is mostly Godot `Control` nodes with text and panels. This is accepta
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
+| `ui.title_screen` | implemented | `scenes/title_screen.tscn` | New game entry screen for 「双桥镇往事」 with new game, load autosave, and quit buttons. |
+| `ui.title_background` | implemented | `sprites/ui/title/title_background_1920x1080.png` | Generated 2026-06-04; 1920x1080 township street background for the title screen. |
 | `ui.hud` | placeholder | text labels | v2 UI icons exist. |
-| `ui.backpack_panel` | placeholder | Control nodes | UI skin pack exists with registered component IDs. |
-| `ui.stall_setup_panel` | placeholder | Control nodes + item icons from `configs/items.json` | Added in the 2026-06-02 backpack/stall programming pass. No new art was required; it reuses registered item icons and text controls. |
+| `ui.backpack_panel` | placeholder | Control nodes + `ui.backpack_panel_background` + `ui.backpack_slot` | Backpack window is draggable as of 2026-06-04. It now uses generated panel and slot UI art. |
+| `ui.backpack_panel_background` | implemented | `sprites/ui/panels/backpack_panel_360x420.png` | Generated 2026-06-04; used by standalone backpack UI and the stall setup backpack panel. |
+| `ui.backpack_slot` | implemented | `sprites/ui/slots/backpack_slot_78x72.png` | Generated 2026-06-04; used by `InventorySlotControl` for backpack slots. |
+| `ui.stall_setup_panel` | placeholder | Two draggable Control panels + item icons + `ui.backpack_panel_background` + `ui.stall_panel_background` | Stall setup now opens backpack and stall as two independent panels; transfer dialog labels quantity and unit price explicitly. |
+| `ui.stall_panel_background` | implemented | `sprites/ui/panels/stall_panel_420x520.png` | Generated 2026-06-04; used by the stall goods setup panel. |
+| `ui.stall_slot` | implemented | `sprites/ui/slots/stall_slot_78x72.png` | Generated 2026-06-04; used by `InventorySlotControl` for stall setup slots. |
 | `ui.shop_panel` | placeholder | Control nodes | UI skin pack exists with registered component IDs. |
 | `ui.price_panel` | placeholder | Control nodes | Price tag icon exists. |
 | `ui.daily_summary_panel` | placeholder | Control nodes | Ledger icon exists. |
@@ -187,6 +199,10 @@ The street stall cutout pack already contains many usable props:
 - baskets, sacks, stool, radio, thermos, enamel mug
 
 These are registered as available assets in `configs/assets.json`. They should be placed by scene design or map composition work, not directly by gameplay scripts.
+
+Begging mode also registers and uses `prop.begging_bowl` at
+`res://assets/generated/sprites/props/begging/begging_bowl_32.png`; it is a
+`32x32` Sprite2D prop spawned by `BeggingSession` in front of the player.
 
 The township reference map now also has a dedicated top-down pixel prop set under `assets/generated/sprites/props/township/`. These assets are registered as `available` with stable `prop.township.*` IDs and are intended for editor-authored map composition:
 

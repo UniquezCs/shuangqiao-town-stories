@@ -5,15 +5,19 @@
 [ext_resource type="Texture2D" uid="uid://b8xog1vvwbjlc" path="res://assets/generated/sprites/props/stall/01_stall_empty.png" id="3_visual"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
-size = Vector2(562, 220.5)
+size = Vector2(165, 84.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dpsx3"]
+size = Vector2(87, 19)
 
 [node name="StallSpot" type="Area2D" unique_id=1045155148 groups=["player_stall_spot"]]
+z_index = 1
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_spot")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1811738584]
-position = Vector2(26, -1.75)
+position = Vector2(5, 19)
 shape = SubResource("RectangleShape2D_interaction")
 
 [node name="Stall" type="Node2D" parent="." unique_id=1235256841 groups=["stall"]]
@@ -24,3 +28,11 @@ texture_filter = 1
 position = Vector2(6.000004, 20.5)
 scale = Vector2(0.62790704, 0.38311687)
 texture = ExtResource("3_visual")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1671946011]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=625302247]
+position = Vector2(8, 36)
+shape = SubResource("RectangleShape2D_dpsx3")

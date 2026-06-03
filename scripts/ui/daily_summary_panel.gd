@@ -2,6 +2,8 @@ extends CanvasLayer
 
 var _panel: PanelContainer
 var _summary_label: Label
+var _defer_next_summary := false
+var _pending_summary: Dictionary = {}
 
 
 func _ready() -> void:
@@ -18,6 +20,22 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func hide_panel() -> void:
 	_panel.visible = false
+
+
+func defer_next_summary() -> void:
+	_defer_next_summary = true
+	_pending_summary = {}
+	hide_panel()
+
+
+func show_pending_summary() -> void:
+	if _pending_summary.is_empty():
+		_defer_next_summary = false
+		return
+	var result := _pending_summary.duplicate(true)
+	_pending_summary = {}
+	_defer_next_summary = false
+	_show_summary(result)
 
 
 func _build_ui() -> void:
@@ -50,6 +68,13 @@ func _build_ui() -> void:
 
 
 func _on_daily_summary_ready(result: Dictionary) -> void:
+	if _defer_next_summary:
+		_pending_summary = result.duplicate(true)
+		return
+	_show_summary(result)
+
+
+func _show_summary(result: Dictionary) -> void:
 	_summary_label.text = "第 %d 天\n收入：%d 元\n卖出商品：%d 个\n接待顾客：%d 人\n拒绝/错过：%d 人\n被城管抓到：%d 次\n罚款：%d 元" % [
 		int(result.get("day", 1)),
 		int(result.get("income", 0)),

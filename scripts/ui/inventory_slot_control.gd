@@ -1,5 +1,8 @@
 extends PanelContainer
 
+const BACKPACK_SLOT_TEXTURE_PATH := "res://assets/generated/sprites/ui/slots/backpack_slot_78x72.png"
+const STALL_SLOT_TEXTURE_PATH := "res://assets/generated/sprites/ui/slots/stall_slot_78x72.png"
+
 var owner_panel: Node = null
 var container_id := ""
 var slot_index := -1
@@ -39,6 +42,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 
 func _build_ui() -> void:
 	custom_minimum_size = Vector2(78, 72)
+	_apply_slot_style()
 	for child in get_children():
 		child.queue_free()
 
@@ -100,3 +104,15 @@ func _load_item_icon(item_id: String) -> Texture2D:
 	if icon_path.is_empty() or not ResourceLoader.exists(icon_path):
 		return null
 	return load(icon_path) as Texture2D
+
+
+func _apply_slot_style() -> void:
+	var texture_path := STALL_SLOT_TEXTURE_PATH if container_id == "stall" else BACKPACK_SLOT_TEXTURE_PATH
+	if not ResourceLoader.exists(texture_path):
+		return
+	var texture := load(texture_path) as Texture2D
+	if texture == null:
+		return
+	var stylebox := StyleBoxTexture.new()
+	stylebox.texture = texture
+	add_theme_stylebox_override("panel", stylebox)

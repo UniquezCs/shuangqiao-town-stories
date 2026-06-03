@@ -129,6 +129,17 @@ Detailed incident notes and prevention rules are maintained in
 - When adding new gameplay, first consider whether a dedicated node can own
   the behavior before adding global scans or per-frame state checks.
 
+### Gameplay Debug Logging
+
+- Economy and patrol diagnostics are routed through
+  `scripts/debug/gameplay_debug_log.gd`.
+- The log stream is disabled by default. Enable
+  `debug/gameplay/economy_and_patrol_logs_enabled` in `project.godot` or
+  Project Settings when balancing customer purchases, stall decisions, or
+  chengguan patrol spawn behavior.
+- Keep debug logging event-driven at meaningful decision points. Do not add
+  per-frame logging to movement, timer ticks, or path following.
+
 ### Config-Driven Systems
 
 - 商品、作物和升级数据必须优先放在 `configs/*.json` 中驱动。

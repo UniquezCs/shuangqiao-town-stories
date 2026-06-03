@@ -9,6 +9,33 @@ func reset_items() -> void:
 	slots = []
 	_ensure_slot_array()
 	add_item(PrototypeConstants.ITEM_APPLE_SEED, 1)
+	add_item(PrototypeConstants.ITEM_APPLE, 1)
+	add_item(PrototypeConstants.ITEM_PEAR, 1)
+	_emit_backpack_changed()
+	_emit_known_item_counts()
+
+
+func to_save_data() -> Dictionary:
+	return {
+		"slot_count": slot_count,
+		"slots": get_slots_with_empty(),
+	}
+
+
+func apply_save_data(data: Dictionary) -> void:
+	slot_count = maxi(1, int(data.get("slot_count", _configured_slot_count())))
+	slots = []
+	var saved_slots: Variant = data.get("slots", [])
+	if typeof(saved_slots) == TYPE_ARRAY:
+		for saved_slot in saved_slots:
+			if typeof(saved_slot) == TYPE_DICTIONARY:
+				var item_id := str((saved_slot as Dictionary).get("item_id", ""))
+				var count := int((saved_slot as Dictionary).get("count", 0))
+				if not item_id.is_empty() and count > 0:
+					slots.append({"item_id": item_id, "count": count})
+				else:
+					slots.append({})
+	_ensure_slot_array()
 	_emit_backpack_changed()
 	_emit_known_item_counts()
 

@@ -3,28 +3,40 @@ extends Node2D
 const HOME_SCENE := preload("res://scenes/home_scene.tscn")
 const HOUSE_SCENE := preload("res://scenes/house_scene.tscn")
 const TOWN_SCENE := preload("res://scenes/town_scene.tscn")
+const StallActionPanelScript := preload("res://scripts/ui/stall_action_panel.gd")
 
 var current_world: Node2D = null
 var pending_stall_spot: Node = null
+var stall_action_panel: CanvasLayer = null
+var _sleep_transition_layer: CanvasLayer = null
+var _sleep_transition_rect: ColorRect = null
+var _sleep_transition_running := false
+var _sleep_transition_seconds := PrototypeConstants.SLEEP_TRANSITION_SECONDS
+var _startup_spawn_id := "default"
 
 @onready var world_root: Node2D = $WorldRoot
 @onready var player: CharacterBody2D = $Player
 @onready var price_panel: CanvasLayer = $PricePanel
 @onready var shop_panel: CanvasLayer = $ShopPanel
 @onready var stall_setup_panel: CanvasLayer = $StallSetupPanel
+@onready var daily_summary_panel: CanvasLayer = $DailySummaryPanel
 @onready var time_timer: Timer = $TimeWindowTimer
 
 
 func _ready() -> void:
 	SignalBus.scene_change_requested.connect(_on_scene_change_requested)
 	SignalBus.price_panel_requested.connect(_on_price_panel_requested)
+	SignalBus.stall_action_requested.connect(_on_stall_action_requested)
 	SignalBus.stall_setup_requested.connect(_on_stall_setup_requested)
 	SignalBus.shop_panel_requested.connect(_on_shop_panel_requested)
+	SignalBus.sleep_requested.connect(_on_sleep_requested)
+	_create_stall_action_panel()
+	_create_sleep_transition_overlay()
 	price_panel.price_confirmed.connect(_on_price_confirmed)
 	time_timer.timeout.connect(_advance_game_minute)
-	GameState.reset_game()
+	_initialize_game_state()
 	_start_day_clock()
-	_load_world(PrototypeConstants.SCENE_HOUSE, "default")
+	_load_world(PrototypeConstants.SCENE_HOUSE, _startup_spawn_id)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -71,6 +83,20 @@ func _on_price_confirmed(price: int) -> void:
 	if pending_stall_spot != null and is_instance_valid(pending_stall_spot):
 		pending_stall_spot.call("open_stall", price)
 	pending_stall_spot = null
+
+
+func _on_stall_action_requested(stall_spot: Node) -> void:
+	pending_stall_spot = stall_spot
+	stall_action_panel.call("open", stall_spot)
+
+
+func _on_stall_action_stall_selected(stall_spot: Node) -> void:
+	_on_stall_setup_requested(stall_spot)
+
+
+func _on_stall_action_begging_selected(stall_spot: Node) -> void:
+	if stall_spot != null and is_instance_valid(stall_spot) and stall_spot.has_method("start_begging"):
+		stall_spot.call("start_begging", player)
 
 
 func _on_stall_setup_requested(stall_spot: Node) -> void:
@@ -127,7 +153,56 @@ func _force_next_day() -> void:
 	GameState.end_day("midnight")
 	GameState.start_new_day(PrototypeConstants.DAY_START_MINUTE)
 	await _load_world(PrototypeConstants.SCENE_HOUSE, "bed_spawn")
+	SaveManager.save_autosave()
 	time_timer.start(PrototypeConstants.REAL_SECONDS_PER_GAME_MINUTE)
+
+
+func _on_sleep_requested() -> void:
+	if _sleep_transition_running:
+		return
+	_run_sleep_transition()
+
+
+func _run_sleep_transition() -> void:
+	_sleep_transition_running = true
+	time_timer.stop()
+	_close_all_stalls()
+	if daily_summary_panel.has_method("defer_next_summary"):
+		daily_summary_panel.call("defer_next_summary")
+	await _fade_sleep_overlay(0.0, 1.0, _sleep_transition_seconds * 0.5)
+	SignalBus.day_settlement_requested.emit()
+	GameState.end_day("sleep")
+	GameState.start_new_day(PrototypeConstants.DAY_START_MINUTE)
+	await _load_world(PrototypeConstants.SCENE_HOUSE, "bed_spawn")
+	SaveManager.save_autosave()
+	await _fade_sleep_overlay(1.0, 0.0, _sleep_transition_seconds * 0.5)
+	if _sleep_transition_rect != null:
+		_sleep_transition_rect.visible = false
+	_sleep_transition_running = false
+	if daily_summary_panel.has_method("show_pending_summary"):
+		daily_summary_panel.call("show_pending_summary")
+	time_timer.start(PrototypeConstants.REAL_SECONDS_PER_GAME_MINUTE)
+
+
+func is_sleep_transition_running() -> bool:
+	return _sleep_transition_running
+
+
+func set_sleep_transition_seconds_for_test(seconds: float) -> void:
+	_sleep_transition_seconds = maxf(0.0, seconds)
+
+
+func _fade_sleep_overlay(from_alpha: float, to_alpha: float, duration: float) -> void:
+	if _sleep_transition_rect == null:
+		return
+	_sleep_transition_rect.visible = true
+	_sleep_transition_rect.color = Color(0.0, 0.0, 0.0, from_alpha)
+	if duration <= 0.0:
+		_sleep_transition_rect.color = Color(0.0, 0.0, 0.0, to_alpha)
+		return
+	var tween := create_tween()
+	tween.tween_property(_sleep_transition_rect, "color:a", to_alpha, duration)
+	await tween.finished
 
 
 func _close_all_stalls() -> void:
@@ -151,3 +226,37 @@ func _remaining_apples() -> int:
 			if node.get("is_open"):
 				total += int(node.get("stock"))
 	return total
+
+
+func _initialize_game_state() -> void:
+	var pending_load := SaveManager.consume_pending_load()
+	_startup_spawn_id = "default"
+	GameState.reset_game()
+	if pending_load.is_empty():
+		return
+	GameState.apply_save_data(pending_load.get("game_state", {}))
+	Inventory.apply_save_data(pending_load.get("inventory", {}))
+	_startup_spawn_id = "bed_spawn"
+
+
+func _create_stall_action_panel() -> void:
+	stall_action_panel = StallActionPanelScript.new()
+	stall_action_panel.name = "StallActionPanel"
+	add_child(stall_action_panel)
+	stall_action_panel.stall_selected.connect(_on_stall_action_stall_selected)
+	stall_action_panel.begging_selected.connect(_on_stall_action_begging_selected)
+
+
+func _create_sleep_transition_overlay() -> void:
+	_sleep_transition_layer = CanvasLayer.new()
+	_sleep_transition_layer.name = "SleepTransitionLayer"
+	_sleep_transition_layer.layer = 100
+	add_child(_sleep_transition_layer)
+
+	_sleep_transition_rect = ColorRect.new()
+	_sleep_transition_rect.name = "SleepFade"
+	_sleep_transition_rect.color = Color(0.0, 0.0, 0.0, 0.0)
+	_sleep_transition_rect.visible = false
+	_sleep_transition_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_sleep_transition_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_sleep_transition_layer.add_child(_sleep_transition_rect)

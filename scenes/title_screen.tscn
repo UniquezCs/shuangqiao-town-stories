@@ -1,0 +1,94 @@
+[gd_scene load_steps=3 format=3 uid="uid://title_screen_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/title_screen.gd" id="1_title_screen"]
+[ext_resource type="Texture2D" path="res://assets/generated/sprites/ui/title/title_background_1920x1080.png" id="2_title_bg"]
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_title_screen")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_title_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.25)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.06
+anchor_top = 0.22
+anchor_right = 0.48
+anchor_bottom = 0.33
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 72
+theme_override_colors/font_color = Color(1, 0.88, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0.08, 0.04, 0.02, 0.9)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+text = "双桥镇往事"
+
+[node name="Menu" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.095
+anchor_top = 0.43
+anchor_right = 0.295
+anchor_bottom = 0.68
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+
+[node name="NewGameButton" type="Button" parent="UI/Menu"]
+layout_mode = 2
+custom_minimum_size = Vector2(260, 56)
+theme_override_font_sizes/font_size = 28
+text = "新游戏"
+
+[node name="LoadButton" type="Button" parent="UI/Menu"]
+layout_mode = 2
+custom_minimum_size = Vector2(260, 56)
+theme_override_font_sizes/font_size = 28
+text = "读取存档"
+
+[node name="QuitButton" type="Button" parent="UI/Menu"]
+layout_mode = 2
+custom_minimum_size = Vector2(260, 56)
+theme_override_font_sizes/font_size = 28
+text = "退出游戏"
+
+[node name="ConfirmNewGameDialog" type="ConfirmationDialog" parent="UI"]
+title = "开始新游戏"
+dialog_text = "已有自动存档。新游戏会在下次睡觉自动存档时覆盖旧进度，确定继续吗？"
+ok_button_text = "继续"
+cancel_button_text = "取消"

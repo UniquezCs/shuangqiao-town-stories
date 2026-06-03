@@ -5,6 +5,8 @@ func _ready() -> void:
 	GameState.reset_game()
 	Inventory.configure_slot_count(4)
 	Inventory.set_count(PrototypeConstants.ITEM_APPLE_SEED, 0)
+	Inventory.set_count(PrototypeConstants.ITEM_APPLE, 0)
+	Inventory.set_count(PrototypeConstants.ITEM_PEAR, 0)
 
 	_assert_equal(Inventory.slots.size(), 4, "背包 slots 应始终保持固定格数")
 	_assert_true(Inventory.get_slots_with_empty()[0].is_empty(), "空背包格应以空字典保留")

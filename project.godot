@@ -15,8 +15,9 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="AI Pixel Game"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/title_screen.tscn"
 config/features=PackedStringArray("4.6")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 
 [autoload]
 
@@ -25,12 +26,18 @@ SignalBus="*res://scripts/autoload/signal_bus.gd"
 Inventory="*res://scripts/autoload/inventory.gd"
 GameState="*res://scripts/autoload/game_state.gd"
 ConfigLoader="*res://scripts/autoload/config_loader.gd"
+SaveManager="*res://scripts/autoload/save_manager.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
+
+[debug]
+
+gameplay/economy_and_patrol_logs_enabled=false
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/stretch/mode="viewport"
 
 [editor_plugins]
 

@@ -1,6 +1,7 @@
 extends Node
 
 const StallScript := preload("res://scripts/world/stall.gd")
+const STALL_EMPTY_TEXTURE := preload("res://assets/generated/sprites/props/stall/01_stall_empty.png")
 
 
 func _ready() -> void:
@@ -91,6 +92,14 @@ func _ready() -> void:
 	_assert_true(stall.call("open_with_slots", PrototypeConstants.SPOT_STREET, prepared_slots, null), "摊位应能用多商品格开摊")
 	_assert_equal(stall.get("stock"), 15, "摊位兼容 stock 应等于所有商品总数，且不再限制总件数")
 	_assert_equal((stall.get("stall_slots") as Array).size(), GameState.get_stall_slot_count(), "摊位实际格数应跟随等级")
+	_assert_equal(visual.texture, STALL_EMPTY_TEXTURE, "摊位底图应始终使用空白摊位素材")
+	var stock_overlay := stall.get_node_or_null("StockOverlay")
+	_assert_true(stock_overlay != null, "开摊后应生成商品叠加显示节点")
+	_assert_equal(stock_overlay.get_child_count(), 2, "商品叠层应按当前售卖商品种类生成图标")
+	_assert_equal((stock_overlay.get_child(0) as Node2D).position, Vector2.ZERO, "第一个摊位商品应位于商品基准位置")
+	_assert_equal((stock_overlay.get_child(1) as Node2D).position, Vector2(20, 0), "后续摊位商品应从基准位置向右偏移 20 像素")
+	_assert_equal(str(stock_overlay.get_child(0).get_node("CountLabel").get("text")), "x12", "叠层应显示苹果当前数量")
+	_assert_equal(str(stock_overlay.get_child(1).get_node("CountLabel").get("text")), "x3", "叠层应显示白菜当前数量")
 
 	var customer_profile := {
 		"label": "测试顾客",
@@ -109,6 +118,7 @@ func _ready() -> void:
 	_assert_equal(str(result.get("item_id", "")), "cabbage", "成交商品应来自被选中的摊位格")
 	_assert_equal(GameState.cash, cash_before_sale + 1, "现金应按成交格价格增加")
 	_assert_equal(stall.get("stock"), 14, "成交后总库存应减少 1")
+	_assert_equal(str(stock_overlay.get_child(1).get_node("CountLabel").get("text")), "x2", "成交后叠层商品数量应动态减少")
 
 	stall.call("close")
 	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 12, "收摊后未卖苹果应返回背包")
@@ -116,6 +126,7 @@ func _ready() -> void:
 
 	Inventory.set_count(PrototypeConstants.ITEM_APPLE, 0)
 	Inventory.set_count("cabbage", 0)
+	Inventory.set_count(PrototypeConstants.ITEM_PEAR, 0)
 	Inventory.configure_slot_count(1)
 	Inventory.slots[0] = {"item_id": "cucumber", "count": 20}
 	_assert_true(stall.call("open_with_slots", PrototypeConstants.SPOT_STREET, [{"item_id": PrototypeConstants.ITEM_APPLE, "count": 1, "price": 2}], null), "测试应能再次开摊")

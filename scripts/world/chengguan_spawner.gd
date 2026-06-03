@@ -1,6 +1,7 @@
 extends Node
 
 const CHENGGUAN_SCENE := preload("res://scenes/chengguan.tscn")
+const GameplayDebugLog := preload("res://scripts/debug/gameplay_debug_log.gd")
 const WAYPOINT_ROUTE_JITTER := Vector2(90, 75)
 
 @export var police_endpoint_id := "police_station"
@@ -64,6 +65,7 @@ func _on_game_time_changed(total_minutes: int, _clock_text: String) -> void:
 func _spawn_chengguan() -> void:
 	var route := build_chengguan_route()
 	if route.is_empty():
+		GameplayDebugLog.log("patrol", "spawn_skipped_empty_route")
 		return
 	var chengguan := CHENGGUAN_SCENE.instantiate()
 	chengguan.call("setup", route["start"], _route_points_with_end(route), _route_points_with_end({
@@ -74,6 +76,11 @@ func _spawn_chengguan() -> void:
 		route_world.add_child(chengguan)
 	else:
 		get_tree().current_scene.add_child(chengguan)
+	GameplayDebugLog.log("patrol", "spawned_chengguan", {
+		"start": str(route["start"]),
+		"end": str(route["end"]),
+		"points": route.get("points", []).size(),
+	})
 
 
 func _on_daily_summary_ready(_result: Dictionary) -> void:
@@ -85,6 +92,11 @@ func _rebuild_daily_spawn_plan(skip_before_minute := 0) -> void:
 	_spawn_index = 0
 	while _spawn_index < _spawn_plan.size() and int(_spawn_plan[_spawn_index]["minute"]) < skip_before_minute:
 		_spawn_index += 1
+	GameplayDebugLog.log("patrol", "spawn_plan_rebuilt", {
+		"entries": _spawn_plan.size(),
+		"next_index": _spawn_index,
+		"skip_before_minute": skip_before_minute,
+	})
 
 
 func _build_daily_spawn_plan() -> Array[Dictionary]:

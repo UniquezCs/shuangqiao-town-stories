@@ -68,9 +68,11 @@ func get_crop_state_texture(crop_id: String, state: String) -> String:
 	if not path.is_empty():
 		return path
 	if crop_id != PrototypeConstants.ITEM_APPLE:
+		push_warning("作物 %s 缺少 %s 状态贴图配置，临时回退到苹果贴图" % [crop_id, state])
 		var apple_crop := get_crop(PrototypeConstants.ITEM_APPLE)
 		var apple_textures: Dictionary = apple_crop.get("state_textures", {})
 		return str(apple_textures.get(state, ""))
+	push_warning("苹果作物缺少 %s 状态贴图配置" % state)
 	return ""
 
 
