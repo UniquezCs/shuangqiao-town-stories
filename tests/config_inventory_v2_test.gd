@@ -3,6 +3,7 @@ extends Node
 
 func _ready() -> void:
 	GameState.reset_game()
+	_assert_equal(GameState.cash, PrototypeConstants.INITIAL_CASH, "新游戏初始应给玩家 10 元现金")
 	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 1, "新游戏初始应给玩家 1 个苹果")
 	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_PEAR), 1, "新游戏初始应给玩家 1 个梨")
 	_assert_equal(ConfigLoader.get_item_name(PrototypeConstants.ITEM_APPLE), "苹果", "应能读取商品配置名称")

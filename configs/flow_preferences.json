@@ -1,0 +1,146 @@
+{
+  "endpoint_types": [
+	"residential",
+	"shop",
+	"school",
+	"factory",
+	"public"
+  ],
+  "base_preference": {
+	"youth": {
+	  "residential": 0.4,
+	  "shop": 0.45,
+	  "school": 0.9,
+	  "factory": 0.05,
+	  "public": 0.5
+	},
+	"middle": {
+	  "residential": 0.5,
+	  "shop": 0.65,
+	  "school": 0.1,
+	  "factory": 0.85,
+	  "public": 0.45
+	},
+	"elder": {
+	  "residential": 0.75,
+	  "shop": 0.55,
+	  "school": 0.05,
+	  "factory": 0.05,
+	  "public": 0.6
+	}
+  },
+  "time_modifier": {
+	"early_morning": {},
+	"morning_peak": {
+	  "youth": {
+		"school": 3.0
+	  },
+	  "middle": {
+		"factory": 2.5
+	  }
+	},
+	"daytime": {},
+	"after_school": {
+	  "youth": {
+		"residential": 2.0,
+		"public": 1.4,
+		"shop": 1.2
+	  }
+	},
+	"evening_market": {
+	  "middle": {
+		"shop": 2.2
+	  },
+	  "elder": {
+		"shop": 1.5
+	  }
+	},
+	"night": {
+	  "youth": {
+		"residential": 3.0
+	  },
+	  "middle": {
+		"residential": 3.0
+	  },
+	  "elder": {
+		"residential": 3.0
+	  }
+	},
+	"late_night": {
+	  "youth": {
+		"residential": 4.0
+	  },
+	  "middle": {
+		"residential": 4.0
+	  },
+	  "elder": {
+		"residential": 4.0
+	  }
+	}
+  },
+  "time_curves": {
+	"youth": {
+	  "school": [
+		{ "minute": 360, "value": 0.04 },
+		{ "minute": 390, "value": 0.25 },
+		{ "minute": 430, "value": 1.1 },
+		{ "minute": 470, "value": 0.65 },
+		{ "minute": 480, "value": 0.15 }
+	  ]
+	},
+	"middle": {
+	  "factory": [
+		{ "minute": 420, "value": 0.2 },
+		{ "minute": 480, "value": 1.0 },
+		{ "minute": 540, "value": 0.35 }
+	  ],
+	  "shop": [
+		{ "minute": 1020, "value": 1.15 },
+		{ "minute": 1080, "value": 1.0 },
+		{ "minute": 1140, "value": 0.45 }
+	  ]
+	}
+  },
+  "weather_modifier": {
+	"sunny": {
+	  "public": 1.15
+	},
+	"rain": {
+	  "residential": 1.4,
+	  "shop": 0.8,
+	  "public": 0.5
+	},
+	"cloudy": {}
+  },
+  "holiday_modifier": {
+	"normal": {},
+	"market_day": {
+	  "youth": {
+		"shop": 2.0
+	  },
+	  "middle": {
+		"shop": 2.0
+	  },
+	  "elder": {
+		"shop": 2.0
+	  }
+	},
+	"holiday": {
+	  "youth": {
+		"school": 0.2,
+		"shop": 1.5,
+		"public": 1.5
+	  },
+	  "middle": {
+		"factory": 0.2,
+		"shop": 1.5,
+		"public": 1.5
+	  },
+	  "elder": {
+		"shop": 1.5,
+		"public": 1.5
+	  }
+	}
+  },
+  "distance_decay_tiles": 60.0
+}

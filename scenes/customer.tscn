@@ -8,7 +8,7 @@ size = Vector2(22, 50)
 
 [node name="Customer" type="CharacterBody2D" unique_id=1683121132]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 2
 script = ExtResource("1_customer")
 
 [node name="Visual" type="AnimatedSprite2D" parent="." unique_id=249639336]

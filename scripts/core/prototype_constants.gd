@@ -8,6 +8,7 @@ const ITEM_WATERING_CAN := "watering_can"
 const ITEM_HOE := "hoe"
 const ITEM_SICKLE := "sickle"
 
+const INITIAL_CASH := 10
 const SEED_PRICE := 2
 const APPLE_HARVEST_COUNT := 5
 const MIN_APPLE_PRICE := 1

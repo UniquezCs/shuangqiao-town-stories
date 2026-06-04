@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/welfare_lottery_building_test.gd" id="1_welfare_lottery_building_test"]
+
+[node name="WelfareLotteryBuildingTest" type="Node"]
+script = ExtResource("1_welfare_lottery_building_test")

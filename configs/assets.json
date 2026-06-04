@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-04",
+	"updated_at": "2026-06-05",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -32,7 +32,14 @@
 			"Stall influence radius is configured per upgrade level in res://configs/upgrades.json and drives both customer InfluenceArea and chengguan InspectionTarget in scripts/world/stall.gd.",
 			"StallSpot StaticBody2D collision is a runtime open-stall blocker: scripts/world/stall_spot.gd keeps the template size/offset relative to Stall, disables it before opening, and enables/repositions it after a stall opens.",
 			"Town building nodes use an Area2D root with Visual and EndpointMarker children; CollisionShape2D is reserved for interaction/trigger area, while child StaticBody2D/CollisionShape2D is reserved for solid player/NPC collision.",
-			"Functional buildings such as SeedShop should keep the building root as res://scenes/npc_endpoint.tscn and compose gameplay behavior through child interaction components such as ShopInteraction."
+			"Functional buildings such as SeedShop should keep the building root as res://scenes/npc_endpoint.tscn and compose gameplay behavior through child interaction components such as ShopInteraction.",
+			"New-game initialization should use PrototypeConstants.INITIAL_CASH for starting money; current baseline is 10 yuan.",
+			"Population flow uses statistical building population pools plus a probability transition matrix: configs/population.json, configs/flow_preferences.json, and configs/calendar.json feed PopulationFlow; PopulationFlowSpawner samples visible NPCs without instantiating the full town population.",
+			"Student and worker commute should be represented by PopulationFlow preferences rather than dedicated commute spawners; visible NPCs from a 10-minute flow tick should be queued and randomly spread across the next 10 game minutes.",
+			"PopulationFlow starts from Main with a detached TownScene template, keeps recent statistical flow events while the player is outside town, and PopulationFlowSpawner restores visible NPCs at route-progress positions when TownScene loads.",
+			"PopulationFlow background initialization must process the current aligned tick immediately when GameState.current_game_minute is already at or after the 06:00 day start, including load-game paths; it must not wait until the next 10-minute interval.",
+			"PopulationFlow target timing should stay generic: configs/flow_preferences.json time_curves adjusts attraction for age_group + target_type over the day, instead of adding hard-coded commute plans for specific buildings.",
+			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools."
 		]
 	},
 	"packs": {
@@ -3806,7 +3813,7 @@
 			"type": "bgm",
 			"status": "implemented",
 			"path": "res://assets/audio/bgm/shuangqiao_town_loop.wav",
-			"duration_seconds": 83.48,
+			"duration_seconds": 85.33,
 			"loop": true,
 			"usage": [
 				"global_background_music",
@@ -3826,7 +3833,33 @@
 				"1990s_chinese_town",
 				"loop"
 			],
-			"notes": "Generated 2026-06-04 as a local synthesized pure music loop for 双桥镇往事. Uses a calm pentatonic township-market mood and is looped by MusicManager at runtime."
+			"notes": "Replaced 2026-06-05 as a locally synthesized 1980s/1990s game-style loop for 双桥镇往事. Uses a pentatonic township melody, modest chiptune lead, bass pulse, and simple percussion; source sketch is assets/source/audio/shuangqiao_town_loop.strudel.js."
+		},
+		"audio.sfx.cash_received": {
+			"id": "audio.sfx.cash_received",
+			"type": "sfx",
+			"status": "implemented",
+			"path": "res://assets/audio/sfx/cash_received.wav",
+			"duration_seconds": 0.5,
+			"loop": false,
+			"usage": [
+				"sale_completed_feedback",
+				"cash_received_feedback"
+			],
+			"used_by": [
+				"scripts/autoload/sfx_manager.gd",
+				"project.godot"
+			],
+			"anchor": "none",
+			"collision": "none",
+			"tags": [
+				"audio",
+				"sfx",
+				"cash",
+				"transaction",
+				"sale_feedback"
+			],
+			"notes": "Added 2026-06-05 as a 0.5-second locally synthesized cash-received chime. SfxManager listens to SignalBus.sale_completed and plays this sound after every successful stall transaction."
 		}
 	},
 	"debug_and_validation": {
@@ -3851,6 +3884,51 @@
 				"road_layer",
 				"npc"
 			]
+		},
+		"customer_purchase_interaction_test": {
+			"type": "test_scene",
+			"status": "implemented",
+			"path": "res://tests/customer_purchase_interaction_test.tscn",
+			"usage": [
+				"verify_customer_purchase_waiting_interaction",
+				"verify_customer_approach_position_avoids_stall_collision"
+			],
+			"used_by": [
+				"scripts/world/customer.gd",
+				"scripts/world/stall.gd",
+				"scripts/world/stall_spot.gd"
+			],
+			"anchor": "none",
+			"collision": "none",
+			"tags": [
+				"debug",
+				"customer",
+				"stall",
+				"collision"
+			],
+			"notes": "Updated 2026-06-05: covers real stall StaticBody2D collision so attracted customers must stop at a reachable purchase position instead of being blocked by the stall."
+		},
+		"npc_collision_recovery_test": {
+			"type": "test_scene",
+			"status": "implemented",
+			"path": "res://tests/npc_collision_recovery_test.tscn",
+			"usage": [
+				"verify_customer_does_not_walk_forever_when_blocked",
+				"verify_chengguan_does_not_walk_forever_when_blocked"
+			],
+			"used_by": [
+				"scripts/world/customer.gd",
+				"scripts/world/chengguan.gd"
+			],
+			"anchor": "none",
+			"collision": "none",
+			"tags": [
+				"debug",
+				"npc",
+				"collision",
+				"movement"
+			],
+			"notes": "Updated 2026-06-05: NPCs that collide with an unreachable route target should first reroute through RoadNavigator, then fall back to inserting a side detour, and continue toward the original destination instead of disappearing or walking in place forever."
 		},
 		"asset_preview_scene": {
 			"type": "debug_scene",

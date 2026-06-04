@@ -6,12 +6,14 @@
 size = Vector2(54.920643, 52.182343)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
-size = Vector2(58.90869, 45.14823)
+size = Vector2(66.2955, 45.14823)
 
 [node name="NpcEndpoint" type="Area2D" unique_id=965728198 groups=["building", "npc_endpoint"]]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_endpoint")
+capacity = null
+attraction_bias = null
 
 [node name="Visual" type="Sprite2D" parent="." unique_id=872435065]
 z_index = -5

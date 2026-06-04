@@ -2,6 +2,9 @@ extends Area2D
 
 const BeggingSessionScript := preload("res://scripts/world/begging_session.gd")
 
+const CUSTOMER_VERTICAL_CLEARANCE := 48.0
+const CUSTOMER_HORIZONTAL_CLEARANCE := 24.0
+
 @export var spot_id := PrototypeConstants.SPOT_SCHOOL
 @export var label := "学校门口"
 @export var can_open_stall := true
@@ -108,6 +111,28 @@ func get_active_stall() -> Node:
 	if stall.get("is_open"):
 		return stall
 	return null
+
+
+func get_customer_approach_position(from_position: Vector2) -> Vector2:
+	if static_body == null or static_body_shape == null or not static_body_shape.shape is RectangleShape2D:
+		return stall.global_position + Vector2(0, 96)
+	var rectangle := static_body_shape.shape as RectangleShape2D
+	var shape_center := static_body.global_position + static_body_shape.position
+	var half_size := rectangle.size * 0.5
+	var candidates: Array[Vector2] = [
+		Vector2(shape_center.x, shape_center.y - half_size.y - CUSTOMER_VERTICAL_CLEARANCE),
+		Vector2(shape_center.x, shape_center.y + half_size.y + CUSTOMER_VERTICAL_CLEARANCE),
+		Vector2(shape_center.x - half_size.x - CUSTOMER_HORIZONTAL_CLEARANCE, shape_center.y),
+		Vector2(shape_center.x + half_size.x + CUSTOMER_HORIZONTAL_CLEARANCE, shape_center.y),
+	]
+	var best_position := candidates[0]
+	var best_distance := from_position.distance_squared_to(best_position)
+	for index in range(1, candidates.size()):
+		var distance := from_position.distance_squared_to(candidates[index])
+		if distance < best_distance:
+			best_distance = distance
+			best_position = candidates[index]
+	return best_position
 
 
 func start_begging(player: Node) -> bool:

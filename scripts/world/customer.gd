@@ -3,6 +3,11 @@ extends CharacterBody2D
 const SPEED := 55.0
 const DEMAND_THRESHOLD := 0.45
 const ROUTE_TIMEOUT_PADDING_SECONDS := 10.0
+const STUCK_SECONDS := 0.75
+const STUCK_MIN_PROGRESS := 0.2
+const STUCK_TARGET_RESET_DISTANCE := 4.0
+const DETOUR_DISTANCE := 96.0
+const DETOUR_FORWARD_DISTANCE := 32.0
 const STUDENT_FRAMES := preload("res://assets/generated/sprites/characters/student_walk_spriteframes_48x64.tres")
 const WORKER_FRAMES := preload("res://assets/generated/sprites/characters/worker_walk_spriteframes_48x64.tres")
 const YOUTH_FEMALE_FRAMES := preload("res://assets/generated/sprites/characters/youth_female_walk_spriteframes_48x64.tres")
@@ -34,6 +39,13 @@ var _purchase_preview: Dictionary = {}
 var _purchase_deadline_msec := 0
 var _rng := RandomNumberGenerator.new()
 var _begging_session_ids := {}
+var _visit_target_stall: Node = null
+var _visit_target_position := Vector2.ZERO
+var _has_stuck_target := false
+var _stuck_target := Vector2.ZERO
+var _stuck_seconds := 0.0
+var _last_slide_normal := Vector2.ZERO
+var _detour_serial := 0
 
 @onready var visual: AnimatedSprite2D = $Visual
 
@@ -68,30 +80,35 @@ func _ready() -> void:
 	_pause_current_animation()
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var active_stall := _active_stall()
 	if state == "walking" and _should_visit_stall(active_stall):
-		var stall_node := active_stall as Node2D
-		var target: Vector2 = stall_node.global_position + Vector2(0, 58)
-		_move_towards(target)
+		var target := _visit_target_for_stall(active_stall)
+		if _move_towards(target, delta):
+			_abandon_stall_visit()
+			return
 		if global_position.distance_to(target) < 8.0:
 			_begin_purchase_request(active_stall)
 	elif state == "walking":
-		_walk_to_exit()
+		_walk_to_exit(delta)
 	elif state == "leaving":
 		state = "leaving"
-		_walk_to_exit()
+		_walk_to_exit(delta)
 	else:
+		_reset_stuck_tracking()
 		velocity = Vector2.ZERO
 		_pause_current_animation()
 		move_and_slide()
 
 
-func _move_towards(target: Vector2) -> void:
+func _move_towards(target: Vector2, delta := 0.0) -> bool:
 	var direction := global_position.direction_to(target)
 	velocity = direction * SPEED
 	_play_walk_animation(direction)
+	var before_position := global_position
 	move_and_slide()
+	_remember_slide_normal()
+	return _update_stuck_tracking(target, before_position, delta)
 
 
 func _attempt_trade(active_stall: Node) -> void:
@@ -314,13 +331,17 @@ func _pause_current_animation() -> void:
 	visual.pause()
 
 
-func _walk_to_exit() -> void:
+func _walk_to_exit(delta: float) -> void:
 	if _route_points.is_empty():
 		_route_points.append(exit_position)
 	var target := _route_points[min(_route_index, _route_points.size() - 1)]
-	_move_towards(target)
+	if _move_towards(target, delta):
+		_insert_detour_before_current_route_target(target)
+		_reset_stuck_tracking()
+		return
 	if global_position.distance_to(target) < 10.0:
 		_route_index += 1
+		_reset_stuck_tracking()
 	if _route_index >= _route_points.size() or (Time.get_ticks_msec() / 1000.0) - _started_at > _route_timeout_seconds:
 		queue_free()
 
@@ -340,6 +361,113 @@ func _should_visit_stall(active_stall: Node) -> bool:
 	if not bool(active_stall.get("is_open")) or int(active_stall.get("stock")) <= 0:
 		return false
 	return _has_demand_for(str(active_stall.get("current_item_id")))
+
+
+func _visit_target_for_stall(active_stall: Node) -> Vector2:
+	if _visit_target_stall == active_stall:
+		return _visit_target_position
+	_visit_target_stall = active_stall
+	if active_stall.has_method("get_customer_approach_position"):
+		_visit_target_position = active_stall.call("get_customer_approach_position", global_position)
+	else:
+		var stall_node := active_stall as Node2D
+		_visit_target_position = stall_node.global_position + Vector2(0, 96)
+	return _visit_target_position
+
+
+func _abandon_stall_visit() -> void:
+	_influence_stall = null
+	_visit_target_stall = null
+	_reset_stuck_tracking()
+
+
+func _insert_detour_before_current_route_target(target: Vector2) -> void:
+	var insert_index := clampi(_route_index, 0, _route_points.size())
+	var replacement_points := _reroute_points_for_target(target)
+	for index in range(replacement_points.size() - 1, -1, -1):
+		_route_points.insert(insert_index, replacement_points[index])
+
+
+func _reroute_points_for_target(target: Vector2) -> Array[Vector2]:
+	var navigator := _road_navigator()
+	if navigator != null:
+		var road_path: Array = []
+		if navigator.has_method("find_randomized_path"):
+			road_path = navigator.call("find_randomized_path", global_position, target, _rng)
+		elif navigator.has_method("find_path"):
+			road_path = navigator.call("find_path", global_position, target)
+		var normalized_path := _normalized_reroute_points(road_path, target)
+		if not normalized_path.is_empty():
+			return normalized_path
+	return [_detour_point_for_target(target)]
+
+
+func _normalized_reroute_points(points: Array, target: Vector2) -> Array[Vector2]:
+	var result: Array[Vector2] = []
+	for point in points:
+		var typed_point := point as Vector2
+		if global_position.distance_to(typed_point) <= 10.0:
+			continue
+		if typed_point.distance_to(target) <= 10.0:
+			continue
+		result.append(typed_point)
+	return result
+
+
+func _road_navigator() -> Node:
+	var node: Node = self
+	while node != null:
+		var navigator := node.get_node_or_null("RoadNavigator")
+		if navigator != null:
+			return navigator
+		node = node.get_parent()
+	for navigator in get_tree().get_nodes_in_group("road_navigator"):
+		if navigator is Node and is_instance_valid(navigator):
+			return navigator
+	return null
+
+
+func _detour_point_for_target(target: Vector2) -> Vector2:
+	var normal := _last_slide_normal
+	if normal.length() <= 0.0:
+		normal = -global_position.direction_to(target)
+	var tangent := Vector2(-normal.y, normal.x)
+	if tangent.length() <= 0.0:
+		tangent = Vector2.UP
+	tangent = tangent.normalized()
+	var side := 1.0 if _detour_serial % 2 == 0 else -1.0
+	_detour_serial += 1
+	var forward := global_position.direction_to(target) * DETOUR_FORWARD_DISTANCE
+	return global_position + tangent * DETOUR_DISTANCE * side + forward
+
+
+func _update_stuck_tracking(target: Vector2, before_position: Vector2, delta: float) -> bool:
+	if delta <= 0.0:
+		return false
+	if not _has_stuck_target or _stuck_target.distance_to(target) > STUCK_TARGET_RESET_DISTANCE:
+		_has_stuck_target = true
+		_stuck_target = target
+		_stuck_seconds = 0.0
+	var moved_distance := before_position.distance_to(global_position)
+	if get_slide_collision_count() > 0 and moved_distance <= STUCK_MIN_PROGRESS:
+		_stuck_seconds += delta
+	else:
+		_stuck_seconds = 0.0
+	return _stuck_seconds >= STUCK_SECONDS
+
+
+func _reset_stuck_tracking() -> void:
+	_has_stuck_target = false
+	_stuck_seconds = 0.0
+
+
+func _remember_slide_normal() -> void:
+	_last_slide_normal = Vector2.ZERO
+	if get_slide_collision_count() <= 0:
+		return
+	var collision := get_slide_collision(0)
+	if collision != null:
+		_last_slide_normal = collision.get_normal()
 
 
 func _active_stall() -> Node:
@@ -363,6 +491,8 @@ func enter_stall_influence(stall: Node) -> void:
 func exit_stall_influence(stall: Node) -> void:
 	if stall == _influence_stall and state == "walking":
 		_influence_stall = null
+		_visit_target_stall = null
+		_reset_stuck_tracking()
 
 
 func consider_begging_donation(begging_session: Node) -> void:

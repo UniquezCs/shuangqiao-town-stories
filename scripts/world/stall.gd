@@ -131,6 +131,13 @@ func can_sell_to(customer_type: String, customer_profile: Dictionary = {}) -> Di
 	return StallSalesPolicy.can_sell_to(is_open, stock, stall_slots, current_item_id, price, customer_type, customer_profile)
 
 
+func get_customer_approach_position(from_position: Vector2) -> Vector2:
+	var owner_spot := get_parent()
+	if owner_spot != null and owner_spot.has_method("get_customer_approach_position"):
+		return owner_spot.call("get_customer_approach_position", from_position)
+	return global_position + Vector2(0, 96)
+
+
 func sell_one(customer_type: String, customer_profile: Dictionary = {}) -> Dictionary:
 	var decision := can_sell_to(customer_type, customer_profile)
 	if bool(decision["bought"]):

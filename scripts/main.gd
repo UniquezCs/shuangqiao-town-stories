@@ -4,10 +4,12 @@ const HOME_SCENE := preload("res://scenes/home_scene.tscn")
 const HOUSE_SCENE := preload("res://scenes/house_scene.tscn")
 const TOWN_SCENE := preload("res://scenes/town_scene.tscn")
 const StallActionPanelScript := preload("res://scripts/ui/stall_action_panel.gd")
+const LotteryPanelScript := preload("res://scripts/ui/lottery_panel.gd")
 
 var current_world: Node2D = null
 var pending_stall_spot: Node = null
 var stall_action_panel: CanvasLayer = null
+var lottery_panel: CanvasLayer = null
 var _sleep_transition_layer: CanvasLayer = null
 var _sleep_transition_rect: ColorRect = null
 var _sleep_transition_running := false
@@ -31,12 +33,15 @@ func _ready() -> void:
 	SignalBus.stall_action_requested.connect(_on_stall_action_requested)
 	SignalBus.stall_setup_requested.connect(_on_stall_setup_requested)
 	SignalBus.shop_panel_requested.connect(_on_shop_panel_requested)
+	SignalBus.lottery_panel_requested.connect(_on_lottery_panel_requested)
 	SignalBus.sleep_requested.connect(_on_sleep_requested)
 	_create_stall_action_panel()
+	_create_lottery_panel()
 	_create_sleep_transition_overlay()
 	price_panel.price_confirmed.connect(_on_price_confirmed)
 	time_timer.timeout.connect(_advance_game_minute)
 	_initialize_game_state()
+	PopulationFlow.initialize_from_scene(TOWN_SCENE, true)
 	_start_day_clock()
 	_load_startup_world.call_deferred()
 
@@ -128,6 +133,10 @@ func _on_stall_setup_requested(stall_spot: Node) -> void:
 
 func _on_shop_panel_requested(shop: Node) -> void:
 	shop_panel.call("open", shop)
+
+
+func _on_lottery_panel_requested(lottery: Node) -> void:
+	lottery_panel.call("open", lottery)
 
 
 func _start_day_clock() -> void:
@@ -323,6 +332,12 @@ func _create_stall_action_panel() -> void:
 	add_child(stall_action_panel)
 	stall_action_panel.stall_selected.connect(_on_stall_action_stall_selected)
 	stall_action_panel.begging_selected.connect(_on_stall_action_begging_selected)
+
+
+func _create_lottery_panel() -> void:
+	lottery_panel = LotteryPanelScript.new()
+	lottery_panel.name = "LotteryPanel"
+	add_child(lottery_panel)
 
 
 func _create_sleep_transition_overlay() -> void:

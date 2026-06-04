@@ -23,10 +23,11 @@ var farm_plot_states := {}
 var yesterday_summary := {}
 var seed_shop_apple_price := PrototypeConstants.SHOP_APPLE_PRICE_MIN
 var seed_shop_apple_stock := 0
+var lottery_ticket := {}
 
 
 func reset_game() -> void:
-	cash = 0
+	cash = PrototypeConstants.INITIAL_CASH
 	current_scene = PrototypeConstants.SCENE_HOUSE
 	current_game_minute = 0
 	day_clock_started = false
@@ -40,10 +41,12 @@ func reset_game() -> void:
 	used_spots = []
 	farm_plot_states = {}
 	yesterday_summary = {}
+	lottery_ticket = {}
 	refresh_seed_shop_goods()
 	Inventory.reset_items()
 	Hotbar.reset_slots()
 	SignalBus.cash_changed.emit(cash)
+	SignalBus.lottery_ticket_changed.emit({})
 	SignalBus.game_time_changed.emit(current_game_minute, format_game_time(current_game_minute))
 	set_time_window(PrototypeConstants.WINDOW_PREP)
 	set_objective("出门整理农田，或去镇街做买卖")
@@ -67,6 +70,7 @@ func to_save_data() -> Dictionary:
 		"yesterday_summary": yesterday_summary.duplicate(true),
 		"seed_shop_apple_price": seed_shop_apple_price,
 		"seed_shop_apple_stock": seed_shop_apple_stock,
+		"lottery_ticket": lottery_ticket.duplicate(true),
 	}
 
 
@@ -89,10 +93,13 @@ func apply_save_data(data: Dictionary) -> void:
 	farm_plot_states = saved_plots.duplicate(true) if typeof(saved_plots) == TYPE_DICTIONARY else {}
 	var saved_summary: Variant = data.get("yesterday_summary", {})
 	yesterday_summary = saved_summary.duplicate(true) if typeof(saved_summary) == TYPE_DICTIONARY else {}
+	var saved_lottery_ticket: Variant = data.get("lottery_ticket", {})
+	lottery_ticket = saved_lottery_ticket.duplicate(true) if typeof(saved_lottery_ticket) == TYPE_DICTIONARY else {}
 	seed_shop_apple_price = int(data.get("seed_shop_apple_price", PrototypeConstants.SHOP_APPLE_PRICE_MIN))
 	seed_shop_apple_stock = int(data.get("seed_shop_apple_stock", 0))
 	_reset_daily_stats()
 	SignalBus.cash_changed.emit(cash)
+	SignalBus.lottery_ticket_changed.emit(lottery_ticket.duplicate(true))
 	SignalBus.game_time_changed.emit(current_game_minute, format_game_time(current_game_minute))
 	SignalBus.current_tool_changed.emit(current_tool)
 	set_time_window(current_time_window)

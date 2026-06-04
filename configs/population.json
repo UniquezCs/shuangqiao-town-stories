@@ -1,0 +1,54 @@
+{
+  "total_population": 500,
+  "age_distribution": {
+	"youth": 0.25,
+	"middle": 0.5,
+	"elder": 0.25
+  },
+  "flow_interval_minutes": 10,
+  "visibility_sample_rate": 0.02,
+  "default_capacity": {
+	"residential": 160,
+	"shop": 100,
+	"school": 260,
+	"factory": 320,
+	"public": 120
+  },
+  "mobility_rate": {
+	"early_morning": {
+	  "youth": 0.08,
+	  "middle": 0.08,
+	  "elder": 0.04
+	},
+	"morning_peak": {
+	  "youth": 0.24,
+	  "middle": 0.22,
+	  "elder": 0.06
+	},
+	"daytime": {
+	  "youth": 0.08,
+	  "middle": 0.08,
+	  "elder": 0.08
+	},
+	"after_school": {
+	  "youth": 0.26,
+	  "middle": 0.08,
+	  "elder": 0.08
+	},
+	"evening_market": {
+	  "youth": 0.14,
+	  "middle": 0.22,
+	  "elder": 0.12
+	},
+	"night": {
+	  "youth": 0.18,
+	  "middle": 0.22,
+	  "elder": 0.16
+	},
+	"late_night": {
+	  "youth": 0.02,
+	  "middle": 0.02,
+	  "elder": 0.02
+	}
+  }
+}

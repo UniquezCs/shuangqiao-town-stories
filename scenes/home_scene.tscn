@@ -183,13 +183,13 @@ position = Vector2(0, 576)
 shape = SubResource("SegmentShape2D_m0xsn")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=774440881]
-position = Vector2(70, -89)
+position = Vector2(-432, 72)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1581504556]
-position = Vector2(-502, 161)
+position = Vector2(4.5, -4)
 shape = SubResource("CapsuleShape2D_mdovq")
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2" unique_id=1673260669]
-position = Vector2(-502, 153)
+position = Vector2(4.5, -12)
 scale = Vector2(0.59375, 0.75)
 texture = ExtResource("5_d0h8d")

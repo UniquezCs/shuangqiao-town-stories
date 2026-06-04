@@ -1,6 +1,7 @@
 extends Node
 
 const CUSTOMER_SCENE := preload("res://scenes/customer.tscn")
+const STALL_SPOT_SCENE := preload("res://scenes/stall_spot.tscn")
 const StallScript := preload("res://scripts/world/stall.gd")
 
 
@@ -94,12 +95,37 @@ func _ready() -> void:
 	_assert_true(closing_customer.get_node_or_null("PurchaseInteraction") == null, "收摊后应清理顾客购买交互")
 	_assert_true(closing_customer.get_node_or_null("PurchaseCountdown") == null, "收摊后应清理顾客购买倒计时")
 
+	var collision_spot := STALL_SPOT_SCENE.instantiate()
+	add_child(collision_spot)
+	await get_tree().process_frame
+	_assert_true(collision_spot.call("open_stall_with_slots", [{"item_id": "apple", "count": 1, "price": 2}]), "测试应能打开带碰撞的摊位")
+	var collision_stall: Node = collision_spot.get_node("Stall")
+	var approaching_customer := CUSTOMER_SCENE.instantiate()
+	add_child(approaching_customer)
+	approaching_customer.call("setup", PrototypeConstants.CUSTOMER_STUDENT, collision_spot, Vector2(0, 160), Vector2(0, 220), [])
+	approaching_customer.set("_customer_profile", {
+		"age_group": PrototypeConstants.CUSTOMER_AGE_YOUTH,
+		"gender": PrototypeConstants.CUSTOMER_GENDER_MALE,
+		"label": "测试顾客",
+		"budget": 5,
+		"preferences": {"apple": 0.95},
+	})
+	await get_tree().process_frame
+	approaching_customer.call("enter_stall_influence", collision_stall)
+	for index in range(120):
+		await get_tree().physics_frame
+		if approaching_customer.get("state") == "waiting_for_player":
+			break
+	_assert_equal(approaching_customer.get("state"), "waiting_for_player", "顾客被摊位吸引后应停在可交易位置，不应被摊位碰撞卡住")
+
 	customer.queue_free()
 	stall.queue_free()
 	timeout_customer.queue_free()
 	timeout_stall.queue_free()
 	closing_customer.queue_free()
 	real_stall.queue_free()
+	approaching_customer.queue_free()
+	collision_spot.queue_free()
 	await get_tree().process_frame
 	get_tree().quit()
 

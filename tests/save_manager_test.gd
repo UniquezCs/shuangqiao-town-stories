@@ -34,7 +34,7 @@ func _ready() -> void:
 	_assert_true(save_manager.call("has_save"), "写入后应检测到本地存档")
 
 	GameState.reset_game()
-	_assert_equal(GameState.cash, 0, "测试重置应清空现金")
+	_assert_equal(GameState.cash, PrototypeConstants.INITIAL_CASH, "测试重置应恢复新游戏初始现金")
 	var loaded: Dictionary = save_manager.call("load_autosave")
 	_assert_true(not loaded.is_empty(), "SaveManager 应能读取 autosave JSON")
 	GameState.apply_save_data(loaded.get("game_state", {}))

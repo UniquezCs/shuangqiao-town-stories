@@ -1,7 +1,6 @@
 extends Node
 
 const TOWN_SCENE := preload("res://scenes/town_scene.tscn")
-const CustomerSchedule := preload("res://scripts/world/customer_schedule.gd")
 const PricePanel := preload("res://scripts/ui/price_panel.gd")
 
 
@@ -31,13 +30,13 @@ func _ready() -> void:
 	_assert_true(route_spawners != null, "TownScene 应集中提供 NpcRouteSpawners 容器")
 	if route_spawners == null:
 		return
-	var student_spawner := route_spawners.get_node_or_null("StudentCommuteSpawner")
-	var worker_spawner := route_spawners.get_node_or_null("WorkerCommuteSpawner")
 	var random_spawner := route_spawners.get_node_or_null("TownRandomCustomerSpawner")
-	_assert_true(student_spawner != null, "学生通勤生成器应集中放在 NpcRouteSpawners 下")
-	_assert_true(worker_spawner != null, "工人通勤生成器应集中放在 NpcRouteSpawners 下")
+	var population_spawner := route_spawners.get_node_or_null("PopulationFlowSpawner")
+	_assert_equal(route_spawners.get_node_or_null("StudentCommuteSpawner"), null, "学生固定通勤应迁移到 PopulationFlow，不再保留专用生成器")
+	_assert_equal(route_spawners.get_node_or_null("WorkerCommuteSpawner"), null, "工人固定通勤应迁移到 PopulationFlow，不再保留专用生成器")
 	_assert_true(random_spawner != null, "普通城镇行人随机生成器应集中放在 NpcRouteSpawners 下")
-	if student_spawner == null:
+	_assert_true(population_spawner != null, "PopulationFlowSpawner 应集中放在 NpcRouteSpawners 下")
+	if population_spawner == null:
 		return
 
 	var stall_spots := _town_stall_spots(town)
@@ -64,28 +63,27 @@ func _ready() -> void:
 	var influence_shape := influence_area.get_node_or_null("CollisionShape2D") as CollisionShape2D
 	_assert_true(influence_shape != null and influence_shape.shape is CircleShape2D, "影响范围应使用圆形 CollisionShape2D")
 
-	var spawner := student_spawner
-	_assert_equal(spawner.call("_player_stall_spot"), active_stall_spot, "顾客生成器应优先绑定当前已经开摊的摆摊区域")
 	var residence_positions := _endpoint_positions(residential_endpoints)
-	_assert_true(_uses_multiple_residential_endpoints(spawner, residence_positions), "同类住宅区 endpoint 应作为出生点池随机使用")
-	var residence_position: Vector2 = spawner.call("_residential_position")
-	_assert_true(residence_positions.has(residence_position), "NPC 从居民区生成时起点应来自住宅区 endpoint 池")
 	var destination_position: Vector2 = school_endpoint.call("get_endpoint_position")
-	for index in range(4):
-		var home_route: Dictionary = spawner.call("_route_for_mode", CustomerSchedule.ROUTE_HOME_TO_DESTINATION)
-		_assert_true(_is_near_any_position(home_route["start"], residence_positions), "NPC 从居民区生成时起点应靠近住宅区 endpoint 池，避免生成瞬移")
-		_assert_true(_is_near_position(home_route["end"], destination_position), "NPC 去学校/工厂时终点应靠近目标建筑 endpoint")
-		var return_route: Dictionary = spawner.call("_route_for_mode", CustomerSchedule.ROUTE_DESTINATION_TO_HOME)
-		_assert_true(_is_near_position(return_route["start"], destination_position), "NPC 从学校/工厂生成时起点应靠近目标建筑 endpoint")
-		_assert_true(_is_near_any_position(return_route["end"], residence_positions), "NPC 回居民区时终点应靠近住宅区 endpoint 池")
-	_assert_true(_has_varied_routes(spawner), "NPC 从居民区到学校/工厂的通勤路线不应固定")
 	if random_spawner != null:
 		var random_route: Dictionary = random_spawner.call("build_random_route")
 		_assert_true(not random_route.is_empty(), "普通城镇行人应能从建筑 endpoint 池生成随机路线")
 		_assert_true(random_route["start_endpoint"] != random_route["end_endpoint"], "随机行人路线的起点和终点必须是不同建筑")
 		_assert_true(random_route["start"] != random_route["end"], "随机行人路线的起点和终点坐标必须不同")
 		_assert_true(random_spawner.call("_available_endpoints").size() >= 6, "随机行人应能使用多个城镇建筑 endpoint")
-	spawner.call("_spawn_customer", CustomerSchedule.ROUTE_HOME_TO_DESTINATION)
+	var event := {
+		"source": residential_endpoints.front(),
+		"target": school_endpoint,
+		"source_id": "residential",
+		"target_id": str(school_endpoint.get("endpoint_id")),
+		"source_type": "residential",
+		"target_type": "school",
+		"age_group": PrototypeConstants.CUSTOMER_AGE_YOUTH,
+		"count": 10,
+		"visible_count": 1,
+		"minute": 7 * 60,
+	}
+	population_spawner.call("_spawn_customer_for_event", event, residential_endpoints.front(), school_endpoint)
 	await get_tree().process_frame
 
 	var customers := find_children("Customer", "CharacterBody2D", true, false)
@@ -109,23 +107,6 @@ func _assert_true(condition: bool, message: String) -> void:
 	if not condition:
 		push_error(message)
 		get_tree().quit(1)
-
-
-func _has_varied_routes(spawner: Node) -> bool:
-	var signatures := {}
-	for index in range(6):
-		var route: Dictionary = spawner.call("_route_for_mode", CustomerSchedule.ROUTE_HOME_TO_DESTINATION)
-		signatures[_route_signature(route)] = true
-	return signatures.size() > 1
-
-
-func _uses_multiple_residential_endpoints(spawner: Node, residence_positions: Array) -> bool:
-	var used_positions := {}
-	for index in range(24):
-		var position: Vector2 = spawner.call("_residential_position")
-		_assert_true(residence_positions.has(position), "住宅区随机结果必须来自已配置的 endpoint")
-		used_positions[position] = true
-	return used_positions.size() >= 2
 
 
 func _town_stall_spots(town: Node) -> Array:
@@ -174,11 +155,3 @@ func _is_near_any_position(position: Vector2, positions: Array, max_distance := 
 
 func _is_near_position(position: Vector2, expected: Vector2, max_distance := 192.0) -> bool:
 	return position.distance_to(expected) <= max_distance
-
-
-func _route_signature(route: Dictionary) -> String:
-	var points: Array = route.get("points", [])
-	var signature := "%s>%s" % [str(route.get("start", Vector2.ZERO).round()), str(route.get("end", Vector2.ZERO).round())]
-	for point in points:
-		signature += ">%s" % str((point as Vector2).round())
-	return signature

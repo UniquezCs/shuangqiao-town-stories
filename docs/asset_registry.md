@@ -191,7 +191,8 @@ Current UI is mostly Godot `Control` nodes with text and panels. This is accepta
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `audio.bgm.shuangqiao_town_loop` | implemented | `res://assets/audio/bgm/shuangqiao_town_loop.wav` | Generated 2026-06-04; about 83 seconds, looped by `MusicManager` from title screen through gameplay. |
+| `audio.bgm.shuangqiao_town_loop` | implemented | `res://assets/audio/bgm/shuangqiao_town_loop.wav` | Replaced 2026-06-05; about 85 seconds, 1980s/1990s game-style pentatonic loop, source sketch in `assets/source/audio/shuangqiao_town_loop.strudel.js`, looped by `MusicManager` from title screen through gameplay. |
+| `audio.sfx.cash_received` | implemented | `res://assets/audio/sfx/cash_received.wav` | Added 2026-06-05; 0.5-second cash-received chime, played by `SfxManager` on `SignalBus.sale_completed` after each successful stall transaction. |
 
 ### Town Props
 

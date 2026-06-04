@@ -5,12 +5,18 @@ const CROPS_PATH := "res://configs/crops.json"
 const UPGRADES_PATH := "res://configs/upgrades.json"
 const ASSETS_PATH := "res://configs/assets.json"
 const CUSTOMER_PREFERENCES_PATH := "res://configs/customer_preferences.json"
+const POPULATION_PATH := "res://configs/population.json"
+const FLOW_PREFERENCES_PATH := "res://configs/flow_preferences.json"
+const CALENDAR_PATH := "res://configs/calendar.json"
 
 var items: Dictionary = {}
 var crops: Dictionary = {}
 var upgrades: Dictionary = {}
 var assets: Dictionary = {}
 var customer_preferences: Dictionary = {}
+var population: Dictionary = {}
+var flow_preferences: Dictionary = {}
+var calendar: Dictionary = {}
 
 
 func _ready() -> void:
@@ -23,6 +29,9 @@ func load_all() -> void:
 	upgrades = _load_json(UPGRADES_PATH)
 	assets = _load_json(ASSETS_PATH)
 	customer_preferences = _load_json(CUSTOMER_PREFERENCES_PATH)
+	population = _load_json(POPULATION_PATH)
+	flow_preferences = _load_json(FLOW_PREFERENCES_PATH)
+	calendar = _load_json(CALENDAR_PATH)
 
 
 func get_item(item_id: String) -> Dictionary:
@@ -145,6 +154,18 @@ func get_customer_personal_preference_range(_item_id: String) -> Vector2:
 	var min_preference := clampf(float(raw_range[0]), 0.0, 1.0)
 	var max_preference := clampf(float(raw_range[1]), min_preference, 1.0)
 	return Vector2(min_preference, max_preference)
+
+
+func get_population_config() -> Dictionary:
+	return population
+
+
+func get_flow_preferences_config() -> Dictionary:
+	return flow_preferences
+
+
+func get_calendar_config() -> Dictionary:
+	return calendar
 
 
 func get_upgrade_entry(upgrade_id: String, level: int) -> Dictionary:

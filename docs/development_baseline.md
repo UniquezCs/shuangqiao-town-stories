@@ -219,12 +219,47 @@ Detailed incident notes and prevention rules are maintained in
   sprites and tilesets.
 - Long-form music should go under `assets/audio/bgm`; short interaction sounds
   should go under `assets/audio/sfx`.
+- Source sketches, pattern code, prompts, and other non-runtime audio notes
+  should live under `assets/source/audio`, not beside the final runtime WAV.
 - Global background music should be routed through `MusicManager` so it keeps
   playing across scene changes instead of being duplicated in individual scenes.
+- Global sound effects should be routed through a dedicated SFX autoload such
+  as `SfxManager`, and should be triggered by gameplay signals such as
+  `SignalBus.sale_completed` rather than being duplicated in individual
+  interaction scripts.
+- Use `AudioStreamPlayer` for global BGM, UI sounds, and non-positional SFX.
+  Use `AudioStreamPlayer2D` only when the sound needs world-position panning or
+  distance falloff.
+- Prefer WAV for short SFX to avoid decode latency. BGM may be WAV during
+  prototype work, but production-length tracks should be evaluated for OGG
+  Vorbis once file size becomes a concern.
+- Looping BGM must set loop behavior explicitly through import settings or
+  runtime stream configuration. SFX must not loop unless a design note says so.
+- Audio buses should prefer `Music` and `SFX` when those buses exist. If the
+  project has not configured them yet, scripts may fall back to `Master`, but
+  the fallback must be intentional and testable.
+- Do not write or edit `.godot/imported/*` audio cache files. Import metadata
+  belongs in the source audio file's `.import` sidecar and should be produced
+  by Godot reimport.
 - Every newly added audio asset must be registered in `configs/assets.json`;
   important production audio should also be listed in `docs/asset_registry.md`.
-- Looping BGM must have an explicit runtime or import-loop setting and a test
-  that verifies the stream is loaded by the audio manager.
+- BGM generation should keep a reproducible source note or sketch. If Strudel
+  or another music tool is used for composition, save the sketch under
+  `assets/source/audio`; if the final WAV is rendered by a local synth script,
+  document that in the asset notes.
+- SFX generation should document the intended feedback moment, duration, and
+  trigger signal. For example, a cash-received sound should note that it plays
+  after successful transactions, not after failed attempts or purchases where
+  the player spends money.
+- Audio integration must be verified through Godot whenever practical:
+  reimport with the editor or Godot MCP, confirm `audio_manage list` or an
+  equivalent load check sees the expected duration, and run the relevant audio
+  manager or gameplay test scene.
+- Audio tests should cover the smallest behavior that matters:
+  - the audio resource loads;
+  - duration and loop expectations are correct;
+  - the manager binds the expected stream;
+  - the relevant gameplay signal triggers playback setup.
 
 ## Practical Checklist
 
@@ -262,6 +297,25 @@ Before integrating or replacing art assets:
 - Confirm collision is owned by the gameplay node, not implied by the bitmap.
 - Confirm the asset can be previewed in a debug or test scene before it is
   relied on by production gameplay.
+
+Before integrating or replacing audio assets:
+
+- Confirm the asset has a stable ID and an entry in `configs/assets.json`.
+- Confirm the final runtime file is under `assets/audio/bgm` or
+  `assets/audio/sfx`.
+- Confirm source sketches or composition notes are under `assets/source/audio`
+  when the audio was generated or procedurally composed.
+- Confirm BGM is routed through `MusicManager` and SFX is routed through an SFX
+  manager/autoload instead of being played from multiple scene scripts.
+- Confirm BGM loop settings and SFX non-loop settings are explicit.
+- Confirm the intended gameplay trigger is signal-driven and documented, such
+  as `SignalBus.sale_completed` for successful sale feedback.
+- Reimport the audio with Godot or Godot MCP, and keep the generated `.import`
+  file with the source audio.
+- Run a Godot load/playback setup test that verifies resource path, duration,
+  loop expectation, and signal-to-manager wiring.
+- Update `docs/asset_registry.md` when the audio is production-facing or
+  important for design feedback.
 
 Before finishing any programming change:
 
