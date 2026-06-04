@@ -20,7 +20,12 @@ func _ready() -> void:
 
 	GameState.set_current_tool(PrototypeConstants.TOOL_SEED)
 	plot.call("interact", null)
+	_assert_equal(plot.get("state"), "tilled", "背包有种子但快捷栏没选种子时不应播种")
+	Hotbar.put_slot(3, {"item_id": PrototypeConstants.ITEM_APPLE_SEED, "count": 1})
+	Hotbar.select_slot(3)
+	plot.call("interact", null)
 	_assert_equal(plot.get("state"), "seed_dry", "种子应把耕地变为种子无水状态")
+	_assert_true(Hotbar.slots[3].is_empty(), "最后一颗快捷栏种子播种后应清空快捷栏格")
 
 	GameState.set_current_tool(PrototypeConstants.TOOL_WATER)
 	plot.call("interact", null)

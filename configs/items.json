@@ -116,6 +116,31 @@
 	"category": "tool_consumable",
 	"stack_size": 20,
 	"base_sell_price": 0,
-	"icon": "res://assets/generated/sprites/items/fertilizer_bag_32.png"
+	"icon": "res://assets/generated/sprites/items/fertilizer_bag_32.png",
+	"tool_id": "fertilizer"
+  },
+  "watering_can": {
+	"name": "水壶",
+	"category": "tool",
+	"stack_size": 1,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/sprites/ui/icons/general/watering_can_32.png",
+	"tool_id": "water"
+  },
+  "hoe": {
+	"name": "锄头",
+	"category": "tool",
+	"stack_size": 1,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/sprites/ui/icons/general/hoe_32.png",
+	"tool_id": "hoe"
+  },
+  "sickle": {
+	"name": "镰刀",
+	"category": "tool",
+	"stack_size": 1,
+	"base_sell_price": 0,
+	"icon": "res://assets/generated/sprites/items/sickle_32.png",
+	"tool_id": "sickle"
   }
 }

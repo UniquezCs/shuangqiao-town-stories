@@ -1,13 +1,15 @@
 extends CanvasLayer
 
+const HotbarPanelScript := preload("res://scripts/ui/hotbar_panel.gd")
+
 var _cash_label: Label
 var _objective_label: Label
 var _window_label: Label
 var _clock_label: Label
 var _day_label: Label
-var _tool_label: Label
 var _prompt_label: Label
 var _feedback_label: Label
+var _hotbar_panel: Control
 
 
 func _ready() -> void:
@@ -17,7 +19,6 @@ func _ready() -> void:
 	SignalBus.objective_changed.connect(_on_objective_changed)
 	SignalBus.time_window_changed.connect(_on_time_window_changed)
 	SignalBus.game_time_changed.connect(_on_game_time_changed)
-	SignalBus.current_tool_changed.connect(_on_current_tool_changed)
 	SignalBus.interaction_prompt_changed.connect(_on_interaction_prompt_changed)
 	SignalBus.sale_feedback.connect(_on_sale_feedback)
 
@@ -27,7 +28,6 @@ func _ready() -> void:
 	_on_objective_changed(GameState.objective)
 	_on_time_window_changed(GameState.current_time_window)
 	_on_game_time_changed(GameState.current_game_minute, GameState.format_game_time(GameState.current_game_minute))
-	_on_current_tool_changed(GameState.current_tool)
 
 
 func _build_ui() -> void:
@@ -55,9 +55,8 @@ func _build_ui() -> void:
 	_day_label = Label.new()
 	_clock_label = Label.new()
 	_window_label = Label.new()
-	_tool_label = Label.new()
 	_objective_label = Label.new()
-	for label in [_cash_label, _day_label, _clock_label, _window_label, _tool_label, _objective_label]:
+	for label in [_cash_label, _day_label, _clock_label, _window_label, _objective_label]:
 		box.add_child(label)
 
 	_prompt_label = Label.new()
@@ -69,6 +68,10 @@ func _build_ui() -> void:
 	_feedback_label.position = Vector2(16, 202)
 	_feedback_label.add_theme_font_size_override("font_size", 18)
 	root.add_child(_feedback_label)
+
+	_make_mouse_passthrough(root)
+	_hotbar_panel = HotbarPanelScript.new()
+	root.add_child(_hotbar_panel)
 
 
 func _on_cash_changed(amount: int) -> void:
@@ -92,12 +95,13 @@ func _on_game_time_changed(_total_minutes: int, clock_text: String) -> void:
 	_clock_label.text = "时间：%s" % clock_text
 
 
-func _on_current_tool_changed(tool_id: String) -> void:
-	_tool_label.text = "当前工具：%s（1锄 2种 3水 4收）" % PrototypeConstants.TOOL_LABELS.get(tool_id, tool_id)
-
-
 func _on_interaction_prompt_changed(text: String) -> void:
-	_prompt_label.text = "" if text.is_empty() else "E：%s" % text
+	if text.is_empty():
+		_prompt_label.text = ""
+	elif text.begins_with("E：") or text.begins_with("左键："):
+		_prompt_label.text = text
+	else:
+		_prompt_label.text = "E：%s" % text
 
 
 func _on_sale_feedback(text: String, _world_position: Vector2) -> void:
@@ -105,3 +109,11 @@ func _on_sale_feedback(text: String, _world_position: Vector2) -> void:
 	var tween := create_tween()
 	_feedback_label.modulate.a = 1.0
 	tween.tween_property(_feedback_label, "modulate:a", 0.0, 1.4).set_delay(0.6)
+
+
+func _make_mouse_passthrough(node: Node) -> void:
+	var control := node as Control
+	if control != null:
+		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for child in node.get_children():
+		_make_mouse_passthrough(child)

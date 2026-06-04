@@ -26,7 +26,12 @@ func _ready() -> void:
 
 	GameState.set_current_tool(PrototypeConstants.TOOL_HOE)
 	var player_start := player.global_position
+	var visual := player.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	_assert_true(visual != null, "Player 应有 AnimatedSprite2D")
+	_assert_equal(player.call("get_farming_prompt_for_position", Vector2(112, 80)), "左键：开垦土地", "鼠标悬停可开垦地块时应显示左键提示")
 	_assert_true(await player.call("handle_farming_click", Vector2(112, 80)), "鼠标点击周围空地时应开垦农田")
+	_assert_equal(player.get("facing"), "right", "点击右侧地块耕地时主角应自动面向右侧")
+	_assert_equal(str(visual.animation), "hoe_right", "点击右侧地块耕地时应播放右朝向锄地动画")
 	await get_tree().process_frame
 
 	var plots := get_tree().get_nodes_in_group("farm_plot")
@@ -38,12 +43,28 @@ func _ready() -> void:
 
 	player.set("_is_farming_action_playing", false)
 	GameState.set_current_tool(PrototypeConstants.TOOL_SEED)
+	_assert_true(not await player.call("handle_farming_click", Vector2(112, 80)), "背包有种子但快捷栏当前格不是种子时不应播种")
+	_assert_equal(plot.get("state"), "tilled", "未选中快捷栏种子时地块应保持空耕地")
+	Hotbar.put_slot(3, {"item_id": PrototypeConstants.ITEM_APPLE_SEED, "count": 2})
+	Hotbar.select_slot(3)
+	_assert_equal(player.call("get_farming_prompt_for_position", Vector2(112, 80)), "左键：用种子播种", "鼠标悬停空耕地时应提示播种")
 	_assert_true(await player.call("handle_farming_click", Vector2(112, 80)), "鼠标点击周围耕地时应播种")
 	_assert_equal(plot.get("state"), "seed_dry", "播种后地块应变成种子无水状态")
+	_assert_equal(int(Hotbar.slots[3].get("count", 0)), 1, "播种应扣除当前快捷栏种子数量")
 
 	GameState.set_current_tool(PrototypeConstants.TOOL_WATER)
+	_assert_equal(player.call("get_farming_prompt_for_position", Vector2(112, 80)), "左键：用水壶浇水", "鼠标悬停缺水作物时应提示浇水")
 	_assert_true(await player.call("handle_farming_click", Vector2(112, 80)), "鼠标点击周围作物时应浇水")
+	_assert_equal(player.get("facing"), "right", "点击右侧作物浇水时主角应自动面向右侧")
+	_assert_equal(str(visual.animation), "water_right", "点击右侧作物浇水时应播放右朝向浇水动画")
 	_assert_equal(plot.get("state"), "ready", "测试期作物浇水后应成熟")
+
+	player.set("_is_farming_action_playing", false)
+	player.global_position = Vector2(144, 80)
+	GameState.set_current_tool(PrototypeConstants.TOOL_SICKLE)
+	_assert_true(await player.call("handle_farming_click", Vector2(112, 80)), "鼠标点击成熟作物时应收获")
+	_assert_equal(player.get("facing"), "left", "点击左侧成熟作物收获时主角应自动面向左侧")
+	_assert_equal(str(visual.animation), "harvest_left", "点击左侧成熟作物收获时应播放左朝向收获动画")
 
 	player.set("_is_farming_action_playing", false)
 	player.global_position = Vector2(112, 80)
@@ -53,7 +74,8 @@ func _ready() -> void:
 	GameState.set_current_tool(PrototypeConstants.TOOL_HOE)
 	player.global_position = Vector2(0, 0)
 	player_start = player.global_position
-	_assert_true(not await player.call("handle_farming_click", Vector2(192, 192)), "鼠标点击距离主角太远的地块时不应触发农作")
+	_assert_equal(player.call("get_farming_prompt_for_position", Vector2(96, 96)), "左键：目标太远", "鼠标悬停远处可开垦地块时应提示距离太远")
+	_assert_true(not await player.call("handle_farming_click", Vector2(96, 96)), "鼠标点击距离主角太远的地块时不应触发农作")
 	_assert_equal(get_tree().get_nodes_in_group("farm_plot").size(), 1, "距离太远的点击不应生成新农田")
 	_assert_equal(player.global_position, player_start, "距离太远的点击不应移动主角")
 

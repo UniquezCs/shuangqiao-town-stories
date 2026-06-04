@@ -49,6 +49,16 @@ func is_sellable_item(item_id: String) -> bool:
 	return str(get_item(item_id).get("category", "")) == "crop"
 
 
+func get_tool_for_item(item_id: String) -> String:
+	var item := get_item(item_id)
+	var configured_tool := str(item.get("tool_id", ""))
+	if not configured_tool.is_empty():
+		return configured_tool
+	if str(item.get("category", "")) == "seed":
+		return PrototypeConstants.TOOL_SEED
+	return ""
+
+
 func get_crop_for_seed(seed_item_id: String) -> String:
 	for crop_id in crops.keys():
 		var crop: Dictionary = crops[crop_id]

@@ -20,8 +20,8 @@ func _ready() -> void:
 	await get_tree().process_frame
 
 	var residential_endpoints := _endpoints_by_id(town, "residential")
-	var school_endpoint := town.get_node("SchoolSpot")
-	var factory_endpoint := town.get_node("FactorySpot")
+	var school_endpoint := _endpoint_by_name(town, "SchoolSpot")
+	var factory_endpoint := _endpoint_by_name(town, "FactorySpot")
 	_assert_true(residential_endpoints.size() >= 2, "TownScene 应提供多个 residential endpoint 作为住宅出生点池")
 	for endpoint in residential_endpoints + [school_endpoint, factory_endpoint]:
 		_assert_true(endpoint.is_in_group("npc_endpoint"), "%s 应复用 NPC 出现/消失点场景" % endpoint.name)
@@ -131,7 +131,7 @@ func _uses_multiple_residential_endpoints(spawner: Node, residence_positions: Ar
 func _town_stall_spots(town: Node) -> Array:
 	var spots := []
 	for node in get_tree().get_nodes_in_group("player_stall_spot"):
-		if node is Node2D and node.get_parent() == town:
+		if node is Node2D and _node_belongs_to_world(node, town):
 			spots.append(node)
 	spots.sort_custom(func(a: Node, b: Node) -> bool:
 		return str(a.get("spot_id")) < str(b.get("spot_id"))
@@ -142,9 +142,20 @@ func _town_stall_spots(town: Node) -> Array:
 func _endpoints_by_id(town: Node, endpoint_id: String) -> Array:
 	var endpoints := []
 	for node in get_tree().get_nodes_in_group("npc_endpoint"):
-		if node is Node2D and node.get_parent() == town and str(node.get("endpoint_id")) == endpoint_id:
+		if node is Node2D and _node_belongs_to_world(node, town) and str(node.get("endpoint_id")) == endpoint_id:
 			endpoints.append(node)
 	return endpoints
+
+
+func _endpoint_by_name(town: Node, node_name: String) -> Node2D:
+	var direct := town.get_node_or_null(node_name) as Node2D
+	if direct != null:
+		return direct
+	return town.get_node_or_null("Buildings/%s" % node_name) as Node2D
+
+
+func _node_belongs_to_world(node: Node, world: Node) -> bool:
+	return world != null and (node == world or world.is_ancestor_of(node))
 
 
 func _endpoint_positions(endpoints: Array) -> Array:

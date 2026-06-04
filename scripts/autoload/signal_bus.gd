@@ -2,6 +2,7 @@ extends Node
 
 signal inventory_changed(item_id: String, count: int)
 signal backpack_changed(slots: Array, slot_count: int)
+signal hotbar_changed(slots: Array, selected_index: int)
 signal cash_changed(amount: int)
 signal objective_changed(text: String)
 signal scene_change_requested(target_scene: String, spawn_id: String)

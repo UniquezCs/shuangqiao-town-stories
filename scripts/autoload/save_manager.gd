@@ -15,6 +15,7 @@ func save_autosave() -> bool:
 		"schema_version": SCHEMA_VERSION,
 		"game_state": GameState.to_save_data(),
 		"inventory": Inventory.to_save_data(),
+		"hotbar": Hotbar.to_save_data(),
 	}
 	var json := JSON.stringify(save_data, "\t")
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)

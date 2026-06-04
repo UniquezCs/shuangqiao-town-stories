@@ -6,11 +6,15 @@ const ALLOWED_EXTENSIONS := ["import", "png", "tres"]
 const DISALLOWED_DIR_NAMES := ["raw", "processed", "references", "direction_gifs", "direction_strips"]
 const DISALLOWED_FILE_NAMES := [".DS_Store", "manifest.json", "contact_sheet.png"]
 const REQUIRED_CROP_TEXTURE_STATES := ["tilled", "seed_dry", "seed_watered", "growing_dry", "growing_watered", "ready"]
+const REQUIRED_REGISTERED_GENERATED_DIRS := [
+	"res://assets/generated/sprites/props/township",
+]
 
 
 func _ready() -> void:
 	_assert_generated_top_level_is_clean()
 	_assert_generated_files_are_final_assets(GENERATED_DIR)
+	_assert_generated_assets_are_registered()
 	_assert_configured_item_icons_exist()
 	_assert_seed_shop_crop_textures_exist()
 	get_tree().quit()
@@ -78,6 +82,46 @@ func _assert_seed_shop_crop_textures_exist() -> void:
 			var texture_path := str(textures.get(state, ""))
 			_assert_true(not texture_path.is_empty(), "种子商店作物 %s 必须配置 %s 状态贴图，避免回退到苹果" % [crop_id, state])
 			_assert_resource_path_exists(texture_path, "种子商店作物 %s 的 %s 状态贴图路径无效" % [crop_id, state])
+
+
+func _assert_generated_assets_are_registered() -> void:
+	var registered_paths := {}
+	_collect_generated_paths(ConfigLoader.assets, registered_paths)
+	var missing := []
+	for dir_path in REQUIRED_REGISTERED_GENERATED_DIRS:
+		_collect_unregistered_generated_assets(dir_path, registered_paths, missing)
+	missing.sort()
+	_assert_true(missing.is_empty(), "需强制登记的 generated 目录存在未写入 configs/assets.json 的最终资源：%s" % str(missing))
+
+
+func _collect_generated_paths(value: Variant, out_paths: Dictionary) -> void:
+	match typeof(value):
+		TYPE_DICTIONARY:
+			for child in (value as Dictionary).values():
+				_collect_generated_paths(child, out_paths)
+		TYPE_ARRAY:
+			for child in value:
+				_collect_generated_paths(child, out_paths)
+		TYPE_STRING:
+			var path := str(value)
+			if path.begins_with("res://assets/generated/"):
+				out_paths[path] = true
+
+
+func _collect_unregistered_generated_assets(dir_path: String, registered_paths: Dictionary, missing: Array) -> void:
+	var dir := DirAccess.open(dir_path)
+	_assert_true(dir != null, "无法读取目录：%s" % dir_path)
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		var path := "%s/%s" % [dir_path, entry]
+		if dir.current_is_dir():
+			_collect_unregistered_generated_assets(path, registered_paths, missing)
+		elif ["png", "tres"].has(entry.get_extension()):
+			if not registered_paths.has(path):
+				missing.append(path)
+		entry = dir.get_next()
+	dir.list_dir_end()
 
 
 func _assert_resource_path_exists(path: String, message: String) -> void:

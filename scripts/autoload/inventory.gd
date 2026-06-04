@@ -201,6 +201,55 @@ func move_slot(from_index: int, to_index: int) -> bool:
 	return true
 
 
+func take_slot(index: int) -> Dictionary:
+	_ensure_slot_array()
+	if not _is_valid_slot_index(index):
+		return {}
+	var slot: Dictionary = slots[index]
+	if slot.is_empty():
+		return {}
+	slots[index] = {}
+	_emit_item_changed(str(slot.get("item_id", "")))
+	return slot.duplicate()
+
+
+func put_slot(index: int, incoming_slot: Dictionary) -> Dictionary:
+	_ensure_slot_array()
+	if not _is_valid_slot_index(index) or incoming_slot.is_empty():
+		return incoming_slot.duplicate()
+	var incoming := incoming_slot.duplicate()
+	var incoming_item := str(incoming.get("item_id", ""))
+	var incoming_count := int(incoming.get("count", 0))
+	if incoming_item.is_empty() or incoming_count <= 0:
+		return {}
+
+	var target: Dictionary = slots[index]
+	if target.is_empty():
+		slots[index] = {"item_id": incoming_item, "count": incoming_count}
+		_emit_item_changed(incoming_item)
+		return {}
+
+	var target_item := str(target.get("item_id", ""))
+	if target_item == incoming_item:
+		var stack_size := ConfigLoader.get_stack_size(incoming_item)
+		var space := stack_size - int(target.get("count", 0))
+		if space <= 0:
+			return incoming
+		var moved := mini(space, incoming_count)
+		target["count"] = int(target.get("count", 0)) + moved
+		slots[index] = target
+		incoming_count -= moved
+		_emit_item_changed(incoming_item)
+		if incoming_count <= 0:
+			return {}
+		incoming["count"] = incoming_count
+		return incoming
+
+	slots[index] = {"item_id": incoming_item, "count": incoming_count}
+	_emit_items_changed([target_item, incoming_item])
+	return target.duplicate()
+
+
 func remove_from_slot(index: int, amount: int) -> Dictionary:
 	_ensure_slot_array()
 	if amount <= 0 or not _is_valid_slot_index(index):

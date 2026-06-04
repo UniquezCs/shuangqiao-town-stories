@@ -35,16 +35,16 @@ func reset_game() -> void:
 	day_index = 1
 	backpack_level = 1
 	stall_level = 1
-	current_tool = PrototypeConstants.TOOL_HOE
+	current_tool = ""
 	_reset_daily_stats()
 	used_spots = []
 	farm_plot_states = {}
 	yesterday_summary = {}
 	refresh_seed_shop_goods()
 	Inventory.reset_items()
+	Hotbar.reset_slots()
 	SignalBus.cash_changed.emit(cash)
 	SignalBus.game_time_changed.emit(current_game_minute, format_game_time(current_game_minute))
-	SignalBus.current_tool_changed.emit(current_tool)
 	set_time_window(PrototypeConstants.WINDOW_PREP)
 	set_objective("出门整理农田，或去镇街做买卖")
 
@@ -72,9 +72,9 @@ func to_save_data() -> Dictionary:
 
 func apply_save_data(data: Dictionary) -> void:
 	cash = int(data.get("cash", 0))
-	current_scene = str(data.get("current_scene", PrototypeConstants.SCENE_HOUSE))
-	current_time_window = str(data.get("current_time_window", PrototypeConstants.WINDOW_MORNING))
-	current_game_minute = int(data.get("current_game_minute", PrototypeConstants.DAY_START_MINUTE))
+	current_scene = _valid_scene_id(str(data.get("current_scene", PrototypeConstants.SCENE_HOUSE)))
+	current_time_window = _valid_time_window(str(data.get("current_time_window", PrototypeConstants.WINDOW_MORNING)))
+	current_game_minute = clampi(int(data.get("current_game_minute", PrototypeConstants.DAY_START_MINUTE)), 0, PrototypeConstants.DAY_END_MINUTE)
 	day_clock_started = bool(data.get("day_clock_started", true))
 	objective = str(data.get("objective", "新的一天开始了，先看看背包和农田"))
 	prototype_completed = bool(data.get("prototype_completed", false))
@@ -381,3 +381,21 @@ func _reset_daily_stats() -> void:
 	chengguan_caught_count = 0
 	chengguan_fine_total = 0
 	total_sales_income = 0
+
+
+func _valid_scene_id(scene_id: String) -> String:
+	if [PrototypeConstants.SCENE_HOUSE, PrototypeConstants.SCENE_HOME, PrototypeConstants.SCENE_TOWN].has(scene_id):
+		return scene_id
+	return PrototypeConstants.SCENE_HOUSE
+
+
+func _valid_time_window(window_id: String) -> String:
+	if [
+		PrototypeConstants.WINDOW_PREP,
+		PrototypeConstants.WINDOW_MORNING,
+		PrototypeConstants.WINDOW_SCHOOL,
+		PrototypeConstants.WINDOW_FACTORY,
+		PrototypeConstants.WINDOW_END,
+	].has(window_id):
+		return window_id
+	return PrototypeConstants.WINDOW_MORNING

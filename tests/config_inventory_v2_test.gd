@@ -13,6 +13,10 @@ func _ready() -> void:
 	_assert_true(ResourceLoader.exists(ConfigLoader.get_crop_state_texture("pear", "ready")), "梨成熟状态素材应可加载")
 	_assert_true(ResourceLoader.exists(ConfigLoader.get_crop_state_texture("banana", "ready")), "香蕉成熟状态素材应可加载")
 	_assert_true(ResourceLoader.exists(ConfigLoader.get_crop_state_texture("grape", "ready")), "葡萄成熟状态素材应可加载")
+	_assert_true(ResourceLoader.exists(ConfigLoader.get_item_icon(PrototypeConstants.ITEM_WATERING_CAN)), "水壶图标素材应可加载")
+	_assert_true(ResourceLoader.exists(ConfigLoader.get_item_icon(PrototypeConstants.ITEM_HOE)), "锄头图标素材应可加载")
+	_assert_true(ResourceLoader.exists(ConfigLoader.get_item_icon(PrototypeConstants.ITEM_SICKLE)), "镰刀图标素材应可加载")
+	_assert_equal(ConfigLoader.get_tool_for_item(PrototypeConstants.ITEM_WATERING_CAN), PrototypeConstants.TOOL_WATER, "水壶物品应映射到浇水工具")
 	_assert_true(not ConfigLoader.get_asset("character.vendor").is_empty(), "应能读取资源注册表中的主角资源")
 	_assert_equal(
 		ConfigLoader.get_asset_path("tileset.rural_town_32"),

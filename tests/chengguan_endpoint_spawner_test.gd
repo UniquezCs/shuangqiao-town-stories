@@ -12,13 +12,15 @@ func _ready() -> void:
 	await get_tree().process_frame
 
 	var police_station := town.get_node_or_null("PoliceStation") as Node2D
+	if police_station == null:
+		police_station = town.get_node_or_null("Buildings/PoliceStation") as Node2D
 	_assert_true(police_station != null, "TownScene 应新增 PoliceStation 建筑 endpoint")
 	if police_station == null:
 		return
 	_assert_true(police_station.is_in_group("npc_endpoint"), "PoliceStation 应复用 NPC endpoint 场景")
 	_assert_equal(str(police_station.get("endpoint_id")), "police_station", "PoliceStation endpoint_id 应为 police_station")
 	_assert_equal(str(police_station.get("endpoint_type")), "police", "PoliceStation endpoint_type 应为 police")
-	_assert_true(not bool(police_station.get("can_spawn_customer")), "普通随机 NPC 不应从警察局生成")
+	_assert_true(police_station.get("can_spawn_customer") == false, "普通随机 NPC 不应从警察局生成")
 	var visual := police_station.get_node_or_null("Visual") as Sprite2D
 	_assert_true(visual != null and visual.texture != null, "PoliceStation 应显示警察局美术素材")
 	if visual != null and visual.texture != null:

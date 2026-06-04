@@ -25,6 +25,12 @@ func _ready() -> void:
 	_rng.randomize()
 	_spawn_plan = _build_daily_spawn_plan()
 	SignalBus.game_time_changed.connect(_on_game_time_changed)
+	_catch_up_to_current_time.call_deferred()
+
+
+func _catch_up_to_current_time() -> void:
+	if not is_inside_tree():
+		return
 	_on_game_time_changed(GameState.current_game_minute, GameState.format_game_time(GameState.current_game_minute))
 
 
@@ -41,29 +47,31 @@ func build_random_route() -> Dictionary:
 	if endpoints.size() < 2:
 		return {}
 
-	var start_endpoint := _pick_weighted_endpoint(endpoints)
-	var end_endpoint := _pick_weighted_endpoint(endpoints)
-	var retry_count := 0
-	while end_endpoint == start_endpoint and retry_count < 12:
-		end_endpoint = _pick_weighted_endpoint(endpoints)
-		retry_count += 1
+	for _attempt in range(maxi(12, endpoints.size() * 2)):
+		var start_endpoint := _pick_weighted_endpoint(endpoints)
+		var end_endpoint := _pick_weighted_endpoint(endpoints)
+		var retry_count := 0
+		while end_endpoint == start_endpoint and retry_count < 12:
+			end_endpoint = _pick_weighted_endpoint(endpoints)
+			retry_count += 1
 
-	if end_endpoint == start_endpoint:
-		for endpoint in endpoints:
-			if endpoint != start_endpoint:
-				end_endpoint = endpoint
-				break
+		if end_endpoint == start_endpoint:
+			for endpoint in endpoints:
+				if endpoint != start_endpoint:
+					end_endpoint = endpoint
+					break
 
-	var start := _endpoint_position(start_endpoint)
-	var end := _endpoint_position(end_endpoint)
-	var route := _route_for_positions(start, end)
-	if route.is_empty():
-		return {}
-	route.merge({
-		"start_endpoint": start_endpoint,
-		"end_endpoint": end_endpoint,
-	})
-	return route
+		var start := _endpoint_position(start_endpoint)
+		var end := _endpoint_position(end_endpoint)
+		var route := _route_for_positions(start, end)
+		if route.is_empty():
+			continue
+		route.merge({
+			"start_endpoint": start_endpoint,
+			"end_endpoint": end_endpoint,
+		})
+		return route
+	return {}
 
 
 func _build_daily_spawn_plan() -> Array[Dictionary]:
@@ -98,11 +106,11 @@ func _available_endpoints() -> Array[Node2D]:
 	for node in get_tree().get_nodes_in_group("npc_endpoint"):
 		if not node is Node2D or not node.is_inside_tree():
 			continue
-		if route_world != null and node.get_parent() != route_world:
+		if route_world != null and not _belongs_to_route_world(node):
 			continue
-		if not bool(node.get("can_spawn_customer")):
+		if node.get("can_spawn_customer") == false:
 			continue
-		if float(node.get("spawn_weight")) <= 0.0:
+		if _endpoint_spawn_weight(node) <= 0.0:
 			continue
 		if not _endpoint_type_allowed(node):
 			continue
@@ -124,17 +132,24 @@ func _endpoint_type_allowed(endpoint: Node) -> bool:
 func _pick_weighted_endpoint(endpoints: Array[Node2D]) -> Node2D:
 	var total_weight := 0.0
 	for endpoint in endpoints:
-		total_weight += max(0.0, float(endpoint.get("spawn_weight")))
+		total_weight += max(0.0, _endpoint_spawn_weight(endpoint))
 
 	if total_weight <= 0.0:
 		return endpoints[_rng.randi_range(0, endpoints.size() - 1)]
 
 	var roll := _rng.randf_range(0.0, total_weight)
 	for endpoint in endpoints:
-		roll -= max(0.0, float(endpoint.get("spawn_weight")))
+		roll -= max(0.0, _endpoint_spawn_weight(endpoint))
 		if roll <= 0.0:
 			return endpoint
 	return endpoints.back()
+
+
+func _endpoint_spawn_weight(endpoint: Node) -> float:
+	var raw_weight: Variant = endpoint.get("spawn_weight")
+	if raw_weight == null:
+		return 0.0
+	return raw_weight
 
 
 func _endpoint_position(endpoint: Node2D) -> Vector2:
@@ -157,8 +172,10 @@ func _route_for_positions(start: Vector2, end: Vector2) -> Dictionary:
 	var navigator := _road_navigator()
 	if navigator != null and navigator.has_method("find_randomized_path"):
 		var road_path: Array = navigator.call("find_randomized_path", start, end, _rng)
+		if road_path.size() < 2 and navigator.has_method("find_path"):
+			road_path = navigator.call("find_path", start, end)
 		if road_path.size() < 2:
-			return {}
+			return {"start": start, "end": end, "points": _random_route_points(start, end)}
 		return _route_from_path(road_path)
 	return {"start": start, "end": end, "points": _random_route_points(start, end)}
 
@@ -200,7 +217,7 @@ func _player_stall_spot() -> Node:
 		return self
 	var fallback: Node = null
 	for node in get_tree().get_nodes_in_group("player_stall_spot"):
-		if node.is_inside_tree() and node.get_parent() == world:
+		if node.is_inside_tree() and _node_belongs_to_world(node, world):
 			if fallback == null:
 				fallback = node
 			if node.has_method("get_active_stall") and node.call("get_active_stall") != null:
@@ -235,4 +252,14 @@ func _has_endpoint_child(node: Node) -> bool:
 	for child in node.get_children():
 		if child.is_in_group("npc_endpoint"):
 			return true
+		if _has_endpoint_child(child):
+			return true
 	return false
+
+
+func _belongs_to_route_world(node: Node) -> bool:
+	return _node_belongs_to_world(node, route_world)
+
+
+func _node_belongs_to_world(node: Node, world: Node) -> bool:
+	return world != null and (node == world or world.is_ancestor_of(node))

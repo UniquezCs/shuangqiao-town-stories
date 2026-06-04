@@ -30,7 +30,9 @@
 			"Customer/random/civilian NPC walk sheets use 4 rows x 6 columns, 48x64 cells, and no duplicated standing endpoints.",
 			"Customer purchase profiles read crop preference items, demographic base budget/preferences, and personal random ranges from res://configs/customer_preferences.json, then blend demographic and per-NPC values 50/50.",
 			"Stall influence radius is configured per upgrade level in res://configs/upgrades.json and drives both customer InfluenceArea and chengguan InspectionTarget in scripts/world/stall.gd.",
-			"StallSpot StaticBody2D collision is a runtime open-stall blocker: scripts/world/stall_spot.gd keeps the template size/offset relative to Stall, disables it before opening, and enables/repositions it after a stall opens."
+			"StallSpot StaticBody2D collision is a runtime open-stall blocker: scripts/world/stall_spot.gd keeps the template size/offset relative to Stall, disables it before opening, and enables/repositions it after a stall opens.",
+			"Town building nodes use an Area2D root with Visual and EndpointMarker children; CollisionShape2D is reserved for interaction/trigger area, while child StaticBody2D/CollisionShape2D is reserved for solid player/NPC collision.",
+			"Functional buildings such as SeedShop should keep the building root as res://scenes/npc_endpoint.tscn and compose gameplay behavior through child interaction components such as ShopInteraction."
 		]
 	},
 	"packs": {
@@ -986,7 +988,8 @@
 			"status": "available",
 			"usage": [
 				"hud_tool",
-				"farm_interaction"
+				"farm_interaction",
+				"hotbar_item"
 			],
 			"path": "res://assets/generated/sprites/ui/icons/general/hoe_32.png",
 			"size": [
@@ -995,6 +998,10 @@
 			],
 			"anchor": "center",
 			"collision": "none",
+			"used_by": [
+				"configs/items.json",
+				"scripts/ui/hotbar_panel.gd"
+			],
 			"tags": [
 				"tool",
 				"hoe"
@@ -1005,7 +1012,8 @@
 			"status": "available",
 			"usage": [
 				"hud_tool",
-				"farm_interaction"
+				"farm_interaction",
+				"hotbar_item"
 			],
 			"path": "res://assets/generated/sprites/ui/icons/general/watering_can_32.png",
 			"size": [
@@ -1014,6 +1022,10 @@
 			],
 			"anchor": "center",
 			"collision": "none",
+			"used_by": [
+				"configs/items.json",
+				"scripts/ui/hotbar_panel.gd"
+			],
 			"tags": [
 				"tool",
 				"water"
@@ -1029,7 +1041,12 @@
 			],
 			"usage": [
 				"hud_tool",
-				"farm_harvest"
+				"farm_harvest",
+				"hotbar_item"
+			],
+			"used_by": [
+				"configs/items.json",
+				"scripts/ui/hotbar_panel.gd"
 			],
 			"anchor": "center",
 			"collision": "none",
@@ -2002,16 +2019,42 @@
 				"time",
 				"objective",
 				"current_tool",
-				"feedback"
+				"feedback",
+				"hotbar"
 			],
 			"used_by": [
-				"scripts/ui/hud.gd"
+				"scripts/ui/hud.gd",
+				"scripts/ui/hotbar_panel.gd",
+				"scripts/ui/hotbar_slot_control.gd"
 			],
 			"anchor": "center",
 			"collision": "none",
 			"tags": [
 				"ui"
 			]
+		},
+		"ui.hotbar_panel": {
+			"type": "ui_surface",
+			"status": "placeholder",
+			"current_implementation": "Godot Control bottom-center 9-slot hotbar with flat style boxes and item icons from configs/items.json",
+			"usage": [
+				"quick_item_selection",
+				"tool_switching",
+				"backpack_drag_drop"
+			],
+			"used_by": [
+				"scripts/ui/hotbar_panel.gd",
+				"scripts/ui/hotbar_slot_control.gd",
+				"scripts/ui/hud.gd"
+			],
+			"anchor": "bottom_center",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"hotbar",
+				"inventory"
+			],
+			"generation_need": "Future pixel-art hotbar frame and selected-slot highlight, sized for 9 compact item cells at 1920x1080 HUD scale."
 		},
 		"ui.backpack_panel": {
 			"type": "ui_surface",

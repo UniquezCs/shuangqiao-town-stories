@@ -4,6 +4,9 @@ const ITEM_APPLE := "apple"
 const ITEM_APPLE_SEED := "apple_seed"
 const ITEM_PEAR := "pear"
 const ITEM_FERTILIZER := "fertilizer"
+const ITEM_WATERING_CAN := "watering_can"
+const ITEM_HOE := "hoe"
+const ITEM_SICKLE := "sickle"
 
 const SEED_PRICE := 2
 const APPLE_HARVEST_COUNT := 5
@@ -104,6 +107,9 @@ const ITEM_LABELS := {
 	ITEM_APPLE_SEED: "苹果种子",
 	ITEM_PEAR: "梨",
 	ITEM_FERTILIZER: "肥料",
+	ITEM_WATERING_CAN: "水壶",
+	ITEM_HOE: "锄头",
+	ITEM_SICKLE: "镰刀",
 }
 
 const TOOL_LABELS := {

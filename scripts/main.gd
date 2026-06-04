@@ -38,18 +38,14 @@ func _ready() -> void:
 	time_timer.timeout.connect(_advance_game_minute)
 	_initialize_game_state()
 	_start_day_clock()
-	_load_world(PrototypeConstants.SCENE_HOUSE, _startup_spawn_id)
+	_load_startup_world.call_deferred()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("tool_hoe"):
-		GameState.set_current_tool(PrototypeConstants.TOOL_HOE)
-	elif event.is_action_pressed("tool_seed"):
-		GameState.set_current_tool(PrototypeConstants.TOOL_SEED)
-	elif event.is_action_pressed("tool_water"):
-		GameState.set_current_tool(PrototypeConstants.TOOL_WATER)
-	elif event.is_action_pressed("tool_sickle"):
-		GameState.set_current_tool(PrototypeConstants.TOOL_SICKLE)
+	var hotbar_index := _hotbar_index_from_event(event)
+	if hotbar_index >= 0:
+		Hotbar.select_slot(hotbar_index)
+		get_viewport().set_input_as_handled()
 
 
 func _on_scene_change_requested(target_scene: String, spawn_id: String) -> void:
@@ -94,6 +90,10 @@ func _load_world(target_scene: String, spawn_id: String) -> void:
 		player.global_position = spawn.global_position
 		player.reset_physics_interpolation()
 		await _snap_player_camera_to_player()
+
+
+func _load_startup_world() -> void:
+	await _load_world(GameState.current_scene, _startup_spawn_id)
 
 
 func _on_price_panel_requested(stall_spot: Node) -> void:
@@ -302,7 +302,19 @@ func _initialize_game_state() -> void:
 		return
 	GameState.apply_save_data(pending_load.get("game_state", {}))
 	Inventory.apply_save_data(pending_load.get("inventory", {}))
-	_startup_spawn_id = "bed_spawn"
+	Hotbar.apply_save_data(pending_load.get("hotbar", {}))
+	_startup_spawn_id = "bed_spawn" if GameState.current_scene == PrototypeConstants.SCENE_HOUSE else "default"
+
+
+func _hotbar_index_from_event(event: InputEvent) -> int:
+	var key_event := event as InputEventKey
+	if key_event == null or not key_event.pressed or key_event.echo:
+		return -1
+	if key_event.keycode >= KEY_1 and key_event.keycode <= KEY_9:
+		return int(key_event.keycode - KEY_1)
+	if key_event.keycode >= KEY_KP_1 and key_event.keycode <= KEY_KP_9:
+		return int(key_event.keycode - KEY_KP_1)
+	return -1
 
 
 func _create_stall_action_panel() -> void:

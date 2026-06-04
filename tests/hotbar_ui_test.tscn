@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://hotbar_ui_test"]
+
+[ext_resource type="Script" path="res://tests/hotbar_ui_test.gd" id="1_hotbar_ui"]
+
+[node name="HotbarUiTest" type="Node"]
+script = ExtResource("1_hotbar_ui")

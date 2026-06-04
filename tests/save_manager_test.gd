@@ -12,6 +12,7 @@ func _ready() -> void:
 
 	GameState.reset_game()
 	GameState.cash = 42
+	GameState.current_scene = PrototypeConstants.SCENE_TOWN
 	GameState.day_index = 3
 	GameState.backpack_level = 2
 	GameState.stall_level = 2
@@ -26,6 +27,8 @@ func _ready() -> void:
 	Inventory.configure_slot_count(12)
 	Inventory.set_count(PrototypeConstants.ITEM_APPLE, 6)
 	Inventory.set_count(PrototypeConstants.ITEM_PEAR, 2)
+	Hotbar.select_slot(1)
+	Hotbar.move_slot(1, 5)
 
 	_assert_true(save_manager.call("save_autosave"), "SaveManager 应能写入 autosave")
 	_assert_true(save_manager.call("has_save"), "写入后应检测到本地存档")
@@ -36,8 +39,10 @@ func _ready() -> void:
 	_assert_true(not loaded.is_empty(), "SaveManager 应能读取 autosave JSON")
 	GameState.apply_save_data(loaded.get("game_state", {}))
 	Inventory.apply_save_data(loaded.get("inventory", {}))
+	Hotbar.apply_save_data(loaded.get("hotbar", {}))
 
 	_assert_equal(GameState.cash, 42, "读档应恢复现金")
+	_assert_equal(GameState.current_scene, PrototypeConstants.SCENE_TOWN, "读档应恢复当前场景")
 	_assert_equal(GameState.day_index, 3, "读档应恢复天数")
 	_assert_equal(GameState.backpack_level, 2, "读档应恢复背包等级")
 	_assert_equal(GameState.stall_level, 2, "读档应恢复摊位等级")
@@ -48,6 +53,9 @@ func _ready() -> void:
 	_assert_equal(Inventory.slot_count, 12, "读档应恢复背包格数")
 	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_APPLE), 6, "读档应恢复苹果数量")
 	_assert_equal(Inventory.get_count(PrototypeConstants.ITEM_PEAR), 2, "读档应恢复梨数量")
+	_assert_equal(Hotbar.selected_index, 5, "读档应恢复快捷栏选中格")
+	_assert_equal(str(Hotbar.slots[5].get("item_id", "")), PrototypeConstants.ITEM_HOE, "读档应恢复快捷栏工具位置")
+	_assert_equal(GameState.current_tool, PrototypeConstants.TOOL_HOE, "读档后当前工具应跟随快捷栏选中格")
 
 	save_manager.call("delete_autosave")
 	get_tree().quit()

@@ -35,25 +35,30 @@ func build_chengguan_route() -> Dictionary:
 	var police_endpoint := _police_endpoint()
 	if police_endpoint == null:
 		return {}
-	var destination_endpoint := _pick_destination_endpoint(police_endpoint)
-	if destination_endpoint == null:
+	var destination_endpoints := _available_destination_endpoints(police_endpoint)
+	if destination_endpoints.is_empty():
 		return {}
 
 	var police_position := _endpoint_position(police_endpoint)
-	var destination_position := _endpoint_position(destination_endpoint)
-	var outbound_route := _route_for_positions(police_position, destination_position)
-	var return_route := _route_for_positions(destination_position, police_position)
-	if outbound_route.is_empty() or return_route.is_empty():
-		return {}
+	for _attempt in range(maxi(1, destination_endpoints.size() * 2)):
+		var destination_endpoint := _pick_weighted_endpoint(destination_endpoints)
+		if destination_endpoint == null:
+			continue
+		var destination_position := _endpoint_position(destination_endpoint)
+		var outbound_route := _route_for_positions(police_position, destination_position)
+		var return_route := _route_for_positions(destination_position, police_position)
+		if outbound_route.is_empty() or return_route.is_empty():
+			continue
 
-	outbound_route.merge({
-		"start_endpoint": police_endpoint,
-		"destination_endpoint": destination_endpoint,
-		"return_start": return_route["start"],
-		"return_end": return_route["end"],
-		"return_points": return_route["points"],
-	})
-	return outbound_route
+		outbound_route.merge({
+			"start_endpoint": police_endpoint,
+			"destination_endpoint": destination_endpoint,
+			"return_start": return_route["start"],
+			"return_end": return_route["end"],
+			"return_points": return_route["points"],
+		})
+		return outbound_route
+	return {}
 
 
 func _on_game_time_changed(total_minutes: int, _clock_text: String) -> void:
@@ -124,7 +129,7 @@ func _police_endpoint() -> Node2D:
 	if route_world == null:
 		return null
 	for node in get_tree().get_nodes_in_group("npc_endpoint"):
-		if node is Node2D and node.is_inside_tree() and node.get_parent() == route_world:
+		if node is Node2D and node.is_inside_tree() and _belongs_to_route_world(node):
 			if str(node.get("endpoint_id")) == police_endpoint_id:
 				return node
 	return null
@@ -144,11 +149,11 @@ func _available_destination_endpoints(police_endpoint: Node2D) -> Array[Node2D]:
 	for node in get_tree().get_nodes_in_group("npc_endpoint"):
 		if not node is Node2D or not node.is_inside_tree():
 			continue
-		if node.get_parent() != route_world or node == police_endpoint:
+		if not _belongs_to_route_world(node) or node == police_endpoint:
 			continue
-		if not bool(node.get("can_spawn_customer")):
+		if node.get("can_spawn_customer") == false:
 			continue
-		if float(node.get("spawn_weight")) <= 0.0:
+		if _endpoint_spawn_weight(node) <= 0.0:
 			continue
 		if not _endpoint_type_allowed(node):
 			continue
@@ -170,17 +175,24 @@ func _endpoint_type_allowed(endpoint: Node) -> bool:
 func _pick_weighted_endpoint(endpoints: Array[Node2D]) -> Node2D:
 	var total_weight := 0.0
 	for endpoint in endpoints:
-		total_weight += max(0.0, float(endpoint.get("spawn_weight")))
+		total_weight += max(0.0, _endpoint_spawn_weight(endpoint))
 
 	if total_weight <= 0.0:
 		return endpoints[_rng.randi_range(0, endpoints.size() - 1)]
 
 	var roll := _rng.randf_range(0.0, total_weight)
 	for endpoint in endpoints:
-		roll -= max(0.0, float(endpoint.get("spawn_weight")))
+		roll -= max(0.0, _endpoint_spawn_weight(endpoint))
 		if roll <= 0.0:
 			return endpoint
 	return endpoints.back()
+
+
+func _endpoint_spawn_weight(endpoint: Node) -> float:
+	var raw_weight: Variant = endpoint.get("spawn_weight")
+	if raw_weight == null:
+		return 0.0
+	return raw_weight
 
 
 func _endpoint_position(endpoint: Node2D) -> Vector2:
@@ -193,8 +205,10 @@ func _route_for_positions(start: Vector2, end: Vector2) -> Dictionary:
 	var navigator := _road_navigator()
 	if navigator != null and navigator.has_method("find_randomized_path"):
 		var road_path: Array = navigator.call("find_randomized_path", start, end, _rng)
+		if road_path.size() < 2 and navigator.has_method("find_path"):
+			road_path = navigator.call("find_path", start, end)
 		if road_path.size() < 2:
-			return {}
+			return {"start": start, "end": end, "points": _random_route_points(start, end)}
 		return _route_from_path(road_path)
 	return {"start": start, "end": end, "points": _random_route_points(start, end)}
 
@@ -247,6 +261,10 @@ func _road_navigator() -> Node:
 	return null
 
 
+func _belongs_to_route_world(node: Node) -> bool:
+	return route_world != null and (node == route_world or route_world.is_ancestor_of(node))
+
+
 func _world_node() -> Node:
 	var parent_node := get_parent()
 	if parent_node == null:
@@ -261,5 +279,7 @@ func _world_node() -> Node:
 func _has_endpoint_child(node: Node) -> bool:
 	for child in node.get_children():
 		if child.is_in_group("npc_endpoint"):
+			return true
+		if _has_endpoint_child(child):
 			return true
 	return false

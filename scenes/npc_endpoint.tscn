@@ -1,14 +1,32 @@
-[gd_scene load_steps=2 format=4]
+[gd_scene format=3 uid="uid://de1r2fbrl8bjf"]
 
-[ext_resource type="Script" path="res://scripts/world/npc_endpoint.gd" id="1_endpoint"]
+[ext_resource type="Script" uid="uid://bwetsoqobj0qh" path="res://scripts/world/npc_endpoint.gd" id="1_endpoint"]
 
-[node name="NpcEndpoint" type="Node2D" groups=["npc_endpoint"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
+size = Vector2(54.920643, 52.182343)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(58.90869, 45.14823)
+
+[node name="NpcEndpoint" type="Area2D" unique_id=965728198 groups=["building", "npc_endpoint"]]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_endpoint")
 
-[node name="Visual" type="Sprite2D" parent="."]
+[node name="Visual" type="Sprite2D" parent="." unique_id=872435065]
 z_index = -5
 texture_filter = 1
 position = Vector2(0, -72)
 
-[node name="EndpointMarker" type="Marker2D" parent="."]
+[node name="EndpointMarker" type="Marker2D" parent="." unique_id=1224476164]
 position = Vector2(0, 42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2068573391]
+shape = SubResource("RectangleShape2D_interaction")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1555238100]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=596944552]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_body")

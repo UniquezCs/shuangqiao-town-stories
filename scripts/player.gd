@@ -8,14 +8,8 @@ const FARMING_ACTIONS := {
 	"water": true,
 	"harvest": true,
 }
-const FARMING_CLICK_TOOLS := {
-	PrototypeConstants.TOOL_HOE: true,
-	PrototypeConstants.TOOL_SEED: true,
-	PrototypeConstants.TOOL_WATER: true,
-	PrototypeConstants.TOOL_SICKLE: true,
-	PrototypeConstants.TOOL_FERTILIZER: true,
-}
 const CircularCountdownScript := preload("res://scripts/ui/circular_countdown_indicator.gd")
+const FarmingInteractionControllerScript := preload("res://scripts/world/farming_interaction_controller.gd")
 const BEGGING_KNEEL_TEXTURE_PATH := "res://assets/generated/sprites/characters/vendor_beg_kneel_48x64.png"
 const BEGGING_KOWTOW_TEXTURE_PATH := "res://assets/generated/sprites/characters/vendor_beg_kowtow_48x64.png"
 
@@ -27,6 +21,7 @@ var _hold_interactable: Area2D = null
 var _is_begging := false
 var _begging_pose: Sprite2D = null
 var _begging_pose_token := 0
+var _farming_interaction_controller: Node = null
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interaction_area: Area2D = $InteractionArea
@@ -41,16 +36,23 @@ func _ready() -> void:
 	interaction_area.area_exited.connect(_on_interaction_area_exited)
 	SignalBus.current_tool_changed.connect(_on_current_tool_changed)
 	SignalBus.sale_completed.connect(_on_sale_completed)
+	_create_farming_interaction_controller()
 	_update_interactable()
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		if _is_farming_click_tool(GameState.current_tool):
+			_update_farming_hover_prompt(get_global_mouse_position())
+		return
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
 			if _is_farming_click_tool(GameState.current_tool):
 				get_viewport().set_input_as_handled()
-				handle_farming_click(get_global_mouse_position())
+				var mouse_position := get_global_mouse_position()
+				handle_farming_click(mouse_position)
+				_update_farming_hover_prompt(mouse_position)
 
 
 func _physics_process(_delta: float) -> void:
@@ -100,20 +102,35 @@ func _input_direction() -> Vector2:
 
 
 func handle_farming_click(world_position: Vector2) -> bool:
-	if _hold_interactable != null or _is_farming_action_playing or _is_begging:
+	if _farming_interaction_controller == null:
 		return false
-	if not _is_farming_click_tool(GameState.current_tool):
-		return false
-	var target := _nearest_farming_target(world_position)
-	if target.is_empty():
-		return false
-	var target_position: Vector2 = target.get("world_position", world_position)
-	if not _is_farming_target_in_reach(target_position):
-		return false
-	var target_node: Node = target.get("node", null)
-	if target_node == null or not is_instance_valid(target_node) or not target_node.has_method("click_interact"):
-		return false
-	return bool(await target_node.call("click_interact", target_position, self))
+	return bool(await _farming_interaction_controller.call("handle_click", world_position))
+
+
+func get_farming_prompt_for_position(world_position: Vector2) -> String:
+	if _farming_interaction_controller == null:
+		return ""
+	return str(_farming_interaction_controller.call("prompt_for_position", world_position))
+
+
+func can_handle_farming_click() -> bool:
+	return _hold_interactable == null and not _is_farming_action_playing and not _is_begging
+
+
+func is_farming_target_in_reach(target_position: Vector2) -> bool:
+	return global_position.distance_to(target_position) <= PrototypeConstants.FARM_CLICK_REACH_RADIUS
+
+
+func face_towards_farming_target(target_position: Vector2) -> void:
+	var direction := target_position - global_position
+	if direction.length_squared() <= 0.001:
+		return
+	if absf(direction.x) > absf(direction.y):
+		facing = "right" if direction.x > 0.0 else "left"
+	else:
+		facing = "down" if direction.y > 0.0 else "up"
+	if not _is_farming_action_playing:
+		_update_animation(Vector2.ZERO)
 
 
 func play_farming_action(action_id: String) -> void:
@@ -187,6 +204,7 @@ func _update_interactable() -> void:
 
 func _on_current_tool_changed(_tool_id: String) -> void:
 	call_deferred("_refresh_overlapping_interactables")
+	call_deferred("_update_farming_hover_prompt", get_global_mouse_position())
 
 
 func _refresh_overlapping_interactables() -> void:
@@ -360,52 +378,24 @@ func _load_texture(path: String) -> Texture2D:
 
 
 func _is_farming_click_tool(tool_id: String) -> bool:
-	return FARMING_CLICK_TOOLS.has(tool_id)
+	if _farming_interaction_controller == null:
+		return false
+	return bool(_farming_interaction_controller.call("is_farming_click_tool", tool_id))
 
 
-func _nearest_farming_target(world_position: Vector2) -> Dictionary:
-	if GameState.current_tool == PrototypeConstants.TOOL_HOE:
-		return _nearest_farm_field_target(world_position)
-	return _nearest_farm_plot_target(world_position)
+func _create_farming_interaction_controller() -> void:
+	_farming_interaction_controller = FarmingInteractionControllerScript.new()
+	_farming_interaction_controller.name = "FarmingInteractionController"
+	add_child(_farming_interaction_controller)
+	_farming_interaction_controller.call("setup", self)
 
 
-func _nearest_farm_field_target(world_position: Vector2) -> Dictionary:
-	var nearest := {}
-	var nearest_distance := INF
-	for node in get_tree().get_nodes_in_group("farm_field"):
-		if not is_instance_valid(node) or not node.has_method("nearest_click_target"):
-			continue
-		var target: Dictionary = node.call("nearest_click_target", world_position)
-		if target.is_empty():
-			continue
-		var target_position: Vector2 = target.get("world_position", world_position)
-		var distance := world_position.distance_to(target_position)
-		if distance < nearest_distance:
-			nearest = target
-			nearest_distance = distance
-	return nearest
-
-
-func _nearest_farm_plot_target(world_position: Vector2) -> Dictionary:
-	var nearest_plot: Node2D = null
-	var nearest_distance := INF
-	for node in get_tree().get_nodes_in_group("farm_plot"):
-		var plot := node as Node2D
-		if plot == null or not is_instance_valid(plot):
-			continue
-		var distance := world_position.distance_to(plot.global_position)
-		if distance < nearest_distance:
-			nearest_plot = plot
-			nearest_distance = distance
-	if nearest_plot == null:
-		return {}
-	if nearest_distance > PrototypeConstants.FARM_CLICK_TARGET_RADIUS:
-		return {}
-	return {
-		"world_position": nearest_plot.global_position,
-		"node": nearest_plot,
-	}
-
-
-func _is_farming_target_in_reach(target_position: Vector2) -> bool:
-	return global_position.distance_to(target_position) <= PrototypeConstants.FARM_CLICK_REACH_RADIUS
+func _update_farming_hover_prompt(world_position: Vector2) -> void:
+	if not _is_farming_click_tool(GameState.current_tool):
+		_update_interactable()
+		return
+	var prompt := get_farming_prompt_for_position(world_position)
+	if prompt.is_empty():
+		_update_interactable()
+	else:
+		SignalBus.interaction_prompt_changed.emit(prompt)

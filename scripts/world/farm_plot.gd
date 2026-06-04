@@ -54,6 +54,8 @@ func interact(player: Node) -> void:
 
 
 func click_interact(_world_position: Vector2, player: Node) -> bool:
+	if state == "tilled":
+		return _try_seed()
 	interact(player)
 	return true
 
@@ -66,16 +68,19 @@ func _try_till() -> void:
 	GameState.set_objective("按 2 选择种子，在耕地上播种")
 
 
-func _try_seed() -> void:
+func _try_seed() -> bool:
 	if GameState.current_tool != PrototypeConstants.TOOL_SEED:
 		SignalBus.sale_feedback.emit("先按 2 选择种子", global_position)
-		return
-	var seed_item_id := _first_available_seed()
+		return false
+	var seed_item_id := Hotbar.get_selected_item_id()
+	if ConfigLoader.get_crop_for_seed(seed_item_id).is_empty():
+		seed_item_id = ""
 	if seed_item_id.is_empty():
-		SignalBus.sale_feedback.emit("背包里没有种子", global_position)
-		return
-	if not Inventory.remove_item(seed_item_id, 1):
-		return
+		SignalBus.sale_feedback.emit("先把种子放到快捷栏并选中", global_position)
+		return false
+	var removed_seed := Hotbar.remove_from_selected(1)
+	if int(removed_seed.get("count", 0)) != 1:
+		return false
 	crop_id = ConfigLoader.get_crop_for_seed(seed_item_id)
 	if crop_id.is_empty():
 		crop_id = PrototypeConstants.ITEM_APPLE
@@ -85,7 +90,8 @@ func _try_seed() -> void:
 		"days_grown": 0,
 		"fertilized": false,
 	})
-	GameState.set_objective("按 3 选择水壶，点击作物浇水")
+	GameState.set_objective("选择水壶，点击作物浇水")
+	return true
 
 
 func _try_water_or_fertilize(player: Node) -> void:
@@ -152,14 +158,6 @@ func _harvest(player: Node) -> void:
 	GameState.set_objective("带着作物去镇街摆摊")
 	if GameState.sales_count > 0:
 		GameState.complete_prototype()
-
-
-func _first_available_seed() -> String:
-	for slot in Inventory.slots:
-		var item_id := str(slot.get("item_id", ""))
-		if ConfigLoader.get_crop_for_seed(item_id) != "" and int(slot.get("count", 0)) > 0:
-			return item_id
-	return ""
 
 
 func _load_state() -> void:

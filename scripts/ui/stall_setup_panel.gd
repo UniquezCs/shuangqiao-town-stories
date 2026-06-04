@@ -72,6 +72,8 @@ func can_drop_slot_data(data: Variant, target_container: String, target_index: i
 	if target_container == "backpack":
 		if source == "backpack":
 			return true
+		if source == "hotbar":
+			return true
 		if source == "stall":
 			var backpack_slot: Dictionary = drag_data.get("slot", {})
 			return Inventory.can_insert_to_slot(target_index, str(backpack_slot.get("item_id", "")), int(backpack_slot.get("count", 0)))
@@ -93,6 +95,9 @@ func handle_slot_drop(data: Variant, target_container: String, target_index: int
 	var source := str(drag_data.get("source", ""))
 	if source == "backpack" and target_container == "backpack":
 		Inventory.move_slot(int(drag_data.get("slot_index", -1)), target_index)
+		_refresh()
+	elif source == "hotbar" and target_container == "backpack":
+		Hotbar.transfer_hotbar_to_inventory(int(drag_data.get("slot_index", -1)), target_index)
 		_refresh()
 	elif source == "backpack" and target_container == "stall":
 		_begin_backpack_to_stall_transfer(drag_data, target_index)

@@ -120,12 +120,16 @@ func _apply_panel_style(panel: PanelContainer, texture_path: String) -> void:
 func can_drop_slot_data(data: Variant, target_container: String, _target_index: int) -> bool:
 	if typeof(data) != TYPE_DICTIONARY:
 		return false
-	return str((data as Dictionary).get("source", "")) == "backpack" and target_container == "backpack"
+	return ["backpack", "hotbar"].has(str((data as Dictionary).get("source", ""))) and target_container == "backpack"
 
 
 func handle_slot_drop(data: Variant, target_container: String, target_index: int) -> void:
 	if not can_drop_slot_data(data, target_container, target_index):
 		return
 	var drag_data: Dictionary = data
-	Inventory.move_slot(int(drag_data.get("slot_index", -1)), target_index)
+	var source := str(drag_data.get("source", ""))
+	if source == "backpack":
+		Inventory.move_slot(int(drag_data.get("slot_index", -1)), target_index)
+	elif source == "hotbar":
+		Hotbar.transfer_hotbar_to_inventory(int(drag_data.get("slot_index", -1)), target_index)
 	_refresh()

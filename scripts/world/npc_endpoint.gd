@@ -1,5 +1,5 @@
 @tool
-extends Node2D
+extends Area2D
 
 @export var endpoint_id := ""
 @export var endpoint_type := ""
@@ -16,6 +16,7 @@ extends Node2D
 
 func _ready() -> void:
 	add_to_group("npc_endpoint")
+	add_to_group("building")
 	_apply_visual_texture()
 
 
