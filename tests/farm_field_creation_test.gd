@@ -19,8 +19,9 @@ func _ready() -> void:
 
 	GameState.set_current_tool(PrototypeConstants.TOOL_HOE)
 	await get_tree().process_frame
-	_assert_equal(field.is_in_group("interactable"), true, "装备锄头时才应检测锄地交互")
-	field.call("interact", player)
+	_assert_equal(field.is_in_group("interactable"), false, "FarmField 不再通过 E 键交互，应由鼠标点击触发")
+	_assert_equal(field.is_in_group("farm_field"), true, "FarmField 应加入鼠标农作目标组")
+	await field.call("click_interact", player.global_position, player)
 	await get_tree().process_frame
 
 	var plots := get_tree().get_nodes_in_group("farm_plot")
@@ -32,7 +33,7 @@ func _ready() -> void:
 	var rectangle := shape_node.shape as RectangleShape2D
 	_assert_equal(rectangle.size, Vector2(32, 32), "新农田碰撞范围应是 1x1 个 32 像素格")
 
-	field.call("interact", player)
+	await field.call("click_interact", player.global_position, player)
 	await get_tree().process_frame
 	_assert_equal(get_tree().get_nodes_in_group("farm_plot").size(), 1, "同一格不应重复开垦")
 

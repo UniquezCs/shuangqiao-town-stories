@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godot 项目每日简报 - 2026-06-04</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --card: #fffaf2;
+      --ink: #2f241c;
+      --muted: #6d5a4d;
+      --line: #d7c5b5;
+      --accent: #9d5c2f;
+      --accent-soft: #edd7c4;
+      --good: #29613c;
+      --warn: #925b19;
+      --risk: #9d2c2c;
+      --shadow: rgba(57, 34, 18, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #efe2d1 0%, var(--bg) 42%, #f9f5ef 100%);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero, .section, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+
+    .hero {
+      padding: 28px 30px 24px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 32px; }
+    h2 { font-size: 22px; padding: 22px 24px 0; }
+    h3 { font-size: 17px; }
+
+    p { margin: 8px 0; }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #6f3b16;
+      font-size: 13px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+    .section {
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .section-body {
+      padding: 0 24px 24px;
+    }
+    .col-6 { grid-column: span 6; }
+    .col-12 { grid-column: span 12; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .card {
+      padding: 16px 18px;
+    }
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+    li { margin: 6px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-top: 1px solid var(--line);
+    }
+    th {
+      background: #f7ecdf;
+      color: #6a4428;
+      font-weight: 700;
+    }
+    .tag {
+      display: inline-block;
+      min-width: 34px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .p0 { background: #f6d4d4; color: #892727; }
+    .p1 { background: #f8e3c3; color: #8b5517; }
+    .p2 { background: #dcead8; color: #2b5d36; }
+    .p3 { background: #dde7f7; color: #355b98; }
+    .fact { color: var(--good); font-weight: 700; }
+    .infer { color: var(--warn); font-weight: 700; }
+    .idea { color: var(--accent); font-weight: 700; }
+    .mono {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+    .small { color: var(--muted); font-size: 13px; }
+    .notice {
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      margin-top: 12px;
+      color: var(--muted);
+    }
+    @media (max-width: 900px) {
+      .col-6, .col-12 { grid-column: span 12; }
+      .cards { grid-template-columns: 1fr; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>本简报覆盖自 <strong>2026-06-02 22:00:22 UTC</strong>（自动化上次运行时间）以来的仓库提交、当前工作区变更，以及基于当前代码状态提炼出的优化建议与功能提案。</p>
+      <div class="meta">
+        <span class="chip">日期：2026-06-04</span>
+        <span class="chip">当前 HEAD：5933c99</span>
+        <span class="chip">统计窗口：2026-06-03 至 2026-06-04</span>
+        <span class="chip">简报生成时刻：2026-06-04 06:03:07 CST</span>
+      </div>
+      <div class="notice">
+        <div><span class="fact">已发生改动</span> 指 git 已提交和当前工作区可见的事实。</div>
+        <div><span class="infer">优化建议</span> 指基于现有代码结构和最近改动得出的工程推断。</div>
+        <div><span class="idea">新增功能</span> 指结合项目现状给出的玩法与体验扩展建议。</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>概览</h2>
+      <div class="section-body">
+        <div class="grid">
+          <div class="col-6">
+            <div class="card">
+              <h3>本轮主线</h3>
+              <ul>
+                <li>项目入口切换到标题界面，新增新游戏 / 读档分流，补齐自动存档与待加载状态管理。</li>
+                <li>摆摊系统从单体脚本拆出库存、销售策略、运行时节点和乞讨会话，交易链路明显扩展。</li>
+                <li>新增全局 BGM 管理和场景切换淡入淡出，主页、家、镇街之间的演出连续性提升。</li>
+                <li>当前未提交改动正在把农田从 E 键近身交互迁移到鼠标点击交互，并新增对应测试场景。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <h3>变化规模</h3>
+              <ul>
+                <li>新增提交 2 个：<span class="mono">88ed9a4</span>、<span class="mono">5933c99</span>。</li>
+                <li>已提交新增文件集中在 <span class="mono">scripts/autoload</span>、<span class="mono">scripts/world</span>、<span class="mono">scripts/ui</span>、<span class="mono">tests</span>、UI 与音频资源。</li>
+                <li>当前工作区还有 7 个已修改文件、1 组未跟踪农作测试、1 批未跟踪乡镇建筑贴图。</li>
+                <li>脚本体量最大的文件仍集中在 <span class="mono">scripts/world/customer.gd</span>、<span class="mono">scripts/ui/stall_setup_panel.gd</span>、<span class="mono">scripts/player.gd</span>、<span class="mono">scripts/autoload/game_state.gd</span>、<span class="mono">scripts/main.gd</span>。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>主要改动</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>范围</th>
+              <th>摘要</th>
+              <th>代表文件</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-06-04 02:28 +0800</td>
+              <td>标题界面、存档、摆摊与乞讨</td>
+              <td>新增标题界面与读档入口；引入 <span class="mono">SaveManager</span>；摆摊拆分库存与销售策略；增加乞讨行为、背包拖拽、每日总结和相关测试。</td>
+              <td class="mono">scenes/title_screen.tscn<br />scripts/ui/title_screen.gd<br />scripts/autoload/save_manager.gd<br />scripts/world/stall.gd</td>
+            </tr>
+            <tr>
+              <td>2026-06-04 02:57 +0800</td>
+              <td>全局音频与场景切换</td>
+              <td>新增全局循环 BGM；主场景加载流程加入过场淡入淡出；补充音乐与切场测试。</td>
+              <td class="mono">scripts/autoload/music_manager.gd<br />scripts/main.gd<br />assets/audio/bgm/shuangqiao_town_loop.wav<br />tests/scene_transition_fade_test.gd</td>
+            </tr>
+            <tr>
+              <td>当前工作区</td>
+              <td>农田鼠标交互重构</td>
+              <td>玩家可对农田和地块直接点击执行锄地、播种、浇水、收获；交互组从 <span class="mono">interactable</span> 转向 <span class="mono">farm_field</span> / <span class="mono">farm_plot</span>。</td>
+              <td class="mono">scripts/player.gd<br />scripts/world/farm_field.gd<br />scripts/world/farm_plot.gd<br />tests/farm_mouse_click_test.gd</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增内容</h2>
+      <div class="section-body">
+        <div class="cards">
+          <div class="card">
+            <h3>系统与脚本</h3>
+            <ul>
+              <li><span class="fact">已发生改动</span> 新增 <span class="mono">scripts/autoload/save_manager.gd</span>，提供自动存档、待加载缓存和版本迁移入口。</li>
+              <li><span class="fact">已发生改动</span> 新增 <span class="mono">scripts/autoload/music_manager.gd</span>，统一管理全局 BGM。</li>
+              <li><span class="fact">已发生改动</span> 新增 <span class="mono">scripts/world/stall_inventory.gd</span>、<span class="mono">stall_sales_policy.gd</span>、<span class="mono">stall_runtime_nodes.gd</span>、<span class="mono">begging_session.gd</span>，把摆摊逻辑分拆为可复用模块。</li>
+              <li><span class="fact">已发生改动</span> 新增 <span class="mono">scripts/ui/title_screen.gd</span>、<span class="mono">scripts/ui/stall_action_panel.gd</span> 等 UI 控制脚本。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>场景、资源与测试</h3>
+            <ul>
+              <li><span class="fact">已发生改动</span> 新增标题场景 <span class="mono">scenes/title_screen.tscn</span>，项目入口改为标题界面。</li>
+              <li><span class="fact">已发生改动</span> 新增标题背景、背包/摊位面板、格子 UI、乞讨相关角色与道具贴图。</li>
+              <li><span class="fact">已发生改动</span> 新增循环 BGM <span class="mono">assets/audio/bgm/shuangqiao_town_loop.wav</span>。</li>
+              <li><span class="fact">已发生改动</span> 新增测试：标题、存档、睡眠切换、BGM、UI 拖拽、乞讨、切场淡出等。</li>
+              <li><span class="fact">已发生改动</span> 未跟踪新增测试 <span class="mono">tests/farm_mouse_click_test.gd</span> 与若干乡镇建筑贴图尚未纳入版本管理。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>修改内容</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="fact">已发生改动</span> <span class="mono">project.godot</span> 把主场景切到标题页，并注册 <span class="mono">SaveManager</span>、<span class="mono">MusicManager</span> 自动加载项。</li>
+          <li><span class="fact">已发生改动</span> <span class="mono">scripts/main.gd</span> 现在负责场景切换过场、睡眠过渡、日结切换和世界重载。</li>
+          <li><span class="fact">已发生改动</span> <span class="mono">scripts/world/stall.gd</span> 从“全能摊位脚本”重构为协调器，委托库存、售卖策略和运行时节点创建。</li>
+          <li><span class="fact">已发生改动</span> <span class="mono">scripts/autoload/game_state.gd</span>、<span class="mono">inventory.gd</span> 补充了存档字段、升级能力、摊位槽位与昨日总结数据。</li>
+          <li><span class="fact">已发生改动</span> <span class="mono">configs/assets.json</span> 与 <span class="mono">docs/asset_registry.md</span> 扩充了 UI、乞讨与 BGM 资源登记。</li>
+          <li><span class="fact">已发生改动</span> <span class="mono">scenes/home_scene.tscn</span>、<span class="mono">house_scene.tscn</span>、<span class="mono">town_scene.tscn</span>、<span class="mono">stall_spot.tscn</span>、<span class="mono">player.tscn</span> 对接了新 UI、摆摊入口与切场逻辑。</li>
+          <li><span class="fact">已发生改动</span> 当前工作区把 <span class="mono">player.gd</span> 农作输入接入鼠标点击，并在 <span class="mono">farm_field.gd</span> / <span class="mono">farm_plot.gd</span> 增加点击目标接口。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>删除或废弃内容</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="fact">已发生改动</span> 本统计窗口内未看到显式删除的大型场景或脚本文件。</li>
+          <li><span class="fact">已发生改动</span> 摆摊脚本中的部分职责已被抽离到 <span class="mono">stall_inventory.gd</span>、<span class="mono">stall_sales_policy.gd</span>、<span class="mono">stall_runtime_nodes.gd</span>，原先“单文件包办一切”的结构已被弱化。</li>
+          <li><span class="fact">已发生改动</span> 农田的 E 键交互组机制正在退场：<span class="mono">FarmField</span> 不再依赖 <span class="mono">interactable</span> 组，而转向鼠标点击触发；相关行为目前仍处于未提交状态。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>可能影响</h2>
+      <div class="section-body">
+        <ul>
+          <li>标题界面成为新入口后，所有“直接进入主场景”的旧测试、调试启动习惯和自动化脚本都需要确认是否仍然有效。</li>
+          <li>自动存档只保存了 <span class="mono">GameState</span> 与 <span class="mono">Inventory</span>，但当前玩法已包含运行中的摊位、顾客状态、BGM、临时 UI 和世界节点重建逻辑，存档恢复的一致性会逐渐成为风险点。</li>
+          <li>场景切换和睡眠切换都在 <span class="mono">scripts/main.gd</span> 聚合，后续再加更多过场或剧情时，这个文件会继续膨胀。</li>
+          <li>鼠标农作交互尚未提交，且存在与原 E 键交互、UI 点击冒泡、相机缩放下命中精度相关的回归风险。</li>
+          <li>当前有一批未跟踪建筑资源，若后续场景开始依赖这些路径但资源没有及时登记到资产表和版本库，容易出现“本地可跑、协作环境缺图”的问题。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>待跟进事项</h2>
+      <div class="section-body">
+        <ul>
+          <li>确认农田鼠标点击交互是否完全替代 E 键，并补跑或补建对应回归测试集合。</li>
+          <li>把未跟踪的乡镇建筑贴图和 <span class="mono">tests/farm_mouse_click_test.*</span> 纳入资源登记、版本管理与目录规范检查。</li>
+          <li>验证标题页新游戏 / 读档 / 自动存档与跨场景 BGM 在桌面与 headless 测试下都稳定。</li>
+          <li>评估 <span class="mono">scripts/main.gd</span>、<span class="mono">scripts/player.gd</span>、<span class="mono">scripts/autoload/game_state.gd</span> 的继续拆分计划，避免近期功能继续集中到超长文件。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>优化点（基于当前代码状态推断）</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>优先级</th>
+              <th>标题</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略成本</th>
+              <th>是否先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag p0">P0</span></td>
+              <td>补齐存档边界与恢复一致性</td>
+              <td><span class="infer">优化建议</span> 已有标题页 + 自动存档，但 <span class="mono">SaveManager</span> 当前只持久化 <span class="mono">GameState</span> 与 <span class="mono">Inventory</span>；摆摊运行态、农田地块实例恢复、当前场景入口和临时节点一致性风险上升。</td>
+              <td>避免玩家读档后出现世界状态错乱、物品丢失、目标文本不一致等高风险问题。</td>
+              <td class="mono">scripts/autoload/save_manager.gd<br />scripts/main.gd<br />scripts/autoload/game_state.gd<br />scripts/world/farm_field.gd<br />scripts/world/stall_spot.gd</td>
+              <td>中</td>
+              <td>是，先做读档回归矩阵</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>继续拆分超长核心脚本</td>
+              <td><span class="infer">优化建议</span> <span class="mono">player.gd</span> 411 行、<span class="mono">game_state.gd</span> 383 行、<span class="mono">main.gd</span> 328 行、<span class="mono">customer.gd</span> 482 行，职责已跨输入、动画、场景切换、状态存取和业务规则。</td>
+              <td>降低回归面，缩短定位时间，让未来功能改动更易测、更易 review。</td>
+              <td class="mono">scripts/player.gd<br />scripts/main.gd<br />scripts/autoload/game_state.gd<br />scripts/world/customer.gd</td>
+              <td>中</td>
+              <td>否，可直接从高耦合片段开始</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>把农作交互改为显式输入系统而非玩家全局扫描</td>
+              <td><span class="infer">优化建议</span> 当前未提交方案在 <span class="mono">player.gd</span> 中遍历组节点寻找最近农田/地块，规模扩大后会让输入逻辑与世界节点耦合得更紧。</td>
+              <td>减少输入分支膨胀，便于后续加入更多工具、地块类型、右键操作和触屏适配。</td>
+              <td class="mono">scripts/player.gd<br />scripts/world/farm_field.gd<br />scripts/world/farm_plot.gd<br />SignalBus / 独立 FarmingInteractionController</td>
+              <td>中</td>
+              <td>是，先验证当前鼠标交互是否满足体验</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>统一资源登记与未跟踪资产入库流程</td>
+              <td><span class="infer">优化建议</span> 当前已有一批未跟踪建筑贴图和持续扩张的 <span class="mono">configs/assets.json</span>；若缺少脚本化校验，资源目录和注册表会逐步漂移。</td>
+              <td>降低缺图、错路径、漏登记和协作环境不一致问题。</td>
+              <td class="mono">configs/assets.json<br />docs/asset_registry.md<br />tests/generated_asset_layout_test.gd<br />可新增资源清单校验测试</td>
+              <td>低到中</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>补强性能与调试基线</td>
+              <td><span class="infer">优化建议</span> 已有 <span class="mono">gameplay_debug_log.gd</span>，但缺少针对顾客数量、场景切换、农田节点数和库存 UI 刷新的性能采样基线。</td>
+              <td>为后续扩图、增 NPC、增商品前建立可量化阈值，避免性能问题积累到后期。</td>
+              <td class="mono">scripts/debug/gameplay_debug_log.gd<br />tests/random_customer_performance_test.gd<br />新增性能 smoke test / debug overlay</td>
+              <td>中</td>
+              <td>是，先量一次现状</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>整理场景组织与跨场景职责</td>
+              <td><span class="infer">优化建议</span> 现在标题页、家、屋内、镇街、主控制器和多层 UI 关系更复杂，但切场、出生点、过场、BGM、日结逻辑都集中在主场景脚本内。</td>
+              <td>让场景层次更清晰，减少“改一个入口牵一串逻辑”的隐性耦合。</td>
+              <td class="mono">scenes/main.tscn<br />scripts/main.gd<br />scenes/title_screen.tscn<br />场景切换服务模块</td>
+              <td>中</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td><span class="tag p3">P3</span></td>
+              <td>规范测试与开发工作流入口</td>
+              <td><span class="infer">优化建议</span> 测试数量明显增长，但当前看不到统一测试分层、运行清单和开发者入口说明；同时仓库出现 <span class="mono">.obsidian</span> 工作区文件。</td>
+              <td>减少协作者误提交、本地环境差异和回归测试选择成本。</td>
+              <td class="mono">README / docs/development_baseline.md<br />.gitignore<br />tests/ 目录说明文档</td>
+              <td>低</td>
+              <td>否</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增功能建议（结合当前项目状态的创意提案）</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>优先级</th>
+              <th>标题</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略成本</th>
+              <th>是否先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>读档后“上次一天总结”与继续经营提示</td>
+              <td><span class="idea">新增功能</span> 既然已经有标题页、自动存档和昨日总结面板，最自然的下一步是让玩家在读档时快速接回经营上下文，而不是只回到场景。</td>
+              <td>强化留存与可继续性，让“再开一局”更顺滑，减少玩家忘记目标的断档感。</td>
+              <td class="mono">scripts/ui/title_screen.gd<br />scripts/ui/daily_summary_panel.gd<br />scripts/autoload/game_state.gd</td>
+              <td>低到中</td>
+              <td>是，先确认标题页信息密度</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>顾客偏好可视化与摆摊选品反馈</td>
+              <td><span class="idea">新增功能</span> 摆摊已支持多商品槽位和顾客画像决策，但玩家侧还缺少“为什么这个位置和货品赚钱/不赚钱”的清晰反馈。</td>
+              <td>把现有销售策略系统转化为可学习的经营玩法，提升策略感而不是纯试错。</td>
+              <td class="mono">scripts/world/stall_sales_policy.gd<br />scripts/ui/stall_setup_panel.gd<br />scripts/ui/stall_action_panel.gd<br />scripts/debug/gameplay_debug_log.gd</td>
+              <td>中</td>
+              <td>是，先用调试数据显示原型</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>种子店扩展为多作物供应与日波动行情</td>
+              <td><span class="idea">新增功能</span> 现有农田、库存、顾客偏好、商品配置和背包 UI 已经成型，最缺的是把种植链条从苹果演示升级为真正的经营选择。</td>
+              <td>把种田和摆摊两条线真正打通，提供中短期决策空间和重复游玩动力。</td>
+              <td class="mono">configs/items.json<br />configs/crops.json<br />configs/customer_preferences.json<br />scripts/world/seed_shop.gd<br />scripts/autoload/game_state.gd</td>
+              <td>中到高</td>
+              <td>是，先验证 2 到 3 种作物闭环</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>城管风险升级为“巡查热度”系统</td>
+              <td><span class="idea">新增功能</span> 目前已有摆摊、乞讨、城管、位置记录与罚款统计，适合把这些离散机制整合成可预判的风险曲线。</td>
+              <td>让“赚钱 vs 风险”成为更有张力的核心循环，而不只是随机挨抓。</td>
+              <td class="mono">scripts/world/chengguan_spawner.gd<br />scripts/world/stall_spot.gd<br />scripts/autoload/game_state.gd<br />HUD / summary 面板</td>
+              <td>中</td>
+              <td>是，先确认热度来源和衰减规则</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>乡镇地图建筑点位正式接入可探索地点</td>
+              <td><span class="idea">新增功能</span> 当前未跟踪的学校、药店、百货、菜市场、书店等建筑贴图已经到位，但还没有转化成可交互的空间功能。</td>
+              <td>快速提升小镇的可逛性与叙事密度，也让近期新增建筑资产立刻产生玩法价值。</td>
+              <td class="mono">scenes/town_scene.tscn<br />assets/generated/sprites/props/township/buildings/*<br />scripts/world/scene_exit.gd<br />新地点场景与交互脚本</td>
+              <td>中到高</td>
+              <td>是，先挑 1 到 2 个建筑试点</td>
+            </tr>
+            <tr>
+              <td><span class="tag p3">P3</span></td>
+              <td>标题页动态展示“经营进度”与音画氛围</td>
+              <td><span class="idea">新增功能</span> 标题界面和 BGM 刚刚建立，是补足项目气质表达和存档吸引力的低风险切入口。</td>
+              <td>让项目第一印象更完整，也为未来版本展示、试玩录屏和发布准备基础门面。</td>
+              <td class="mono">scenes/title_screen.tscn<br />scripts/ui/title_screen.gd<br />assets/generated/sprites/ui/title/*</td>
+              <td>低</td>
+              <td>否</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>用于回顾的关键文件路径</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>类别</th>
+              <th>路径</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>项目入口与全局状态</td>
+              <td class="mono">project.godot<br />scripts/main.gd<br />scripts/autoload/game_state.gd<br />scripts/autoload/save_manager.gd<br />scripts/autoload/music_manager.gd</td>
+            </tr>
+            <tr>
+              <td>摆摊 / 乞讨 / 顾客</td>
+              <td class="mono">scripts/world/stall.gd<br />scripts/world/stall_inventory.gd<br />scripts/world/stall_sales_policy.gd<br />scripts/world/begging_session.gd<br />scripts/world/customer.gd<br />scripts/world/chengguan_spawner.gd</td>
+            </tr>
+            <tr>
+              <td>农田与玩家交互</td>
+              <td class="mono">scripts/player.gd<br />scripts/world/farm_field.gd<br />scripts/world/farm_plot.gd<br />tests/farm_field_creation_test.gd<br />tests/farm_mouse_click_test.gd</td>
+            </tr>
+            <tr>
+              <td>UI 与标题页</td>
+              <td class="mono">scenes/title_screen.tscn<br />scripts/ui/title_screen.gd<br />scripts/ui/stall_setup_panel.gd<br />scripts/ui/backpack_panel.gd<br />scripts/ui/daily_summary_panel.gd</td>
+            </tr>
+            <tr>
+              <td>配置与资产清单</td>
+              <td class="mono">configs/assets.json<br />docs/asset_registry.md<br />docs/development_baseline.md<br />assets/audio/bgm/shuangqiao_town_loop.wav<br />assets/generated/sprites/props/township/buildings/*</td>
+            </tr>
+            <tr>
+              <td>本轮新增或关键测试</td>
+              <td class="mono">tests/title_screen_test.gd<br />tests/save_manager_test.gd<br />tests/music_manager_test.gd<br />tests/scene_transition_fade_test.gd<br />tests/ui_inventory_drag_test.gd<br />tests/begging_feature_test.gd</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

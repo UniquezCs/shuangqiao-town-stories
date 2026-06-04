@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-03",
+	"updated_at": "2026-06-04",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -560,14 +560,14 @@
 				"customer_purchase_countdown",
 				"initial_inventory"
 			],
-				"used_by": [
-					"configs/items.json",
-					"scripts/world/customer.gd",
-					"scripts/autoload/inventory.gd"
-				],
-				"notes": "Regenerated 2026-06-02 as part of the apple 8-resource crop pack.",
-				"anchor": "center",
-				"collision": "none",
+			"used_by": [
+				"configs/items.json",
+				"scripts/world/customer.gd",
+				"scripts/autoload/inventory.gd"
+			],
+			"notes": "Regenerated 2026-06-02 as part of the apple 8-resource crop pack.",
+			"anchor": "center",
+			"collision": "none",
 			"tags": [
 				"item",
 				"crop",
@@ -577,21 +577,21 @@
 		"item.apple_seed": {
 			"type": "item_icon",
 			"status": "implemented",
-				"path": "res://assets/generated/sprites/items/apple_seed_packet_32.png",
-				"size": [
-					32,
-					32
+			"path": "res://assets/generated/sprites/items/apple_seed_packet_32.png",
+			"size": [
+				32,
+				32
 			],
 			"usage": [
 				"inventory_icon",
 				"shop_item"
 			],
-				"used_by": [
-					"configs/items.json"
-				],
-				"notes": "Regenerated 2026-06-02 as part of the apple 8-resource crop pack.",
-				"anchor": "center",
-				"collision": "none",
+			"used_by": [
+				"configs/items.json"
+			],
+			"notes": "Regenerated 2026-06-02 as part of the apple 8-resource crop pack.",
+			"anchor": "center",
+			"collision": "none",
 			"tags": [
 				"item",
 				"seed",
@@ -667,14 +667,14 @@
 				"tomato"
 			]
 		},
-			"item.pear": {
-				"type": "item_icon",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/items/crops/pear_32.png",
-				"usage": [
-					"inventory_icon",
-					"sellable_crop",
-					"initial_inventory"
+		"item.pear": {
+			"type": "item_icon",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/items/crops/pear_32.png",
+			"usage": [
+				"inventory_icon",
+				"sellable_crop",
+				"initial_inventory"
 			],
 			"used_by": [
 				"configs/items.json",
@@ -684,64 +684,64 @@
 				32,
 				32
 			],
-				"anchor": "center",
-				"collision": "none",
-				"notes": "Regenerated 2026-06-02 as part of the pear 8-resource crop pack.",
-				"tags": [
-					"item",
-					"crop",
-					"pear"
-				]
-			},
-			"item.banana": {
-				"type": "item_icon",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/items/crops/banana_32.png",
-				"usage": [
-					"inventory_icon",
-					"sellable_crop"
-				],
-				"used_by": [
-					"configs/items.json"
-				],
-				"size": [
-					32,
-					32
-				],
-				"anchor": "center",
-				"collision": "none",
-				"notes": "Generated 2026-06-02 as part of the banana 8-resource crop pack.",
-				"tags": [
-					"item",
-					"crop",
-					"banana"
-				]
-			},
-			"item.grape": {
-				"type": "item_icon",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/items/crops/grape_32.png",
-				"usage": [
-					"inventory_icon",
-					"sellable_crop"
-				],
-				"used_by": [
-					"configs/items.json"
-				],
-				"size": [
-					32,
-					32
-				],
-				"anchor": "center",
-				"collision": "none",
-				"notes": "Generated 2026-06-02 as part of the grape 8-resource crop pack.",
-				"tags": [
-					"item",
-					"crop",
-					"grape"
-				]
-			},
-			"item.potato": {
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Regenerated 2026-06-02 as part of the pear 8-resource crop pack.",
+			"tags": [
+				"item",
+				"crop",
+				"pear"
+			]
+		},
+		"item.banana": {
+			"type": "item_icon",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/items/crops/banana_32.png",
+			"usage": [
+				"inventory_icon",
+				"sellable_crop"
+			],
+			"used_by": [
+				"configs/items.json"
+			],
+			"size": [
+				32,
+				32
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Generated 2026-06-02 as part of the banana 8-resource crop pack.",
+			"tags": [
+				"item",
+				"crop",
+				"banana"
+			]
+		},
+		"item.grape": {
+			"type": "item_icon",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/items/crops/grape_32.png",
+			"usage": [
+				"inventory_icon",
+				"sellable_crop"
+			],
+			"used_by": [
+				"configs/items.json"
+			],
+			"size": [
+				32,
+				32
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Generated 2026-06-02 as part of the grape 8-resource crop pack.",
+			"tags": [
+				"item",
+				"crop",
+				"grape"
+			]
+		},
+		"item.potato": {
 			"type": "item_icon",
 			"status": "implemented",
 			"path": "res://assets/generated/sprites/items/crops/potato_32.png",
@@ -775,11 +775,11 @@
 			"usage": [
 				"cabbage_seed",
 				"cucumber_seed",
-					"tomato_seed",
-					"pear_seed",
-					"banana_seed",
-					"grape_seed",
-					"potato_seed"
+				"tomato_seed",
+				"pear_seed",
+				"banana_seed",
+				"grape_seed",
+				"potato_seed"
 			],
 			"used_by": [
 				"configs/items.json"
@@ -880,7 +880,7 @@
 				"tomato"
 			]
 		},
-			"item.pear_seed": {
+		"item.pear_seed": {
 			"type": "item_icon",
 			"status": "implemented",
 			"path": "res://assets/generated/sprites/items/pear_seed_packet_32.png",
@@ -896,66 +896,66 @@
 			"used_by": [
 				"configs/items.json"
 			],
-				"anchor": "center",
-				"collision": "none",
-				"notes": "Regenerated 2026-06-02 as part of the pear 8-resource crop pack.",
-				"tags": [
-					"item",
-					"seed",
-					"pear"
-				]
-			},
-			"item.banana_seed": {
-				"type": "item_icon",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/items/banana_seed_packet_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"inventory_icon",
-					"shop_item",
-					"seed_item"
-				],
-				"used_by": [
-					"configs/items.json"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"notes": "Generated 2026-06-02 as part of the banana 8-resource crop pack.",
-				"tags": [
-					"item",
-					"seed",
-					"banana"
-				]
-			},
-			"item.grape_seed": {
-				"type": "item_icon",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/items/grape_seed_packet_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"inventory_icon",
-					"shop_item",
-					"seed_item"
-				],
-				"used_by": [
-					"configs/items.json"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"notes": "Generated 2026-06-02 as part of the grape 8-resource crop pack.",
-				"tags": [
-					"item",
-					"seed",
-					"grape"
-				]
-			},
-			"item.potato_seed": {
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Regenerated 2026-06-02 as part of the pear 8-resource crop pack.",
+			"tags": [
+				"item",
+				"seed",
+				"pear"
+			]
+		},
+		"item.banana_seed": {
+			"type": "item_icon",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/items/banana_seed_packet_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"inventory_icon",
+				"shop_item",
+				"seed_item"
+			],
+			"used_by": [
+				"configs/items.json"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Generated 2026-06-02 as part of the banana 8-resource crop pack.",
+			"tags": [
+				"item",
+				"seed",
+				"banana"
+			]
+		},
+		"item.grape_seed": {
+			"type": "item_icon",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/items/grape_seed_packet_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"inventory_icon",
+				"shop_item",
+				"seed_item"
+			],
+			"used_by": [
+				"configs/items.json"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Generated 2026-06-02 as part of the grape 8-resource crop pack.",
+			"tags": [
+				"item",
+				"seed",
+				"grape"
+			]
+		},
+		"item.potato_seed": {
 			"type": "item_icon",
 			"status": "implemented",
 			"path": "res://assets/generated/sprites/items/potato_seed_packet_32.png",
@@ -1039,353 +1039,593 @@
 				"harvest"
 			]
 		}
+	},
+	"farm_plots": {
+		"farm_plot.apple.tilled": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/apple/apple_empty_tilled_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_tilled",
+				"apple_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"apple",
+				"crop_state"
+			]
 		},
-		"farm_plots": {
-			"farm_plot.apple.tilled": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/apple/apple_empty_tilled_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"farm_state_tilled",
-					"apple_crop_pack"
-				],
-				"used_by": [
-					"configs/crops.json",
-					"scripts/world/farm_plot.gd"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"tags": [
-					"farm_plots",
-					"apple",
-					"crop_state"
-				]
-			},
-			"farm_plot.apple.seed_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/apple/apple_seed_dry_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"farm_state_seed_dry",
-					"apple_crop_pack"
-				],
-				"used_by": [
-					"configs/crops.json",
-					"scripts/world/farm_plot.gd"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"tags": [
-					"farm_plots",
-					"apple",
-					"crop_state"
-				]
-			},
-			"farm_plot.apple.seed_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/apple/apple_seed_watered_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"farm_state_seed_watered",
-					"apple_crop_pack"
-				],
-				"used_by": [
-					"configs/crops.json",
-					"scripts/world/farm_plot.gd"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"tags": [
-					"farm_plots",
-					"apple",
-					"crop_state",
-					"watered"
-				]
-			},
-			"farm_plot.apple.growing_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/apple/apple_growing_dry_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"farm_state_growing_dry",
-					"apple_crop_pack"
-				],
-				"used_by": [
-					"configs/crops.json",
-					"scripts/world/farm_plot.gd"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"tags": [
-					"farm_plots",
-					"apple",
-					"crop_state"
-				]
-			},
-			"farm_plot.apple.growing_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/apple/apple_growing_watered_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"farm_state_growing_watered",
-					"apple_crop_pack"
-				],
-				"used_by": [
-					"configs/crops.json",
-					"scripts/world/farm_plot.gd"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"tags": [
-					"farm_plots",
-					"apple",
-					"crop_state",
-					"watered"
-				]
-			},
-			"farm_plot.apple.ready": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/apple/apple_mature_32.png",
-				"size": [
-					32,
-					32
-				],
-				"usage": [
-					"farm_state_ready",
-					"apple_crop_pack"
-				],
-				"used_by": [
-					"configs/crops.json",
-					"scripts/world/farm_plot.gd"
-				],
-				"anchor": "center",
-				"collision": "none",
-				"tags": [
-					"farm_plots",
-					"apple",
-					"crop_state"
-				]
-			},
-			"farm_plot.pear.tilled": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/pear/pear_empty_tilled_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_tilled", "pear_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "pear", "crop_state"]
-			},
-			"farm_plot.pear.seed_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/pear/pear_seed_dry_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_seed_dry", "pear_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "pear", "crop_state"]
-			},
-			"farm_plot.pear.seed_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/pear/pear_seed_watered_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_seed_watered", "pear_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "pear", "crop_state", "watered"]
-			},
-			"farm_plot.pear.growing_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/pear/pear_growing_dry_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_growing_dry", "pear_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "pear", "crop_state"]
-			},
-			"farm_plot.pear.growing_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/pear/pear_growing_watered_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_growing_watered", "pear_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "pear", "crop_state", "watered"]
-			},
-			"farm_plot.pear.ready": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/pear/pear_mature_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_ready", "pear_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "pear", "crop_state"]
-			},
-			"farm_plot.banana.tilled": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/banana/banana_empty_tilled_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_tilled", "banana_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "banana", "crop_state"]
-			},
-			"farm_plot.banana.seed_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/banana/banana_seed_dry_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_seed_dry", "banana_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "banana", "crop_state"]
-			},
-			"farm_plot.banana.seed_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/banana/banana_seed_watered_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_seed_watered", "banana_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "banana", "crop_state", "watered"]
-			},
-			"farm_plot.banana.growing_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/banana/banana_growing_dry_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_growing_dry", "banana_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "banana", "crop_state"]
-			},
-			"farm_plot.banana.growing_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/banana/banana_growing_watered_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_growing_watered", "banana_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "banana", "crop_state", "watered"]
-			},
-			"farm_plot.banana.ready": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/banana/banana_mature_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_ready", "banana_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "banana", "crop_state"]
-			},
-			"farm_plot.grape.tilled": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/grape/grape_empty_tilled_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_tilled", "grape_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "grape", "crop_state"]
-			},
-			"farm_plot.grape.seed_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/grape/grape_seed_dry_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_seed_dry", "grape_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "grape", "crop_state"]
-			},
-			"farm_plot.grape.seed_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/grape/grape_seed_watered_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_seed_watered", "grape_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "grape", "crop_state", "watered"]
-			},
-			"farm_plot.grape.growing_dry": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/grape/grape_growing_dry_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_growing_dry", "grape_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "grape", "crop_state"]
-			},
-			"farm_plot.grape.growing_watered": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/grape/grape_growing_watered_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_growing_watered", "grape_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "grape", "crop_state", "watered"]
-			},
-			"farm_plot.grape.ready": {
-				"type": "farm_state",
-				"status": "implemented",
-				"path": "res://assets/generated/sprites/farm/crops/grape/grape_mature_32.png",
-				"size": [32, 32],
-				"usage": ["farm_state_ready", "grape_crop_pack"],
-				"used_by": ["configs/crops.json", "scripts/world/farm_plot.gd"],
-				"anchor": "center",
-				"collision": "none",
-				"tags": ["farm_plots", "grape", "crop_state"]
-			}
+		"farm_plot.apple.seed_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/apple/apple_seed_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_dry",
+				"apple_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"apple",
+				"crop_state"
+			]
 		},
+		"farm_plot.apple.seed_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/apple/apple_seed_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_watered",
+				"apple_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"apple",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.apple.growing_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/apple/apple_growing_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_dry",
+				"apple_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"apple",
+				"crop_state"
+			]
+		},
+		"farm_plot.apple.growing_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/apple/apple_growing_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_watered",
+				"apple_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"apple",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.apple.ready": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/apple/apple_mature_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_ready",
+				"apple_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"apple",
+				"crop_state"
+			]
+		},
+		"farm_plot.pear.tilled": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/pear/pear_empty_tilled_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_tilled",
+				"pear_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"pear",
+				"crop_state"
+			]
+		},
+		"farm_plot.pear.seed_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/pear/pear_seed_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_dry",
+				"pear_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"pear",
+				"crop_state"
+			]
+		},
+		"farm_plot.pear.seed_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/pear/pear_seed_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_watered",
+				"pear_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"pear",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.pear.growing_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/pear/pear_growing_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_dry",
+				"pear_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"pear",
+				"crop_state"
+			]
+		},
+		"farm_plot.pear.growing_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/pear/pear_growing_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_watered",
+				"pear_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"pear",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.pear.ready": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/pear/pear_mature_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_ready",
+				"pear_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"pear",
+				"crop_state"
+			]
+		},
+		"farm_plot.banana.tilled": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/banana/banana_empty_tilled_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_tilled",
+				"banana_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"banana",
+				"crop_state"
+			]
+		},
+		"farm_plot.banana.seed_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/banana/banana_seed_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_dry",
+				"banana_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"banana",
+				"crop_state"
+			]
+		},
+		"farm_plot.banana.seed_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/banana/banana_seed_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_watered",
+				"banana_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"banana",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.banana.growing_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/banana/banana_growing_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_dry",
+				"banana_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"banana",
+				"crop_state"
+			]
+		},
+		"farm_plot.banana.growing_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/banana/banana_growing_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_watered",
+				"banana_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"banana",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.banana.ready": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/banana/banana_mature_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_ready",
+				"banana_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"banana",
+				"crop_state"
+			]
+		},
+		"farm_plot.grape.tilled": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/grape/grape_empty_tilled_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_tilled",
+				"grape_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"grape",
+				"crop_state"
+			]
+		},
+		"farm_plot.grape.seed_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/grape/grape_seed_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_dry",
+				"grape_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"grape",
+				"crop_state"
+			]
+		},
+		"farm_plot.grape.seed_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/grape/grape_seed_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_seed_watered",
+				"grape_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"grape",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.grape.growing_dry": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/grape/grape_growing_dry_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_dry",
+				"grape_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"grape",
+				"crop_state"
+			]
+		},
+		"farm_plot.grape.growing_watered": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/grape/grape_growing_watered_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_growing_watered",
+				"grape_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"grape",
+				"crop_state",
+				"watered"
+			]
+		},
+		"farm_plot.grape.ready": {
+			"type": "farm_state",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/farm/crops/grape/grape_mature_32.png",
+			"size": [
+				32,
+				32
+			],
+			"usage": [
+				"farm_state_ready",
+				"grape_crop_pack"
+			],
+			"used_by": [
+				"configs/crops.json",
+				"scripts/world/farm_plot.gd"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"tags": [
+				"farm_plots",
+				"grape",
+				"crop_state"
+			]
+		}
+	},
 	"stalls": {
 		"stall.empty": {
 			"type": "stall_visual",
@@ -3239,6 +3479,282 @@
 				"1990s_chinese_town"
 			],
 			"notes": "haystack and farm tools bundle"
+		},
+		"prop.township.vegetable_market": {
+			"id": "prop.township.vegetable_market",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/vegetable_market_160x96.png",
+			"size": [
+				160,
+				96
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: dedicated vegetable market hall with open awning and produce crates."
+		},
+		"prop.township.welfare_lottery_shop": {
+			"id": "prop.township.welfare_lottery_shop",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/welfare_lottery_shop_96x64.png",
+			"size": [
+				96,
+				64
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: welfare lottery storefront with ticket window and icon sign."
+		},
+		"prop.township.middle_school": {
+			"id": "prop.township.middle_school",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/middle_school_128x96.png",
+			"size": [
+				128,
+				96
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: middle school campus block with formal gate and courtyard details."
+		},
+		"prop.township.primary_school": {
+			"id": "prop.township.primary_school",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/primary_school_128x96.png",
+			"size": [
+				128,
+				96
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: primary school campus building with smaller courtyard/playground cues."
+		},
+		"prop.township.kindergarten": {
+			"id": "prop.township.kindergarten",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/kindergarten_128x96.png",
+			"size": [
+				128,
+				96
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: kindergarten building with low fence and preschool play equipment."
+		},
+		"prop.township.barber_shop": {
+			"id": "prop.township.barber_shop",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/barber_shop_96x64.png",
+			"size": [
+				96,
+				64
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: barber shop storefront with barber pole and scissors icon sign."
+		},
+		"prop.township.restaurant": {
+			"id": "prop.township.restaurant",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/restaurant_96x64.png",
+			"size": [
+				96,
+				64
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: small township restaurant storefront with lanterns and food icon sign."
+		},
+		"prop.township.pharmacy": {
+			"id": "prop.township.pharmacy",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/pharmacy_96x64.png",
+			"size": [
+				96,
+				64
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: dedicated pharmacy storefront with green cross and medicine shelves."
+		},
+		"prop.township.bookstore": {
+			"id": "prop.township.bookstore",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/bookstore_96x64.png",
+			"size": [
+				96,
+				64
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: bookstore storefront with book display window."
+		},
+		"prop.township.department_store": {
+			"id": "prop.township.department_store",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/department_store_128x96.png",
+			"size": [
+				128,
+				96
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: department store / general merchandise shop with wide display windows."
+		},
+		"prop.township.arcade_hall": {
+			"id": "prop.township.arcade_hall",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/arcade_hall_96x64.png",
+			"size": [
+				96,
+				64
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: 1990s street arcade hall storefront with cabinet silhouettes."
+		},
+		"prop.township.small_temple": {
+			"id": "prop.township.small_temple",
+			"type": "prop",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/township/buildings/small_temple_128x96.png",
+			"size": [
+				128,
+				96
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-04: small local temple/shrine building with incense burner and tiled roof."
 		}
 	},
 	"audio": {

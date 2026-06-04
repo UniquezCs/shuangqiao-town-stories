@@ -21,7 +21,7 @@ var fertilized := false
 
 
 func _ready() -> void:
-	add_to_group("interactable")
+	add_to_group("farm_plot")
 	if growth_timer != null:
 		growth_timer.stop()
 	_load_state()
@@ -53,6 +53,11 @@ func interact(player: Node) -> void:
 			_harvest(player)
 
 
+func click_interact(_world_position: Vector2, player: Node) -> bool:
+	interact(player)
+	return true
+
+
 func _try_till() -> void:
 	if GameState.current_tool != PrototypeConstants.TOOL_HOE:
 		SignalBus.sale_feedback.emit("先按 1 选择锄头", global_position)
@@ -80,7 +85,7 @@ func _try_seed() -> void:
 		"days_grown": 0,
 		"fertilized": false,
 	})
-	GameState.set_objective("按 3 选择水壶，给作物浇水")
+	GameState.set_objective("按 3 选择水壶，点击作物浇水")
 
 
 func _try_water_or_fertilize(player: Node) -> void:
@@ -99,7 +104,7 @@ func _try_water_or_fertilize(player: Node) -> void:
 		"fertilized": fertilized,
 	})
 	_play_player_farming_action(player, "water")
-	GameState.set_objective("作物成熟了，按 4 选择镰刀收获" if next_state == "ready" else "晚上回屋睡觉，第二天作物会继续成长")
+	GameState.set_objective("作物成熟了，按 4 选择镰刀，点击成熟作物收获" if next_state == "ready" else "晚上回屋睡觉，第二天作物会继续成长")
 
 
 func _try_fertilize() -> void:

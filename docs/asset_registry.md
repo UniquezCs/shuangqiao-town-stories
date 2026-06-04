@@ -214,7 +214,7 @@ The township reference map now also has a dedicated top-down pixel prop set unde
 
 | Group | Count | Directory | Intended Use |
 | --- | ---: | --- | --- |
-| Buildings | 16 | `res://assets/generated/sprites/props/township/buildings/` | School, hospital, supply cooperative, factory, residential, government, bus station, grain depot, market, and village building footprints. |
+| Buildings | 28 | `res://assets/generated/sprites/props/township/buildings/` | School, hospital, supply cooperative, factory, residential, government, bus station, grain depot, market, village, vegetable market, welfare lottery shop, middle school, primary school, kindergarten, barber shop, restaurant, pharmacy, bookstore, department store, arcade hall, and temple building footprints. |
 | Infrastructure | 16 | `res://assets/generated/sprites/props/township/infrastructure/` | Asphalt roads, intersections, dirt roads, bridges, canal pieces, compound walls, gates, and utility details. |
 | Daily Props And Trees | 16 | `res://assets/generated/sprites/props/township/daily_props/` | Trees, shrubs, bicycle parking, tricycle, truck, water pump, laundry line, notice board, sacks, coal, haystack, and market decoration. |
 
