@@ -172,8 +172,11 @@ Current UI is mostly Godot `Control` nodes with text and panels. This is accepta
 
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
-| `ui.title_screen` | implemented | `scenes/title_screen.tscn` | New game entry screen for 「双桥镇往事」 with new game, load autosave, and quit buttons. |
+| `ui.title_screen` | implemented | `scenes/title_screen.tscn` | New game entry screen for 「双桥镇往事」 with new game, load autosave, quit buttons, and a three-slide new-game story intro. |
 | `ui.title_background` | implemented | `sprites/ui/title/title_background_1920x1080.png` | Generated 2026-06-04; 1920x1080 township street background for the title screen. |
+| `ui.intro_story_01_factory_layoff` | implemented | `sprites/ui/intro/story_01_factory_layoff_1920x1080.png` | Generated 2026-06-05; pixel-comic opening slide for the protagonist's 1998 state-owned factory layoff. |
+| `ui.intro_story_02_family_pressure` | implemented | `sprites/ui/intro/story_02_family_pressure_1920x1080.png` | Generated 2026-06-05; pixel-comic opening slide for household cash pressure after losing wages. |
+| `ui.intro_story_03_hometown_stall` | implemented | `sprites/ui/intro/story_03_hometown_stall_1920x1080.png` | Regenerated 2026-06-05; pixel-comic slide showing abandoned family farmland and the decision to go to town to start selling fruit and vegetables. |
 | `ui.hud` | placeholder | text labels | v2 UI icons exist. |
 | `ui.backpack_panel` | placeholder | Control nodes + `ui.backpack_panel_background` + `ui.backpack_slot` | Backpack window is draggable as of 2026-06-04. It now uses generated panel and slot UI art. |
 | `ui.backpack_panel_background` | implemented | `sprites/ui/panels/backpack_panel_360x420.png` | Generated 2026-06-04; used by standalone backpack UI and the stall setup backpack panel. |

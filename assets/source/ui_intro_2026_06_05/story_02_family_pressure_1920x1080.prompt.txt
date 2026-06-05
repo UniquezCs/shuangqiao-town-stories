@@ -1,0 +1,9 @@
+Use case: historical-scene
+Asset type: 1920x1080 pixel-art comic storyboard background for a Godot game opening sequence
+Primary request: Create the second opening comic image for a Chinese township management sim set in 1998. Pixel comic style with clear panel divisions.
+Scene/backdrop: A modest family home in an old Chinese township at night. Use 3 comic panels in one 16:9 image: left panel shows the worker entering a dim brick-walled home with a cloth bag; middle panel shows a wooden table with coins, paper bills, a household ledger, unpaid slips with no readable words, enamel cup and thermos; right panel shows the worker and his wife/family member sitting quietly under warm lamp light, worried but not hopeless.
+Subject: The same middle-aged laid-off worker and his family facing money pressure after losing income.
+Style: Clean readable pixel-art comic, 2D game opening art, crisp pixels, strong panel borders, warm interior lighting, restrained emotional tone, historically grounded 1998 small-town China.
+Composition: 16:9 wide 1920x1080 title-screen background. Include 3 distinct comic panels with gutters. Reserve a clean dark translucent-looking empty caption band area at the bottom of the image, but do not write any text.
+Historical details: old brick wall, wooden table, thermos bottle, enamel basin/cup, hand ledger, simple cotton jackets, cloth curtain, sparse furniture, no modern objects.
+Avoid: no readable words, no Chinese characters, no subtitles, no UI text, no logos, no modern phones, no LCD screens, no fantasy, no photorealism, no exaggerated drama, no luxury interior.

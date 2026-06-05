@@ -1,0 +1,9 @@
+Use case: historical-scene
+Asset type: 1920x1080 pixel-art comic storyboard background for a Godot game opening sequence
+Primary request: Create the first opening comic image for a Chinese township management sim set in 1998. Pixel comic style with clear panel divisions.
+Scene/backdrop: A late-1990s Chinese state-owned factory layoff moment. Use 3 comic panels in one 16:9 image: left panel shows an old brick state-owned factory gate with bicycles and workers leaving; middle panel shows a notice board with paper notices but no readable words; right panel shows a middle-aged Chinese male worker holding a folded layoff notice and a small cloth bag, standing quietly outside the gate.
+Subject: The same middle-aged laid-off state-owned enterprise worker, tired and stunned but restrained.
+Style: Clean readable pixel-art comic, 2D game opening art, crisp pixels, strong panel borders, simple cinematic lighting, historically grounded 1998 China.
+Composition: 16:9 wide 1920x1080 title-screen background. Include 3 distinct comic panels with gutters. Reserve a clean dark translucent-looking empty caption band area at the bottom of the image, but do not write any text.
+Historical details: 1998 Chinese state-owned factory, old bicycles, brick walls, faded notice boards, cotton jackets, factory yard, no modern objects.
+Avoid: no readable words, no Chinese characters, no subtitles, no UI text, no logos, no modern cars, no smartphones, no fantasy, no photorealism, no exaggerated melodrama.

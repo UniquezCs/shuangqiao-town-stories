@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godot 项目每日简报 - 2026-06-05</title>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffaf3;
+      --ink: #2b241d;
+      --muted: #6e6154;
+      --line: #dbcab8;
+      --accent: #9e5a2e;
+      --accent-soft: #f0decd;
+      --fact: #2f6f41;
+      --infer: #8b5c19;
+      --idea: #8b3f2d;
+      --p0: #f6d5d5;
+      --p1: #f5e2c3;
+      --p2: #dcead8;
+      --p3: #dce6f6;
+      --shadow: rgba(60, 40, 20, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #efe0cb 0%, var(--bg) 42%, #faf7f2 100%);
+      line-height: 1.65;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero, .section, .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 12px 30px var(--shadow);
+    }
+
+    .hero {
+      padding: 28px 30px 24px;
+      margin-bottom: 18px;
+    }
+
+    .section {
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .section-body {
+      padding: 0 24px 24px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 32px; }
+    h2 { font-size: 22px; padding: 22px 24px 0; }
+    h3 { font-size: 17px; }
+    p { margin: 8px 0; }
+
+    .meta, .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #6f3d18;
+      font-size: 13px;
+    }
+
+    .legend .chip { background: #f7eee4; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    .card {
+      padding: 16px 18px;
+      height: 100%;
+    }
+
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    li { margin: 6px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    th {
+      background: #f7ecdf;
+      color: #684326;
+      font-weight: 700;
+    }
+
+    .tag {
+      display: inline-block;
+      min-width: 34px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .p0 { background: var(--p0); color: #8b2c2c; }
+    .p1 { background: var(--p1); color: #87541a; }
+    .p2 { background: var(--p2); color: #2f6340; }
+    .p3 { background: var(--p3); color: #355b97; }
+
+    .fact { color: var(--fact); font-weight: 700; }
+    .infer { color: var(--infer); font-weight: 700; }
+    .idea { color: var(--idea); font-weight: 700; }
+    .mono {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .notice {
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      margin-top: 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .col-4, .col-6, .col-8, .col-12 { grid-column: span 12; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>本简报覆盖自 <strong>2026-06-03 22:01:56 UTC</strong>（上次自动化简报时间）以来的提交与工作区变化，并在此基础上拆分出 <span class="fact">已发生改动</span>、<span class="infer">基于当前代码状态的优化建议</span>、<span class="idea">结合现有系统的新增功能建议</span> 三类内容。</p>
+      <div class="meta">
+        <span class="chip">日期：2026-06-05</span>
+        <span class="chip">当前 HEAD：cd6d160</span>
+        <span class="chip">提交窗口：2026-06-04 至 2026-06-05</span>
+        <span class="chip">生成时刻：2026-06-05 06:03:18 CST</span>
+      </div>
+      <div class="notice">
+        <div>本轮统计到已提交主线变更 2 组：<span class="mono">00239d8</span>（快捷栏与城镇建筑人流基础结构）、<span class="mono">cd6d160</span>（人流模拟与经营反馈系统）。</div>
+        <div>当前工作区还有未提交标题开场漫画接入：<span class="mono">scripts/ui/title_screen.gd</span>、<span class="mono">tests/title_screen_test.gd</span>、<span class="mono">configs/assets.json</span>、<span class="mono">docs/asset_registry.md</span>，以及新的 intro 图片与 prompt 文件。</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>概览</h2>
+      <div class="section-body">
+        <div class="grid">
+          <div class="col-4">
+            <div class="card">
+              <h3>本轮主线</h3>
+              <ul>
+                <li>引入快捷栏、快捷键切换与农田点击交互基础控制器。</li>
+                <li>新增后台人流模型、可见客流生成、道路候选约束与人口配置。</li>
+                <li>新增福利彩票建筑、彩票数据流、收钱音效与经营反馈。</li>
+                <li>标题界面正在追加三幕开场漫画，用于把下岗背景与返乡摆摊主题接到新游戏入口。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <h3>变化规模</h3>
+              <ul>
+                <li>已提交文件变化 90+ 项，其中新增文件集中在 <span class="mono">scripts/autoload</span>、<span class="mono">scripts/ui</span>、<span class="mono">scripts/world</span> 与 <span class="mono">tests</span>。</li>
+                <li>本周期未发现已提交删除文件；以新增与重写为主。</li>
+                <li>测试继续跟进系统扩张，新增了人流、彩票、SFX、读档恢复、热键栏等场景测试。</li>
+                <li>当前最大脚本仍偏集中：<span class="mono">customer.gd</span> 612 行、<span class="mono">population_flow.gd</span> 550 行、<span class="mono">game_state.gd</span> 408 行、<span class="mono">player.gd</span> 401 行、<span class="mono">main.gd</span> 355 行。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <h3>阶段判断</h3>
+              <ul>
+                <li>项目已从“单点交互原型”进入“多系统耦合的经营原型”。</li>
+                <li>人流与建筑端点开始形成真实的镇街经济骨架。</li>
+                <li>叙事、客流、摆摊、彩票、音效与热键栏正在逐步拼成完整的一天循环。</li>
+                <li>接下来最需要控制的是结构复杂度、资源落库完整性和验证成本。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>主要改动</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>范围</th>
+              <th>摘要</th>
+              <th>代表文件</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-06-05 00:13 +0800</td>
+              <td>快捷栏 / 入口结构 / 建筑人流基础</td>
+              <td>新增 <span class="mono">Hotbar</span> 自动加载、UI 面板、槽位控件与测试；城镇场景扩建建筑端点与道路结构；开始用 <span class="mono">FarmingInteractionController</span> 承接农田点击交互。</td>
+              <td class="mono">scripts/autoload/hotbar.gd<br />scripts/ui/hotbar_panel.gd<br />scripts/world/farming_interaction_controller.gd<br />scenes/town_scene.tscn</td>
+            </tr>
+            <tr>
+              <td>2026-06-05 02:47 +0800</td>
+              <td>人流模拟 / 经营反馈 / 彩票 / 音效</td>
+              <td>新增后台人口分布与按时间段迁移的人流模型；可见客流从道路网络中抽样生成；加入福利彩店、彩票状态流转、收钱音效、碰撞恢复测试与更多经营反馈。</td>
+              <td class="mono">scripts/autoload/population_flow.gd<br />scripts/world/population_flow_spawner.gd<br />scripts/world/lottery_ticket.gd<br />scripts/autoload/sfx_manager.gd</td>
+            </tr>
+            <tr>
+              <td>当前工作区</td>
+              <td>标题开场漫画 / 资源登记</td>
+              <td>标题界面新游戏入口改为先播放三幕漫画，再进入主场景；同时登记 intro 资源与测试断言，但图片和 prompt 尚未提交入库。</td>
+              <td class="mono">scripts/ui/title_screen.gd<br />tests/title_screen_test.gd<br />assets/generated/sprites/ui/intro/*<br />assets/source/ui_intro_2026_06_05/*</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增内容</h2>
+      <div class="section-body">
+        <div class="grid">
+          <div class="col-6">
+            <div class="card">
+              <h3>系统与脚本</h3>
+              <ul>
+                <li><span class="fact">新增</span> <span class="mono">scripts/autoload/population_flow.gd</span>：后台人口初始化、时间片流动、天气/节日/时间曲线修正。</li>
+                <li><span class="fact">新增</span> <span class="mono">scripts/world/population_flow_spawner.gd</span>：将流动事件转成道路上的可见顾客。</li>
+                <li><span class="fact">新增</span> <span class="mono">scripts/autoload/hotbar.gd</span> 与热键栏 UI：工具切换正式进入全局状态。</li>
+                <li><span class="fact">新增</span> <span class="mono">scripts/world/lottery_ticket.gd</span>、<span class="mono">scripts/world/welfare_lottery.gd</span>、<span class="mono">scripts/ui/lottery_panel.gd</span>：彩票购买、开奖与兑奖闭环。</li>
+                <li><span class="fact">新增</span> <span class="mono">scripts/autoload/sfx_manager.gd</span>：销售完成后触发收钱音效。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <h3>配置、资源与文档</h3>
+              <ul>
+                <li><span class="fact">新增</span> <span class="mono">configs/population.json</span> 与 <span class="mono">configs/flow_preferences.json</span>，把人口规模、可见抽样率、时间曲线和天气修正转成配置驱动。</li>
+                <li><span class="fact">新增</span> <span class="mono">configs/calendar.json</span>，为节日/集市日扩展埋下入口，但当前仍是空表。</li>
+                <li><span class="fact">新增</span> 镇街总览概念图与说明文档：<span class="mono">docs/map_concepts/shuangqiao_town_overview.*</span>。</li>
+                <li><span class="fact">新增</span> 音频资源 <span class="mono">assets/audio/sfx/cash_received.wav</span>，并刷新镇街 BGM 源文件。</li>
+                <li><span class="fact">新增</span> 三张开场漫画与 prompt 源文件，但当前仍在未提交状态。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>修改内容</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="fact">修改</span> <span class="mono">scripts/main.gd</span>：主场景初始化时就预热后台人流，并在场景切换、睡眠切日、彩票面板、热键输入之间协调更多全局流程。</li>
+          <li><span class="fact">修改</span> <span class="mono">scripts/autoload/game_state.gd</span>：存档字段已覆盖热键、彩票、昨日总结、耕地状态、摊位使用等更多经营状态。</li>
+          <li><span class="fact">修改</span> <span class="mono">scenes/town_scene.tscn</span>：城镇建筑、道路、端点和人流承载结构明显扩充，已经成为系统级枢纽场景。</li>
+          <li><span class="fact">修改</span> <span class="mono">scripts/world/customer.gd</span> 与 <span class="mono">scripts/world/chengguan.gd</span>：顾客购买决策、排队等待、卡住恢复、路线绕行等细节继续增加。</li>
+          <li><span class="fact">修改</span> <span class="mono">scripts/player.gd</span>：既要处理移动、交互、乞讨姿态，又开始吸收鼠标农田点击与 hover 提示刷新。</li>
+          <li><span class="fact">修改</span> 资源注册表：<span class="mono">configs/assets.json</span> 与 <span class="mono">docs/asset_registry.md</span> 持续跟随 UI/地图/音频变更。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>删除或废弃内容</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="fact">事实</span>：本周期未发现已提交的删除文件或显式废弃脚本，整体以新增和扩写为主。</li>
+          <li><span class="infer">推断</span>：农田交互正从“近身按 E”迁向“工具选中后鼠标点击目标地块”，旧的交互提示与测试假设后续可能逐步退场，涉及 <span class="mono">scripts/player.gd</span>、<span class="mono">scripts/world/farm_plot.gd</span>、<span class="mono">tests/farm_mouse_click_test.gd</span>。</li>
+          <li><span class="infer">推断</span>：标题界面从直接切主场景改为先播开场漫画，原来的“立刻开局”路径已被新叙事入口替代。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>可能影响</h2>
+      <div class="section-body">
+        <div class="grid">
+          <div class="col-6">
+            <div class="card">
+              <h3>正向影响</h3>
+              <ul>
+                <li>人流系统让“学校门口 / 厂门口 / 市场口”的客流差异有了配置基础，摆摊地点终于能变成可计算的经营选择。</li>
+                <li>快捷栏与点击农田交互提升了输入效率，种地与摆摊开始共享一个更统一的操作层。</li>
+                <li>彩票与音效把“日收益反馈”从纯数字提升到有情绪起伏的经营回报。</li>
+                <li>标题三幕漫画正在补足世界观落点，让“下岗返乡摆摊”主题更清晰。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <h3>风险与代价</h3>
+              <ul>
+                <li>当前标题开场依赖的三张 intro 图还未提交；干净 checkout 下测试与新游戏入口都可能直接失效。</li>
+                <li>后台人流通过 <span class="mono">TOWN_SCENE.instantiate()</span> 维护隐藏世界模板，会增加内存和场景结构耦合成本。</li>
+                <li>多个大脚本继续膨胀，未来每次改 UI、交互、路径或经营规则时更容易出现回归。</li>
+                <li>配置文件数量增长很快，但暂未看到统一校验脚本，资源注册、配置字段和实际资源路径容易漂移。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>优化点（按优先级）</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>优先级</th>
+              <th>标题</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略实施成本</th>
+              <th>是否需要先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag p0">P0</span></td>
+              <td>补齐标题开场漫画资源入库闭环</td>
+              <td>当前 <span class="mono">title_screen.gd</span> 与 <span class="mono">title_screen_test.gd</span> 已引用三张 intro 图片，但图片和 prompt 仍处于未跟踪状态。</td>
+              <td>避免新游戏入口和标题测试在干净仓库、CI 或多人协作下直接失效。</td>
+              <td class="mono">assets/generated/sprites/ui/intro<br />assets/source/ui_intro_2026_06_05<br />configs/assets.json<br />docs/asset_registry.md</td>
+              <td>低</td>
+              <td>是，需在干净工作区重跑标题测试与资源存在性检查。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>把后台人流从“隐藏整张城镇场景”改为数据化端点图</td>
+              <td><span class="mono">PopulationFlow.initialize_from_scene()</span> 会实例化完整 <span class="mono">TOWN_SCENE</span> 作为后台模板；这让地图结构、节点命名和模拟层强耦合。</td>
+              <td>降低内存占用与场景耦合，后续更容易做地图拆分、场景分区和离线模拟。</td>
+              <td class="mono">scripts/autoload/population_flow.gd<br />configs/population.json<br />configs/flow_preferences.json<br />scenes/town_scene.tscn</td>
+              <td>中到高</td>
+              <td>是，先量化当前启动时实例数、端点数和内存影响。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>拆解超大脚本职责边界</td>
+              <td><span class="mono">customer.gd</span> 612 行、<span class="mono">population_flow.gd</span> 550 行、<span class="mono">game_state.gd</span> 408 行、<span class="mono">player.gd</span> 401 行、<span class="mono">main.gd</span> 355 行，已经跨越多个责任面。</td>
+              <td>减少回归面，提升可测试性，降低多人改同一文件的冲突概率。</td>
+              <td class="mono">scripts/world/customer.gd<br />scripts/player.gd<br />scripts/autoload/game_state.gd<br />scripts/main.gd</td>
+              <td>中</td>
+              <td>是，先按“输入 / UI / 经营 / 移动 / 状态保存”做责任切分清单。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>把镇街场景继续拆成可复用子场景</td>
+              <td><span class="mono">scenes/town_scene.tscn</span> 在连续两次提交中大幅增长，并同时承载道路、建筑、端点、刷怪、人流、摆摊区域等多类结构。</td>
+              <td>降低场景 merge 冲突，便于单独调试学校区、厂区、市场区、道路层与端点层。</td>
+              <td class="mono">scenes/town_scene.tscn<br />scripts/scenes/town_scene.gd<br />docs/map_concepts/shuangqiao_town_overview.md</td>
+              <td>中</td>
+              <td>是，先验证现有节点分组是否已能自然拆成 district/endpoint/road 子场景。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>为配置与资源注册增加自动校验</td>
+              <td>本轮继续频繁修改 <span class="mono">configs/assets.json</span>、<span class="mono">configs/items.json</span>、<span class="mono">configs/population.json</span>，但尚未看到统一校验脚本。</td>
+              <td>减少路径拼错、资源漏登记、配置缺字段导致的运行时错误。</td>
+              <td class="mono">configs/*.json<br />tests/generated_asset_layout_test.gd<br />tests/config_inventory_v2_test.gd</td>
+              <td>中</td>
+              <td>否，可直接先做静态检查测试。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>补足人流与经营链路的调试观测面</td>
+              <td>当前 <span class="mono">gameplay_debug_log.gd</span> 仍是单个开关，重点覆盖 economy/patrol；新增的人口迁移、彩票、热键切换、读档恢复还缺统一观察面。</td>
+              <td>定位“客流不来”“路线异常”“存档恢复错位”会更快，平衡调参成本下降。</td>
+              <td class="mono">scripts/debug/gameplay_debug_log.gd<br />scripts/autoload/population_flow.gd<br />scripts/world/population_flow_spawner.gd<br />scripts/autoload/save_manager.gd</td>
+              <td>低到中</td>
+              <td>否，可先加事件级日志与摘要面板。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>清理热路径中的动态资源加载</td>
+              <td><span class="mono">sfx_manager.gd</span> 在每次播放时都 <span class="mono">load(CASH_RECEIVED_PATH)</span>；标题开场也在播放时按 slide 动态 <span class="mono">load()</span> 纹理。</td>
+              <td>减少频繁 IO 与资源抖动，避免交互高频场景下的卡顿和不可预期加载开销。</td>
+              <td class="mono">scripts/autoload/sfx_manager.gd<br />scripts/ui/title_screen.gd</td>
+              <td>低</td>
+              <td>否，属于局部可直接改进项。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p3">P3</span></td>
+              <td>把测试执行收敛为固定入口和持续集成流程</td>
+              <td>测试文件已经很多，但当前简报只看到分散的场景测试文件，未确认固定 headless 入口和 CI 约束。</td>
+              <td>降低“本地过、别人不过”的风险，让大规模迭代更稳。</td>
+              <td class="mono">tests/*.gd<br />addons/gut<br />项目 CI 配置</td>
+              <td>中</td>
+              <td>是，先确认当前使用的 Godot 测试框架与现有命令。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增功能建议（按优先级）</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>优先级</th>
+              <th>标题</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略实施成本</th>
+              <th>是否需要先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>集市日 / 节日 / 天气驱动的客流经营事件</td>
+              <td>当前已经有 <span class="mono">calendar.json</span>、<span class="mono">flow_preferences.json</span> 的 <span class="mono">holiday_modifier</span> 和 <span class="mono">weather_modifier</span>，但默认表基本为空。</td>
+              <td>让摆摊地点、商品组合和出门时机真正产生策略差异，强化“看天吃饭、看日历做买卖”的乡镇经营感。</td>
+              <td class="mono">configs/calendar.json<br />configs/flow_preferences.json<br />scripts/autoload/population_flow.gd<br />scripts/ui/hud.gd</td>
+              <td>中</td>
+              <td>是，先验证玩家是否能从 UI 明确感知事件变化。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>摊位选址建议与营业热力反馈</td>
+              <td>现在已经能产出按端点流动的 <span class="mono">recent_flow_events</span>、销量、拒绝与成交数据，但玩家侧还看不到这些信息的汇总价值。</td>
+              <td>把“客流系统”转成玩家可利用的经营信息，避免人流只是后台数字。</td>
+              <td class="mono">scripts/autoload/population_flow.gd<br />scripts/world/stall.gd<br />scripts/ui/hud.gd<br />scripts/ui/daily_summary_panel.gd</td>
+              <td>中</td>
+              <td>是，先确定展示方式是简报、地图热区还是日结摘要。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p1">P1</span></td>
+              <td>新手第一天引导链路</td>
+              <td>标题界面已加入三幕开场漫画，游戏主题已更完整，但进入主场景后仍主要依赖目标文本，没有把“回乡种地、备货、摆摊、买彩票”等系统串成教学链路。</td>
+              <td>提高第一次进入项目的可理解性，减少系统多了但新玩家不知先做什么的问题。</td>
+              <td class="mono">scripts/ui/title_screen.gd<br />scripts/main.gd<br />scripts/autoload/game_state.gd<br />scripts/ui/hud.gd</td>
+              <td>中</td>
+              <td>是，先验证第一天目标数量与节奏是否过载。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>建筑差异化消费需求与商品偏好</td>
+              <td>目前人流已按学校、工厂、住宅、公共、商店端点移动，但成交决策仍主要集中在顾客预算和商品基础偏好层。</td>
+              <td>让“学校门口卖什么、厂门口卖什么”从位置差异进一步变成商品经营差异。</td>
+              <td class="mono">scripts/world/customer.gd<br />scripts/world/stall_sales_policy.gd<br />configs/customer_preferences.json<br />configs/items.json</td>
+              <td>中到高</td>
+              <td>是，先核对现有商品池是否足够支撑差异化需求。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>彩票与民生压力的连续日循环</td>
+              <td>彩票已经有购买、开奖和兑奖，但它目前更像孤立互动，没有和现金压力、日结、邻里口碑、事件目标形成连续反馈。</td>
+              <td>增强“盼运气翻身”的时代氛围，也能自然扩展风险收益曲线。</td>
+              <td class="mono">scripts/world/lottery_ticket.gd<br />scripts/ui/lottery_panel.gd<br />scripts/autoload/game_state.gd<br />每日总结系统</td>
+              <td>中</td>
+              <td>是，先验证奖励规模是否会冲掉现有经济平衡。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p2">P2</span></td>
+              <td>镇区总览图驱动的可打开地图与建筑图鉴</td>
+              <td>现在已有 <span class="mono">shuangqiao_town_overview</span> 规划图、多个建筑端点和明确地标，但玩家还没有可查看的镇区认知工具。</td>
+              <td>降低场景认知门槛，为后续店面升级、邻里任务、进货路线提供载体。</td>
+              <td class="mono">docs/map_concepts/shuangqiao_town_overview.*<br />scenes/town_scene.tscn<br />UI 地图面板</td>
+              <td>中</td>
+              <td>否，可先做简化版地图面板。</td>
+            </tr>
+            <tr>
+              <td><span class="tag p3">P3</span></td>
+              <td>基于河滩和车站的轻探索支线</td>
+              <td>地图规划文档已经明确河滩、车站、粮站等区域用途，但当前主循环仍主要围绕家、镇街、学校门口、厂门口。</td>
+              <td>补足“摆摊之外”的日间选择，为后续采集、进货和邻里事件拓展空间。</td>
+              <td class="mono">docs/map_concepts/shuangqiao_town_overview.md<br />scenes/town_scene.tscn<br />对应区域交互脚本</td>
+              <td>高</td>
+              <td>是，先验证主循环是否已足够稳定再扩边线内容。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>待跟进事项</h2>
+      <div class="section-body">
+        <ul>
+          <li>优先确认标题开场漫画资源是否要在下一提交中正式入库；这是当前最直接的可交付风险。</li>
+          <li>决定人流系统是否继续依赖完整 <span class="mono">TownScene</span> 作为后台模板，还是尽快转向端点数据资源。</li>
+          <li>为超大脚本制定第一轮拆分边界，至少先把 <span class="mono">player.gd</span> 和 <span class="mono">customer.gd</span> 的 UI / 交互 / 移动逻辑分离。</li>
+          <li>补一条固定的 headless 测试命令或文档入口，确保后续简报能顺带回报测试结果，而不是只统计文件变化。</li>
+          <li>决定下一个最值得做的“玩家可感知收益点”是集市日、选址热力反馈，还是第一天教学链路。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>用于回顾的关键文件路径</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>类别</th>
+              <th>路径</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>主流程</td>
+              <td class="mono">scripts/main.gd<br />scripts/autoload/game_state.gd<br />scripts/autoload/save_manager.gd</td>
+              <td>场景切换、天数推进、存档恢复、全局状态。</td>
+            </tr>
+            <tr>
+              <td>人流系统</td>
+              <td class="mono">scripts/autoload/population_flow.gd<br />scripts/world/population_flow_spawner.gd<br />configs/population.json<br />configs/flow_preferences.json<br />configs/calendar.json</td>
+              <td>后台人口、时间曲线、可见客流、节日与天气入口。</td>
+            </tr>
+            <tr>
+              <td>摆摊与顾客</td>
+              <td class="mono">scripts/world/stall.gd<br />scripts/world/customer.gd<br />scripts/world/stall_spot.gd<br />scripts/world/town_random_customer_spawner.gd</td>
+              <td>成交、拒绝、选址、顾客路径与经营反馈。</td>
+            </tr>
+            <tr>
+              <td>输入与 UI</td>
+              <td class="mono">scripts/player.gd<br />scripts/autoload/hotbar.gd<br />scripts/ui/hotbar_panel.gd<br />scripts/ui/title_screen.gd</td>
+              <td>热键栏、农田点击交互、新游戏入口与开场漫画。</td>
+            </tr>
+            <tr>
+              <td>场景与规划</td>
+              <td class="mono">scenes/town_scene.tscn<br />scripts/scenes/town_scene.gd<br />docs/map_concepts/shuangqiao_town_overview.md</td>
+              <td>镇街结构、道路与建筑端点的空间基线。</td>
+            </tr>
+            <tr>
+              <td>资源与测试</td>
+              <td class="mono">configs/assets.json<br />docs/asset_registry.md<br />tests/population_flow_model_test.gd<br />tests/load_scene_restore_test.gd<br />tests/title_screen_test.gd<br />tests/random_customer_performance_test.gd</td>
+              <td>资源登记、关键系统验证、性能边界样例。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

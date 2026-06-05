@@ -1964,12 +1964,13 @@
 		"ui.title_screen": {
 			"type": "ui_surface",
 			"status": "implemented",
-			"current_implementation": "Godot Control title menu with generated 1920x1080 background",
+			"current_implementation": "Godot Control title menu with generated 1920x1080 background and three-slide new-game pixel comic intro",
 			"usage": [
 				"game_entry",
 				"new_game",
 				"load_autosave",
-				"quit_game"
+				"quit_game",
+				"new_game_story_intro"
 			],
 			"used_by": [
 				"scenes/title_screen.tscn",
@@ -1983,7 +1984,10 @@
 				"save_load"
 			],
 			"available_components": {
-				"background": "res://assets/generated/sprites/ui/title/title_background_1920x1080.png"
+				"background": "res://assets/generated/sprites/ui/title/title_background_1920x1080.png",
+				"intro_story_01": "res://assets/generated/sprites/ui/intro/story_01_factory_layoff_1920x1080.png",
+				"intro_story_02": "res://assets/generated/sprites/ui/intro/story_02_family_pressure_1920x1080.png",
+				"intro_story_03": "res://assets/generated/sprites/ui/intro/story_03_hometown_stall_1920x1080.png"
 			}
 		},
 		"ui.title_background": {
@@ -2010,6 +2014,88 @@
 			],
 			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e5466-dbf0-7cc0-9bb6-c87452067f52/ig_00f1a137aebf366a016a206e374dec81918be5d36590cd65c9.png",
 			"notes": "Generated 2026-06-04 for the title screen of 双桥镇往事."
+		},
+		"ui.intro_story_01_factory_layoff": {
+			"type": "ui_background",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/intro/story_01_factory_layoff_1920x1080.png",
+			"prompt": "res://assets/source/ui_intro_2026_06_05/story_01_factory_layoff_1920x1080.prompt.txt",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"new_game_story_intro",
+				"intro_slide_1"
+			],
+			"used_by": [
+				"scripts/ui/title_screen.gd"
+			],
+			"anchor": "full_rect",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"intro",
+				"pixel_comic",
+				"1998_layoff"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e6be3-4c39-7f11-84e5-f053f624f4a5/ig_0fdc79fc2c69e90b016a21d3e3f020819197ab9bc55893550a.png",
+			"notes": "Generated 2026-06-05 as new-game opening comic slide 1: 1998 state-owned factory layoff."
+		},
+		"ui.intro_story_02_family_pressure": {
+			"type": "ui_background",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/intro/story_02_family_pressure_1920x1080.png",
+			"prompt": "res://assets/source/ui_intro_2026_06_05/story_02_family_pressure_1920x1080.prompt.txt",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"new_game_story_intro",
+				"intro_slide_2"
+			],
+			"used_by": [
+				"scripts/ui/title_screen.gd"
+			],
+			"anchor": "full_rect",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"intro",
+				"pixel_comic",
+				"family_pressure"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e6be3-4c39-7f11-84e5-f053f624f4a5/ig_0fdc79fc2c69e90b016a21d44cce7081918e2387aeebde64ef.png",
+			"notes": "Generated 2026-06-05 as new-game opening comic slide 2: family cash pressure after layoff."
+		},
+		"ui.intro_story_03_hometown_stall": {
+			"type": "ui_background",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/ui/intro/story_03_hometown_stall_1920x1080.png",
+			"prompt": "res://assets/source/ui_intro_2026_06_05/story_03_hometown_stall_1920x1080.prompt.txt",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"new_game_story_intro",
+				"intro_slide_3"
+			],
+			"used_by": [
+				"scripts/ui/title_screen.gd"
+			],
+			"anchor": "full_rect",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"intro",
+				"pixel_comic",
+				"abandoned_farmland",
+				"hometown_stall"
+			],
+			"source_generated_image": "/Users/zhangcong/.codex/generated_images/019e6be3-4c39-7f11-84e5-f053f624f4a5/ig_0fdc79fc2c69e90b016a2236b39ec0819189cf9103a1761b21.png",
+			"notes": "Regenerated 2026-06-05 as final third intro comic slide: abandoned family farmland, the protagonist looking at the field, and a handcart route toward town for a fruit/vegetable business."
 		},
 		"ui.hud": {
 			"type": "ui_surface",

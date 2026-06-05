@@ -1,0 +1,9 @@
+Use case: historical-scene
+Asset type: 1920x1080 pixel-art comic storyboard background for a Godot game opening sequence
+Primary request: Create the third opening comic image for a Chinese township management sim set in 1998. Pixel comic style with clear panel divisions.
+Scene/backdrop: A hopeful but grounded morning in the worker's old hometown. Use 3 comic panels in one 16:9 image: left panel shows the family's abandoned farmland with dry rows, weeds, a haystack, old tools, and an aging rural house; middle panel shows the worker standing at the field edge, looking at the neglected land and holding a cloth bag or hoe, realizing farming alone cannot support the family; right panel shows a dirt road leading from the field toward the township market, with a handcart and baskets of fruit and vegetables prepared for a small business.
+Subject: The same middle-aged former state-owned enterprise worker, deciding to leave the abandoned family field and start earning money by selling fruit and vegetables in town.
+Style: Clean readable pixel-art comic, 2D game opening art, crisp pixels, strong panel borders, hopeful grounded tone, warm sunrise, historically grounded 1998 Chinese township life.
+Composition: 16:9 wide 1920x1080 title-screen background. Include 3 distinct comic panels with gutters. Reserve a clean dark translucent-looking empty caption band area at the bottom of the image, but do not write any text.
+Historical details: abandoned rural farmland, dry ridges, weeds, old hoe, haystack, dirt road, handcart, bamboo baskets, vegetable crates, distant old shopfronts, brick houses, simple awnings, no modern branding.
+Avoid: no readable words, no Chinese characters, no subtitles, no UI text, no logos, no modern cars, no smartphones, no fantasy, no photorealism, no western farmer-market look, no excessive wealth.
