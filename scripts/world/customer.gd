@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 const SPEED := 55.0
-const DEMAND_THRESHOLD := 0.45
+const DEMAND_THRESHOLD := 0.56
 const ROUTE_TIMEOUT_PADDING_SECONDS := 10.0
 const STUCK_SECONDS := 0.75
 const STUCK_MIN_PROGRESS := 0.2
@@ -16,6 +16,8 @@ const FEMALE_ELDER_FRAMES := preload("res://assets/generated/sprites/characters/
 const FEMALE_MIDDLE_FRAMES := preload("res://assets/generated/sprites/characters/female_middle_walk_spriteframes_48x64.tres")
 const PurchaseInteractionScript := preload("res://scripts/world/customer_purchase_interaction.gd")
 const PurchaseCountdownScript := preload("res://scripts/ui/circular_countdown_indicator.gd")
+const CustomerDialogueLines := preload("res://scripts/world/customer_dialogue_lines.gd")
+const CustomerDialogueBubble := preload("res://scripts/world/customer_dialogue_bubble.gd")
 const GameplayDebugLog := preload("res://scripts/debug/gameplay_debug_log.gd")
 
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
@@ -46,6 +48,9 @@ var _stuck_target := Vector2.ZERO
 var _stuck_seconds := 0.0
 var _last_slide_normal := Vector2.ZERO
 var _detour_serial := 0
+var _dialogue_bubble: Node2D = null
+var _seen_stall_dialogue_ids := {}
+var _dialogue_chance_overrides := {}
 
 @onready var visual: AnimatedSprite2D = $Visual
 
@@ -76,6 +81,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_started_at = Time.get_ticks_msec() / 1000.0
 	SignalBus.stall_closed_node.connect(_on_stall_closed_node)
+	SignalBus.stall_inventory_changed.connect(_on_stall_inventory_changed)
 	_apply_customer_spriteframes()
 	_pause_current_animation()
 
@@ -116,6 +122,10 @@ func _attempt_trade(active_stall: Node) -> void:
 		return
 	var decision: Dictionary = active_stall.call("sell_one", customer_type, _customer_profile)
 	state = "buying" if bool(decision["bought"]) else "rejecting"
+	if bool(decision["bought"]):
+		_show_customer_dialogue(CustomerDialogueLines.EVENT_PURCHASED, str(decision.get("item_id", _purchase_preview.get("item_id", ""))), int(decision.get("price", _purchase_preview.get("price", 0))), str(decision.get("reason", "")))
+	else:
+		_show_customer_dialogue(str(decision.get("dialogue_event", CustomerDialogueLines.EVENT_PRICE_REJECT)), str(decision.get("item_id", _purchase_preview.get("item_id", ""))), int(decision.get("price", _purchase_preview.get("price", 0))), str(decision.get("reason", "")))
 	await get_tree().create_timer(0.45).timeout
 	state = "leaving"
 
@@ -130,7 +140,7 @@ func _begin_purchase_request(active_stall: Node) -> void:
 				"customer_type": customer_type,
 				"reason": str(preview.get("reason", "顾客离开")),
 			})
-			_reject_without_trade(str(preview.get("reason", "顾客离开")))
+			_reject_without_trade(str(preview.get("reason", "顾客离开")), preview)
 			return
 		_purchase_preview = preview.duplicate(true)
 	else:
@@ -145,6 +155,7 @@ func _begin_purchase_request(active_stall: Node) -> void:
 		"item_id": str(_purchase_preview.get("item_id", "")),
 		"price": int(_purchase_preview.get("price", 0)),
 	})
+	_show_customer_dialogue(CustomerDialogueLines.EVENT_WAITING, str(_purchase_preview.get("item_id", "")), int(_purchase_preview.get("price", 0)), str(_purchase_preview.get("reason", "")))
 	_create_purchase_interaction()
 	_create_purchase_countdown()
 	_start_purchase_timer()
@@ -158,11 +169,12 @@ func confirm_purchase(_player: Node = null) -> void:
 	_attempt_trade(stall)
 
 
-func _reject_without_trade(reason: String) -> void:
+func _reject_without_trade(reason: String, preview: Dictionary = {}) -> void:
 	GameState.record_rejection()
 	GameState.record_customer_served()
 	SignalBus.sale_feedback.emit(reason, global_position)
 	SignalBus.customer_decision.emit(customer_type, false, reason)
+	_show_customer_dialogue(str(preview.get("dialogue_event", CustomerDialogueLines.EVENT_PRICE_REJECT)), str(preview.get("item_id", PrototypeConstants.ITEM_APPLE)), int(preview.get("price", 0)), reason)
 	state = "rejecting"
 	await get_tree().create_timer(0.45).timeout
 	state = "leaving"
@@ -245,10 +257,13 @@ func _on_purchase_timeout() -> void:
 	if state != "waiting_for_player":
 		return
 	var debug_item_id := str(_purchase_preview.get("item_id", ""))
+	var item_id := str(_purchase_preview.get("item_id", PrototypeConstants.ITEM_APPLE))
+	var item_price := int(_purchase_preview.get("price", 0))
 	_clear_purchase_request()
 	GameState.record_rejection()
 	GameState.record_customer_served()
 	SignalBus.sale_feedback.emit("顾客等不及走了", global_position)
+	_show_customer_dialogue(CustomerDialogueLines.EVENT_TIMEOUT, item_id, item_price, "顾客等不及走了")
 	GameplayDebugLog.log("customer", "purchase_timeout", {
 		"customer_type": customer_type,
 		"item_id": debug_item_id,
@@ -259,17 +274,59 @@ func _on_purchase_timeout() -> void:
 func _on_stall_closed_node(closed_stall: Node) -> void:
 	if state != "waiting_for_player" or _purchase_stall != closed_stall:
 		return
+	var item_id := str(_purchase_preview.get("item_id", PrototypeConstants.ITEM_APPLE))
+	var item_price := int(_purchase_preview.get("price", 0))
 	_clear_purchase_request()
 	GameState.record_rejection()
 	GameState.record_customer_served()
 	var reason := "顾客看到收摊离开了"
 	SignalBus.sale_feedback.emit(reason, global_position)
 	SignalBus.customer_decision.emit(customer_type, false, reason)
+	_show_customer_dialogue(CustomerDialogueLines.EVENT_STALL_CLOSED, item_id, item_price, reason)
 	GameplayDebugLog.log("customer", "stall_closed_while_waiting", {
 		"customer_type": customer_type,
 		"reason": reason,
 	})
 	state = "leaving"
+
+
+func _on_stall_inventory_changed(_slots: Array, _stock: int) -> void:
+	if state != "waiting_for_player" or _purchase_stall == null or not is_instance_valid(_purchase_stall):
+		return
+	if _purchase_item_is_still_available():
+		return
+	var item_id := str(_purchase_preview.get("item_id", ""))
+	var item_price := int(_purchase_preview.get("price", 0))
+	var reason := "%s卖完了，顾客离开了" % ConfigLoader.get_item_name(item_id)
+	_clear_purchase_request()
+	GameState.record_rejection()
+	GameState.record_customer_served()
+	SignalBus.sale_feedback.emit(reason, global_position)
+	SignalBus.customer_decision.emit(customer_type, false, reason)
+	_show_customer_dialogue(CustomerDialogueLines.EVENT_NO_INTEREST, item_id, item_price, reason)
+	GameplayDebugLog.log("customer", "purchase_item_sold_out_while_waiting", {
+		"customer_type": customer_type,
+		"item_id": item_id,
+		"reason": reason,
+	})
+	state = "leaving"
+
+
+func _purchase_item_is_still_available() -> bool:
+	var item_id := str(_purchase_preview.get("item_id", ""))
+	if item_id.is_empty():
+		return int(_purchase_stall.get("stock")) > 0
+	var raw_slots: Variant = _purchase_stall.get("stall_slots")
+	if typeof(raw_slots) != TYPE_ARRAY:
+		return int(_purchase_stall.get("stock")) > 0
+	var slots: Array = raw_slots as Array
+	for slot in slots:
+		if typeof(slot) != TYPE_DICTIONARY:
+			continue
+		var item_slot: Dictionary = slot
+		if str(item_slot.get("item_id", "")) == item_id and int(item_slot.get("count", 0)) > 0:
+			return true
+	return false
 
 
 func _clear_purchase_request() -> void:
@@ -360,7 +417,7 @@ func _should_visit_stall(active_stall: Node) -> bool:
 		return false
 	if not bool(active_stall.get("is_open")) or int(active_stall.get("stock")) <= 0:
 		return false
-	return _has_demand_for(str(active_stall.get("current_item_id")))
+	return not _stall_dialogue_item(active_stall).is_empty()
 
 
 func _visit_target_for_stall(active_stall: Node) -> Vector2:
@@ -486,6 +543,7 @@ func enter_stall_influence(stall: Node) -> void:
 		active_stall = target_stall
 	if stall == active_stall:
 		_influence_stall = stall
+		_maybe_show_stall_seen_dialogue(stall)
 
 
 func exit_stall_influence(stall: Node) -> void:
@@ -509,8 +567,98 @@ func consider_begging_donation(begging_session: Node) -> void:
 
 
 func _has_demand_for(item_id: String) -> bool:
+	return _preference_for(item_id) >= DEMAND_THRESHOLD
+
+
+func _maybe_show_stall_seen_dialogue(stall: Node) -> void:
+	if state != "walking" or stall == null or not is_instance_valid(stall):
+		return
+	var item := _stall_dialogue_item(stall)
+	if item.is_empty():
+		return
+	var stall_id := stall.get_instance_id()
+	if _seen_stall_dialogue_ids.has(stall_id):
+		return
+	_seen_stall_dialogue_ids[stall_id] = true
+	_show_customer_dialogue(CustomerDialogueLines.EVENT_SEE_STALL, str(item.get("item_id", "")), int(item.get("price", 0)), "")
+
+
+func _show_customer_dialogue(event: String, item_id: String, price: int, reason: String) -> void:
+	if not _should_trigger_customer_dialogue(event):
+		return
+	if item_id.is_empty():
+		item_id = PrototypeConstants.ITEM_APPLE
+	var bubble := _ensure_dialogue_bubble()
+	var text := CustomerDialogueLines.line_for(event, _customer_profile, item_id, price, reason, _rng)
+	if bubble.has_method("show_line"):
+		bubble.call("show_line", text)
+
+
+func _should_trigger_customer_dialogue(event: String) -> bool:
+	var chance := float(_dialogue_chance_overrides.get(event, CustomerDialogueLines.trigger_chance_for(event)))
+	return _rng.randf() <= clampf(chance, 0.0, 1.0)
+
+
+func _stall_dialogue_item(stall: Node) -> Dictionary:
+	var best_item := {}
+	var best_preference := -1.0
+	var raw_slots: Variant = stall.get("stall_slots")
+	if typeof(raw_slots) == TYPE_ARRAY:
+		var slots: Array = raw_slots as Array
+		for slot in slots:
+			if typeof(slot) != TYPE_DICTIONARY:
+				continue
+			var item_slot: Dictionary = slot
+			var item_id := str(item_slot.get("item_id", ""))
+			if item_id.is_empty() or int(item_slot.get("count", 0)) <= 0:
+				continue
+			var preference := _preference_for(item_id)
+			if preference < DEMAND_THRESHOLD or preference <= best_preference:
+				continue
+			best_preference = preference
+			best_item = {
+				"item_id": item_id,
+				"price": int(item_slot.get("price", ConfigLoader.get_base_sell_price(item_id))),
+			}
+	if not best_item.is_empty():
+		return best_item
+	var fallback_item_id := str(stall.get("current_item_id"))
+	if fallback_item_id.is_empty() or not _has_demand_for(fallback_item_id):
+		return {}
+	return {
+		"item_id": fallback_item_id,
+		"price": int(stall.get("price")),
+	}
+
+
+func _preference_for(item_id: String) -> float:
 	var preferences: Dictionary = _customer_profile.get("preferences", {})
-	return float(preferences.get(item_id, 0.0)) >= DEMAND_THRESHOLD
+	return float(preferences.get(item_id, 0.0))
+
+
+func _ensure_dialogue_bubble() -> Node2D:
+	if _dialogue_bubble != null and is_instance_valid(_dialogue_bubble):
+		return _dialogue_bubble
+	_dialogue_bubble = Node2D.new()
+	_dialogue_bubble.name = "DialogueBubble"
+	_dialogue_bubble.set_script(CustomerDialogueBubble)
+	add_child(_dialogue_bubble)
+	return _dialogue_bubble
+
+
+func get_current_dialogue_text() -> String:
+	if _dialogue_bubble == null or not is_instance_valid(_dialogue_bubble) or not _dialogue_bubble.has_method("get_text"):
+		return ""
+	return str(_dialogue_bubble.call("get_text"))
+
+
+func set_dialogue_chance_override(event: String, chance: float) -> void:
+	_dialogue_chance_overrides[event] = clampf(chance, 0.0, 1.0)
+
+
+func get_purchase_prompt() -> String:
+	var item_id := str(_purchase_preview.get("item_id", PrototypeConstants.ITEM_APPLE))
+	return "确认卖%s" % ConfigLoader.get_item_name(item_id)
 
 
 func _begging_donation_chance() -> float:

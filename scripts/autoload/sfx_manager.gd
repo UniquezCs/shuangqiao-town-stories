@@ -1,6 +1,7 @@
 extends Node
 
 const CASH_RECEIVED_PATH := "res://assets/audio/sfx/cash_received.wav"
+const CASH_RECEIVED_STREAM := preload("res://assets/audio/sfx/cash_received.wav")
 
 var sfx_player: AudioStreamPlayer = null
 
@@ -14,11 +15,7 @@ func _ready() -> void:
 
 func play_cash_received() -> void:
 	_ensure_player()
-	var stream := load(CASH_RECEIVED_PATH)
-	if stream == null:
-		push_warning("收钱音效资源不存在：%s" % CASH_RECEIVED_PATH)
-		return
-	sfx_player.stream = stream
+	sfx_player.stream = CASH_RECEIVED_STREAM
 	sfx_player.volume_db = -4.0
 	if DisplayServer.get_name() == "headless":
 		return

@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://bkc0g3qm8sdjn"]
+
+[ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="1_exit"]
+[ext_resource type="Texture2D" uid="uid://d3k6qw3f0hyxi" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_0_0_1024.png" id="2_chunk00"]
+[ext_resource type="Texture2D" uid="uid://cdomsmhg3v8bk" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_1_0_1024.png" id="3_chunk10"]
+[ext_resource type="Texture2D" uid="uid://dqtuyg408dkf6" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_0_1_1024.png" id="4_chunk01"]
+[ext_resource type="Texture2D" uid="uid://t02ubmt7cm5y" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_1_1_1024.png" id="5_chunk11"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_to_home"]
+size = Vector2(160, 72)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_top"]
+a = Vector2(0, 0)
+b = Vector2(2048, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_right"]
+a = Vector2(2048, 0)
+b = Vector2(2048, 2048)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_bottom"]
+a = Vector2(2048, 2048)
+b = Vector2(0, 2048)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_left"]
+a = Vector2(0, 2048)
+b = Vector2(0, 0)
+
+[node name="BackMountainScene" type="Node2D" unique_id=358822366]
+
+[node name="BackgroundBlocks" type="Node2D" parent="." unique_id=1170976431]
+
+[node name="Chunk00" type="Sprite2D" parent="BackgroundBlocks" unique_id=1068510900]
+z_index = -100
+texture_filter = 1
+position = Vector2(512, 512)
+texture = ExtResource("2_chunk00")
+
+[node name="Chunk10" type="Sprite2D" parent="BackgroundBlocks" unique_id=1941257413]
+z_index = -100
+texture_filter = 1
+position = Vector2(1536, 512)
+texture = ExtResource("3_chunk10")
+
+[node name="Chunk01" type="Sprite2D" parent="BackgroundBlocks" unique_id=238612530]
+z_index = -100
+texture_filter = 1
+position = Vector2(512, 1536)
+texture = ExtResource("4_chunk01")
+
+[node name="Chunk11" type="Sprite2D" parent="BackgroundBlocks" unique_id=772023158]
+z_index = -100
+texture_filter = 1
+position = Vector2(1536, 1536)
+texture = ExtResource("5_chunk11")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1447686803]
+
+[node name="default" type="Marker2D" parent="Spawns" unique_id=1475423917]
+position = Vector2(1024, 1880)
+
+[node name="from_home" type="Marker2D" parent="Spawns" unique_id=1275408081]
+position = Vector2(1024, 1880)
+
+[node name="ToHome" type="Area2D" parent="." unique_id=1263336402]
+position = Vector2(1024, 1984)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_exit")
+target_scene = "home"
+spawn_id = "back_mountain_spawn"
+prompt = "回家"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToHome" unique_id=1994396384]
+shape = SubResource("RectangleShape2D_to_home")
+
+[node name="BoundaryWalls" type="StaticBody2D" parent="." unique_id=1133414831]
+
+[node name="TopWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=427083502]
+shape = SubResource("SegmentShape2D_top")
+
+[node name="RightWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=1529204249]
+shape = SubResource("SegmentShape2D_right")
+
+[node name="BottomWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=1891771820]
+shape = SubResource("SegmentShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=1689960228]
+shape = SubResource("SegmentShape2D_left")

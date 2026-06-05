@@ -7,6 +7,11 @@ const INTRO_IMAGES := [
 	"res://assets/generated/sprites/ui/intro/story_02_family_pressure_1920x1080.png",
 	"res://assets/generated/sprites/ui/intro/story_03_hometown_stall_1920x1080.png",
 ]
+const INTRO_TEXTURES := [
+	preload("res://assets/generated/sprites/ui/intro/story_01_factory_layoff_1920x1080.png"),
+	preload("res://assets/generated/sprites/ui/intro/story_02_family_pressure_1920x1080.png"),
+	preload("res://assets/generated/sprites/ui/intro/story_03_hometown_stall_1920x1080.png"),
+]
 const INTRO_CAPTIONS := [
 	"1998 年，国企改制的风吹到厂门口。干了半辈子的岗位没了，手里的通知轻得像纸，日子却一下重了起来。",
 	"家里的账本摊在桌上，米钱、药钱、孩子的学费，一样都等不得。没了工资，也得想办法把日子撑下去。",
@@ -86,8 +91,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		or event.is_action_pressed("interact")
 		or event is InputEventMouseButton and (event as InputEventMouseButton).pressed
 	):
+		var viewport := get_viewport()
+		if viewport != null:
+			viewport.set_input_as_handled()
 		_advance_intro_slide()
-		get_viewport().set_input_as_handled()
 
 
 func _build_intro_layer() -> void:
@@ -152,7 +159,7 @@ func _show_intro_slide() -> void:
 		_finish_intro_sequence()
 		return
 	if _intro_texture != null:
-		_intro_texture.texture = load(str(INTRO_IMAGES[_intro_index]))
+		_intro_texture.texture = INTRO_TEXTURES[_intro_index]
 	if _intro_caption != null:
 		_intro_caption.text = str(INTRO_CAPTIONS[_intro_index])
 	if _intro_timer != null:

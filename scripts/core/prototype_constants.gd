@@ -40,6 +40,7 @@ const CHENGGUAN_FINE := 8
 const SCENE_HOUSE := "house"
 const SCENE_HOME := "home"
 const SCENE_TOWN := "town"
+const SCENE_BACK_MOUNTAIN := "back_mountain"
 
 const TOOL_HOE := "hoe"
 const TOOL_SEED := "seed"

@@ -84,6 +84,9 @@ position = Vector2(192, 160)
 [node name="house_door_spawn" type="Marker2D" parent="Spawns" unique_id=961214114]
 position = Vector2(-313, 64)
 
+[node name="back_mountain_spawn" type="Marker2D" parent="Spawns"]
+position = Vector2(-144, -296)
+
 [node name="FarmField" type="Area2D" parent="." unique_id=245617527]
 position = Vector2(-72, -8)
 collision_layer = 2
@@ -104,6 +107,18 @@ prompt = "去镇街"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ToTown" unique_id=210976208]
 position = Vector2(18, 8)
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="ToBackMountain" type="Area2D" parent="."]
+position = Vector2(-144, -344)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_exit")
+target_scene = "back_mountain"
+spawn_id = "from_home"
+prompt = "去后山"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToBackMountain"]
 shape = SubResource("RectangleShape2D_exit")
 
 [node name="Home" type="Area2D" parent="." unique_id=910736135]

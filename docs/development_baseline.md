@@ -99,8 +99,26 @@ Detailed incident notes and prevention rules are maintained in
 
 ### Map Scenes
 
-- Any map scene work must use `TileMapLayer`.
-- `TileMapLayer` scenes must use the project baseline `32x32` tile size.
+- Future game maps must use a hybrid map architecture, not a pure tile-only
+  map. Each map should be composed from visual layers plus logical tile layers.
+- Visual layers own what the player sees: generated map rasters, painted
+  TileMapLayer visuals, props, buildings, trees, water surfaces, foreground
+  overlays, and other art that may need richer composition than a single tile
+  grid.
+- Logical layers own what gameplay reads: walkable roads, collision/blocking,
+  water/field/mountain/forest area tags, stall placement zones, NPC navigation
+  routes, spawn/exit markers, interaction zones, and other machine-readable
+  map semantics.
+- Gameplay code must read logical layers or explicit scene nodes, not infer
+  rules from visual pixels, decorative props, or a baked map image.
+- Visual layers and logical layers must stay aligned through Godot coordinates.
+  Use `TileMapLayer.to_local()`, `local_to_map()`, `map_to_local()`, and
+  `to_global()` for conversions rather than hand-written pixel math.
+- Any map scene work that affects gameplay semantics must include
+  `TileMapLayer` logical layers, even when the visual presentation is a large
+  raster image or separately placed props.
+- `TileMapLayer` logical scenes must use the project baseline `32x32` tile
+  size.
 - Do not generate map scenes procedurally through scripts as the primary
   implementation.
 - If suitable map assets do not exist, use simple placeholder tiles or
@@ -110,9 +128,10 @@ Detailed incident notes and prevention rules are maintained in
   walkable source. NPC spawners should ask a dedicated road navigation node for
   route points instead of creating freeform jitter points that can leave the
   road.
-- Gameplay scripts may read `RoadLayer.get_used_cells()` to build route data,
-  but must not write or auto-fill road tiles. Road editing belongs in the Godot
-  editor.
+- Gameplay scripts may read logical layer cells, such as
+  `RoadLayer.get_used_cells()`, to build route data, but must not write or
+  auto-fill map logic tiles during normal gameplay. Logical map editing belongs
+  in the Godot editor or an explicit map-authoring tool.
 
 ### Gameplay Node Design
 
@@ -275,7 +294,15 @@ Before implementing character animation:
 
 Before implementing map scenes:
 
-- Confirm the scene is built with `TileMapLayer`.
+- Confirm the scene uses the hybrid map architecture: visual layers for
+  presentation and logical `TileMapLayer` layers for gameplay semantics.
+- Confirm every gameplay-relevant map concept has a logical owner: walkable
+  roads, blockers, water, farmable fields, forests, mountains, stall zones,
+  spawn points, exits, and interaction areas.
+- Confirm gameplay systems read logical layers or explicit nodes, not visual
+  pixels or decorative props.
+- Confirm visual and logical layers share the same coordinate basis and use
+  Godot tile coordinate APIs for conversion.
 - Confirm required map tiles/assets exist.
 - If tiles are missing, use placeholder tiles or existing assets and document
   the required tileset registry entry instead of generating art by default.

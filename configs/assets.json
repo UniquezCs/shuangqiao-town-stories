@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-05",
+	"updated_at": "2026-06-06",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -39,7 +39,9 @@
 			"PopulationFlow starts from Main with a detached TownScene template, keeps recent statistical flow events while the player is outside town, and PopulationFlowSpawner restores visible NPCs at route-progress positions when TownScene loads.",
 			"PopulationFlow background initialization must process the current aligned tick immediately when GameState.current_game_minute is already at or after the 06:00 day start, including load-game paths; it must not wait until the next 10-minute interval.",
 			"PopulationFlow target timing should stay generic: configs/flow_preferences.json time_curves adjusts attraction for age_group + target_type over the day, instead of adding hard-coded commute plans for specific buildings.",
-			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools."
+			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools.",
+			"Customer overhead dialogue is probabilistic per event and must be based on an in-stock stall item the customer actually wants; avoid fixed dialogue triggers and stale sold-out item names.",
+			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics."
 		]
 	},
 	"packs": {
@@ -1958,6 +1960,127 @@
 			"tags": [
 				"locations"
 			]
+		},
+		"location.back_mountain_full": {
+			"type": "raster_map_reference",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_full_4096.png",
+			"size": [
+				4096,
+				4096
+			],
+			"usage": [
+				"back_mountain_visual_reference",
+				"raster_map_source"
+			],
+			"used_by": [
+				"scenes/back_mountain_scene.tscn"
+			],
+			"anchor": "top_left_reference",
+			"collision": "none",
+			"notes": "Generated 2026-06-06 as the full back-mountain raster reference. Runtime uses four 1024x1024 Sprite2D chunks composed from this visual design.",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_chunk_0_0": {
+			"type": "raster_map_chunk",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_0_0_1024.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_sprite2d_background_chunk"
+			],
+			"used_by": [
+				"scenes/back_mountain_scene.tscn"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Runtime background chunk for BackMountainScene grid position (0, 0); Sprite2D position is (512, 512).",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map_chunk",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_chunk_1_0": {
+			"type": "raster_map_chunk",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_1_0_1024.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_sprite2d_background_chunk"
+			],
+			"used_by": [
+				"scenes/back_mountain_scene.tscn"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Runtime background chunk for BackMountainScene grid position (1, 0); Sprite2D position is (1536, 512).",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map_chunk",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_chunk_0_1": {
+			"type": "raster_map_chunk",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_0_1_1024.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_sprite2d_background_chunk"
+			],
+			"used_by": [
+				"scenes/back_mountain_scene.tscn"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Runtime background chunk for BackMountainScene grid position (0, 1); Sprite2D position is (512, 1536).",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map_chunk",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_chunk_1_1": {
+			"type": "raster_map_chunk",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_1_1_1024.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_sprite2d_background_chunk"
+			],
+			"used_by": [
+				"scenes/back_mountain_scene.tscn"
+			],
+			"anchor": "center",
+			"collision": "none",
+			"notes": "Runtime background chunk for BackMountainScene grid position (1, 1); Sprite2D position is (1536, 1536).",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map_chunk",
+				"pixel_art"
+			]
 		}
 	},
 	"ui": {
@@ -2379,6 +2502,30 @@
 			"tags": [
 				"ui"
 			]
+		},
+		"ui.customer_dialogue_bubble": {
+			"type": "ui_feedback",
+			"status": "implemented",
+			"current_implementation": "Runtime Node2D with PanelContainer and Label",
+			"usage": [
+				"customer_stall_seen_dialogue",
+				"customer_budget_reject_dialogue",
+				"customer_purchase_completed_dialogue"
+			],
+			"used_by": [
+				"scripts/world/customer.gd",
+				"scripts/world/customer_dialogue_bubble.gd",
+				"scripts/world/customer_dialogue_lines.gd"
+			],
+			"anchor": "above_npc_head",
+			"collision": "none",
+			"tags": [
+				"ui",
+				"customer",
+				"dialogue",
+				"feedback"
+			],
+			"notes": "Added 2026-06-05: probabilistic NPC overhead dialogue uses event-specific line pools, actual in-stock desired stall items, and Tween fade-in/fade-out presentation."
 		},
 		"ui.penalty_warning": {
 			"type": "ui_feedback",
@@ -3891,6 +4038,151 @@
 				"1990s_chinese_town"
 			],
 			"notes": "Generated 2026-06-04: small local temple/shrine building with incense burner and tiled roof."
+		},
+		"prop.township.working_farmyard": {
+			"id": "prop.township.working_farmyard",
+			"type": "prop",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/props/township/buildings/working_farmyard_256x192.png",
+			"size": [
+				256,
+				192
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration",
+				"rural_residential_area_composition",
+				"town_scene_right_bottom_residential_node"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"rural_homestead",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-05: productive rural farmyard with main house, side shed, haystack, grain drying mat, handcart, water pump, and vegetable corner. Wired 2026-06-05 as WorkingFarmyardResidence under TownScene/Buildings."
+		},
+		"prop.township.homestead_plot": {
+			"id": "prop.township.homestead_plot",
+			"type": "prop",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/props/township/buildings/homestead_plot_224x160.png",
+			"size": [
+				224,
+				160
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration",
+				"rural_residential_area_composition",
+				"town_scene_right_bottom_residential_node"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"rural_homestead",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-05: rural homestead plot/zhaijidi with low brick boundary, simple house, vegetable rows, well, and stacked bricks. Wired 2026-06-05 as HomesteadPlotResidence under TownScene/Buildings."
+		},
+		"prop.township.rural_village_cluster": {
+			"id": "prop.township.rural_village_cluster",
+			"type": "prop",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/props/township/buildings/rural_village_cluster_256x192.png",
+			"size": [
+				256,
+				192
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration",
+				"rural_residential_area_composition",
+				"town_scene_right_bottom_residential_node"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"rural_homestead",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-05: compact rural village cluster with multiple tile-roof homes, lane, courtyards, utility pole, gardens, and haystack. Wired 2026-06-05 as RuralVillageClusterResidence under TownScene/Buildings."
+		},
+		"prop.township.earth_wall_courtyard": {
+			"id": "prop.township.earth_wall_courtyard",
+			"type": "prop",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/props/township/buildings/earth_wall_courtyard_224x160.png",
+			"size": [
+				224,
+				160
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration",
+				"rural_residential_area_composition",
+				"town_scene_right_bottom_residential_node"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"rural_homestead",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-05: old earth-wall rural courtyard with worn tiled house, patched doors, farm baskets, jars, and vegetable plot. Wired 2026-06-05 as EarthWallCourtyardResidence under TownScene/Buildings."
+		},
+		"prop.township.farmhouse_courtyard": {
+			"id": "prop.township.farmhouse_courtyard",
+			"type": "prop",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/props/township/buildings/farmhouse_courtyard_224x160.png",
+			"size": [
+				224,
+				160
+			],
+			"anchor": "center",
+			"collision": "none",
+			"usage": [
+				"township_map_reference",
+				"editor_placed_town_decoration",
+				"rural_residential_area_composition",
+				"town_scene_right_bottom_residential_node"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn"
+			],
+			"tags": [
+				"township",
+				"buildings",
+				"rural_homestead",
+				"topdown_pixel",
+				"1990s_chinese_town"
+			],
+			"notes": "Generated 2026-06-05: gray-brick farmhouse courtyard with gate, tiled main house, side rooms, vegetable patch, bicycle, and water jar. Wired 2026-06-05 as FarmhouseCourtyardResidence under TownScene/Buildings."
 		}
 	},
 	"audio": {
@@ -3977,12 +4269,17 @@
 			"path": "res://tests/customer_purchase_interaction_test.tscn",
 			"usage": [
 				"verify_customer_purchase_waiting_interaction",
-				"verify_customer_approach_position_avoids_stall_collision"
+				"verify_customer_approach_position_avoids_stall_collision",
+				"verify_probabilistic_customer_dialogue",
+				"verify_dialogue_uses_in_stock_stall_item",
+				"verify_waiting_customer_leaves_when_requested_item_sells_out"
 			],
 			"used_by": [
 				"scripts/world/customer.gd",
 				"scripts/world/stall.gd",
-				"scripts/world/stall_spot.gd"
+				"scripts/world/stall_spot.gd",
+				"scripts/world/customer_dialogue_bubble.gd",
+				"scripts/world/customer_dialogue_lines.gd"
 			],
 			"anchor": "none",
 			"collision": "none",
@@ -3990,9 +4287,10 @@
 				"debug",
 				"customer",
 				"stall",
-				"collision"
+				"collision",
+				"dialogue"
 			],
-			"notes": "Updated 2026-06-05: covers real stall StaticBody2D collision so attracted customers must stop at a reachable purchase position instead of being blocked by the stall."
+			"notes": "Updated 2026-06-05: covers real stall StaticBody2D collision, customer purchase confirmation, probabilistic overhead dialogue, dialogue fade animation, sold-out item name regression, and waiting customers leaving when their requested item sells out."
 		},
 		"npc_collision_recovery_test": {
 			"type": "test_scene",

@@ -3,6 +3,7 @@ extends Node2D
 const HOME_SCENE := preload("res://scenes/home_scene.tscn")
 const HOUSE_SCENE := preload("res://scenes/house_scene.tscn")
 const TOWN_SCENE := preload("res://scenes/town_scene.tscn")
+const BACK_MOUNTAIN_SCENE := preload("res://scenes/back_mountain_scene.tscn")
 const StallActionPanelScript := preload("res://scripts/ui/stall_action_panel.gd")
 const LotteryPanelScript := preload("res://scripts/ui/lottery_panel.gd")
 
@@ -77,6 +78,8 @@ func _apply_scene_entry_state(target_scene: String) -> void:
 		_enter_town()
 	elif target_scene == PrototypeConstants.SCENE_HOME:
 		_enter_home()
+	elif target_scene == PrototypeConstants.SCENE_BACK_MOUNTAIN:
+		GameState.set_objective("在后山探索可采集区域")
 	else:
 		GameState.set_objective("出门劳作，晚上十二点前回来睡觉")
 
@@ -291,6 +294,8 @@ func _scene_for_id(target_scene: String) -> PackedScene:
 		return TOWN_SCENE
 	if target_scene == PrototypeConstants.SCENE_HOUSE:
 		return HOUSE_SCENE
+	if target_scene == PrototypeConstants.SCENE_BACK_MOUNTAIN:
+		return BACK_MOUNTAIN_SCENE
 	return HOME_SCENE
 
 

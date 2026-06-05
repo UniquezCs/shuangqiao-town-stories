@@ -8,6 +8,8 @@ func _ready() -> void:
 
 
 func get_prompt() -> String:
+	if customer != null and is_instance_valid(customer) and customer.has_method("get_purchase_prompt"):
+		return str(customer.call("get_purchase_prompt"))
 	return "确认卖苹果"
 
 

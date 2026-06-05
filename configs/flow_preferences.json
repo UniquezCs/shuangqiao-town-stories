@@ -90,7 +90,8 @@
 	},
 	"middle": {
 	  "factory": [
-		{ "minute": 420, "value": 0.2 },
+		{ "minute": 390, "value": 0.35 },
+		{ "minute": 420, "value": 0.8 },
 		{ "minute": 480, "value": 1.0 },
 		{ "minute": 540, "value": 0.35 }
 	  ],

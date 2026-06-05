@@ -42,6 +42,9 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
   routes. New building entrances should be connected by painting road tiles on
   this layer in the editor, so every NPC, including chengguan, uses one road
   grid.
+- Large raster maps use a hybrid setup: `Sprite2D` background chunks provide
+  the visual map, while exits, collision, navigation, and interactions stay in
+  separate gameplay nodes or logic layers.
 
 ## Generated Pack Metadata
 
@@ -160,6 +163,8 @@ opens at the player's position.
 | `location.school_gate` | implemented | `school_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
 | `location.factory_gate` | implemented | `factory_gate_256x128.png` | Used as a Town `NpcEndpoint` visual and centralized route destination. |
 | `location.police_station` | implemented | `police_station_256x128.png` | Used as the Town `PoliceStation` endpoint visual and chengguan patrol origin/return point. |
+| `location.back_mountain_full` | implemented | `back_mountain_full_4096.png` | Full `4096x4096` pixel-art back-mountain raster reference. Runtime uses chunked Sprite2D backgrounds. |
+| `location.back_mountain_chunk_*` | implemented | `back_mountain_chunk_{x}_{y}_1024.png` | Four `1024x1024` background chunks placed in `scenes/back_mountain_scene.tscn` as a 2x2 Sprite2D grid. |
 | `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |
@@ -188,6 +193,7 @@ Current UI is mostly Godot `Control` nodes with text and panels. This is accepta
 | `ui.price_panel` | placeholder | Control nodes | Price tag icon exists. |
 | `ui.daily_summary_panel` | placeholder | Control nodes | Ledger icon exists. |
 | `ui.purchase_countdown` | implemented | v1 apple icon | Purchase bubble candidate exists. |
+| `ui.customer_dialogue_bubble` | implemented | Runtime `PanelContainer` + `Label` | NPC overhead dialogue is probabilistic, fades in/out, uses only in-stock desired stall items, and waiting customers leave if their requested item sells out. |
 | `ui.penalty_warning` | available | `sprites/items/warning_badge_32.png`, `fine_penalty_32.png` | Not wired into Chengguan feedback yet. |
 
 ### Audio
@@ -214,11 +220,16 @@ Begging mode also registers and uses `prop.begging_bowl` at
 `res://assets/generated/sprites/props/begging/begging_bowl_32.png`; it is a
 `32x32` Sprite2D prop spawned by `BeggingSession` in front of the player.
 
-The township reference map now also has a dedicated top-down pixel prop set under `assets/generated/sprites/props/township/`. These assets are registered as `available` with stable `prop.township.*` IDs and are intended for editor-authored map composition:
+The township reference map now also has a dedicated top-down pixel prop set under `assets/generated/sprites/props/township/`. These assets are registered with stable `prop.township.*` IDs and are intended for editor-authored map composition; entries move from `available` to `implemented` when wired into scenes.
+
+Five rural homestead props are now wired into `TownScene/Buildings` as right-bottom
+residential `NpcEndpoint` nodes: `WorkingFarmyardResidence`,
+`HomesteadPlotResidence`, `RuralVillageClusterResidence`,
+`EarthWallCourtyardResidence`, and `FarmhouseCourtyardResidence`.
 
 | Group | Count | Directory | Intended Use |
 | --- | ---: | --- | --- |
-| Buildings | 28 | `res://assets/generated/sprites/props/township/buildings/` | School, hospital, supply cooperative, factory, residential, government, bus station, grain depot, market, village, vegetable market, welfare lottery shop, middle school, primary school, kindergarten, barber shop, restaurant, pharmacy, bookstore, department store, arcade hall, and temple building footprints. |
+| Buildings | 33 | `res://assets/generated/sprites/props/township/buildings/` | School, hospital, supply cooperative, factory, residential, government, bus station, grain depot, market, village, vegetable market, welfare lottery shop, middle school, primary school, kindergarten, barber shop, restaurant, pharmacy, bookstore, department store, arcade hall, temple, rural farmhouse courtyards, homestead plot, working farmyard, and village cluster building footprints. |
 | Infrastructure | 16 | `res://assets/generated/sprites/props/township/infrastructure/` | Asphalt roads, intersections, dirt roads, bridges, canal pieces, compound walls, gates, and utility details. |
 | Daily Props And Trees | 16 | `res://assets/generated/sprites/props/township/daily_props/` | Trees, shrubs, bicycle parking, tricycle, truck, water pump, laundry line, notice board, sacks, coal, haystack, and market decoration. |
 
