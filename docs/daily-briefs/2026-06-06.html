@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godot 项目每日简报 - 2026-06-06</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --paper: #fffaf1;
+      --ink: #2b241d;
+      --muted: #6f6558;
+      --line: #ddcfbe;
+      --accent: #8f4f2c;
+      --accent-soft: #f3e2d1;
+      --fact: #2f6f41;
+      --infer: #8a5a15;
+      --idea: #7d3542;
+      --p0: #f7d8d8;
+      --p1: #f7e5c9;
+      --p2: #dcead9;
+      --p3: #dde7f7;
+      --shadow: rgba(68, 47, 26, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #ead8c4 0%, var(--bg) 38%, #faf8f3 100%);
+      line-height: 1.7;
+    }
+
+    .wrap {
+      width: min(1200px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero, .section, .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 28px var(--shadow);
+    }
+
+    .hero {
+      padding: 28px 30px 24px;
+      margin-bottom: 18px;
+    }
+
+    .section {
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .section-body {
+      padding: 0 24px 24px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 32px; }
+    h2 { font-size: 22px; padding: 22px 24px 0; }
+    h3 { font-size: 17px; }
+    p { margin: 8px 0; }
+
+    .meta, .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #6d3a19;
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-12 { grid-column: span 12; }
+
+    .card {
+      padding: 16px 18px;
+      height: 100%;
+    }
+
+    .card ul, .section ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    li { margin: 6px 0; }
+
+    .mono {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent);
+      color: var(--muted);
+    }
+
+    .fact { color: var(--fact); font-weight: 700; }
+    .infer { color: var(--infer); font-weight: 700; }
+    .idea { color: var(--idea); font-weight: 700; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    th {
+      background: #f7ecde;
+      color: #684326;
+      font-weight: 700;
+    }
+
+    .tag {
+      display: inline-block;
+      min-width: 34px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .p0 { background: var(--p0); color: #8a2a2a; }
+    .p1 { background: var(--p1); color: #875419; }
+    .p2 { background: var(--p2); color: #2f6340; }
+    .p3 { background: var(--p3); color: #365b97; }
+
+    @media (max-width: 900px) {
+      .col-4, .col-6, .col-12 { grid-column: span 12; }
+      h1 { font-size: 27px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>本简报覆盖自 <strong>2026-06-04 22:01:37 UTC</strong>（上次自动化运行时间）以来的仓库变化，并明确区分 <span class="fact">已发生改动</span>、<span class="infer">基于当前代码状态的优化建议</span>、<span class="idea">结合现有系统的新增功能建议</span>。</p>
+      <div class="meta">
+        <span class="chip">日期：2026-06-06</span>
+        <span class="chip">当前 HEAD：8505038</span>
+        <span class="chip">提交窗口：2026-06-05 至 2026-06-06</span>
+        <span class="chip">生成时刻：2026-06-06 06:01:57 CST</span>
+      </div>
+      <div class="notice">
+        <div>本轮纳入 2 个已提交变更：<span class="mono">291bab6</span>（标题开场漫画基线）与 <span class="mono">8505038</span>（城镇反馈完善与后山地图接入）。</div>
+        <div>当前工作区干净，没有额外未提交改动；因此本简报基于提交历史和仓库现状，不需要单独拆出工作区临时内容。</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>概览</h2>
+      <div class="section-body">
+        <div class="grid">
+          <div class="col-4">
+            <div class="card">
+              <h3>本轮主线</h3>
+              <ul>
+                <li>标题界面加入三幕开场漫画，开局叙事更完整。</li>
+                <li>新增后山场景与 Home 往返入口，世界从双场景扩展到可探索外部区域。</li>
+                <li>城镇底部补入更多乡村住宅 endpoint，并重新分布部分建筑节点与容量。</li>
+                <li>顾客购买反馈从单一结果扩展为“看见摊位、等待、成交、超时、售罄、收摊”等多状态头顶短句。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <h3>变化规模</h3>
+              <ul>
+                <li>本窗口内新增 17 个文件、修改 27 个文件，没有显式删除文件。</li>
+                <li>新增资源集中在 <span class="mono">assets/generated/sprites/locations/back_mountain</span> 与 <span class="mono">assets/generated/sprites/props/township/buildings</span>。</li>
+                <li>新增测试覆盖后山场景、顾客反馈、资源登记与城镇图层结构。</li>
+                <li>当前较大的脚本仍集中在 <span class="mono">scripts/world/customer.gd</span> 760 行、<span class="mono">scripts/autoload/population_flow.gd</span> 550 行、<span class="mono">scripts/autoload/game_state.gd</span> 408 行、<span class="mono">scripts/player.gd</span> 401 行、<span class="mono">scripts/main.gd</span> 360 行。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <h3>阶段判断</h3>
+              <ul>
+                <li>项目正在从“单日摆摊原型”走向“多场景经营 + 轻探索”的结构。</li>
+                <li>最近提交明显在补世界感与反馈密度，而不是新增复杂经济系统。</li>
+                <li>现阶段的主要风险不在玩法缺少想法，而在场景、状态和资源登记继续扩张后维护成本快速上升。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>主要改动</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>范围</th>
+              <th>摘要</th>
+              <th>性质</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-06-05 12:02 CST</td>
+              <td>标题入口 / UI 资源</td>
+              <td>为标题界面接入三张 intro 漫画与文案，并在 <span class="mono">scripts/ui/title_screen.gd</span> 中改为预加载纹理、处理点击推进输入。</td>
+              <td><span class="fact">已发生改动</span></td>
+            </tr>
+            <tr>
+              <td>2026-06-06 01:54 CST</td>
+              <td>世界地图 / 场景切换</td>
+              <td>新增 <span class="mono">scenes/back_mountain_scene.tscn</span>，从 <span class="mono">scenes/home_scene.tscn</span> 增加前往后山入口，并在 <span class="mono">scripts/main.gd</span> 注册新场景与目标文本。</td>
+              <td><span class="fact">已发生改动</span></td>
+            </tr>
+            <tr>
+              <td>2026-06-06 01:54 CST</td>
+              <td>TownScene / 人流骨架</td>
+              <td>城镇右下区域新增 5 组乡村住宅美术与 endpoint，部分住宅容量下调，寺庙、书店、药店等节点重摆，RoadLayer 同步调整。</td>
+              <td><span class="fact">已发生改动</span></td>
+            </tr>
+            <tr>
+              <td>2026-06-06 01:54 CST</td>
+              <td>顾客购买反馈</td>
+              <td><span class="mono">customer.gd</span> 接入概率化头顶短句，新增 <span class="mono">customer_dialogue_lines.gd</span> 与 <span class="mono">customer_dialogue_bubble.gd</span>，并处理售罄、超时、收摊、成交等反馈分支。</td>
+              <td><span class="fact">已发生改动</span></td>
+            </tr>
+            <tr>
+              <td>2026-06-06 01:54 CST</td>
+              <td>资源与测试</td>
+              <td><span class="mono">configs/assets.json</span>、<span class="mono">docs/asset_registry.md</span>、<span class="mono">tests/generated_asset_layout_test.gd</span>、<span class="mono">tests/town_layer_structure_test.gd</span> 持续把新资源接入和目录纪律写进自动校验。</td>
+              <td><span class="fact">已发生改动</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增内容</h2>
+      <div class="section-body">
+        <ul>
+          <li>新增后山地图整套背景：1 张 4096 参考图 + 4 张 1024 运行时块图，路径位于 <span class="mono">assets/generated/sprites/locations/back_mountain</span>。</li>
+          <li>新增运行时场景 <span class="mono">scenes/back_mountain_scene.tscn</span>，包含边界、出生点、回家出口。</li>
+          <li>新增顾客头顶反馈系统：<span class="mono">scripts/world/customer_dialogue_lines.gd</span>、<span class="mono">scripts/world/customer_dialogue_bubble.gd</span>。</li>
+          <li>新增 5 组乡村建筑资源：<span class="mono">working_farmyard</span>、<span class="mono">homestead_plot</span>、<span class="mono">rural_village_cluster</span>、<span class="mono">earth_wall_courtyard</span>、<span class="mono">farmhouse_courtyard</span>。</li>
+          <li>新增回归测试：<span class="mono">tests/back_mountain_scene_test.gd</span> 以及顾客售罄/对话气泡相关测试。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>修改内容</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="mono">scripts/ui/title_screen.gd</span> 从运行时 <span class="mono">load()</span> 切到预加载纹理，避免每次翻页重复加载。</li>
+          <li><span class="mono">scripts/autoload/sfx_manager.gd</span> 改为预加载收钱音效，减少交易时动态加载。</li>
+          <li><span class="mono">scripts/world/stall_sales_policy.gd</span> 提高偏好阈值并细分 <span class="mono">price_reject</span> / <span class="mono">budget_reject</span> / <span class="mono">no_interest</span> 对话事件。</li>
+          <li><span class="mono">scripts/world/customer.gd</span> 现在会在等待购买期间监听库存变化，若目标商品被抢空会立即撤销交互并离开。</li>
+          <li><span class="mono">configs/flow_preferences.json</span> 与 <span class="mono">scenes/town_scene.tscn</span> 一起推动“住宅更多、商铺/公共点位更清晰”的人流分布基础。</li>
+          <li><span class="mono">docs/development_baseline.md</span> 进一步写明大型 raster 地图要采用视觉块 + 语义层的混合结构。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>删除或废弃内容</h2>
+      <div class="section-body">
+        <ul>
+          <li>本窗口没有显式删除文件或资源。</li>
+          <li>从现状看，旧的“顾客只给单一拒绝结果”的反馈方式已经被更细粒度的对话事件替代，可视为行为上的废弃。</li>
+          <li>TownScene 当前继续沿用 editor 保存的静态布局，没有引入脚本回填地图；这意味着此前可能存在的“脚本生成占位地图”思路在当前基线中已被明确排除。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>可能影响</h2>
+      <div class="section-body">
+        <div class="grid">
+          <div class="col-6">
+            <div class="card">
+              <h3>正向影响</h3>
+              <ul>
+                <li>开局叙事、顾客反馈、后山入口三者叠加后，玩家对“为什么摆摊”和“还能去哪里”会更清楚。</li>
+                <li>后山场景为采集、事件、资源刷新等系统留出了自然扩展位。</li>
+                <li>TownScene 的住宅 endpoint 数量上来后，PopulationFlow 的数据驱动价值会比以前更明显。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card">
+              <h3>风险与约束</h3>
+              <ul>
+                <li>后山目前只有视觉块、边界和单出口，探索逻辑尚未落地，玩家可能把它理解成“空地图”。</li>
+                <li><span class="mono">customer.gd</span> 已膨胀到 760 行，继续往里面塞反馈、路径和交易状态，回归成本会越来越高。</li>
+                <li>主循环仍由 <span class="mono">main.gd</span> 管场景切换、昼夜、多个 UI 面板和过场动画，后续多场景扩展会直接推高耦合。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>待跟进事项</h2>
+      <div class="section-body">
+        <ul>
+          <li>验证后山场景是否只是占位入口，还是准备进入“可采集区域”原型开发；当前目标文本已经写入，但没有对应玩法节点。</li>
+          <li>确认 TownScene 新增住宅 endpoint 的容量与路线是否已达到想要的人流密度，否则需要结合 <span class="mono">PopulationFlow</span> 做一次定量调参。</li>
+          <li>若标题开场漫画已定稿，后续应考虑是否允许跳过、回看，或与存档状态联动，避免每次新开流程重复打断。</li>
+          <li>把顾客对话文本与事件映射从纯脚本常量演进到配置层前，先确定是否真的需要支持更大规模商品池与多语言。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>优化点排名</h2>
+      <div class="section-body">
+        <p class="small">以下均为 <span class="infer">基于当前代码状态推断出的优化建议</span>，不是本轮已经发生的改动。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>标题</th>
+              <th>优先级</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略实施成本</th>
+              <th>是否需先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>拆分顾客状态机与反馈职责</td>
+              <td><span class="tag p0">P0</span></td>
+              <td><span class="mono">scripts/world/customer.gd</span> 已达 760 行，同时负责路径、交易、等待、卡住恢复、对话气泡和摊位监听；本轮刚新增多个事件分支。</td>
+              <td>降低回归风险，让后续再加“逛摊/问价/采集 NPC”时不必继续堆到单文件。</td>
+              <td><span class="mono">scripts/world/customer.gd</span>，可先拆为购买交互、对话反馈、移动/卡住恢复三个模块。</td>
+              <td>中</td>
+              <td>是，先用现有测试锁定购买与离开状态。</td>
+            </tr>
+            <tr>
+              <td>收敛主场景控制器职责</td>
+              <td><span class="tag p1">P1</span></td>
+              <td><span class="mono">scripts/main.gd</span> 同时管理场景切换、白天时钟、睡眠过场、面板创建、出生点、目标文本和部分 PopulationFlow 初始化。</td>
+              <td>让多场景扩展更稳，减少后山、家、镇街继续增加入口时的全局回归。</td>
+              <td><span class="mono">scripts/main.gd</span>，拆出 scene transition / day loop / ui orchestration。</td>
+              <td>中</td>
+              <td>是，先跑场景切换和睡眠相关测试。</td>
+            </tr>
+            <tr>
+              <td>为后山补齐语义层和可读导航</td>
+              <td><span class="tag p1">P1</span></td>
+              <td>后山当前只有 2x2 Sprite2D 背景块、边界和回家出口；基线要求视觉图与语义节点分离，但后山还没有交互区、资源点或导航标识。</td>
+              <td>避免新地图停留在“能进去但没东西做”的状态，为采集和事件系统准备稳定落点。</td>
+              <td><span class="mono">scenes/back_mountain_scene.tscn</span>、后续对应 world 脚本。</td>
+              <td>中</td>
+              <td>是，先确定后山第一版玩法目标。</td>
+            </tr>
+            <tr>
+              <td>把顾客对话文本配置化</td>
+              <td><span class="tag p2">P2</span></td>
+              <td><span class="mono">customer_dialogue_lines.gd</span> 已累积公共、年龄、性别、商品多层文本；继续硬编码会拖慢文案维护与批量调优。</td>
+              <td>后续加商品、NPC 类型、节日或方言文案时更好维护，也更适合做平衡试验。</td>
+              <td><span class="mono">scripts/world/customer_dialogue_lines.gd</span>，可迁到 <span class="mono">configs/</span> 的独立 JSON。</td>
+              <td>中</td>
+              <td>是，先确认近期是否继续扩充文案池。</td>
+            </tr>
+            <tr>
+              <td>增加 PopulationFlow 调试视图和摘要日志</td>
+              <td><span class="tag p2">P2</span></td>
+              <td>TownScene endpoint 在变多，但当前简报只能从配置和场景静态看分布；没有看到面向调参的汇总可视化。</td>
+              <td>更快识别“住宅过载”“商铺吸引不足”“时间曲线偏离”问题，减少盲调。</td>
+              <td><span class="mono">scripts/autoload/population_flow.gd</span>、<span class="mono">scripts/debug/gameplay_debug_log.gd</span>、调试场景/面板。</td>
+              <td>中</td>
+              <td>是，先确认目前最痛的调参问题是什么。</td>
+            </tr>
+            <tr>
+              <td>补强开发工作流的场景冒烟入口</td>
+              <td><span class="tag p3">P3</span></td>
+              <td>测试已经覆盖不少单点规则，但缺少“从标题进入一天流程再切到后山”的长链路 smoke 测试。</td>
+              <td>在系统继续变多时，更早发现跨场景破坏而不是等手动游玩。</td>
+              <td><span class="mono">tests/</span>，优先补标题 -> Home -> Town/BackMountain 的路径。</td>
+              <td>中</td>
+              <td>否</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增功能排名</h2>
+      <div class="section-body">
+        <p class="small">以下均为 <span class="idea">结合现有系统与最近改动提出的创意性功能建议</span>，不是本轮已经发生的改动。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>标题</th>
+              <th>优先级</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略实施成本</th>
+              <th>是否需先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>后山采集循环首版</td>
+              <td><span class="tag p0">P0</span></td>
+              <td>主场景已把后山目标文案写成“探索可采集区域”，但地图里还没有实际采集节点，落差最直接。</td>
+              <td>立刻把新地图变成有效玩法，而不是纯装饰区域；也能给摆摊补充非农田来源货物。</td>
+              <td><span class="mono">scenes/back_mountain_scene.tscn</span>、<span class="mono">scripts/world/</span> 新资源点脚本、背包/售卖配置。</td>
+              <td>中</td>
+              <td>是，先定首批采集物和刷新节奏。</td>
+            </tr>
+            <tr>
+              <td>顾客围观与问价阶段</td>
+              <td><span class="tag p1">P1</span></td>
+              <td>当前顾客反馈已具备“看见摊位”和“等待购买”短句，离真正的问价/讨价还价只差一层轻交互。</td>
+              <td>提升摆摊过程的戏剧性，让价格策略不只体现在买或不买的结果上。</td>
+              <td><span class="mono">scripts/world/customer.gd</span>、<span class="mono">stall_sales_policy.gd</span>、现有 PurchaseInteraction UI。</td>
+              <td>中</td>
+              <td>是，先验证玩家是否愿意多按一次交互。</td>
+            </tr>
+            <tr>
+              <td>按人流窗口切换摆摊点推荐</td>
+              <td><span class="tag p1">P1</span></td>
+              <td>项目已有 PopulationFlow、时间窗口和多类 endpoint，但玩家目前主要靠记忆判断去哪摆摊。</td>
+              <td>把后台模拟转成玩家可理解的信息，增强策略感，而不是纯黑箱。</td>
+              <td><span class="mono">GameState</span>、HUD、<span class="mono">population_flow.gd</span>、目标文案系统。</td>
+              <td>中</td>
+              <td>是，先看是否需要低保真提示而非完整热力图。</td>
+            </tr>
+            <tr>
+              <td>乡镇居民画像事件</td>
+              <td><span class="tag p2">P2</span></td>
+              <td>新增大量 rural residence endpoint 和顾客头顶对白后，已经具备做“不同住户/街坊感觉不同”的基础。</td>
+              <td>让城镇地图不只是流量点，增强 80/90 年代小镇经营的人情味。</td>
+              <td><span class="mono">customer_dialogue_lines.gd</span>、后续 residence 事件脚本、日结或声望系统。</td>
+              <td>中</td>
+              <td>是，先确定是否要做轻叙事而不是完整任务链。</td>
+            </tr>
+            <tr>
+              <td>标题开场后的新手引导日</td>
+              <td><span class="tag p2">P2</span></td>
+              <td>现在标题已有人物处境漫画，但正式进入游戏后仍较快回到自由状态，叙事和操作引导还没完全接上。</td>
+              <td>减少第一次游玩时的目标迷茫，让玩家更快理解“在家播种 / 去镇街 / 去后山”三条线。</td>
+              <td><span class="mono">scripts/ui/title_screen.gd</span>、<span class="mono">scripts/main.gd</span>、目标文本与首日触发脚本。</td>
+              <td>低到中</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td>后山随机小事件</td>
+              <td><span class="tag p3">P3</span></td>
+              <td>后山天然适合放稀有资源、迷路孩子、临时天气或巡山 NPC 等轻事件，但前提是基础采集循环成立。</td>
+              <td>提高重复探索价值，让新地图有长期存在理由。</td>
+              <td><span class="mono">back_mountain_scene</span> 相关脚本、信号总线、日历/天气状态。</td>
+              <td>中到高</td>
+              <td>是，需先完成后山基础玩法。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>关键文件路径</h2>
+      <div class="section-body">
+        <ul>
+          <li class="mono">docs/development_baseline.md</li>
+          <li class="mono">configs/assets.json</li>
+          <li class="mono">configs/flow_preferences.json</li>
+          <li class="mono">scenes/town_scene.tscn</li>
+          <li class="mono">scenes/home_scene.tscn</li>
+          <li class="mono">scenes/back_mountain_scene.tscn</li>
+          <li class="mono">scripts/main.gd</li>
+          <li class="mono">scripts/ui/title_screen.gd</li>
+          <li class="mono">scripts/world/customer.gd</li>
+          <li class="mono">scripts/world/customer_dialogue_lines.gd</li>
+          <li class="mono">scripts/world/customer_dialogue_bubble.gd</li>
+          <li class="mono">scripts/world/stall_sales_policy.gd</li>
+          <li class="mono">scripts/autoload/sfx_manager.gd</li>
+          <li class="mono">tests/back_mountain_scene_test.gd</li>
+          <li class="mono">tests/customer_purchase_interaction_test.gd</li>
+          <li class="mono">tests/generated_asset_layout_test.gd</li>
+          <li class="mono">tests/town_layer_structure_test.gd</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
