@@ -156,8 +156,21 @@ Detailed incident notes and prevention rules are maintained in
   `debug/gameplay/economy_and_patrol_logs_enabled` in `project.godot` or
   Project Settings when balancing customer purchases, stall decisions, or
   chengguan patrol spawn behavior.
+- Channel-level log switches live under `debug/gameplay/log_channels/*_enabled`.
+  The global switch must be enabled first; missing channel settings default to
+  enabled so older call sites keep working.
 - Keep debug logging event-driven at meaningful decision points. Do not add
   per-frame logging to movement, timer ticks, or path following.
+
+### Headless Test Entry
+
+- Use `tools/run_godot_headless_tests.sh` for local and automation test runs.
+- Set `GODOT_BIN=/absolute/path/to/Godot` when the Godot executable is not on
+  `PATH`. On macOS the script also checks
+  `/Applications/Godot.app/Contents/MacOS/Godot`.
+- Passing explicit scene paths runs only those tests, for example
+  `tools/run_godot_headless_tests.sh tests/generated_asset_layout_test.tscn`.
+- Running the script without arguments runs every `tests/*_test.tscn` scene.
 
 ### Config-Driven Systems
 
@@ -230,6 +243,8 @@ Detailed incident notes and prevention rules are maintained in
 - 任何进入 `assets/generated` 的最终素材，都必须同步登记到 `configs/assets.json`；如果它被设计文档或开发计划引用，也要同步更新 `docs/asset_registry.md`。
 - 程序和场景只能引用最终素材路径，不引用 raw、preview、manifest、prompt 或生成工具临时路径。
 - 每次整理或新增生成素材后，必须运行 `tests/generated_asset_layout_test.tscn`，确认目录结构没有回退。
+- `tests/generated_asset_layout_test.tscn` 必须覆盖近期接入流程使用的
+  generated 子目录；新增资源目录如果进入日常接线流程，应加入该测试的强制登记清单。
 
 ### Audio Asset Rules
 

@@ -8,6 +8,7 @@ const DISALLOWED_DIR_NAMES := ["raw", "processed", "references", "direction_gifs
 const DISALLOWED_FILE_NAMES := [".DS_Store", "manifest.json", "contact_sheet.png"]
 const REQUIRED_CROP_TEXTURE_STATES := ["tilled", "seed_dry", "seed_watered", "growing_dry", "growing_watered", "ready"]
 const REQUIRED_REGISTERED_GENERATED_DIRS := [
+	"res://assets/generated/sprites/locations",
 	"res://assets/generated/sprites/props/township",
 	"res://assets/generated/sprites/ui/intro",
 ]
