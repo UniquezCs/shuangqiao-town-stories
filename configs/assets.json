@@ -2081,6 +2081,32 @@
 				"raster_map_chunk",
 				"pixel_art"
 			]
+		},
+		"location.back_mountain_detail_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_detail_1024.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"mountain_path_grassland_vegetation_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Added 2026-06-06 as a standalone 1024x1024 back-mountain visual layer derived from the existing generated 4096x4096 back_mountain_full raster at crop (512, 512). Contains winding mountain paths, stone steps, rock clusters, dense vegetation, bamboo/trees, grassland, and shrine details. Gameplay logic must be represented by separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
 		}
 	},
 	"ui": {

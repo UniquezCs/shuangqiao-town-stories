@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Godot 项目每日报告 - 2026-06-06</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --panel: #fffaf2;
+      --ink: #2d241c;
+      --muted: #6f6257;
+      --line: #d8cbbb;
+      --accent: #7f4f24;
+      --accent-soft: #efe0cc;
+      --good: #2f6b3b;
+      --warn: #9a6700;
+      --risk: #9c2f2f;
+      --p0: #8f1d1d;
+      --p1: #a85d1a;
+      --p2: #446c9c;
+      --p3: #5f6b76;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+      background: linear-gradient(180deg, #f7f1e8 0%, #efe3d4 100%);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    .hero, section {
+      background: rgba(255, 250, 242, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 30px rgba(78, 55, 32, 0.06);
+    }
+
+    h1, h2, h3 { margin: 0 0 12px; line-height: 1.25; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 20px; color: var(--accent); }
+    h3 { font-size: 16px; }
+    p, li { margin: 0 0 8px; }
+    ul { margin: 0; padding-left: 20px; }
+    code {
+      background: #f0e4d7;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-family: "SFMono-Regular", "Consolas", monospace;
+      font-size: 0.95em;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      margin-right: 8px;
+    }
+
+    .p0 { background: var(--p0); }
+    .p1 { background: var(--p1); }
+    .p2 { background: var(--p2); }
+    .p3 { background: var(--p3); }
+
+    .note {
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--accent-soft);
+      color: var(--ink);
+    }
+
+    .small { font-size: 13px; color: var(--muted); }
+    .ok { color: var(--good); }
+    .warn { color: var(--warn); }
+    .risk { color: var(--risk); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Godot 项目每日报告</h1>
+      <p>本报告回顾自上次自动化时间 <code>2026-06-05T22:00:19Z</code> 以来的项目变化，并明确区分三类信息：已发生改动、基于当前代码状态推断出的优化建议、以及结合现状提出的新增功能建议。</p>
+      <div class="meta">
+        <div><strong>日期：</strong>2026-06-06</div>
+        <div><strong>生成时间：</strong>2026-06-06 14:03:17 +0800</div>
+        <div><strong>回顾范围：</strong>git 提交 + 工作区未提交变更 + 关键脚本/场景/资源登记</div>
+        <div><strong>输出文件：</strong><code>docs/daily-briefs/2026-06-06-140317.html</code></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>概览</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>提交概况</h3>
+          <ul>
+            <li>上次简报后检测到 <strong>2 个提交</strong>，其中 1 个为已有当日简报，1 个为针对“优化项”落实的代码提交。</li>
+            <li>最新功能提交为 <code>4648bc3</code>，主题是顾客对话反馈与人口流动调试增强。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>工作区状态</h3>
+          <ul>
+            <li>存在 <strong>2 个未提交修改</strong>：<code>configs/assets.json</code>、<code>docs/asset_registry.md</code>。</li>
+            <li>存在 <strong>3 个未跟踪文件</strong>：山体细节图、其导入元数据、以及 <code>customer_dialogue_feedback.gd.uid</code>。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>当前系统信号</h3>
+          <ul>
+            <li><code>scripts/world/customer.gd</code> 已达 <strong>742 行</strong>，继续承载移动、购买、交互、对话多重职责。</li>
+            <li><code>scripts/autoload/population_flow.gd</code> 达 <strong>594 行</strong>，已叠加初始化、仿真、调试摘要、日志输出。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>资源状态</h3>
+          <ul>
+            <li>资源登记统计：<strong>implemented 87</strong>、<strong>available 76</strong>、<strong>placeholder 10</strong>、<strong>missing 2</strong>。</li>
+            <li>说明项目资源面在扩展，但“可用素材”到“玩法接线”仍有明显落差。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>已发生的项目改动</h2>
+      <p class="note">以下内容只描述已经发生的事实，不包含建议或创意延伸。</p>
+
+      <h3>主要改动</h3>
+      <ul>
+        <li><code>scripts/world/customer_dialogue_feedback.gd</code> 新增独立顾客对话反馈节点，承接看见摊位、等待购买、超时、成交等文本气泡逻辑。</li>
+        <li><code>scripts/world/customer.gd</code> 将原内嵌对话气泡相关状态迁出到反馈模块，顾客主脚本保留调用入口，降低了一部分耦合。</li>
+        <li><code>scripts/world/customer_dialogue_lines.gd</code> 强化“看见摊位”文案筛选逻辑，优先选择明确点名当前商品的台词，减少文本与商品不一致的情况。</li>
+        <li><code>scripts/autoload/population_flow.gd</code> 新增人口调试摘要接口，并在每次人流 tick 后输出结构化调试日志。</li>
+        <li><code>tests/customer_purchase_interaction_test.gd</code> 与 <code>tests/population_flow_model_test.gd</code> 补充了对应行为断言，覆盖对话文本指向性和人口调试摘要可见性。</li>
+      </ul>
+
+      <h3>新增内容</h3>
+      <ul>
+        <li>新增脚本：<code>scripts/world/customer_dialogue_feedback.gd</code>。</li>
+        <li>新增资源登记：<code>location.back_mountain_detail_1024</code>，作为后山混合地图视觉层候选。</li>
+        <li>新增文件：<code>assets/generated/sprites/locations/back_mountain/back_mountain_detail_1024.png</code> 及其 <code>.import</code>。</li>
+      </ul>
+
+      <h3>修改内容</h3>
+      <ul>
+        <li>顾客购买交互测试新增“看见摊位短句必须点名商品”的回归保护。</li>
+        <li>人口流动模型测试新增调试摘要字段断言，表明系统开始把“可观察性”纳入模型接口。</li>
+        <li>资源文档 <code>docs/asset_registry.md</code> 与资源总表 <code>configs/assets.json</code> 已加入后山细节层条目，但这部分仍处于未提交状态。</li>
+      </ul>
+
+      <h3>删除或废弃内容</h3>
+      <ul>
+        <li>本轮未发现显式删除文件或废弃场景/资源。</li>
+        <li>但 <code>customer.gd</code> 中原本直接持有的对话气泡细节状态已被模块化替换，可视为一次温和的内部职责迁移。</li>
+      </ul>
+
+      <h3>可能影响</h3>
+      <ul>
+        <li>顾客头顶文本更贴近当前商品与购买情境，直接改善摆摊反馈的可读性。</li>
+        <li>人口流动系统暴露摘要与日志后，定位人流异常、容量配置偏差、天气权重问题会更快。</li>
+        <li>后山新增细节素材意味着“后山可探索场景”从概念资源转为可落地资源，但当前仍未接入场景或交互。</li>
+      </ul>
+
+      <h3>待跟进事项</h3>
+      <ul>
+        <li>提交或整理当前未提交资源登记改动，避免生成素材与资产登记长期漂移。</li>
+        <li>补齐 <code>scripts/world/customer_dialogue_feedback.gd.uid</code> 的版本控制策略，确认是否应被纳入仓库。</li>
+        <li>如果要继续推进后山区域，需要尽快明确是纯视觉补景，还是带路径、事件、采集点的可玩子场景。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>优化点建议（基于当前代码状态推断）</h2>
+      <p class="note">以下内容不是已完成改动，而是基于当前仓库状态、代码体量、资源组织和验证能力推断出的优化建议。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>优先级</th>
+            <th>标题</th>
+            <th>依据</th>
+            <th>预期收益</th>
+            <th>建议落点文件或模块</th>
+            <th>粗略实施成本</th>
+            <th>是否需要先验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag p0">P0</span></td>
+            <td>补齐可执行的 Headless 测试入口</td>
+            <td>本次自动化尝试运行 <code>godot --headless</code> 失败，当前环境无可执行命令，导致新增测试无法在日报流程内核验。</td>
+            <td>恢复自动验证闭环，降低“代码与测试都改了但无人实际执行”的回归风险。</td>
+            <td><code>docs/development_baseline.md</code>、测试运行脚本、CI 或本地命令约定</td>
+            <td>中</td>
+            <td>是，需要先确认团队使用的 Godot 可执行路径或包装脚本</td>
+          </tr>
+          <tr>
+            <td><span class="tag p1">P1</span></td>
+            <td>继续拆分顾客主脚本职责</td>
+            <td><code>scripts/world/customer.gd</code> 达 742 行，已覆盖移动、卡死恢复、购买流程、乞讨反应、对话反馈、画像构建等多类职责。</td>
+            <td>降低改一处牵动全体的风险，让后续扩展议价、心情、目标切换更容易。</td>
+            <td><code>scripts/world/customer.gd</code>、<code>scripts/world/customer_*.gd</code></td>
+            <td>中到高</td>
+            <td>是，先梳理哪些职责最常改、最易回归</td>
+          </tr>
+          <tr>
+            <td><span class="tag p1">P1</span></td>
+            <td>把人口流动仿真与调试输出分层</td>
+            <td><code>PopulationFlow</code> 已同时负责初始化、后台世界、tick 仿真、事件缓存、调试摘要、日志输出，文件 594 行且还在增长。</td>
+            <td>避免仿真核心被调试逻辑拖复杂，后续接入热力图、统计面板时更稳。</td>
+            <td><code>scripts/autoload/population_flow.gd</code>、潜在的 <code>population_flow_debug.gd</code></td>
+            <td>中</td>
+            <td>是，先确认调试接口的最终消费者是日志、UI 面板还是测试</td>
+          </tr>
+          <tr>
+            <td><span class="tag p1">P1</span></td>
+            <td>收紧 generated 资源登记与提交流程</td>
+            <td>当前有未跟踪生成素材与未提交资源登记；仓库已有 <code>generated_asset_layout_test</code>，但日常流转仍可能出现“素材已生成、登记未提交、场景未接线”的三段式脱节。</td>
+            <td>减少资源漂移、无效导入元数据、遗漏登记和场景引用断裂。</td>
+            <td><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、资源生成/校验工作流</td>
+            <td>中</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><span class="tag p2">P2</span></td>
+            <td>拆分 TownScene 的场景组织粒度</td>
+            <td><code>scenes/town_scene.tscn</code> 已承载大量建筑、碰撞、交互区和 endpoint，后续继续加后山、警察局、住宅组时维护成本会持续上升。</td>
+            <td>让场景编辑更清晰，降低误改碰撞/交互框的概率，也更利于多人并行。</td>
+            <td><code>scenes/town_scene.tscn</code>、建筑/片区子场景</td>
+            <td>中到高</td>
+            <td>是，先确定按街区拆还是按建筑功能拆</td>
+          </tr>
+          <tr>
+            <td><span class="tag p2">P2</span></td>
+            <td>建立更细粒度的调试开关与可视化面板</td>
+            <td>当前只有 <code>debug/gameplay/economy_and_patrol_logs_enabled</code> 总开关；随着人流、摊位、城管、彩票等系统增多，单一日志通道会越来越粗。</td>
+            <td>提高定位效率，避免打开日志后信息噪声过大。</td>
+            <td><code>project.godot</code>、<code>scripts/debug/</code>、可能的调试 UI</td>
+            <td>中</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><span class="tag p2">P2</span></td>
+            <td>补齐 placeholder/missing 资源的接线计划</td>
+            <td>资源表中仍有 10 个 placeholder、2 个 missing，集中在 HUD、商店/价格/日结 UI、家内装饰和摊位升级视觉。</td>
+            <td>减少“玩法有了但反馈仍像原型”的割裂感。</td>
+            <td><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、对应 UI/场景脚本</td>
+            <td>中</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><span class="tag p3">P3</span></td>
+            <td>为配置访问增加更稳定的领域边界</td>
+            <td><code>ConfigLoader</code> 已集成物品、作物、升级、资源、顾客偏好、人口、人流、日历等多个 JSON 入口，后续继续扩展时容易成为“万能读取器”。</td>
+            <td>提高配置演进可维护性，减少调用侧对原始字典结构的散布依赖。</td>
+            <td><code>scripts/autoload/config_loader.gd</code> 及领域配置包装层</td>
+            <td>中</td>
+            <td>是，先看近期会新增哪些配置域</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>新增功能建议（结合现状的创意性建议）</h2>
+      <p class="note">以下内容是结合当前系统基础、最近改动和游戏体验缺口提出的功能建议，不代表已开始开发。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>优先级</th>
+            <th>标题</th>
+            <th>依据</th>
+            <th>预期收益</th>
+            <th>建议落点文件或模块</th>
+            <th>粗略实施成本</th>
+            <th>是否需要先验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag p1">P1</span></td>
+            <td>后山采集/绕路摆摊子场景</td>
+            <td>新增了 <code>location.back_mountain_detail_1024</code>，项目已有 <code>back_mountain_scene</code>、混合地图规则和乡镇经营框架，但后山仍缺乏可玩的经济闭环。</td>
+            <td>把新素材转成真实内容，增加“进城卖货”之外的第二条日内选择路径。</td>
+            <td><code>scenes/back_mountain_scene.tscn</code>、采集点、事件触发、回城出口</td>
+            <td>高</td>
+            <td>是，先验证后山要偏采集、捷径还是剧情事件</td>
+          </tr>
+          <tr>
+            <td><span class="tag p1">P1</span></td>
+            <td>顾客心情/议价反馈系统</td>
+            <td>顾客对话反馈已经独立模块化，等待购买、价格拒绝、超时、成交等事件点已齐备，正适合再向“可感知的交易博弈”推进一步。</td>
+            <td>提升摆摊博弈感，让价格、等待时机、库存选择更有玩家判断空间。</td>
+            <td><code>scripts/world/customer_dialogue_feedback.gd</code>、<code>scripts/world/stall_sales_policy.gd</code>、HUD/气泡反馈</td>
+            <td>中</td>
+            <td>是，先确认是否允许玩家主动降价或只做被动提示</td>
+          </tr>
+          <tr>
+            <td><span class="tag p1">P1</span></td>
+            <td>人流热度与日结分析面板</td>
+            <td><code>PopulationFlow</code> 已能给出 recent events、debug summary、天气/时段修正；当前却缺少把这些信息反馈给玩家或设计者的面板。</td>
+            <td>同时服务调参与玩法，让“什么时候去镇上、摆什么货、卖给谁”更有依据。</td>
+            <td><code>scripts/ui/daily_summary_panel.gd</code>、<code>scripts/autoload/population_flow.gd</code>、结算 UI</td>
+            <td>中</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><span class="tag p2">P2</span></td>
+            <td>城管处罚可视化与预警链路</td>
+            <td>资源中已有 <code>warning_badge_32</code>、<code>fine_penalty_32</code>，文档也明确“尚未接线到 Chengguan feedback”。</td>
+            <td>把风险从“突然受罚”改为“可预判、可规避”，提升公平感。</td>
+            <td><code>scripts/world/chengguan.gd</code>、<code>scripts/ui/hud.gd</code>、处罚提示 UI</td>
+            <td>中</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td><span class="tag p2">P2</span></td>
+            <td>摊位升级视觉与货架分层展示</td>
+            <td>资源表里 <code>stall.upgraded_level_2</code>、<code>stall.upgraded_level_3</code> 仍是 missing；当前多商品系统已在逻辑层存在，但视觉仍接近单层原型。</td>
+            <td>把升级收益从纯数值扩展为明显的视觉与信息层级变化。</td>
+            <td><code>scripts/world/stall.gd</code>、摊位美术资源、摊位 UI</td>
+            <td>中</td>
+            <td>是，先明确升级是扩容量、扩品类还是抗检查</td>
+          </tr>
+          <tr>
+            <td><span class="tag p2">P2</span></td>
+            <td>种子店/彩票/摆摊的日程事件联动</td>
+            <td>项目已有种子店、彩票、人口日历、人流天气修正和标题叙事基础，但系统之间互动仍偏弱。</td>
+            <td>形成“今天镇上发生什么”带来的价格与人流变化，增强日复一日的节奏感。</td>
+            <td><code>configs/calendar.json</code>、<code>scripts/autoload/game_state.gd</code>、<code>population_flow.gd</code></td>
+            <td>中到高</td>
+            <td>是，先验证事件频率和复杂度是否会压过当前原型节奏</td>
+          </tr>
+          <tr>
+            <td><span class="tag p3">P3</span></td>
+            <td>家内空间的功能化补完</td>
+            <td>家内地板、床铺、外立面仍有 placeholder；目前“家”更多是流程节点，而不是经营准备空间。</td>
+            <td>让每日开始/结束更有场景归属感，也能承接存档、整理背包、计划次日目标。</td>
+            <td><code>scenes/house_scene.tscn</code>、<code>scripts/world/bed.gd</code>、家内 UI</td>
+            <td>中</td>
+            <td>否</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>用于回顾的关键文件路径</h2>
+      <ul>
+        <li><code>scripts/world/customer.gd</code></li>
+        <li><code>scripts/world/customer_dialogue_feedback.gd</code></li>
+        <li><code>scripts/world/customer_dialogue_lines.gd</code></li>
+        <li><code>scripts/autoload/population_flow.gd</code></li>
+        <li><code>scripts/debug/gameplay_debug_log.gd</code></li>
+        <li><code>scripts/world/stall.gd</code></li>
+        <li><code>scripts/autoload/config_loader.gd</code></li>
+        <li><code>scripts/autoload/game_state.gd</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>scenes/title_screen.tscn</code></li>
+        <li><code>configs/assets.json</code></li>
+        <li><code>docs/asset_registry.md</code></li>
+        <li><code>tests/customer_purchase_interaction_test.gd</code></li>
+        <li><code>tests/population_flow_model_test.gd</code></li>
+        <li><code>assets/generated/sprites/locations/back_mountain/back_mountain_detail_1024.png</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>验证与备注</h2>
+      <ul>
+        <li class="ok">已确认今日已有同名简报存在，因此本次按要求输出为带时间后缀的新文件。</li>
+        <li class="warn">已读取 git 提交、工作区状态、关键脚本与资源登记；本报告对“已发生改动”和“建议项”已做明确分区。</li>
+        <li class="risk">尝试执行 <code>godot --headless</code> 运行两项受影响测试，但当前环境提示 <code>godot: command not found</code>，因此本次未完成自动化验证。</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

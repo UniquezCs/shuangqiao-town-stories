@@ -165,6 +165,7 @@ opens at the player's position.
 | `location.police_station` | implemented | `police_station_256x128.png` | Used as the Town `PoliceStation` endpoint visual and chengguan patrol origin/return point. |
 | `location.back_mountain_full` | implemented | `back_mountain_full_4096.png` | Full `4096x4096` pixel-art back-mountain raster reference. Runtime uses chunked Sprite2D backgrounds. |
 | `location.back_mountain_chunk_*` | implemented | `back_mountain_chunk_{x}_{y}_1024.png` | Four `1024x1024` background chunks placed in `scenes/back_mountain_scene.tscn` as a 2x2 Sprite2D grid. |
+| `location.back_mountain_detail_1024` | available | `back_mountain_detail_1024.png` | Standalone `1024x1024` back-mountain visual layer candidate with winding mountain paths, stone steps, dense vegetation, grassland, bamboo/trees, rocks, and shrine details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |
