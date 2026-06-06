@@ -206,6 +206,10 @@ static func line_for(event: String, profile: Dictionary, item_id: String, price:
 	_append_lines(candidates, item_events.get(event, []))
 	if candidates.is_empty():
 		candidates.append(reason if not reason.is_empty() else "先看看。")
+	if event == EVENT_SEE_STALL and not item_id.is_empty():
+		var item_candidates := _lines_that_name_item(candidates, item_id)
+		if not item_candidates.is_empty():
+			candidates = item_candidates
 	var template := candidates[rng.randi_range(0, candidates.size() - 1)]
 	return _format_line(template, item_id, price)
 
@@ -226,3 +230,14 @@ static func _format_line(template: String, item_id: String, price: int) -> Strin
 	if item_name.is_empty():
 		item_name = item_id
 	return template.replace("{item}", item_name).replace("{price}", str(price))
+
+
+static func _lines_that_name_item(candidates: Array[String], item_id: String) -> Array[String]:
+	var item_name := ConfigLoader.get_item_name(item_id)
+	if item_name.is_empty():
+		item_name = item_id
+	var result: Array[String] = []
+	for line in candidates:
+		if line.contains("{item}") or line.contains(item_name):
+			result.append(line)
+	return result

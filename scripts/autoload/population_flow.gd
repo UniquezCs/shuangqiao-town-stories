@@ -1,5 +1,7 @@
 extends Node
 
+const GameplayDebugLog := preload("res://scripts/debug/gameplay_debug_log.gd")
+
 const ENDPOINT_TYPES := ["residential", "shop", "school", "factory", "public"]
 const AGE_GROUPS := [
 	PrototypeConstants.CUSTOMER_AGE_YOUTH,
@@ -106,6 +108,37 @@ func get_population_snapshot() -> Dictionary:
 	return snapshot
 
 
+func get_population_debug_summary() -> Dictionary:
+	_collect_endpoints()
+	var by_type := {}
+	var total_population := 0
+	var total_capacity := 0
+	for endpoint_type in ENDPOINT_TYPES:
+		by_type[endpoint_type] = {
+			"endpoint_count": 0,
+			"population": 0,
+			"capacity": 0,
+		}
+	for endpoint in _endpoints:
+		if not is_instance_valid(endpoint):
+			continue
+		var endpoint_type := _endpoint_type(endpoint)
+		var type_summary: Dictionary = by_type[endpoint_type]
+		var population := _population_total(_endpoint_population(endpoint))
+		var capacity := _endpoint_capacity(endpoint)
+		type_summary["endpoint_count"] = int(type_summary["endpoint_count"]) + 1
+		type_summary["population"] = int(type_summary["population"]) + population
+		type_summary["capacity"] = int(type_summary["capacity"]) + capacity
+		total_population += population
+		total_capacity += capacity
+	return {
+		"endpoint_count": _endpoints.size(),
+		"total_population": total_population,
+		"total_capacity": total_capacity,
+		"by_type": by_type,
+	}
+
+
 func run_flow_tick(total_minutes: int) -> Dictionary:
 	_collect_endpoints()
 	var starting_populations := {}
@@ -143,6 +176,7 @@ func run_flow_tick(total_minutes: int) -> Dictionary:
 				_store_recent_event(event)
 				SignalBus.flow_event_created.emit(event)
 	SignalBus.flow_tick_completed.emit(total_minutes, summary)
+	_log_flow_summary(summary)
 	return summary
 
 
@@ -428,6 +462,16 @@ func _modifier_debug() -> Dictionary:
 		"factory_weather": _weather_modifier("factory"),
 		"public_weather": _weather_modifier("public"),
 	}
+
+
+func _log_flow_summary(summary: Dictionary) -> void:
+	GameplayDebugLog.log("population_flow", "tick_summary", {
+		"minute": int(summary.get("minute", -1)),
+		"time_block": str(summary.get("time_block", "")),
+		"event_count": (summary.get("events", []) as Array).size(),
+		"visible_total": int(summary.get("visible_total", 0)),
+		"population": get_population_debug_summary(),
+	})
 
 
 func _endpoints_by_type(endpoint_type: String) -> Array[Node2D]:

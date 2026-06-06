@@ -26,6 +26,7 @@ class TestStall:
 
 func _ready() -> void:
 	_assert_purchase_willingness_is_lowered()
+	_assert_see_stall_lines_name_item()
 	await _assert_dialogue_bubble_fades()
 
 	var stall := TestStall.new()
@@ -258,6 +259,18 @@ func _assert_purchase_willingness_is_lowered() -> void:
 	}
 	var high_decision := StallSalesPolicy.can_sell_to(true, 1, slots, "pear", 4, PrototypeConstants.CUSTOMER_WORKER, high_profile)
 	_assert_equal(bool(high_decision.get("bought", false)), true, "高偏好且预算足够的顾客仍应能购买")
+
+
+func _assert_see_stall_lines_name_item() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 20260606
+	var profile := {
+		"age_group": PrototypeConstants.CUSTOMER_AGE_MIDDLE,
+		"gender": PrototypeConstants.CUSTOMER_GENDER_FEMALE,
+	}
+	for index in range(64):
+		var line := CustomerDialogueLines.line_for(CustomerDialogueLines.EVENT_SEE_STALL, profile, PrototypeConstants.ITEM_PEAR, 3, "", rng)
+		_assert_true(line.contains("梨"), "看见摊位短句应始终点名当前感兴趣商品")
 
 
 func _assert_dialogue_bubble_fades() -> void:
