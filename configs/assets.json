@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-06",
+	"updated_at": "2026-06-07",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -2102,6 +2102,62 @@
 			"tags": [
 				"locations",
 				"back_mountain",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_trails_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_trails_1024.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_07/back_mountain_trails_1024.prompt.txt",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"mountain_path_grassland_vegetation_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-07 as a standalone 1024x1024 back-mountain visual layer with complex winding and forked mountain trails, stone steps, dense bamboo/trees, grassy clearings, shrubs, rock clusters, and small cliff edges. Gameplay logic must be represented by separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.rural_bungalow_fields_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/rural_homestead/rural_bungalow_fields_1024.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_07/rural_bungalow_fields_1024.prompt.txt",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"rural_homestead_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"farmhouse_fields_scene_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-07 as a standalone 1024x1024 rural homestead visual layer matching the back-mountain pixel-art style. Contains a rural single-story bungalow, courtyard wall, yard details, surrounding vegetable plots and grain fields, dirt paths, bamboo/trees, rocks, and water/irrigation edge details. Gameplay logic must be represented by separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"rural_homestead",
+				"farmhouse",
+				"farmland",
 				"raster_map",
 				"visual_layer",
 				"hybrid_map",
