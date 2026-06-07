@@ -28,6 +28,10 @@ func _ready() -> void:
 	var autosave := SaveManager.load_autosave()
 	_assert_equal(int((autosave.get("game_state", {}) as Dictionary).get("day_index", 0)), 2, "自动存档应保存进入第二天后的天数")
 	SaveManager.delete_autosave()
+	main.queue_free()
+	PopulationFlow.reset_for_tests()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	get_tree().quit()
 
 

@@ -7,6 +7,7 @@ func _ready() -> void:
 	GameState.reset_game()
 	var main := Node2D.new()
 	main.set_script(MainScript)
+	_assert_scene_routes_cover_known_scenes(main)
 	var key_event := InputEventKey.new()
 	key_event.pressed = true
 	key_event.keycode = KEY_5
@@ -57,3 +58,20 @@ func _assert_true(condition: bool, message: String) -> void:
 	if not condition:
 		push_error(message)
 		get_tree().quit(1)
+
+
+func _assert_scene_routes_cover_known_scenes(main: Node) -> void:
+	var route_ids: Array = main.call("_scene_route_ids_for_test")
+	_assert_true(route_ids.has(PrototypeConstants.SCENE_HOME), "主场景路由应登记 Home")
+	_assert_true(route_ids.has(PrototypeConstants.SCENE_HOUSE), "主场景路由应登记 House")
+	_assert_true(route_ids.has(PrototypeConstants.SCENE_TOWN), "主场景路由应登记 Town")
+	_assert_true(route_ids.has(PrototypeConstants.SCENE_BACK_MOUNTAIN), "主场景路由应登记 Back Mountain")
+	_assert_equal(
+		main.call("_scene_entry_for_test", PrototypeConstants.SCENE_TOWN),
+		"town",
+		"Town 路由应绑定城镇入口状态"
+	)
+	var home_scene := main.call("_scene_for_id", PrototypeConstants.SCENE_HOME) as PackedScene
+	var fallback_scene := main.call("_scene_for_id", "missing_scene") as PackedScene
+	_assert_true(home_scene != null, "Home 路由应能解析场景资源")
+	_assert_equal(fallback_scene, home_scene, "未知场景 ID 应继续回退到 Home，避免旧存档卡死")

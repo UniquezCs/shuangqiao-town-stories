@@ -1,6 +1,6 @@
 extends Node
 
-const MAIN_SCENE := preload("res://scenes/main.tscn")
+const MainScript := preload("res://scripts/main.gd")
 const HOME_SCENE := preload("res://scenes/home_scene.tscn")
 const BACK_MOUNTAIN_SCENE_PATH := "res://scenes/back_mountain_scene.tscn"
 const BACK_MOUNTAIN_ASSET_DIR := "res://assets/generated/sprites/locations/back_mountain"
@@ -66,12 +66,16 @@ func _ready() -> void:
 	_assert_equal(str(to_back_mountain.get("spawn_id")), "from_home", "Home 上方传送点应使用后山入口出生点")
 	_assert_true(home.get_node_or_null("Spawns/back_mountain_spawn") != null, "Home 应提供后山返回出生点")
 
-	var main := MAIN_SCENE.instantiate()
-	add_child(main)
-	await get_tree().process_frame
+	var main := Node2D.new()
+	main.set_script(MainScript)
 	var packed_scene := main.call("_scene_for_id", PrototypeConstants.SCENE_BACK_MOUNTAIN) as PackedScene
 	_assert_true(packed_scene != null and packed_scene.resource_path == BACK_MOUNTAIN_SCENE_PATH, "Main 应能根据 back_mountain 加载后山场景")
 
+	back_mountain.queue_free()
+	home.queue_free()
+	main.free()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	get_tree().quit()
 
 

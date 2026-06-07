@@ -171,6 +171,9 @@ Detailed incident notes and prevention rules are maintained in
 - Passing explicit scene paths runs only those tests, for example
   `tools/run_godot_headless_tests.sh tests/generated_asset_layout_test.tscn`.
 - Running the script without arguments runs every `tests/*_test.tscn` scene.
+- Headless runs fail on resource/RID leak warnings by default. Use
+  `GODOT_ALLOW_RESOURCE_LEAKS=1` only for temporary investigation of known
+  lifecycle debt, and remove it before accepting a fix.
 
 ### Config-Driven Systems
 

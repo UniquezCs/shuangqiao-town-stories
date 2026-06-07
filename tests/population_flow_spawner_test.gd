@@ -63,6 +63,10 @@ func _ready() -> void:
 	_assert_equal(str(customer.get("age_group")), PrototypeConstants.CUSTOMER_AGE_YOUTH, "人流生成的 Customer 应带上年龄组")
 	_assert_true(customer.global_position.distance_to(residential.call("get_endpoint_position")) <= 192.0, "Customer 应从 source endpoint 附近出现")
 
+	town.queue_free()
+	PopulationFlow.reset_for_tests()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	get_tree().quit()
 
 

@@ -21,6 +21,7 @@ find_godot() {
 }
 
 GODOT="$(find_godot)"
+ALLOW_RESOURCE_LEAKS="${GODOT_ALLOW_RESOURCE_LEAKS:-0}"
 
 if [[ "$#" -gt 0 ]]; then
 	tests=("$@")
@@ -43,6 +44,10 @@ for test_scene in "${tests[@]}"; do
 	"$GODOT" --headless --path "$ROOT" "$test_scene" >"$output_file" 2>&1 || status=$?
 	cat "$output_file"
 	if [[ "$status" -ne 0 ]] || grep -Eq 'SCRIPT ERROR|Parse Error|Failed to load script' "$output_file"; then
+		rm -f "$output_file"
+		exit 1
+	fi
+	if [[ "$ALLOW_RESOURCE_LEAKS" != "1" ]] && grep -Eq 'resources still in use|RID allocations of type|RIDs of type ".+" were leaked|ObjectDB instances leaked' "$output_file"; then
 		rm -f "$output_file"
 		exit 1
 	fi

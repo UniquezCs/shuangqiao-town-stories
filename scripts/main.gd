@@ -7,6 +7,30 @@ const BACK_MOUNTAIN_SCENE := preload("res://scenes/back_mountain_scene.tscn")
 const StallActionPanelScript := preload("res://scripts/ui/stall_action_panel.gd")
 const LotteryPanelScript := preload("res://scripts/ui/lottery_panel.gd")
 
+const SCENE_ENTRY_HOME := "home"
+const SCENE_ENTRY_TOWN := "town"
+const SCENE_ENTRY_BACK_MOUNTAIN := "back_mountain"
+const SCENE_ENTRY_DEFAULT := "default"
+const SCENE_ROUTES := {
+	PrototypeConstants.SCENE_HOME: {
+		"scene": HOME_SCENE,
+		"entry": SCENE_ENTRY_HOME,
+	},
+	PrototypeConstants.SCENE_HOUSE: {
+		"scene": HOUSE_SCENE,
+		"entry": SCENE_ENTRY_DEFAULT,
+	},
+	PrototypeConstants.SCENE_TOWN: {
+		"scene": TOWN_SCENE,
+		"entry": SCENE_ENTRY_TOWN,
+	},
+	PrototypeConstants.SCENE_BACK_MOUNTAIN: {
+		"scene": BACK_MOUNTAIN_SCENE,
+		"entry": SCENE_ENTRY_BACK_MOUNTAIN,
+		"objective": "在后山探索可采集区域",
+	},
+}
+
 var current_world: Node2D = null
 var pending_stall_spot: Node = null
 var stall_action_panel: CanvasLayer = null
@@ -74,14 +98,16 @@ func _run_scene_transition(target_scene: String, spawn_id: String) -> void:
 
 
 func _apply_scene_entry_state(target_scene: String) -> void:
-	if target_scene == PrototypeConstants.SCENE_TOWN:
-		_enter_town()
-	elif target_scene == PrototypeConstants.SCENE_HOME:
-		_enter_home()
-	elif target_scene == PrototypeConstants.SCENE_BACK_MOUNTAIN:
-		GameState.set_objective("在后山探索可采集区域")
-	else:
-		GameState.set_objective("出门劳作，晚上十二点前回来睡觉")
+	var route := _scene_route_for_id(target_scene)
+	match str(route.get("entry", SCENE_ENTRY_DEFAULT)):
+		SCENE_ENTRY_TOWN:
+			_enter_town()
+		SCENE_ENTRY_HOME:
+			_enter_home()
+		SCENE_ENTRY_BACK_MOUNTAIN:
+			GameState.set_objective(str(route.get("objective", "")))
+		_:
+			GameState.set_objective("出门劳作，晚上十二点前回来睡觉")
 
 
 func _load_world(target_scene: String, spawn_id: String) -> void:
@@ -290,13 +316,19 @@ func _close_all_stalls() -> void:
 
 
 func _scene_for_id(target_scene: String) -> PackedScene:
-	if target_scene == PrototypeConstants.SCENE_TOWN:
-		return TOWN_SCENE
-	if target_scene == PrototypeConstants.SCENE_HOUSE:
-		return HOUSE_SCENE
-	if target_scene == PrototypeConstants.SCENE_BACK_MOUNTAIN:
-		return BACK_MOUNTAIN_SCENE
-	return HOME_SCENE
+	return _scene_route_for_id(target_scene).get("scene", HOME_SCENE) as PackedScene
+
+
+func _scene_route_for_id(target_scene: String) -> Dictionary:
+	return SCENE_ROUTES.get(target_scene, SCENE_ROUTES[PrototypeConstants.SCENE_HOME])
+
+
+func _scene_route_ids_for_test() -> Array:
+	return SCENE_ROUTES.keys()
+
+
+func _scene_entry_for_test(target_scene: String) -> String:
+	return str(_scene_route_for_id(target_scene).get("entry", SCENE_ENTRY_DEFAULT))
 
 
 func _remaining_apples() -> int:
