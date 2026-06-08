@@ -111,6 +111,12 @@ Detailed incident notes and prevention rules are maintained in
   map semantics.
 - Gameplay code must read logical layers or explicit scene nodes, not infer
   rules from visual pixels, decorative props, or a baked map image.
+- For baked-map pixel occlusion, use a separate visual
+  occluder rather than collision shapes. The standard lightweight approach is a
+  `Polygon2D` with `scripts/world/polygon_texture_occluder.gd`, sampling a
+  configured map/background `Sprite2D` texture such as
+  `TownScene/MapLayers/Sprite2D` and rendering above the player. This is
+  visual-only; collision must remain in `StaticBody2D`/`CollisionShape2D`.
 - Visual layers and logical layers must stay aligned through Godot coordinates.
   Use `TileMapLayer.to_local()`, `local_to_map()`, `map_to_local()`, and
   `to_global()` for conversions rather than hand-written pixel math.

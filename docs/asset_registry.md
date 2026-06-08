@@ -45,6 +45,11 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Large raster maps use a hybrid setup: `Sprite2D` background chunks provide
   the visual map, while exits, collision, navigation, and interactions stay in
   separate gameplay nodes or logic layers.
+- Baked-map pixel occlusion can use `Polygon2D` with
+  `scripts/world/polygon_texture_occluder.gd`: the polygon samples a configured
+  map/background `Sprite2D` texture, such as `TownScene/MapLayers/Sprite2D`,
+  with matching UVs and renders above the player.
+  Collision still belongs to separate `StaticBody2D` geometry.
 
 ## Generated Pack Metadata
 
@@ -168,6 +173,9 @@ opens at the player's position.
 | `location.back_mountain_detail_1024` | available | `back_mountain_detail_1024.png` | Standalone `1024x1024` back-mountain visual layer candidate with winding mountain paths, stone steps, dense vegetation, grassland, bamboo/trees, rocks, and shrine details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.back_mountain_trails_1024` | available | `back_mountain_trails_1024.png` | Standalone `1024x1024` back-mountain visual layer candidate with complex forked mountain trails, stone steps, grassy clearings, bamboo/trees, rocks, shrubs, and cliff edges. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.rural_bungalow_fields_1024` | available | `rural_bungalow_fields_1024.png` | Standalone `1024x1024` rural homestead visual layer candidate with a rural bungalow, courtyard, vegetable plots, grain fields, dirt paths, bamboo/trees, rocks, and water/irrigation edge details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.protagonist_home_fields_1920` | available | `protagonist_home_fields_1920x1080.png` | Standalone `1920x1080` protagonist-home visual layer candidate matching the supplied township map style, with a rural house, courtyard, crop fields, vegetable plots, trees, dirt paths, fences, shed, well, haystack, and stream edge details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.township_flat_map_1376` | available | `Gemini_Generated_Image_4kgpl14kgpl14kgp.png` | Standalone township raster map candidate. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.township_flat_map_stitched_2765` | available | `Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched.png` | Standalone stitched township raster map candidate. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |

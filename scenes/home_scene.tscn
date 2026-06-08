@@ -1,91 +1,84 @@
-[gd_scene format=4 uid="uid://b40wrji0bwy2c"]
+[gd_scene format=3 uid="uid://b40wrji0bwy2c"]
 
 [ext_resource type="Script" uid="uid://d3y3ipd0fvut6" path="res://scripts/scenes/home_scene.gd" id="1_home"]
 [ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="2_ua24n"]
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="4_exit"]
-[ext_resource type="Texture2D" uid="uid://cfvafuwo25qmu" path="res://assets/generated/sprites/props/town/bicycle.png" id="5_d0h8d"]
+[ext_resource type="Texture2D" uid="uid://cmwp6sgcqka37" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_4kgpl14kgpl14kgp.png" id="5_d0h8d"]
 [ext_resource type="Script" uid="uid://cutv1i2psxfeg" path="res://scripts/world/farm_field.gd" id="5_field"]
+[ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="6_ofjoh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_farm_field"]
-size = Vector2(352, 480)
+size = Vector2(136, 116)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(96, 64)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ua24n"]
-load_path = "res://.godot/imported/environment_tilesheet_v1.png-bcf31555f5b1e76822049914a6b7c365.ctex"
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ua24n"]
-size = Vector2(151.53125, 52)
+size = Vector2(160.82422, 49.5)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_w4owu"]
 a = Vector2(-136, 32)
-b = Vector2(-128, -256)
+b = Vector2(-136, -200)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_d0h8d"]
 a = Vector2(-128, -256)
 b = Vector2(-472, -256)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_mdovq"]
-a = Vector2(-480, -256)
+a = Vector2(-504, -208)
 b = Vector2(-504, 24)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_uthjy"]
 a = Vector2(-480, -32)
-b = Vector2(-472, -104)
+b = Vector2(-480, -104)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_1uk33"]
 a = Vector2(-160, -32)
 b = Vector2(-160, -104)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_pf76v"]
-a = Vector2(-168, -104)
-b = Vector2(-464, -104)
+a = Vector2(-304, -96)
+b = Vector2(-464, -96)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0h8d"]
 size = Vector2(48, 80)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ua24n"]
 a = Vector2(224, -352)
-b = Vector2(224, 224)
+b = Vector2(224, 416)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ofjoh"]
-a = Vector2(224, -352)
+a = Vector2(824, -352)
 b = Vector2(-544, -352)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_6dbli"]
 a = Vector2(-544, -928)
-b = Vector2(-544, -352)
+b = Vector2(-544, -160)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_m0xsn"]
 a = Vector2(-544, -928)
-b = Vector2(224, -928)
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mdovq"]
-radius = 27.0
-height = 62.0
+b = Vector2(832, -928)
 
 [node name="HomeScene" type="Node2D" unique_id=2001990555]
 script = ExtResource("1_home")
 
 [node name="GroundLayer" type="TileMapLayer" parent="." unique_id=176408979]
 z_index = -30
-tile_map_data = PackedByteArray("AADv//X/AAABAAAAAADv//b/AAABAAAAAADv//f/AAABAAAAAADv//j/AAABAAAAAADv//n/AAABAAAAAADv//r/AAABAAAAAADv//v/AAABAAAAAADv//z/AAABAAAAAADv//3/AAABAAAAAADv//7/AAABAAAAAADv////AAABAAAAAADv/wAAAAABAAAAAADv/wEAAAABAAAAAADv/wIAAAABAAAAAADv/wMAAAABAAAAAADv/wQAAAABAAAAAADv/wUAAAABAAAAAADv/wYAAAABAAAAAADw//X/AAABAAAAAADw//b/AAABAAAAAADw//f/AAABAAAAAADw//j/AAABAAAAAADw//n/AAABAAAAAADw//r/AAABAAAAAADw//v/AAABAAAAAADw//z/AAABAAAAAADw//3/AAABAAAAAADw//7/AAABAAAAAADw////AAABAAAAAADw/wAAAAABAAAAAADw/wEAAAABAAAAAADw/wIAAAABAAAAAADw/wMAAAABAAAAAADw/wQAAAABAAAAAADw/wUAAAABAAAAAADw/wYAAAABAAAAAADx//X/AAABAAAAAADx//b/AAABAAAAAADx//f/AAABAAAAAADx//j/AAABAAAAAADx//n/AAABAAAAAADx//r/AAABAAAAAADx//v/AAABAAAAAADx//z/AAABAAAAAADx//3/AAABAAAAAADx//7/AAABAAAAAADx////AAABAAAAAADx/wAAAAABAAAAAADx/wEAAAABAAAAAADx/wIAAAABAAAAAADx/wMAAAABAAAAAADx/wQAAAABAAAAAADx/wUAAAABAAAAAADx/wYAAAABAAAAAADy//X/AAABAAAAAADy//b/AAABAAAAAADy//f/AAABAAAAAADy//j/AAABAAAAAADy//n/AAABAAAAAADy//r/AAABAAAAAADy//v/AAABAAAAAADy//z/AAABAAAAAADy//3/AAABAAAAAADy//7/AAABAAAAAADy////AAABAAAAAADy/wAAAAABAAAAAADy/wEAAAABAAAAAADy/wIAAAABAAAAAADy/wMAAAABAAAAAADy/wQAAAABAAAAAADy/wUAAAABAAAAAADy/wYAAAABAAAAAADz//X/AAABAAAAAADz//b/AAABAAAAAADz//f/AAABAAAAAADz//j/AAABAAAAAADz//n/AAABAAAAAADz//r/AAABAAAAAADz//v/AAABAAAAAADz//z/AAABAAAAAADz//3/AAABAAAAAADz//7/AAABAAAAAADz////AAABAAAAAADz/wAAAAABAAAAAADz/wEAAAABAAAAAADz/wIAAAABAAAAAADz/wMAAAABAAAAAADz/wQAAAABAAAAAADz/wUAAAABAAAAAADz/wYAAAABAAAAAAD0//X/AAABAAAAAAD0//b/AAABAAAAAAD0//f/AAABAAAAAAD0//j/AAABAAAAAAD0//n/AAABAAAAAAD0//r/AAABAAAAAAD0//v/AAABAAAAAAD0//z/AAABAAAAAAD0//3/AAABAAAAAAD0//7/AAABAAAAAAD0////AAABAAAAAAD0/wAAAAABAAAAAAD0/wEAAAABAAAAAAD0/wIAAAABAAAAAAD0/wMAAAABAAAAAAD0/wQAAAABAAAAAAD0/wUAAAABAAAAAAD0/wYAAAABAAAAAAD1//X/AAABAAAAAAD1//b/AAABAAAAAAD1//f/AAABAAAAAAD1//j/AAABAAAAAAD1//n/AAABAAAAAAD1//r/AAABAAAAAAD1//v/AAABAAAAAAD1//z/AAABAAAAAAD1//3/AAABAAAAAAD1//7/AAABAAAAAAD1////AAABAAAAAAD1/wAAAAABAAAAAAD1/wEAAAABAAAAAAD1/wIAAAABAAAAAAD1/wMAAAABAAAAAAD1/wQAAAABAAAAAAD1/wUAAAABAAAAAAD1/wYAAAABAAAAAAD2//X/AAABAAAAAAD2//b/AAABAAAAAAD2//f/AAABAAAAAAD2//j/AAABAAAAAAD2//n/AAABAAAAAAD2//r/AAABAAAAAAD2//v/AAABAAAAAAD2//z/AAABAAAAAAD2//3/AAABAAAAAAD2//7/AAABAAAAAAD2////AAABAAAAAAD2/wAAAAABAAAAAAD2/wEAAAABAAAAAAD2/wIAAAABAAAAAAD2/wMAAAABAAAAAAD2/wQAAAABAAAAAAD2/wUAAAABAAAAAAD2/wYAAAABAAAAAAD3//X/AAABAAAAAAD3//b/AAABAAAAAAD3//f/AAABAAAAAAD3//j/AAABAAAAAAD3//n/AAABAAAAAAD3//r/AAABAAAAAAD3//v/AAABAAAAAAD3//z/AAABAAAAAAD3//3/AAABAAAAAAD3//7/AAABAAAAAAD3////AAABAAAAAAD3/wAAAAABAAAAAAD3/wEAAAABAAAAAAD3/wIAAAABAAAAAAD3/wMAAAABAAAAAAD3/wQAAAABAAAAAAD3/wUAAAABAAAAAAD3/wYAAAABAAAAAAD4//X/AAABAAAAAAD4//b/AAABAAAAAAD4//f/AAABAAAAAAD4//j/AAABAAAAAAD4//n/AAABAAAAAAD4//r/AAABAAAAAAD4//v/AAABAAAAAAD4//z/AAABAAAAAAD4//3/AAABAAAAAAD4//7/AAABAAAAAAD4////AAABAAAAAAD4/wAAAAABAAAAAAD4/wEAAAABAAAAAAD4/wIAAAABAAAAAAD4/wMAAAABAAAAAAD4/wQAAAABAAAAAAD4/wUAAAABAAAAAAD4/wYAAAABAAAAAAD5//X/AAABAAAAAAD5//b/AAABAAAAAAD5//f/AAABAAAAAAD5//j/AAABAAAAAAD5//n/AAABAAAAAAD5//r/AAABAAAAAAD5//v/AAABAAAAAAD5//z/AAABAAAAAAD5//3/AAABAAAAAAD5//7/AAABAAAAAAD5////AAABAAAAAAD5/wAAAAABAAAAAAD5/wEAAAABAAAAAAD5/wIAAAABAAAAAAD5/wMAAAABAAAAAAD5/wQAAAABAAAAAAD5/wUAAAABAAAAAAD5/wYAAAABAAAAAAD6//X/AAABAAAAAAD6//b/AAABAAAAAAD6//f/AAABAAAAAAD6//j/AAABAAAAAAD6//n/AAABAAAAAAD6//r/AAABAAAAAAD6//v/AAABAAAAAAD6//z/AAABAAAAAAD6//3/AAABAAAAAAD6//7/AAABAAAAAAD6////AAABAAAAAAD6/wAAAAABAAAAAAD6/wEAAAABAAAAAAD6/wIAAAABAAAAAAD6/wMAAAABAAAAAAD6/wQAAAABAAAAAAD6/wUAAAABAAAAAAD6/wYAAAABAAAAAAD7//X/AAABAAAAAAD7//b/AAABAAAAAAD7//f/AAABAAAAAAD7//j/AAABAAAAAAD7//n/AAABAAAAAAD7//r/AAABAAAAAAD7//v/AAABAAAAAAD7//z/AAABAAAAAAD7//3/AAABAAAAAAD7//7/AAABAAAAAAD7////AAABAAAAAAD7/wAAAAABAAAAAAD7/wEAAAABAAAAAAD7/wIAAAABAAAAAAD7/wMAAAABAAAAAAD7/wQAAAABAAAAAAD7/wUAAAABAAAAAAD7/wYAAAABAAAAAAD8//X/AAAAAAAAAAD8//b/AAAAAAAAAAD8//f/AAAAAAAAAAD8//j/AAAAAAAAAAD8//n/AAAAAAAAAAD8//r/AAAAAAAAAAD8//v/AAAAAAAAAAD8//z/AAAAAAAAAAD8//3/AAAAAAAAAAD8//7/AAAAAAAAAAD8////AAAAAAAAAAD8/wAAAAAAAAAAAAD8/wEAAAAAAAAAAAD8/wIAAAAAAAAAAAD8/wMAAAAAAAAAAAD8/wQAAAABAAAAAAD8/wUAAAABAAAAAAD8/wYAAAABAAAAAAD9//X/AAAAAAAAAAD9//b/AAAAAAAAAAD9//f/AAAAAAAAAAD9//j/AAAAAAAAAAD9//n/AAAAAAAAAAD9//r/AAAAAAAAAAD9//v/AAAAAAAAAAD9//z/AAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9/wAAAAAAAAAAAAD9/wEAAAAAAAAAAAD9/wIAAAAAAAAAAAD9/wMAAAAAAAAAAAD9/wQAAAABAAAAAAD9/wUAAAABAAAAAAD9/wYAAAABAAAAAAD+//X/AAAAAAAAAAD+//b/AAAAAAAAAAD+//f/AAAAAAAAAAD+//j/AAAAAAAAAAD+//n/AAAAAAAAAAD+//r/AAAAAAAAAAD+//v/AAAAAAAAAAD+//z/AAAAAAAAAAD+//3/AAAAAAAAAAD+//7/AAAAAAAAAAD+////AAAAAAAAAAD+/wAAAAAAAAAAAAD+/wEAAAAAAAAAAAD+/wIAAAAAAAAAAAD+/wMAAAAAAAAAAAD+/wQAAAABAAAAAAD+/wUAAAABAAAAAAD+/wYAAAABAAAAAAD///X/AAAAAAAAAAD///b/AAAAAAAAAAD///f/AAAAAAAAAAD///j/AAAAAAAAAAD///n/AAAAAAAAAAD///r/AAAAAAAAAAD///v/AAAAAAAAAAD///z/AAAAAAAAAAD///3/AAAAAAAAAAD///7/AAAAAAAAAAD/////AAAAAAAAAAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD//wIAAAAAAAAAAAD//wMAAAAAAAAAAAD//wQAAAABAAAAAAD//wUAAAABAAAAAAD//wYAAAABAAAAAAAAAPX/AAAAAAAAAAAAAPb/AAAAAAAAAAAAAPf/AAAAAAAAAAAAAPj/AAAAAAAAAAAAAPn/AAAAAAAAAAAAAPr/AAAAAAAAAAAAAPv/AAAAAAAAAAAAAPz/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAUAAAABAAAAAAAAAAYAAAABAAAAAAABAPX/AAAAAAAAAAABAPb/AAAAAAAAAAABAPf/AAAAAAAAAAABAPj/AAAAAAAAAAABAPn/AAAAAAAAAAABAPr/AAAAAAAAAAABAPv/AAAAAAAAAAABAPz/AAAAAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAABAAAAAAABAAUAAAABAAAAAAABAAYAAAABAAAAAAACAPX/AAAAAAAAAAACAPb/AAAAAAAAAAACAPf/AAAAAAAAAAACAPj/AAAAAAAAAAACAPn/AAAAAAAAAAACAPr/AAAAAAAAAAACAPv/AAAAAAAAAAACAPz/AAAAAAAAAAACAP3/AAAAAAAAAAACAP7/AAAAAAAAAAACAP//AAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAABAAAAAAACAAUAAAABAAAAAAACAAYAAAABAAAAAAADAPX/AAAAAAAAAAADAPb/AAAAAAAAAAADAPf/AAAAAAAAAAADAPj/AAAAAAAAAAADAPn/AAAAAAAAAAADAPr/AAAAAAAAAAADAPv/AAAAAAAAAAADAPz/AAAAAAAAAAADAP3/AAAAAAAAAAADAP7/AAAAAAAAAAADAP//AAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAABAAAAAAADAAUAAAABAAAAAAADAAYAAAABAAAAAAAEAPX/AAAAAAAAAAAEAPb/AAAAAAAAAAAEAPf/AAAAAAAAAAAEAPj/AAAAAAAAAAAEAPn/AAAAAAAAAAAEAPr/AAAAAAAAAAAEAPv/AAAAAAAAAAAEAPz/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP//AAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAUAAAACAAEAAAAEAAYAAAABAAAAAAAFAPX/AAAAAAAAAAAFAPb/AAAAAAAAAAAFAPf/AAAAAAAAAAAFAPj/AAAAAAAAAAAFAPn/AAAAAAAAAAAFAPr/AAAAAAAAAAAFAPv/AAAAAAAAAAAFAPz/AAAAAAAAAAAFAP3/AAAAAAAAAAAFAP7/AAAAAAAAAAAFAP//AAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAUAAAACAAEAAAAFAAYAAAABAAAAAAAGAPX/AAAAAAAAAAAGAPb/AAAAAAAAAAAGAPf/AAAAAAAAAAAGAPj/AAAAAAAAAAAGAPn/AAAAAAAAAAAGAPr/AAAAAAAAAAAGAPv/AAAAAAAAAAAGAPz/AAAAAAAAAAAGAP3/AAAAAAAAAAAGAP7/AAAAAAAAAAAGAP//AAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAUAAAACAAEAAAAGAAYAAAABAAAAAAAEAAQAAAACAAEAAAAFAAQAAAACAAEAAAAGAAQAAAACAAEAAAA=")
 tile_set = ExtResource("2_ua24n")
 
 [node name="Spawns" type="Node2D" parent="." unique_id=1794410520]
 
 [node name="default" type="Marker2D" parent="Spawns" unique_id=1266759625]
-position = Vector2(-311, 66)
+position = Vector2(176, 32)
 
 [node name="home_spawn" type="Marker2D" parent="Spawns" unique_id=843848749]
-position = Vector2(192, 160)
+position = Vector2(640, 88)
 
 [node name="house_door_spawn" type="Marker2D" parent="Spawns" unique_id=961214114]
-position = Vector2(-313, 64)
+position = Vector2(176, -96)
 
-[node name="back_mountain_spawn" type="Marker2D" parent="Spawns"]
-position = Vector2(-144, -296)
+[node name="back_mountain_spawn" type="Marker2D" parent="Spawns" unique_id=1582544568]
+position = Vector2(-184, -352)
 
 [node name="FarmField" type="Area2D" parent="." unique_id=245617527]
 position = Vector2(-72, -8)
@@ -94,11 +87,11 @@ collision_mask = 0
 script = ExtResource("5_field")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FarmField" unique_id=2028733757]
-position = Vector2(120, -104)
+position = Vector2(524, 190)
 shape = SubResource("RectangleShape2D_farm_field")
 
 [node name="ToTown" type="Area2D" parent="." unique_id=1907699253]
-position = Vector2(159, 151)
+position = Vector2(624, 80)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("4_exit")
@@ -109,7 +102,7 @@ prompt = "去镇街"
 position = Vector2(18, 8)
 shape = SubResource("RectangleShape2D_exit")
 
-[node name="ToBackMountain" type="Area2D" parent="."]
+[node name="ToBackMountain" type="Area2D" parent="." unique_id=94607387]
 position = Vector2(-144, -344)
 collision_layer = 2
 collision_mask = 0
@@ -118,10 +111,11 @@ target_scene = "back_mountain"
 spawn_id = "from_home"
 prompt = "去后山"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ToBackMountain"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToBackMountain" unique_id=1817743570]
 shape = SubResource("RectangleShape2D_exit")
 
 [node name="Home" type="Area2D" parent="." unique_id=910736135]
+position = Vector2(512, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("4_exit")
@@ -132,7 +126,6 @@ prompt = "进屋"
 [node name="Visual" type="Sprite2D" parent="Home" unique_id=1225162614]
 texture_filter = 1
 position = Vector2(-329, -141)
-texture = SubResource("CompressedTexture2D_ua24n")
 region_enabled = true
 region_rect = Rect2(0, 0, 416.39758, 377.7079)
 
@@ -140,71 +133,76 @@ region_rect = Rect2(0, 0, 416.39758, 377.7079)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=774404297]
 unique_name_in_owner = true
-position = Vector2(-424, 8)
+position = Vector2(-432.4121, 7.25)
 shape = SubResource("RectangleShape2D_ua24n")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=493138353]
 unique_name_in_owner = true
-position = Vector2(-208, 8)
+position = Vector2(-221.0586, 7.5)
 shape = SubResource("RectangleShape2D_ua24n")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=1770421037]
+position = Vector2(-16, -8)
 shape = SubResource("SegmentShape2D_w4owu")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=996638963]
+position = Vector2(-24, 48)
 shape = SubResource("SegmentShape2D_d0h8d")
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=200064127]
 shape = SubResource("SegmentShape2D_mdovq")
 
 [node name="CollisionShape2D6" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=1869533258]
+position = Vector2(64, 8)
 shape = SubResource("SegmentShape2D_uthjy")
 
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=1765292986]
+position = Vector2(-88, 8)
 shape = SubResource("SegmentShape2D_1uk33")
 
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=2101714536]
+position = Vector2(56, -8)
 shape = SubResource("SegmentShape2D_pf76v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Home" unique_id=13465202]
 position = Vector2(-312, -136)
 shape = SubResource("RectangleShape2D_d0h8d")
-metadata/_edit_lock_ = true
+
+[node name="Polygon2D" type="Polygon2D" parent="Home" unique_id=902054683]
+z_index = 10
+position = Vector2(-344, -40.000004)
+scale = Vector2(1.4619298, 1.0921843)
+texture = ExtResource("5_d0h8d")
+polygon = PackedVector2Array(-15.808624, 23.189331, -15.808632, -9.13525, 38.91356, -9.135254, 38.91356, 23.189333)
+uv = PackedVector2Array(832.8889, 369.32703, 832.8889, 334.0226, 912.8889, 334.0226, 912.8889, 369.32703)
+script = ExtResource("6_ofjoh")
+source_sprite_path = NodePath("../../Sprite2D")
 
 [node name="LeftWall" type="StaticBody2D" parent="." unique_id=298058636]
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=405448532]
+position = Vector2(464, -32)
 shape = SubResource("SegmentShape2D_ua24n")
-metadata/_edit_lock_ = true
 
 [node name="LeftWall2" type="StaticBody2D" parent="." unique_id=1396579489]
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall2" unique_id=238816021]
-position = Vector2(0, 576)
+position = Vector2(-136, 736)
 shape = SubResource("SegmentShape2D_ofjoh")
 
 [node name="LeftWall3" type="StaticBody2D" parent="." unique_id=1418118100]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall3" unique_id=909000299]
-position = Vector2(0, 576)
+position = Vector2(-144, 544)
 shape = SubResource("SegmentShape2D_6dbli")
 
 [node name="LeftWall4" type="StaticBody2D" parent="." unique_id=467941121]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall4" unique_id=877630090]
-position = Vector2(0, 576)
+position = Vector2(-144, 544)
 shape = SubResource("SegmentShape2D_m0xsn")
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=774440881]
-position = Vector2(-432, 72)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1581504556]
-position = Vector2(4.5, -4)
-shape = SubResource("CapsuleShape2D_mdovq")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2" unique_id=1673260669]
-position = Vector2(4.5, -12)
-scale = Vector2(0.59375, 0.75)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=693899477]
 texture = ExtResource("5_d0h8d")

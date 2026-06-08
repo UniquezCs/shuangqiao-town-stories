@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-07",
+	"updated_at": "2026-06-09",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -41,7 +41,8 @@
 			"PopulationFlow target timing should stay generic: configs/flow_preferences.json time_curves adjusts attraction for age_group + target_type over the day, instead of adding hard-coded commute plans for specific buildings.",
 			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools.",
 			"Customer overhead dialogue is probabilistic per event and must be based on an in-stock stall item the customer actually wants; avoid fixed dialogue triggers and stale sold-out item names.",
-			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics."
+			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics.",
+			"Baked-map pixel occlusion can use Polygon2D with scripts/world/polygon_texture_occluder.gd: the polygon samples a configured map/background Sprite2D texture, such as TownScene/MapLayers/Sprite2D, with matching UVs and renders above the player, while collision remains separate StaticBody2D geometry."
 		]
 	},
 	"packs": {
@@ -1903,6 +1904,90 @@
 			"collision": "none",
 			"tags": [
 				"locations"
+			]
+		},
+		"location.protagonist_home_fields_1920": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/home/protagonist_home_fields_1920x1080.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_09/protagonist_home_fields_1920x1080.prompt.txt",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"home_scene_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"farmhouse_fields_scene_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-09 as a standalone 1920x1080 protagonist-home visual layer matching the supplied township pixel-map reference style. Contains a rural house, courtyard, surrounding crop fields, vegetable plots, trees, dirt paths, fences, shed, well, haystack, and stream/irrigation edge details. No characters, animals, vehicles, or readable text are baked into the visual layer. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"home",
+				"protagonist_home",
+				"farmhouse",
+				"farmland",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.township_flat_map_1376": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_4kgpl14kgpl14kgp.png",
+			"size": [
+				1376,
+				768
+			],
+			"usage": [
+				"town_scene_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"township_map_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Available township raster map candidate. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.township_flat_map_stitched_2765": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched.png",
+			"size": [
+				2765,
+				2765
+			],
+			"usage": [
+				"town_scene_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"township_map_reference"
+			],
+			"used_by": [
+				"scenes/npc_endpoint.tscn"
+			],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Available stitched township raster map candidate. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
 			]
 		},
 		"location.house_interior_floor": {

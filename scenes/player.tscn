@@ -9,6 +9,7 @@ size = Vector2(24, 31.5)
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g2els"]
 
 [node name="Player" type="CharacterBody2D" unique_id=97559793]
+y_sort_enabled = true
 collision_mask = 19
 script = ExtResource("1_player_script")
 

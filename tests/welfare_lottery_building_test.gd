@@ -1,9 +1,16 @@
 extends Node
 
 const TOWN_SCENE := preload("res://scenes/town_scene.tscn")
+const TEMPORARILY_DISABLED := true
+const TEMPORARILY_DISABLED_REASON := "WelfareLotteryShop case is temporarily disabled until the building is restored in TownScene."
 
 
 func _ready() -> void:
+	if TEMPORARILY_DISABLED:
+		push_warning(TEMPORARILY_DISABLED_REASON)
+		get_tree().quit()
+		return
+
 	var town := TOWN_SCENE.instantiate()
 	add_child(town)
 	await get_tree().process_frame
