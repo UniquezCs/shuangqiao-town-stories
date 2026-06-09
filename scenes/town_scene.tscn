@@ -17,7 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://de1r2fbrl8bjf" path="res://scenes/npc_endpoint.tscn" id="14_npc_endpoint"]
 [ext_resource type="Texture2D" uid="uid://cmaaqlnfcc10x" path="res://assets/generated/sprites/locations/police_station_256x128.png" id="19_police_station"]
 [ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="41_polygon_occluder"]
-[ext_resource type="Script" uid="uid://06um34g22niq" path="res://scripts/world/camera_bounds.gd" id="42_camera_bounds"]
+[ext_resource type="Script" path="res://scripts/world/camera_bounds.gd" id="42_camera_bounds"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_camera_bounds"]
 size = Vector2(1639.5, 1814.4)

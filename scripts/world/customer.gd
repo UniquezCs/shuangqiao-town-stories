@@ -36,6 +36,8 @@ var _route_points: Array[Vector2] = []
 var _route_index := 0
 var _route_timeout_seconds := 18.0
 var _tree_entered_position: Vector2
+var _setup_start_position := Vector2.ZERO
+var _has_setup_start_position := false
 var _purchase_stall: Node = null
 var _purchase_preview: Dictionary = {}
 var _purchase_deadline_msec := 0
@@ -60,6 +62,8 @@ func setup(next_type: String, stall: Node, start_position: Vector2, leave_positi
 	gender = next_gender
 	_apply_default_demographics()
 	target_stall = stall
+	_setup_start_position = start_position
+	_has_setup_start_position = true
 	global_position = start_position
 	exit_position = leave_position
 	_route_points.clear()
@@ -73,6 +77,8 @@ func setup(next_type: String, stall: Node, start_position: Vector2, leave_positi
 
 
 func _enter_tree() -> void:
+	if _has_setup_start_position:
+		global_position = _setup_start_position
 	_tree_entered_position = global_position
 
 

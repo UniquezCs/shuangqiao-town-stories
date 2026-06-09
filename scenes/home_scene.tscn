@@ -6,6 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://cmwp6sgcqka37" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_4kgpl14kgpl14kgp.png" id="5_d0h8d"]
 [ext_resource type="Script" uid="uid://cutv1i2psxfeg" path="res://scripts/world/farm_field.gd" id="5_field"]
 [ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="6_ofjoh"]
+[ext_resource type="Script" path="res://scripts/world/camera_bounds.gd" id="7_camera_bounds"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_camera_bounds"]
+size = Vector2(1368, 1344)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_farm_field"]
 size = Vector2(136, 116)
@@ -61,6 +65,17 @@ b = Vector2(832, -928)
 
 [node name="HomeScene" type="Node2D" unique_id=2001990555]
 script = ExtResource("1_home")
+
+[node name="CameraBounds" type="Area2D" parent="." groups=["camera_bounds"]]
+position = Vector2(140, -256)
+collision_layer = 32
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("7_camera_bounds")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds"]
+shape = SubResource("RectangleShape2D_camera_bounds")
 
 [node name="GroundLayer" type="TileMapLayer" parent="." unique_id=176408979]
 z_index = -30

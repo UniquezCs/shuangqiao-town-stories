@@ -1990,6 +1990,62 @@
 				"pixel_art"
 			]
 		},
+		"location.township_flat_map_stitched_2765_runtime": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched (1).png",
+			"size": [
+				2765,
+				2765
+			],
+			"usage": [
+				"town_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"township_map_runtime_reference"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime township stitched raster map currently referenced by TownScene/MapLayers/Sprite2D. Gameplay logic remains in separate scene nodes; CameraBounds defines the visible camera contract.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_runtime_1376": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_qm6filqm6filqm6f.png",
+			"size": [
+				1376,
+				768
+			],
+			"usage": [
+				"back_mountain_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"back_mountain_runtime_reference"
+			],
+			"used_by": [
+				"scenes/back_mountain_scene.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime back-mountain raster map currently referenced by BackMountainScene/BackgroundBlocks/Chunk00. Existing BoundaryWalls still define the playable logic bounds.",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
 		"location.house_interior_floor": {
 			"type": "tileset_or_prop",
 			"status": "placeholder",

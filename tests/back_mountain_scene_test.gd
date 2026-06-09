@@ -4,6 +4,7 @@ const MainScript := preload("res://scripts/main.gd")
 const HOME_SCENE := preload("res://scenes/home_scene.tscn")
 const BACK_MOUNTAIN_SCENE_PATH := "res://scenes/back_mountain_scene.tscn"
 const BACK_MOUNTAIN_ASSET_DIR := "res://assets/generated/sprites/locations/back_mountain"
+const BACK_MOUNTAIN_RUNTIME_MAP := "res://assets/generated/sprites/locations/Gemini_Generated_Image_qm6filqm6filqm6f.png"
 
 
 func _ready() -> void:
@@ -11,27 +12,7 @@ func _ready() -> void:
 	var full_map_exists := ResourceLoader.exists("%s/back_mountain_full_4096.png" % BACK_MOUNTAIN_ASSET_DIR)
 	_assert_true(scene_exists, "应存在后山场景")
 	_assert_true(full_map_exists, "应保留 4096 后山完整参考图")
-
-	var expected_chunks := {
-		"Chunk00": {
-			"path": "%s/back_mountain_chunk_0_0_1024.png" % BACK_MOUNTAIN_ASSET_DIR,
-			"position": Vector2(512, 512),
-		},
-		"Chunk10": {
-			"path": "%s/back_mountain_chunk_1_0_1024.png" % BACK_MOUNTAIN_ASSET_DIR,
-			"position": Vector2(1536, 512),
-		},
-		"Chunk01": {
-			"path": "%s/back_mountain_chunk_0_1_1024.png" % BACK_MOUNTAIN_ASSET_DIR,
-			"position": Vector2(512, 1536),
-		},
-		"Chunk11": {
-			"path": "%s/back_mountain_chunk_1_1_1024.png" % BACK_MOUNTAIN_ASSET_DIR,
-			"position": Vector2(1536, 1536),
-		},
-	}
-	for chunk_name in expected_chunks.keys():
-		_assert_true(ResourceLoader.exists(expected_chunks[chunk_name]["path"]), "应存在后山背景块：%s" % expected_chunks[chunk_name]["path"])
+	_assert_true(ResourceLoader.exists(BACK_MOUNTAIN_RUNTIME_MAP), "应存在后山当前运行背景图")
 	if not scene_exists:
 		return
 
@@ -42,14 +23,14 @@ func _ready() -> void:
 
 	var blocks := back_mountain.get_node_or_null("BackgroundBlocks") as Node2D
 	_assert_true(blocks != null, "后山场景应包含 BackgroundBlocks")
-	for chunk_name in expected_chunks.keys():
-		var sprite := blocks.get_node_or_null(chunk_name) as Sprite2D
-		_assert_true(sprite != null, "BackgroundBlocks 应包含 %s" % chunk_name)
-		_assert_true(sprite.texture != null, "%s 应绑定背景块贴图" % chunk_name)
-		_assert_equal(sprite.texture.resource_path, expected_chunks[chunk_name]["path"], "%s 应使用正确背景块资源" % chunk_name)
-		_assert_equal(sprite.position, expected_chunks[chunk_name]["position"], "%s 应按 2x2 背景块位置拼接" % chunk_name)
-		_assert_equal(sprite.scale, Vector2.ONE, "%s 应以原生 1024x1024 尺寸显示，不能缩放导致模糊或缩小" % chunk_name)
-		_assert_equal(sprite.z_index, -100, "%s 应位于玩家和交互节点下方" % chunk_name)
+	var sprite := blocks.get_node_or_null("Chunk00") as Sprite2D
+	_assert_true(sprite != null, "BackgroundBlocks 应包含当前运行背景 Chunk00")
+	if sprite != null:
+		_assert_true(sprite.texture != null, "Chunk00 应绑定后山运行背景贴图")
+		_assert_equal(sprite.texture.resource_path, BACK_MOUNTAIN_RUNTIME_MAP, "Chunk00 应使用登记的当前后山运行图")
+		_assert_equal(sprite.position, Vector2(1036, 1777), "Chunk00 应保持当前单图对位")
+		_assert_equal(sprite.scale, Vector2(0.5792151, 0.62890625), "Chunk00 应保持当前单图缩放")
+		_assert_equal(sprite.z_index, -100, "Chunk00 应位于玩家和交互节点下方")
 
 	_assert_true(back_mountain.get_node_or_null("Spawns/from_home") != null, "后山应提供从 Home 进入的出生点")
 	var to_home := back_mountain.get_node_or_null("ToHome")

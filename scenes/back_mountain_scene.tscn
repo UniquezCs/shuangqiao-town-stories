@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="1_exit"]
 [ext_resource type="Texture2D" uid="uid://deld501t51iue" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_qm6filqm6filqm6f.png" id="1_xqr74"]
+[ext_resource type="Script" path="res://scripts/world/camera_bounds.gd" id="2_camera_bounds"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_camera_bounds"]
+size = Vector2(2048, 2048)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_to_home"]
 size = Vector2(160, 72)
@@ -22,6 +26,17 @@ a = Vector2(0, 2048)
 b = Vector2(0, 0)
 
 [node name="BackMountainScene" type="Node2D" unique_id=358822366]
+
+[node name="CameraBounds" type="Area2D" parent="." groups=["camera_bounds"]]
+position = Vector2(1024, 1024)
+collision_layer = 32
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("2_camera_bounds")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds"]
+shape = SubResource("RectangleShape2D_camera_bounds")
 
 [node name="BackgroundBlocks" type="Node2D" parent="." unique_id=1170976431]
 
