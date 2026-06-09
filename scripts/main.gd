@@ -11,6 +11,8 @@ const SCENE_ENTRY_HOME := "home"
 const SCENE_ENTRY_TOWN := "town"
 const SCENE_ENTRY_BACK_MOUNTAIN := "back_mountain"
 const SCENE_ENTRY_DEFAULT := "default"
+const CAMERA_LIMIT_MIN := -10000000
+const CAMERA_LIMIT_MAX := 10000000
 const SCENE_ROUTES := {
 	PrototypeConstants.SCENE_HOME: {
 		"scene": HOME_SCENE,
@@ -117,6 +119,7 @@ func _load_world(target_scene: String, spawn_id: String) -> void:
 	world_root.add_child(current_world)
 	GameState.current_scene = target_scene
 	await get_tree().process_frame
+	_apply_current_world_camera_bounds()
 	var spawn := current_world.get_node_or_null("Spawns/%s" % spawn_id)
 	if spawn == null:
 		spawn = current_world.get_node_or_null("Spawns/default")
@@ -307,6 +310,36 @@ func _get_player_camera() -> Camera2D:
 	if player == null:
 		return null
 	return player.get_node_or_null("Camera2D") as Camera2D
+
+
+func _apply_current_world_camera_bounds() -> void:
+	var camera := _get_player_camera()
+	if camera == null:
+		return
+	var bounds := _get_current_world_camera_bounds()
+	if bounds != null and bounds.has_method("apply_to_camera"):
+		bounds.call("apply_to_camera", camera)
+		return
+	_clear_camera_bounds(camera)
+
+
+func _get_current_world_camera_bounds() -> Node:
+	if current_world == null:
+		return null
+	var direct_bounds := current_world.get_node_or_null("CameraBounds")
+	if direct_bounds != null:
+		return direct_bounds
+	for node in get_tree().get_nodes_in_group("camera_bounds"):
+		if node is Node and current_world.is_ancestor_of(node):
+			return node
+	return null
+
+
+func _clear_camera_bounds(camera: Camera2D) -> void:
+	camera.limit_left = CAMERA_LIMIT_MIN
+	camera.limit_top = CAMERA_LIMIT_MIN
+	camera.limit_right = CAMERA_LIMIT_MAX
+	camera.limit_bottom = CAMERA_LIMIT_MAX
 
 
 func _close_all_stalls() -> void:

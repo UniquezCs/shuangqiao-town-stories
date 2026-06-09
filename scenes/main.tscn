@@ -1,48 +1,47 @@
-[gd_scene load_steps=10 format=3 uid="uid://main_scene"]
+[gd_scene format=3 uid="uid://cxebuxw7lj2xk"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
-[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
-[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="3_hud"]
-[ext_resource type="Script" path="res://scripts/ui/price_panel.gd" id="4_price"]
-[ext_resource type="Script" path="res://scripts/ui/settlement_panel.gd" id="5_settlement"]
-[ext_resource type="Script" path="res://scripts/ui/shop_panel.gd" id="6_shop"]
-[ext_resource type="Script" path="res://scripts/ui/backpack_panel.gd" id="7_backpack"]
-[ext_resource type="Script" path="res://scripts/ui/daily_summary_panel.gd" id="8_daily"]
-[ext_resource type="Script" path="res://scripts/ui/stall_setup_panel.gd" id="9_stall_setup"]
+[ext_resource type="Script" uid="uid://capnco3m47v0r" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://bu6c31c4fovvq" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://tyqy5nggrdfm" path="res://scripts/ui/hud.gd" id="3_hud"]
+[ext_resource type="Script" uid="uid://ce067spl3tulu" path="res://scripts/ui/price_panel.gd" id="4_price"]
+[ext_resource type="Script" uid="uid://bu1d02jw5akru" path="res://scripts/ui/settlement_panel.gd" id="5_settlement"]
+[ext_resource type="Script" uid="uid://cuyhrsec4tsn8" path="res://scripts/ui/shop_panel.gd" id="6_shop"]
+[ext_resource type="Script" uid="uid://cmm7gbsxjuu7u" path="res://scripts/ui/backpack_panel.gd" id="7_backpack"]
+[ext_resource type="Script" uid="uid://btkeqrc55rt3j" path="res://scripts/ui/daily_summary_panel.gd" id="8_daily"]
+[ext_resource type="Script" uid="uid://ioynt2w7o6wr" path="res://scripts/ui/stall_setup_panel.gd" id="9_stall_setup"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1029532228]
 script = ExtResource("1_main")
 
-[node name="WorldRoot" type="Node2D" parent="."]
+[node name="WorldRoot" type="Node2D" parent="." unique_id=1903980109]
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Player" parent="." unique_id=1548313476 instance=ExtResource("2_player")]
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(3, 3)
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=432079569]
+zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
-enabled = true
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1095568011]
 script = ExtResource("3_hud")
 
-[node name="PricePanel" type="CanvasLayer" parent="."]
+[node name="PricePanel" type="CanvasLayer" parent="." unique_id=1921894921]
 script = ExtResource("4_price")
 
-[node name="ShopPanel" type="CanvasLayer" parent="."]
+[node name="ShopPanel" type="CanvasLayer" parent="." unique_id=980782406]
 script = ExtResource("6_shop")
 
-[node name="SettlementPanel" type="CanvasLayer" parent="."]
+[node name="SettlementPanel" type="CanvasLayer" parent="." unique_id=2108730713]
 script = ExtResource("5_settlement")
 
-[node name="BackpackPanel" type="CanvasLayer" parent="."]
+[node name="BackpackPanel" type="CanvasLayer" parent="." unique_id=194818057]
 script = ExtResource("7_backpack")
 
-[node name="StallSetupPanel" type="CanvasLayer" parent="."]
+[node name="StallSetupPanel" type="CanvasLayer" parent="." unique_id=997399017]
 script = ExtResource("9_stall_setup")
 
-[node name="DailySummaryPanel" type="CanvasLayer" parent="."]
+[node name="DailySummaryPanel" type="CanvasLayer" parent="." unique_id=391381661]
 script = ExtResource("8_daily")
 
-[node name="TimeWindowTimer" type="Timer" parent="."]
+[node name="TimeWindowTimer" type="Timer" parent="." unique_id=628295042]
 one_shot = true

@@ -1,16 +1,12 @@
 [gd_scene format=3 uid="uid://bkc0g3qm8sdjn"]
 
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="1_exit"]
-[ext_resource type="Texture2D" uid="uid://d3k6qw3f0hyxi" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_0_0_1024.png" id="2_chunk00"]
-[ext_resource type="Texture2D" uid="uid://cdomsmhg3v8bk" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_1_0_1024.png" id="3_chunk10"]
-[ext_resource type="Texture2D" uid="uid://dqtuyg408dkf6" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_0_1_1024.png" id="4_chunk01"]
-[ext_resource type="Texture2D" uid="uid://t02ubmt7cm5y" path="res://assets/generated/sprites/locations/back_mountain/back_mountain_chunk_1_1_1024.png" id="5_chunk11"]
+[ext_resource type="Texture2D" uid="uid://deld501t51iue" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_qm6filqm6filqm6f.png" id="1_xqr74"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_to_home"]
 size = Vector2(160, 72)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_top"]
-a = Vector2(0, 0)
 b = Vector2(2048, 0)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_right"]
@@ -32,26 +28,9 @@ b = Vector2(0, 0)
 [node name="Chunk00" type="Sprite2D" parent="BackgroundBlocks" unique_id=1068510900]
 z_index = -100
 texture_filter = 1
-position = Vector2(512, 512)
-texture = ExtResource("2_chunk00")
-
-[node name="Chunk10" type="Sprite2D" parent="BackgroundBlocks" unique_id=1941257413]
-z_index = -100
-texture_filter = 1
-position = Vector2(1536, 512)
-texture = ExtResource("3_chunk10")
-
-[node name="Chunk01" type="Sprite2D" parent="BackgroundBlocks" unique_id=238612530]
-z_index = -100
-texture_filter = 1
-position = Vector2(512, 1536)
-texture = ExtResource("4_chunk01")
-
-[node name="Chunk11" type="Sprite2D" parent="BackgroundBlocks" unique_id=772023158]
-z_index = -100
-texture_filter = 1
-position = Vector2(1536, 1536)
-texture = ExtResource("5_chunk11")
+position = Vector2(1036, 1777)
+scale = Vector2(0.5792151, 0.62890625)
+texture = ExtResource("1_xqr74")
 
 [node name="Spawns" type="Node2D" parent="." unique_id=1447686803]
 
