@@ -50,6 +50,9 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
   map/background `Sprite2D` texture, such as `TownScene/MapLayers/Sprite2D`,
   with matching UVs and renders above the player.
   Collision still belongs to separate `StaticBody2D` geometry.
+- `TownScene/CameraBounds` is now the single source for both camera limits and
+  outer boundary collision. Enable `create_boundary_walls` on `CameraBounds`
+  instead of maintaining separate top/left/right/bottom `Wall` nodes.
 
 ## Generated Pack Metadata
 
@@ -59,6 +62,12 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Raw generation images, contact sheets, prompt text, manifests, preview GIFs, and other intermediate process files should not be kept under `assets/generated`.
 
 ## Current Resource Needs By System
+
+### Fonts
+
+| Asset ID | Status | Current Resource | Notes |
+| --- | --- | --- | --- |
+| `font.noto_sans_cjk_sc_regular` | implemented | `res://assets/fonts/NotoSansCJKsc-Regular.otf` | Added 2026-06-10 and wired through `project.godot` `gui/theme/custom_font`, so Chinese UI text, HUD labels, menus, and dialogue bubbles use a font with Simplified Chinese glyph coverage. Licensed under SIL Open Font License 1.1; license stored at `res://assets/fonts/OFL.txt`. |
 
 ### TileMap And Scene Ground
 

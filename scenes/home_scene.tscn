@@ -3,78 +3,36 @@
 [ext_resource type="Script" uid="uid://d3y3ipd0fvut6" path="res://scripts/scenes/home_scene.gd" id="1_home"]
 [ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="2_ua24n"]
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="4_exit"]
-[ext_resource type="Texture2D" uid="uid://cmwp6sgcqka37" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_4kgpl14kgpl14kgp.png" id="5_d0h8d"]
 [ext_resource type="Script" uid="uid://cutv1i2psxfeg" path="res://scripts/world/farm_field.gd" id="5_field"]
-[ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="6_ofjoh"]
-[ext_resource type="Script" path="res://scripts/world/camera_bounds.gd" id="7_camera_bounds"]
+[ext_resource type="Texture2D" uid="uid://buox54yq0yti1" path="res://assets/generated/sprites/map/home_map.png" id="6_ua24n"]
+[ext_resource type="Script" uid="uid://06um34g22niq" path="res://scripts/world/camera_bounds.gd" id="7_camera_bounds"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_camera_bounds"]
-size = Vector2(1368, 1344)
+size = Vector2(1024, 1024)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_farm_field"]
 size = Vector2(136, 116)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
-size = Vector2(96, 64)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ua24n"]
-size = Vector2(160.82422, 49.5)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_w4owu"]
-a = Vector2(-136, 32)
-b = Vector2(-136, -200)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_d0h8d"]
-a = Vector2(-128, -256)
-b = Vector2(-472, -256)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_mdovq"]
-a = Vector2(-504, -208)
-b = Vector2(-504, 24)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_uthjy"]
-a = Vector2(-480, -32)
-b = Vector2(-480, -104)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_1uk33"]
-a = Vector2(-160, -32)
-b = Vector2(-160, -104)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_pf76v"]
-a = Vector2(-304, -96)
-b = Vector2(-464, -96)
+size = Vector2(96, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0h8d"]
 size = Vector2(48, 80)
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_ua24n"]
-a = Vector2(224, -352)
-b = Vector2(224, 416)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_ofjoh"]
-a = Vector2(824, -352)
-b = Vector2(-544, -352)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_6dbli"]
-a = Vector2(-544, -928)
-b = Vector2(-544, -160)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_m0xsn"]
-a = Vector2(-544, -928)
-b = Vector2(832, -928)
-
 [node name="HomeScene" type="Node2D" unique_id=2001990555]
 script = ExtResource("1_home")
 
-[node name="CameraBounds" type="Area2D" parent="." groups=["camera_bounds"]]
+[node name="CameraBounds" type="Area2D" parent="." unique_id=2061308087 groups=["camera_bounds"]]
 position = Vector2(140, -256)
 collision_layer = 32
 collision_mask = 0
 monitoring = false
 monitorable = false
 script = ExtResource("7_camera_bounds")
+create_boundary_walls = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds" unique_id=1710200826]
+position = Vector2(-140, 256)
 shape = SubResource("RectangleShape2D_camera_bounds")
 
 [node name="GroundLayer" type="TileMapLayer" parent="." unique_id=176408979]
@@ -84,16 +42,16 @@ tile_set = ExtResource("2_ua24n")
 [node name="Spawns" type="Node2D" parent="." unique_id=1794410520]
 
 [node name="default" type="Marker2D" parent="Spawns" unique_id=1266759625]
-position = Vector2(176, 32)
+position = Vector2(16, -200)
 
 [node name="home_spawn" type="Marker2D" parent="Spawns" unique_id=843848749]
-position = Vector2(640, 88)
+position = Vector2(504, 0)
 
 [node name="house_door_spawn" type="Marker2D" parent="Spawns" unique_id=961214114]
-position = Vector2(176, -96)
+position = Vector2(16, -208)
 
 [node name="back_mountain_spawn" type="Marker2D" parent="Spawns" unique_id=1582544568]
-position = Vector2(-184, -352)
+position = Vector2(-456, 0)
 
 [node name="FarmField" type="Area2D" parent="." unique_id=245617527]
 position = Vector2(-72, -8)
@@ -102,7 +60,7 @@ collision_mask = 0
 script = ExtResource("5_field")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FarmField" unique_id=2028733757]
-position = Vector2(524, 190)
+position = Vector2(72, -416)
 shape = SubResource("RectangleShape2D_farm_field")
 
 [node name="ToTown" type="Area2D" parent="." unique_id=1907699253]
@@ -114,7 +72,7 @@ spawn_id = "town_spawn"
 prompt = "去镇街"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ToTown" unique_id=210976208]
-position = Vector2(18, 8)
+position = Vector2(-160, -80)
 shape = SubResource("RectangleShape2D_exit")
 
 [node name="ToBackMountain" type="Area2D" parent="." unique_id=94607387]
@@ -127,6 +85,7 @@ spawn_id = "from_home"
 prompt = "去后山"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ToBackMountain" unique_id=1817743570]
+position = Vector2(-320, 344)
 shape = SubResource("RectangleShape2D_exit")
 
 [node name="Home" type="Area2D" parent="." unique_id=910736135]
@@ -144,80 +103,9 @@ position = Vector2(-329, -141)
 region_enabled = true
 region_rect = Rect2(0, 0, 416.39758, 377.7079)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Home" unique_id=296506284]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=774404297]
-unique_name_in_owner = true
-position = Vector2(-432.4121, 7.25)
-shape = SubResource("RectangleShape2D_ua24n")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=493138353]
-unique_name_in_owner = true
-position = Vector2(-221.0586, 7.5)
-shape = SubResource("RectangleShape2D_ua24n")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=1770421037]
-position = Vector2(-16, -8)
-shape = SubResource("SegmentShape2D_w4owu")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=996638963]
-position = Vector2(-24, 48)
-shape = SubResource("SegmentShape2D_d0h8d")
-
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=200064127]
-shape = SubResource("SegmentShape2D_mdovq")
-
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=1869533258]
-position = Vector2(64, 8)
-shape = SubResource("SegmentShape2D_uthjy")
-
-[node name="CollisionShape2D7" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=1765292986]
-position = Vector2(-88, 8)
-shape = SubResource("SegmentShape2D_1uk33")
-
-[node name="CollisionShape2D8" type="CollisionShape2D" parent="Home/StaticBody2D" unique_id=2101714536]
-position = Vector2(56, -8)
-shape = SubResource("SegmentShape2D_pf76v")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Home" unique_id=13465202]
-position = Vector2(-312, -136)
+position = Vector2(-504, -240)
 shape = SubResource("RectangleShape2D_d0h8d")
 
-[node name="Polygon2D" type="Polygon2D" parent="Home" unique_id=902054683]
-z_index = 10
-position = Vector2(-344, -40.000004)
-scale = Vector2(1.4619298, 1.0921843)
-texture = ExtResource("5_d0h8d")
-polygon = PackedVector2Array(-15.808624, 23.189331, -15.808632, -9.13525, 38.91356, -9.135254, 38.91356, 23.189333)
-uv = PackedVector2Array(832.8889, 369.32703, 832.8889, 334.0226, 912.8889, 334.0226, 912.8889, 369.32703)
-script = ExtResource("6_ofjoh")
-source_sprite_path = NodePath("../../Sprite2D")
-
-[node name="LeftWall" type="StaticBody2D" parent="." unique_id=298058636]
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=405448532]
-position = Vector2(464, -32)
-shape = SubResource("SegmentShape2D_ua24n")
-
-[node name="LeftWall2" type="StaticBody2D" parent="." unique_id=1396579489]
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall2" unique_id=238816021]
-position = Vector2(-136, 736)
-shape = SubResource("SegmentShape2D_ofjoh")
-
-[node name="LeftWall3" type="StaticBody2D" parent="." unique_id=1418118100]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall3" unique_id=909000299]
-position = Vector2(-144, 544)
-shape = SubResource("SegmentShape2D_6dbli")
-
-[node name="LeftWall4" type="StaticBody2D" parent="." unique_id=467941121]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall4" unique_id=877630090]
-position = Vector2(-144, 544)
-shape = SubResource("SegmentShape2D_m0xsn")
-
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=693899477]
-texture = ExtResource("5_d0h8d")
+texture = ExtResource("6_ua24n")

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="2_exit"]
 [ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="2_jlhm2"]
 [ext_resource type="Script" uid="uid://cd8arr3p3btot" path="res://scripts/world/stall_area_layer.gd" id="3_stall_area_layer"]
-[ext_resource type="Texture2D" uid="uid://mkvrcpn0haic" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched (1).png" id="4_sexkh"]
+[ext_resource type="Texture2D" uid="uid://dpwhuf6vsr2hq" path="res://assets/generated/sprites/map/down_map.png" id="5_wgmto"]
 [ext_resource type="Script" uid="uid://dnm2r0fwdfap1" path="res://scripts/world/town_random_customer_spawner.gd" id="6_random_spawner"]
 [ext_resource type="Script" uid="uid://4ccnlbl1wje2" path="res://scripts/world/population_flow_spawner.gd" id="7_population_flow_spawner"]
 [ext_resource type="Script" uid="uid://n7dir2m3ud13" path="res://scripts/world/road_navigator.gd" id="7_road_nav"]
@@ -17,10 +17,10 @@
 [ext_resource type="PackedScene" uid="uid://de1r2fbrl8bjf" path="res://scenes/npc_endpoint.tscn" id="14_npc_endpoint"]
 [ext_resource type="Texture2D" uid="uid://cmaaqlnfcc10x" path="res://assets/generated/sprites/locations/police_station_256x128.png" id="19_police_station"]
 [ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="41_polygon_occluder"]
-[ext_resource type="Script" path="res://scripts/world/camera_bounds.gd" id="42_camera_bounds"]
+[ext_resource type="Script" uid="uid://06um34g22niq" path="res://scripts/world/camera_bounds.gd" id="42_camera_bounds"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_camera_bounds"]
-size = Vector2(1639.5, 1814.4)
+size = Vector2(2168.75, 1830.2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(46.5, 53.875)
@@ -67,18 +67,6 @@ size = Vector2(129, 101)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_seed_shop_interaction"]
 size = Vector2(39.77619, 25.69445)
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_dmh3e"]
-a = Vector2(249, 562)
-b = Vector2(260, 2781)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_top_wall"]
-a = Vector2(260, -419)
-b = Vector2(1870, -402)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_piwbw"]
-a = Vector2(1441, 77)
-b = Vector2(-192, 80)
-
 [node name="TownScene" type="Node2D" unique_id=1250339104]
 y_sort_enabled = true
 position = Vector2(14, -39)
@@ -91,9 +79,10 @@ collision_mask = 0
 monitoring = false
 monitorable = false
 script = ExtResource("42_camera_bounds")
+create_boundary_walls = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds" unique_id=1313767999]
-position = Vector2(-6, 0)
+position = Vector2(258.625, 7.9000244)
 shape = SubResource("RectangleShape2D_camera_bounds")
 
 [node name="MapLayers" type="Node2D" parent="." unique_id=1915339001]
@@ -133,9 +122,9 @@ z_index = 20
 tile_set = ExtResource("2_jlhm2")
 
 [node name="Sprite2D" type="Sprite2D" parent="MapLayers" unique_id=1656449052]
-position = Vector2(809, 1887)
+position = Vector2(1067, 1896)
 scale = Vector2(0.59294945, 0.6562169)
-texture = ExtResource("4_sexkh")
+texture = ExtResource("5_wgmto")
 
 [node name="RoadLayer" type="TileMapLayer" parent="MapLayers" unique_id=332799103]
 z_index = -30
@@ -215,16 +204,16 @@ shape = SubResource("RectangleShape2D_wgmto")
 [node name="Polygon2D" parent="Buildings/Residential2Spot" index="4" unique_id=260896949]
 position = Vector2(-121.59722, -193.98827)
 scale = Vector2(1.5315293, 0.34447873)
-texture = ExtResource("4_sexkh")
-uv = PackedVector2Array(1995.0167, 1591.2725, 1996.5873, 1574.3037, 2136.3586, 1574.3037, 2136.3586, 1591.2725)
+texture = ExtResource("5_wgmto")
+uv = PackedVector2Array(1994.9037, 1577.5574, 1996.4742, 1560.5886, 2136.2456, 1560.5886, 2136.2456, 1577.5574)
 
 [node name="Polygon2D2" type="Polygon2D" parent="Buildings/Residential2Spot" unique_id=969549559]
 z_index = 10
 position = Vector2(-33.00005, -192.99995)
 scale = Vector2(1.5410116, 0.37341043)
-texture = ExtResource("4_sexkh")
+texture = ExtResource("5_wgmto")
 polygon = PackedVector2Array(-15.808624, 23.189331, -15.200607, -9.135254, 38.91356, -9.135254, 38.91356, 23.189331)
-uv = PackedVector2Array(2144.1816, 1593.801, 2145.762, 1575.407, 2286.3987, 1575.407, 2286.3987, 1593.801)
+uv = PackedVector2Array(2144.0686, 1580.0859, 2145.649, 1561.6919, 2286.2856, 1561.6919, 2286.2856, 1580.0859)
 script = ExtResource("41_polygon_occluder")
 source_sprite_path = NodePath("../../../MapLayers/Sprite2D")
 
@@ -251,8 +240,8 @@ position = Vector2(-96.75, -82.125)
 shape = SubResource("RectangleShape2D_c7dhr")
 
 [node name="Polygon2D" parent="Buildings/Residential1Sopt" index="4" unique_id=260896949]
-texture = ExtResource("4_sexkh")
-uv = PackedVector2Array(1170.3623, 1789.3352, 1171.3876, 1740.0762, 1262.6504, 1740.0762, 1262.6504, 1789.3352)
+texture = ExtResource("5_wgmto")
+uv = PackedVector2Array(1170.2493, 1775.6201, 1171.2745, 1726.3611, 1262.5374, 1726.3611, 1262.5374, 1775.6201)
 
 [node name="Residential1Sopt2" parent="Buildings" unique_id=1562323243 instance=ExtResource("14_npc_endpoint")]
 position = Vector2(1469, 2121)
@@ -280,8 +269,8 @@ shape = SubResource("RectangleShape2D_5xjnp")
 [node name="Polygon2D" parent="Buildings/Residential1Sopt2" index="4" unique_id=260896949]
 position = Vector2(-66.041664, -124.87965)
 scale = Vector2(1.4401586, 0.6847808)
-texture = ExtResource("4_sexkh")
-uv = PackedVector2Array(2345.8054, 1572.9858, 2347.2822, 1539.2542, 2478.715, 1539.2542, 2478.715, 1572.9858)
+texture = ExtResource("5_wgmto")
+uv = PackedVector2Array(2345.6924, 1559.2708, 2347.1692, 1525.5391, 2478.602, 1525.5391, 2478.602, 1559.2708)
 
 [node name="SchoolSpot" parent="Buildings" unique_id=1684645973 instance=ExtResource("14_npc_endpoint")]
 position = Vector2(1042, 1749)
@@ -309,8 +298,8 @@ position = Vector2(-9.5, -143.5)
 shape = SubResource("RectangleShape2D_jrxwt")
 
 [node name="Polygon2D" parent="Buildings/SchoolSpot" index="4" unique_id=260896949]
-texture = ExtResource("4_sexkh")
-uv = PackedVector2Array(1649.3239, 1042.6311, 1650.3491, 993.3721, 1741.6119, 993.3721, 1741.6119, 1042.6311)
+texture = ExtResource("5_wgmto")
+uv = PackedVector2Array(1649.2108, 1028.916, 1650.2361, 979.657, 1741.4989, 979.657, 1741.4989, 1028.916)
 
 [node name="PoliceStation" parent="Buildings" unique_id=434441127 instance=ExtResource("14_npc_endpoint")]
 position = Vector2(780, 1783)
@@ -335,16 +324,16 @@ position = Vector2(-14.25, 10)
 shape = SubResource("RectangleShape2D_emdn0")
 
 [node name="Polygon2D" parent="Buildings/PoliceStation" index="4" unique_id=260896949]
-texture = ExtResource("4_sexkh")
-uv = PackedVector2Array(1207.465, 1094.4431, 1208.4902, 1045.1841, 1299.753, 1045.1841, 1299.753, 1094.4431)
+texture = ExtResource("5_wgmto")
+uv = PackedVector2Array(1207.3519, 1080.728, 1208.3772, 1031.469, 1299.64, 1031.469, 1299.64, 1080.728)
 
 [node name="Polygon2D2" type="Polygon2D" parent="Buildings/PoliceStation" unique_id=1960637623]
 z_index = 10
 position = Vector2(-48.756676, -53.04875)
 scale = Vector2(3.0261111, 0.39021)
-texture = ExtResource("4_sexkh")
+texture = ExtResource("5_wgmto")
 polygon = PackedVector2Array(-15.808624, 23.189331, -15.200607, -9.135254, 38.91356, -9.135254, 38.91356, 23.189331)
-uv = PackedVector2Array(1170.6854, 1156.9648, 1173.7886, 1137.7434, 1449.9596, 1137.7434, 1449.9596, 1156.9648)
+uv = PackedVector2Array(1170.5724, 1143.2498, 1173.6755, 1124.0283, 1449.8466, 1124.0283, 1449.8466, 1143.2498)
 script = ExtResource("41_polygon_occluder")
 source_sprite_path = NodePath("../../../MapLayers/Sprite2D")
 
@@ -369,8 +358,8 @@ position = Vector2(15.5, -116.5)
 shape = SubResource("RectangleShape2D_aninr")
 
 [node name="Polygon2D" parent="Buildings/FactorySpot" index="4" unique_id=260896949]
-texture = ExtResource("4_sexkh")
-uv = PackedVector2Array(1199.0325, 142.01416, 1200.0579, 92.75513, 1291.3206, 92.75513, 1291.3206, 142.01416)
+texture = ExtResource("5_wgmto")
+uv = PackedVector2Array(1198.9194, 128.29907, 1199.9448, 79.04004, 1291.2075, 79.04004, 1291.2075, 128.29907)
 
 [node name="SeedShop" parent="Buildings" unique_id=1407063190 instance=ExtResource("14_npc_endpoint")]
 position = Vector2(247.00002, 1999.0001)
@@ -396,8 +385,8 @@ position = Vector2(-17.510818, -13.072266)
 [node name="Polygon2D" parent="Buildings/SeedShop" index="4" unique_id=260896949]
 position = Vector2(-26.858398, -42.44229)
 scale = Vector2(0.79748946, 0.59398496)
-texture = ExtResource("4_sexkh")
-uv = PackedVector2Array(291.2091, 1465.5613, 292.97192, 1406.8823, 449.8742, 1406.8823, 449.8742, 1465.5613)
+texture = ExtResource("5_wgmto")
+uv = PackedVector2Array(291.09607, 1451.8462, 292.8589, 1393.1672, 449.76123, 1393.1672, 449.76123, 1451.8462)
 
 [node name="ShopInteraction" type="Area2D" parent="Buildings/SeedShop" unique_id=2102677429]
 collision_layer = 2
@@ -412,32 +401,11 @@ shape = SubResource("RectangleShape2D_seed_shop_interaction")
 z_index = 10
 position = Vector2(-18.07568, -38.359734)
 scale = Vector2(0.97849476, 0.86046284)
-texture = ExtResource("4_sexkh")
+texture = ExtResource("5_wgmto")
 polygon = PackedVector2Array(-20.87381, 10.969849, -20.87381, -10.471191, 22.265396, -10.471191, 22.739449, 10.969849)
-uv = PackedVector2Array(294.71753, 1464.7898, 294.71753, 1408.4063, 448.18774, 1408.4063, 449.87415, 1464.7898)
+uv = PackedVector2Array(294.6045, 1451.0747, 294.6045, 1394.6912, 448.0747, 1394.6912, 449.7611, 1451.0747)
 script = ExtResource("41_polygon_occluder")
 source_sprite_path = NodePath("../../../MapLayers/Sprite2D")
-
-[node name="Wall" type="Node2D" parent="." unique_id=347612659]
-
-[node name="LeftWall" type="StaticBody2D" parent="Wall" unique_id=168661146]
-position = Vector2(-260, 419)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/LeftWall" unique_id=518386768]
-shape = SubResource("SegmentShape2D_dmh3e")
-
-[node name="TopWall" type="StaticBody2D" parent="Wall" unique_id=555637296]
-position = Vector2(-260, 419)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/TopWall" unique_id=1554553836]
-position = Vector2(3, 967)
-shape = SubResource("SegmentShape2D_top_wall")
-
-[node name="BottomWall" type="StaticBody2D" parent="Wall" unique_id=1917300296]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/BottomWall" unique_id=1902426895]
-position = Vector2(192, 2720)
-shape = SubResource("SegmentShape2D_piwbw")
 
 [editable path="Buildings/Residential2Spot"]
 [editable path="Buildings/Residential1Sopt"]

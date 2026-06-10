@@ -79,9 +79,13 @@ func _get_source_sprite() -> Sprite2D:
 		if configured_sprite != null:
 			return configured_sprite
 
-	var scene_root := get_tree().edited_scene_root if Engine.is_editor_hint() else owner
+	var tree := get_tree()
+	if tree == null:
+		return null
+
+	var scene_root := tree.edited_scene_root if Engine.is_editor_hint() else owner
 	if scene_root == null:
-		scene_root = get_tree().current_scene
+		scene_root = tree.current_scene
 	if scene_root == null:
 		return null
 

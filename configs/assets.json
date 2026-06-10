@@ -42,7 +42,8 @@
 			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools.",
 			"Customer overhead dialogue is probabilistic per event and must be based on an in-stock stall item the customer actually wants; avoid fixed dialogue triggers and stale sold-out item names.",
 			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics.",
-			"Baked-map pixel occlusion can use Polygon2D with scripts/world/polygon_texture_occluder.gd: the polygon samples a configured map/background Sprite2D texture, such as TownScene/MapLayers/Sprite2D, with matching UVs and renders above the player, while collision remains separate StaticBody2D geometry."
+			"Baked-map pixel occlusion can use Polygon2D with scripts/world/polygon_texture_occluder.gd: the polygon samples a configured map/background Sprite2D texture, such as TownScene/MapLayers/Sprite2D, with matching UVs and renders above the player, while collision remains separate StaticBody2D geometry.",
+			"TownScene uses CameraBounds as the single source for camera limits and outer boundary collision; enable create_boundary_walls on CameraBounds instead of maintaining separate top/left/right/bottom Wall nodes."
 		]
 	},
 	"packs": {
@@ -59,6 +60,28 @@
 			"status": "implemented",
 			"path": "res://assets/generated/tilesets",
 			"notes": "Final generated tile atlases and TileSet resources. Raw map-generation references and manifests are intentionally removed."
+		}
+	},
+	"fonts": {
+		"font.noto_sans_cjk_sc_regular": {
+			"type": "font",
+			"status": "implemented",
+			"path": "res://assets/fonts/NotoSansCJKsc-Regular.otf",
+			"license": "SIL Open Font License 1.1",
+			"license_path": "res://assets/fonts/OFL.txt",
+			"usage": [
+				"default_gui_font",
+				"chinese_text_rendering",
+				"title_screen",
+				"hud",
+				"dialogue_bubbles",
+				"menus"
+			],
+			"used_by": [
+				"project.godot",
+				"tests/default_font_test.tscn"
+			],
+			"notes": "Added 2026-06-10 to provide Simplified Chinese glyph coverage for all Godot Control text through gui/theme/custom_font."
 		}
 	},
 	"tilesets": {

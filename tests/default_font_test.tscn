@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/default_font_test.gd" id="1_default_font_test"]
+
+[node name="DefaultFontTest" type="Node"]
+script = ExtResource("1_default_font_test")

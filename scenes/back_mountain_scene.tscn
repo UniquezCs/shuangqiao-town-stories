@@ -1,41 +1,28 @@
 [gd_scene format=3 uid="uid://bkc0g3qm8sdjn"]
 
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="1_exit"]
-[ext_resource type="Texture2D" uid="uid://deld501t51iue" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_qm6filqm6filqm6f.png" id="1_xqr74"]
-[ext_resource type="Script" path="res://scripts/world/camera_bounds.gd" id="2_camera_bounds"]
+[ext_resource type="Texture2D" uid="uid://chsq4df7rybfh" path="res://assets/generated/sprites/map/mountain.png" id="2_4cskh"]
+[ext_resource type="Script" uid="uid://06um34g22niq" path="res://scripts/world/camera_bounds.gd" id="2_camera_bounds"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_camera_bounds"]
-size = Vector2(2048, 2048)
+size = Vector2(596, 648)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_to_home"]
-size = Vector2(160, 72)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_top"]
-b = Vector2(2048, 0)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_right"]
-a = Vector2(2048, 0)
-b = Vector2(2048, 2048)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_bottom"]
-a = Vector2(2048, 2048)
-b = Vector2(0, 2048)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_left"]
-a = Vector2(0, 2048)
-b = Vector2(0, 0)
+size = Vector2(72, 55)
 
 [node name="BackMountainScene" type="Node2D" unique_id=358822366]
 
-[node name="CameraBounds" type="Area2D" parent="." groups=["camera_bounds"]]
+[node name="CameraBounds" type="Area2D" parent="." unique_id=25041377 groups=["camera_bounds"]]
 position = Vector2(1024, 1024)
 collision_layer = 32
 collision_mask = 0
 monitoring = false
 monitorable = false
 script = ExtResource("2_camera_bounds")
+create_boundary_walls = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds" unique_id=1488998110]
+position = Vector2(-133, 688)
 shape = SubResource("RectangleShape2D_camera_bounds")
 
 [node name="BackgroundBlocks" type="Node2D" parent="." unique_id=1170976431]
@@ -43,17 +30,17 @@ shape = SubResource("RectangleShape2D_camera_bounds")
 [node name="Chunk00" type="Sprite2D" parent="BackgroundBlocks" unique_id=1068510900]
 z_index = -100
 texture_filter = 1
-position = Vector2(1036, 1777)
+position = Vector2(891, 1710.0001)
 scale = Vector2(0.5792151, 0.62890625)
-texture = ExtResource("1_xqr74")
+texture = ExtResource("2_4cskh")
 
 [node name="Spawns" type="Node2D" parent="." unique_id=1447686803]
 
 [node name="default" type="Marker2D" parent="Spawns" unique_id=1475423917]
-position = Vector2(1024, 1880)
+position = Vector2(1028, 1949)
 
 [node name="from_home" type="Marker2D" parent="Spawns" unique_id=1275408081]
-position = Vector2(1024, 1880)
+position = Vector2(1012, 2016)
 
 [node name="ToHome" type="Area2D" parent="." unique_id=1263336402]
 position = Vector2(1024, 1984)
@@ -65,18 +52,5 @@ spawn_id = "back_mountain_spawn"
 prompt = "回家"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ToHome" unique_id=1994396384]
+position = Vector2(-4, 19)
 shape = SubResource("RectangleShape2D_to_home")
-
-[node name="BoundaryWalls" type="StaticBody2D" parent="." unique_id=1133414831]
-
-[node name="TopWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=427083502]
-shape = SubResource("SegmentShape2D_top")
-
-[node name="RightWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=1529204249]
-shape = SubResource("SegmentShape2D_right")
-
-[node name="BottomWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=1891771820]
-shape = SubResource("SegmentShape2D_bottom")
-
-[node name="LeftWall" type="CollisionShape2D" parent="BoundaryWalls" unique_id=1689960228]
-shape = SubResource("SegmentShape2D_left")

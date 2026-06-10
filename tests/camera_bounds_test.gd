@@ -15,6 +15,8 @@ func _ready() -> void:
 	await get_tree().process_frame
 
 	var bounds := _assert_scene_has_camera_bounds(town, "TownScene")
+	_assert_true(town.get_node_or_null("Wall") == null, "TownScene 不应再保留独立 Wall 节点，边界墙应由 CameraBounds 统一生成")
+	_assert_boundary_walls_match_bounds(bounds, "TownScene")
 
 	var test_camera := Camera2D.new()
 	add_child(test_camera)
@@ -79,11 +81,66 @@ func _assert_scene_has_camera_bounds(scene: Node, scene_name: String) -> Area2D:
 	return bounds
 
 
+func _assert_boundary_walls_match_bounds(bounds: Area2D, scene_name: String) -> void:
+	_assert_true(bool(bounds.get("create_boundary_walls")), "%s 的 CameraBounds 应启用边界墙生成" % scene_name)
+	var walls := bounds.get_node_or_null("BoundaryWalls") as StaticBody2D
+	_assert_true(walls != null, "%s 的 CameraBounds 应生成 BoundaryWalls" % scene_name)
+	if walls == null:
+		return
+	_assert_equal(walls.collision_layer, 1, "%s 的 BoundaryWalls 应位于世界碰撞层" % scene_name)
+	_assert_equal(walls.collision_mask, 0, "%s 的 BoundaryWalls 不需要主动扫描对象" % scene_name)
+
+	var expected_names := ["TopWall", "RightWall", "BottomWall", "LeftWall"]
+	for wall_name in expected_names:
+		var collision_shape := walls.get_node_or_null(wall_name) as CollisionShape2D
+		_assert_true(collision_shape != null, "%s 应生成 %s" % [scene_name, wall_name])
+		if collision_shape != null:
+			_assert_true(collision_shape.shape is SegmentShape2D, "%s/%s 应使用 SegmentShape2D" % [scene_name, wall_name])
+
+	var local_rect := _get_local_bounds_rect(bounds)
+	var left := local_rect.position.x
+	var top := local_rect.position.y
+	var right := local_rect.position.x + local_rect.size.x
+	var bottom := local_rect.position.y + local_rect.size.y
+	_assert_segment(walls, "TopWall", Vector2(left, top), Vector2(right, top), "%s TopWall 应贴合 CameraBounds 顶边" % scene_name)
+	_assert_segment(walls, "RightWall", Vector2(right, top), Vector2(right, bottom), "%s RightWall 应贴合 CameraBounds 右边" % scene_name)
+	_assert_segment(walls, "BottomWall", Vector2(right, bottom), Vector2(left, bottom), "%s BottomWall 应贴合 CameraBounds 底边" % scene_name)
+	_assert_segment(walls, "LeftWall", Vector2(left, bottom), Vector2(left, top), "%s LeftWall 应贴合 CameraBounds 左边" % scene_name)
+
+
+func _get_local_bounds_rect(bounds: Area2D) -> Rect2:
+	var collision_shape := bounds.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	_assert_true(collision_shape != null, "CameraBounds 应有 CollisionShape2D")
+	if collision_shape == null:
+		return Rect2()
+	var rectangle := collision_shape.shape as RectangleShape2D
+	_assert_true(rectangle != null, "CameraBounds 的 CollisionShape2D 应使用 RectangleShape2D")
+	if rectangle == null:
+		return Rect2()
+	var size := rectangle.size * Vector2(absf(collision_shape.scale.x), absf(collision_shape.scale.y))
+	return Rect2(collision_shape.position - size * 0.5, size)
+
+
+func _assert_segment(walls: StaticBody2D, wall_name: String, expected_a: Vector2, expected_b: Vector2, message: String) -> void:
+	var collision_shape := walls.get_node_or_null(wall_name) as CollisionShape2D
+	if collision_shape == null:
+		return
+	var segment := collision_shape.shape as SegmentShape2D
+	if segment == null:
+		return
+	_assert_vector_close(segment.a, expected_a, "%s：a" % message)
+	_assert_vector_close(segment.b, expected_b, "%s：b" % message)
+
+
 func _assert_camera_matches_rect(camera: Camera2D, rect: Rect2, message: String) -> void:
 	_assert_equal(camera.limit_left, int(floorf(rect.position.x)), "%s：left" % message)
 	_assert_equal(camera.limit_top, int(floorf(rect.position.y)), "%s：top" % message)
 	_assert_equal(camera.limit_right, int(ceilf(rect.position.x + rect.size.x)), "%s：right" % message)
 	_assert_equal(camera.limit_bottom, int(ceilf(rect.position.y + rect.size.y)), "%s：bottom" % message)
+
+
+func _assert_vector_close(actual: Vector2, expected: Vector2, message: String) -> void:
+	_assert_true(actual.distance_to(expected) < 0.001, "%s。实际：%s，期望：%s" % [message, str(actual), str(expected)])
 
 
 func _has_rectangle_shape(bounds: Area2D) -> bool:

@@ -1,62 +1,38 @@
-[gd_scene format=4 uid="uid://dsq1lemxsq728"]
+[gd_scene format=3 uid="uid://dsq1lemxsq728"]
 
-[ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="1_tileset"]
+[ext_resource type="Texture2D" uid="uid://de447tmpxvpxe" path="res://assets/generated/sprites/map/house_map.png" id="1_5mjha"]
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="2_exit"]
 [ext_resource type="Script" uid="uid://cv71xw3btc45y" path="res://scripts/world/bed.gd" id="3_bed"]
-[ext_resource type="Texture2D" uid="uid://c1d67h4tnlde8" path="res://assets/generated/sprites/objects/bed_roll_64x64.png" id="4_letqr"]
-[ext_resource type="Texture2D" uid="uid://b40v4idg5i205" path="res://assets/generated/sprites/props/town/broom.png" id="5_xc6pb"]
-[ext_resource type="Texture2D" uid="uid://cfvafuwo25qmu" path="res://assets/generated/sprites/props/town/bicycle.png" id="6_xc6pb"]
+[ext_resource type="Script" uid="uid://06um34g22niq" path="res://scripts/world/camera_bounds.gd" id="5_letqr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
-size = Vector2(74, 38)
+size = Vector2(81, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bed"]
-size = Vector2(72, 65)
+size = Vector2(115, 73)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xc6pb"]
-size = Vector2(52, 53)
+size = Vector2(99, 68.5)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_012gt"]
-radius = 13.0
-height = 64.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ykngs"]
-radius = 27.0
-height = 62.0
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_xc6pb"]
-a = Vector2(-7, -283)
-b = Vector2(-8, 31)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_012gt"]
-a = Vector2(-7, -283)
-b = Vector2(409, -283)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_ykngs"]
-a = Vector2(-7, -283)
-b = Vector2(-8, 31)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_epdxj"]
-a = Vector2(409, 34)
-b = Vector2(-8, 31)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_012gt"]
+size = Vector2(481, 473)
 
 [node name="HouseScene" type="Node2D" unique_id=1049214618]
-
-[node name="GroundLayer" type="TileMapLayer" parent="." unique_id=250748633]
-z_index = -30
-tile_map_data = PackedByteArray("AAD6//v/AAAAAAEAAAD6//z/AAAAAAEAAAD6//3/AAAAAAEAAAD6//7/AAAAAAEAAAD6////AAAAAAEAAAD6/wAAAAAAAAEAAAD6/wEAAAAAAAEAAAD6/wIAAAAAAAEAAAD6/wMAAAAAAAEAAAD6/wQAAAAAAAEAAAD7//v/AAAAAAEAAAD7//z/AAAAAAEAAAD7//3/AAAAAAEAAAD7//7/AAAAAAEAAAD7////AAAAAAEAAAD7/wAAAAAAAAEAAAD7/wEAAAAAAAEAAAD7/wIAAAAAAAEAAAD7/wMAAAAAAAEAAAD7/wQAAAAAAAEAAAD8//v/AAAAAAEAAAD8//z/AAAAAAEAAAD8//3/AAAAAAEAAAD8//7/AAAAAAEAAAD8////AAAAAAEAAAD8/wAAAAAAAAEAAAD8/wEAAAAAAAEAAAD8/wIAAAAAAAEAAAD8/wMAAAAAAAEAAAD8/wQAAAAAAAEAAAD9//v/AAAAAAEAAAD9//z/AAAAAAEAAAD9//3/AAAAAAEAAAD9//7/AAAAAAEAAAD9////AAAAAAEAAAD9/wAAAAAAAAEAAAD9/wEAAAAAAAEAAAD9/wIAAAAAAAEAAAD9/wMAAAAAAAEAAAD9/wQAAAAAAAEAAAD+//v/AAAAAAEAAAD+//z/AAAAAAEAAAD+//3/AAAAAAEAAAD+//7/AAAAAAEAAAD+////AAAAAAEAAAD+/wAAAAAAAAEAAAD+/wEAAAAAAAEAAAD+/wIAAAAAAAEAAAD+/wMAAAAAAAEAAAD+/wQAAAAAAAEAAAD///v/AAAAAAEAAAD///z/AAAAAAEAAAD///3/AAAAAAEAAAD///7/AAAAAAEAAAD/////AAAAAAEAAAD//wAAAAAAAAEAAAD//wEAAAAAAAEAAAD//wIAAAAAAAEAAAD//wMAAAAAAAEAAAD//wQAAAAAAAMAAAAAAPv/AAAAAAEAAAAAAPz/AAAAAAEAAAAAAP3/AAAAAAEAAAAAAP7/AAAAAAEAAAAAAP//AAAAAAEAAAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAMAAAABAPv/AAAAAAEAAAABAPz/AAAAAAEAAAABAP3/AAAAAAEAAAABAP7/AAAAAAEAAAABAP//AAAAAAEAAAABAAAAAAAAAAEAAAABAAEAAAAAAAEAAAABAAIAAAAAAAEAAAABAAMAAAAAAAEAAAABAAQAAAAAAAEAAAACAPv/AAAAAAEAAAACAPz/AAAAAAEAAAACAP3/AAAAAAEAAAACAP7/AAAAAAEAAAACAP//AAAAAAEAAAACAAAAAAAAAAEAAAACAAEAAAAAAAEAAAACAAIAAAAAAAEAAAACAAMAAAAAAAEAAAACAAQAAAAAAAEAAAADAPv/AAAAAAEAAAADAPz/AAAAAAEAAAADAP3/AAAAAAEAAAADAP7/AAAAAAEAAAADAP//AAAAAAEAAAADAAAAAAAAAAEAAAADAAEAAAAAAAEAAAADAAIAAAAAAAEAAAADAAMAAAAAAAEAAAADAAQAAAAAAAEAAAAEAPv/AAAAAAEAAAAEAPz/AAAAAAEAAAAEAP3/AAAAAAEAAAAEAP7/AAAAAAEAAAAEAP//AAAAAAEAAAAEAAAAAAAAAAEAAAAEAAEAAAAAAAEAAAAEAAIAAAAAAAEAAAAEAAMAAAAAAAEAAAAEAAQAAAAAAAEAAAAFAPv/AAAAAAEAAAAFAPz/AAAAAAEAAAAFAP3/AAAAAAEAAAAFAP7/AAAAAAEAAAAFAP//AAAAAAEAAAAFAAAAAAAAAAEAAAAFAAEAAAAAAAEAAAAFAAIAAAAAAAEAAAAFAAMAAAAAAAEAAAAFAAQAAAAAAAEAAAAGAPv/AAAAAAEAAAAGAPz/AAAAAAEAAAAGAP3/AAAAAAEAAAAGAP7/AAAAAAEAAAAGAP//AAAAAAEAAAAGAAAAAAAAAAEAAAAGAAEAAAAAAAEAAAAGAAIAAAAAAAEAAAAGAAMAAAAAAAEAAAAGAAQAAAAAAAEAAAA=")
-tile_set = ExtResource("1_tileset")
 
 [node name="Spawns" type="Node2D" parent="." unique_id=894860239]
 
 [node name="default" type="Marker2D" parent="Spawns" unique_id=351155556]
-position = Vector2(0, 70)
+position = Vector2(-3, 72)
 
 [node name="bed_spawn" type="Marker2D" parent="Spawns" unique_id=2015385860]
-position = Vector2(-12, 78)
+position = Vector2(-99, 66)
 
 [node name="home_door_spawn" type="Marker2D" parent="Spawns" unique_id=1704088267]
-position = Vector2(0, 120)
+position = Vector2(3, 179)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=225034930]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_5mjha")
 
 [node name="ToHomeYard" type="Area2D" parent="." unique_id=1836800359]
 position = Vector2(0, 150)
@@ -68,81 +44,34 @@ spawn_id = "house_door_spawn"
 prompt = "出门到院子"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ToHomeYard" unique_id=1473410450]
-position = Vector2(1, -10)
+position = Vector2(0, 47)
 shape = SubResource("RectangleShape2D_exit")
 
-[node name="Sprite2D" type="Sprite2D" parent="ToHomeYard" unique_id=1891260452]
-
 [node name="Bed" type="Area2D" parent="." unique_id=1454103753]
-position = Vector2(-128, -40)
+position = Vector2(-212, 51)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("3_bed")
 
-[node name="Visual" type="Sprite2D" parent="Bed" unique_id=747538828]
-texture_filter = 1
-position = Vector2(17.119999, 20.619997)
-scale = Vector2(1.2149999, 1.3243749)
-texture = ExtResource("4_letqr")
-region_enabled = true
-region_rect = Rect2(0, 0, 62.433136, 50.630737)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bed" unique_id=1328258770]
-position = Vector2(15, 19.5)
+position = Vector2(36.5, 23.5)
 shape = SubResource("RectangleShape2D_bed")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Bed" unique_id=1958529924]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bed/StaticBody2D" unique_id=1814322495]
-position = Vector2(15, 19)
+position = Vector2(38.5, 26.75)
 shape = SubResource("RectangleShape2D_xc6pb")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=397765910]
+[node name="CameraBounds" type="Area2D" parent="." unique_id=858107817 groups=["camera_bounds"]]
+position = Vector2(140, -256)
+collision_layer = 32
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("5_letqr")
+create_boundary_walls = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=755105002]
-position = Vector2(32, -109)
-shape = SubResource("CapsuleShape2D_012gt")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=947573028]
-position = Vector2(29, -106)
-scale = Vector2(0.34895834, 0.5416666)
-texture = ExtResource("5_xc6pb")
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1068347630]
-position = Vector2(70, -89)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1384541462]
-unique_name_in_owner = true
-position = Vector2(114, -19)
-shape = SubResource("CapsuleShape2D_ykngs")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2" unique_id=1231875473]
-position = Vector2(115, -25.000002)
-scale = Vector2(0.59375, 0.75)
-texture = ExtResource("6_xc6pb")
-
-[node name="Wall" type="Node2D" parent="." unique_id=559973686]
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Wall" unique_id=128926235]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/StaticBody2D" unique_id=857643960]
-position = Vector2(-184, 126)
-shape = SubResource("SegmentShape2D_xc6pb")
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="Wall" unique_id=24116531]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/StaticBody2D2" unique_id=872275637]
-position = Vector2(-184, 126)
-shape = SubResource("SegmentShape2D_012gt")
-
-[node name="StaticBody2D3" type="StaticBody2D" parent="Wall" unique_id=725333407]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/StaticBody2D3" unique_id=469931227]
-position = Vector2(233, 127)
-shape = SubResource("SegmentShape2D_ykngs")
-
-[node name="StaticBody2D4" type="StaticBody2D" parent="Wall" unique_id=774121283]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/StaticBody2D4" unique_id=1489607381]
-position = Vector2(-184, 126)
-shape = SubResource("SegmentShape2D_epdxj")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds" unique_id=1928308136]
+position = Vector2(-137.5, 255.5)
+shape = SubResource("RectangleShape2D_012gt")
