@@ -50,9 +50,11 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
   map/background `Sprite2D` texture, such as `TownScene/MapLayers/Sprite2D`,
   with matching UVs and renders above the player.
   Collision still belongs to separate `StaticBody2D` geometry.
-- `TownScene/CameraBounds` is now the single source for both camera limits and
-  outer boundary collision. Enable `create_boundary_walls` on `CameraBounds`
-  instead of maintaining separate top/left/right/bottom `Wall` nodes.
+- `CameraBounds` uses a `StaticBody2D` root on a non-player collision layer as
+  editable rectangle data for camera limits. `TownScene/CameraBounds` also
+  enables `create_boundary_walls`, so the outer boundary collision is generated
+  from the same rectangle instead of separate top/left/right/bottom `Wall`
+  nodes.
 
 ## Generated Pack Metadata
 
@@ -183,10 +185,10 @@ opens at the player's position.
 | `location.back_mountain_trails_1024` | available | `back_mountain_trails_1024.png` | Standalone `1024x1024` back-mountain visual layer candidate with complex forked mountain trails, stone steps, grassy clearings, bamboo/trees, rocks, shrubs, and cliff edges. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.rural_bungalow_fields_1024` | available | `rural_bungalow_fields_1024.png` | Standalone `1024x1024` rural homestead visual layer candidate with a rural bungalow, courtyard, vegetable plots, grain fields, dirt paths, bamboo/trees, rocks, and water/irrigation edge details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.protagonist_home_fields_1920` | available | `protagonist_home_fields_1920x1080.png` | Standalone `1920x1080` protagonist-home visual layer candidate matching the supplied township map style, with a rural house, courtyard, crop fields, vegetable plots, trees, dirt paths, fences, shed, well, haystack, and stream edge details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
-| `location.township_flat_map_1376` | available | `Gemini_Generated_Image_4kgpl14kgpl14kgp.png` | Standalone township raster map candidate. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
-| `location.township_flat_map_stitched_2765` | available | `Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched.png` | Standalone stitched township raster map candidate. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
-| `location.township_flat_map_stitched_2765_runtime` | implemented | `Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched (1).png` | Runtime township stitched raster map referenced by `scenes/town_scene.tscn`; gameplay logic remains in separate scene nodes and camera bounds define the visible contract. |
-| `location.back_mountain_runtime_1376` | implemented | `Gemini_Generated_Image_qm6filqm6filqm6f.png` | Runtime back-mountain raster map referenced by `scenes/back_mountain_scene.tscn`; current `BoundaryWalls` remain the playable logic bounds. |
+| `location.town_map_runtime_3635` | implemented | `down_map.png` | Runtime township raster map referenced by `scenes/town_scene.tscn` and `scenes/npc_endpoint.tscn`; gameplay logic remains in separate scene nodes and camera bounds define the visible contract. |
+| `location.home_map_runtime_1024` | implemented | `home_map.png` | Runtime home raster map referenced by `scenes/home_scene.tscn`; gameplay logic remains in separate scene nodes. |
+| `location.house_map_runtime_1024` | implemented | `house_map.png` | Runtime house raster map referenced by `scenes/house_scene.tscn`; gameplay logic remains in separate scene nodes. |
+| `location.back_mountain_runtime_1024` | implemented | `mountain.png` | Runtime back-mountain raster map referenced by `scenes/back_mountain_scene.tscn`; current `BoundaryWalls` remain the playable logic bounds. |
 | `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |

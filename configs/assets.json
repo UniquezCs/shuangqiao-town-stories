@@ -43,7 +43,7 @@
 			"Customer overhead dialogue is probabilistic per event and must be based on an in-stock stall item the customer actually wants; avoid fixed dialogue triggers and stale sold-out item names.",
 			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics.",
 			"Baked-map pixel occlusion can use Polygon2D with scripts/world/polygon_texture_occluder.gd: the polygon samples a configured map/background Sprite2D texture, such as TownScene/MapLayers/Sprite2D, with matching UVs and renders above the player, while collision remains separate StaticBody2D geometry.",
-			"TownScene uses CameraBounds as the single source for camera limits and outer boundary collision; enable create_boundary_walls on CameraBounds instead of maintaining separate top/left/right/bottom Wall nodes."
+			"CameraBounds uses a StaticBody2D root with a non-player collision layer as editable rectangle data for camera limits; TownScene also enables create_boundary_walls on CameraBounds instead of maintaining separate top/left/right/bottom Wall nodes."
 		]
 	},
 	"packs": {
@@ -1959,66 +1959,12 @@
 				"pixel_art"
 			]
 		},
-		"location.township_flat_map_1376": {
-			"type": "raster_map_visual_layer",
-			"status": "available",
-			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_4kgpl14kgpl14kgp.png",
-			"size": [
-				1376,
-				768
-			],
-			"usage": [
-				"town_scene_visual_layer_candidate",
-				"hybrid_map_visual_layer",
-				"township_map_reference"
-			],
-			"used_by": [],
-			"anchor": "top_left_or_center_by_scene_contract",
-			"collision": "none",
-			"notes": "Available township raster map candidate. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
-			"tags": [
-				"locations",
-				"township",
-				"raster_map",
-				"visual_layer",
-				"hybrid_map",
-				"pixel_art"
-			]
-		},
-		"location.township_flat_map_stitched_2765": {
-			"type": "raster_map_visual_layer",
-			"status": "available",
-			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched.png",
-			"size": [
-				2765,
-				2765
-			],
-			"usage": [
-				"town_scene_visual_layer_candidate",
-				"hybrid_map_visual_layer",
-				"township_map_reference"
-			],
-			"used_by": [
-				"scenes/npc_endpoint.tscn"
-			],
-			"anchor": "top_left_or_center_by_scene_contract",
-			"collision": "none",
-			"notes": "Available stitched township raster map candidate. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
-			"tags": [
-				"locations",
-				"township",
-				"raster_map",
-				"visual_layer",
-				"hybrid_map",
-				"pixel_art"
-			]
-		},
-		"location.township_flat_map_stitched_2765_runtime": {
+		"location.town_map_runtime_3635": {
 			"type": "raster_map_visual_layer",
 			"status": "implemented",
-			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched (1).png",
+			"path": "res://assets/generated/sprites/map/down_map.png",
 			"size": [
-				2765,
+				3635,
 				2765
 			],
 			"usage": [
@@ -2027,11 +1973,12 @@
 				"township_map_runtime_reference"
 			],
 			"used_by": [
-				"scenes/town_scene.tscn"
+				"scenes/town_scene.tscn",
+				"scenes/npc_endpoint.tscn"
 			],
 			"anchor": "center_by_scene_contract",
 			"collision": "none",
-			"notes": "Runtime township stitched raster map currently referenced by TownScene/MapLayers/Sprite2D. Gameplay logic remains in separate scene nodes; CameraBounds defines the visible camera contract.",
+			"notes": "Runtime township raster map referenced by TownScene/MapLayers/Sprite2D and the NpcEndpoint occluder texture source. Gameplay logic remains in separate scene nodes; CameraBounds defines the visible camera contract.",
 			"tags": [
 				"locations",
 				"township",
@@ -2041,13 +1988,69 @@
 				"pixel_art"
 			]
 		},
-		"location.back_mountain_runtime_1376": {
+		"location.home_map_runtime_1024": {
 			"type": "raster_map_visual_layer",
 			"status": "implemented",
-			"path": "res://assets/generated/sprites/locations/Gemini_Generated_Image_qm6filqm6filqm6f.png",
+			"path": "res://assets/generated/sprites/map/home_map.png",
 			"size": [
-				1376,
-				768
+				1024,
+				1024
+			],
+			"usage": [
+				"home_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"home_map_runtime_reference"
+			],
+			"used_by": [
+				"scenes/home_scene.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime home raster map referenced by HomeScene/MapLayers/Sprite2D. Gameplay logic remains in separate scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"home",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.house_map_runtime_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/map/house_map.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"house_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"house_map_runtime_reference"
+			],
+			"used_by": [
+				"scenes/house_scene.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime house raster map referenced by HouseScene/Sprite2D. Gameplay logic remains in separate scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"house",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_runtime_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"path": "res://assets/generated/sprites/map/mountain.png",
+			"size": [
+				1024,
+				1024
 			],
 			"usage": [
 				"back_mountain_scene_visual_layer",

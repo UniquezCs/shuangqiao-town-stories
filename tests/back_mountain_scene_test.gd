@@ -4,7 +4,7 @@ const MainScript := preload("res://scripts/main.gd")
 const HOME_SCENE := preload("res://scenes/home_scene.tscn")
 const BACK_MOUNTAIN_SCENE_PATH := "res://scenes/back_mountain_scene.tscn"
 const BACK_MOUNTAIN_ASSET_DIR := "res://assets/generated/sprites/locations/back_mountain"
-const BACK_MOUNTAIN_RUNTIME_MAP := "res://assets/generated/sprites/locations/Gemini_Generated_Image_qm6filqm6filqm6f.png"
+const BACK_MOUNTAIN_RUNTIME_MAP := "res://assets/generated/sprites/map/mountain.png"
 
 
 func _ready() -> void:
@@ -28,7 +28,7 @@ func _ready() -> void:
 	if sprite != null:
 		_assert_true(sprite.texture != null, "Chunk00 应绑定后山运行背景贴图")
 		_assert_equal(sprite.texture.resource_path, BACK_MOUNTAIN_RUNTIME_MAP, "Chunk00 应使用登记的当前后山运行图")
-		_assert_equal(sprite.position, Vector2(1036, 1777), "Chunk00 应保持当前单图对位")
+		_assert_true(sprite.position.is_equal_approx(Vector2(891, 1710)), "Chunk00 应保持当前单图对位")
 		_assert_equal(sprite.scale, Vector2(0.5792151, 0.62890625), "Chunk00 应保持当前单图缩放")
 		_assert_equal(sprite.z_index, -100, "Chunk00 应位于玩家和交互节点下方")
 

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://de1r2fbrl8bjf"]
 
 [ext_resource type="Script" uid="uid://bwetsoqobj0qh" path="res://scripts/world/npc_endpoint.gd" id="1_endpoint"]
-[ext_resource type="Texture2D" uid="uid://bjxnhj4786h5g" path="res://assets/generated/sprites/locations/Gemini_Generated_Image_e8n4wxe8n4wxe8n4_stitched.png" id="2_wssiy"]
+[ext_resource type="Texture2D" uid="uid://dpwhuf6vsr2hq" path="res://assets/generated/sprites/map/down_map.png" id="2_wssiy"]
 [ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="3_3eebk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
