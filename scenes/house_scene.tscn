@@ -63,12 +63,10 @@ shape = SubResource("RectangleShape2D_bed")
 position = Vector2(38.5, 26.75)
 shape = SubResource("RectangleShape2D_xc6pb")
 
-[node name="CameraBounds" type="Area2D" parent="." unique_id=858107817 groups=["camera_bounds"]]
+[node name="CameraBounds" type="StaticBody2D" parent="." unique_id=858107817 groups=["camera_bounds"]]
 position = Vector2(140, -256)
 collision_layer = 32
 collision_mask = 0
-monitoring = false
-monitorable = false
 script = ExtResource("5_letqr")
 create_boundary_walls = true
 

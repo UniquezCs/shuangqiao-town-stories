@@ -12,12 +12,10 @@ size = Vector2(72, 55)
 
 [node name="BackMountainScene" type="Node2D" unique_id=358822366]
 
-[node name="CameraBounds" type="Area2D" parent="." unique_id=25041377 groups=["camera_bounds"]]
+[node name="CameraBounds" type="StaticBody2D" parent="." unique_id=25041377 groups=["camera_bounds"]]
 position = Vector2(1024, 1024)
 collision_layer = 32
 collision_mask = 0
-monitoring = false
-monitorable = false
 script = ExtResource("2_camera_bounds")
 create_boundary_walls = true
 

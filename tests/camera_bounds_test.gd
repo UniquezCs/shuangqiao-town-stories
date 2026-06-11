@@ -2,6 +2,7 @@ extends Node
 
 const MAIN_SCENE := preload("res://scenes/main.tscn")
 const HOME_SCENE := preload("res://scenes/home_scene.tscn")
+const HOUSE_SCENE := preload("res://scenes/house_scene.tscn")
 const TOWN_SCENE := preload("res://scenes/town_scene.tscn")
 const BACK_MOUNTAIN_SCENE := preload("res://scenes/back_mountain_scene.tscn")
 const CAMERA_BOUNDS_SCRIPT := "res://scripts/world/camera_bounds.gd"
@@ -28,6 +29,11 @@ func _ready() -> void:
 	add_child(home)
 	await get_tree().process_frame
 	_assert_scene_has_camera_bounds(home, "HomeScene")
+
+	var house := HOUSE_SCENE.instantiate()
+	add_child(house)
+	await get_tree().process_frame
+	_assert_scene_has_camera_bounds(house, "HouseScene")
 
 	var back_mountain := BACK_MOUNTAIN_SCENE.instantiate()
 	add_child(back_mountain)
@@ -57,6 +63,7 @@ func _ready() -> void:
 
 	town.queue_free()
 	home.queue_free()
+	house.queue_free()
 	back_mountain.queue_free()
 	main.queue_free()
 	test_camera.queue_free()
@@ -66,8 +73,8 @@ func _ready() -> void:
 	get_tree().quit()
 
 
-func _assert_scene_has_camera_bounds(scene: Node, scene_name: String) -> Area2D:
-	var bounds := scene.get_node_or_null("CameraBounds") as Area2D
+func _assert_scene_has_camera_bounds(scene: Node, scene_name: String) -> StaticBody2D:
+	var bounds := scene.get_node_or_null("CameraBounds") as StaticBody2D
 	_assert_true(bounds != null, "%s 应包含 CameraBounds 节点" % scene_name)
 	if bounds == null:
 		return null
@@ -76,12 +83,10 @@ func _assert_scene_has_camera_bounds(scene: Node, scene_name: String) -> Area2D:
 	_assert_true(_has_rectangle_shape(bounds), "%s 的 CameraBounds 应使用 RectangleShape2D 定义镜头范围" % scene_name)
 	_assert_true(bounds.collision_layer != 0, "%s 的 CameraBounds 应保留非零碰撞层，避免 Godot 节点配置警告" % scene_name)
 	_assert_equal(bounds.collision_mask, 0, "%s 的 CameraBounds 不应主动扫描物理对象" % scene_name)
-	_assert_equal(bounds.monitoring, false, "%s 的 CameraBounds 只用于相机范围，不应监视物理对象" % scene_name)
-	_assert_equal(bounds.monitorable, false, "%s 的 CameraBounds 只用于相机范围，不应被物理区域监视" % scene_name)
 	return bounds
 
 
-func _assert_boundary_walls_match_bounds(bounds: Area2D, scene_name: String) -> void:
+func _assert_boundary_walls_match_bounds(bounds: StaticBody2D, scene_name: String) -> void:
 	_assert_true(bool(bounds.get("create_boundary_walls")), "%s 的 CameraBounds 应启用边界墙生成" % scene_name)
 	var walls := bounds.get_node_or_null("BoundaryWalls") as StaticBody2D
 	_assert_true(walls != null, "%s 的 CameraBounds 应生成 BoundaryWalls" % scene_name)
@@ -108,7 +113,7 @@ func _assert_boundary_walls_match_bounds(bounds: Area2D, scene_name: String) -> 
 	_assert_segment(walls, "LeftWall", Vector2(left, bottom), Vector2(left, top), "%s LeftWall 应贴合 CameraBounds 左边" % scene_name)
 
 
-func _get_local_bounds_rect(bounds: Area2D) -> Rect2:
+func _get_local_bounds_rect(bounds: StaticBody2D) -> Rect2:
 	var collision_shape := bounds.get_node_or_null("CollisionShape2D") as CollisionShape2D
 	_assert_true(collision_shape != null, "CameraBounds 应有 CollisionShape2D")
 	if collision_shape == null:
@@ -143,7 +148,7 @@ func _assert_vector_close(actual: Vector2, expected: Vector2, message: String) -
 	_assert_true(actual.distance_to(expected) < 0.001, "%s。实际：%s，期望：%s" % [message, str(actual), str(expected)])
 
 
-func _has_rectangle_shape(bounds: Area2D) -> bool:
+func _has_rectangle_shape(bounds: StaticBody2D) -> bool:
 	var collision_shape := bounds.get_node_or_null("CollisionShape2D") as CollisionShape2D
 	return collision_shape != null and collision_shape.shape is RectangleShape2D
 

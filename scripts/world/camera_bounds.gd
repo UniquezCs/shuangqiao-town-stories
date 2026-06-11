@@ -1,4 +1,4 @@
-extends Area2D
+extends StaticBody2D
 
 const BOUNDARY_WALLS_NAME := "BoundaryWalls"
 

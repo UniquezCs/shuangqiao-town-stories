@@ -1959,6 +1959,35 @@
 				"pixel_art"
 			]
 		},
+		"location.township_1990s_wide_roads_1920": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/township/township_1990s_wide_roads_1920x1080.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_10/township_1990s_wide_roads_1920x1080.prompt.txt",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"town_scene_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"township_map_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-10 as a standalone 1920x1080 1980s/1990s Chinese township visual layer candidate with wide empty roads, shopfronts, civic buildings, courtyards, roadside trees, low walls, drainage water, and accurate large building signs. No people, vehicles, utility poles, wires, or road-surface text are intended to be baked into the visual layer. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"township",
+				"shops",
+				"roads",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
 		"location.town_map_runtime_3635": {
 			"type": "raster_map_visual_layer",
 			"status": "implemented",
