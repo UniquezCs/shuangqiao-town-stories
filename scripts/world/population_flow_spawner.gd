@@ -169,7 +169,7 @@ func _route_for_positions(start: Vector2, end: Vector2) -> Dictionary:
 		if road_path.size() < 2 and navigator.has_method("find_path"):
 			road_path = navigator.call("find_path", start, end)
 		if road_path.size() >= 2:
-			return _route_from_path(road_path)
+			return _route_from_path(road_path, start, end)
 	return {
 		"start": start,
 		"end": end,
@@ -177,13 +177,13 @@ func _route_for_positions(start: Vector2, end: Vector2) -> Dictionary:
 	}
 
 
-func _route_from_path(path: Array) -> Dictionary:
+func _route_from_path(path: Array, start: Vector2, end: Vector2) -> Dictionary:
 	var points: Array[Vector2] = []
-	for index in range(1, path.size() - 1):
+	for index in range(path.size()):
 		points.append(path[index] as Vector2)
 	return {
-		"start": path.front() as Vector2,
-		"end": path.back() as Vector2,
+		"start": start,
+		"end": end,
 		"points": points,
 	}
 

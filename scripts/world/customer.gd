@@ -17,7 +17,7 @@ const FEMALE_MIDDLE_FRAMES := preload("res://assets/generated/sprites/characters
 const PurchaseInteractionScript := preload("res://scripts/world/customer_purchase_interaction.gd")
 const PurchaseCountdownScript := preload("res://scripts/ui/circular_countdown_indicator.gd")
 const CustomerDialogueLines := preload("res://scripts/world/customer_dialogue_lines.gd")
-const CustomerDialogueBubble := preload("res://scripts/world/customer_dialogue_bubble.gd")
+const CustomerDialogueFeedback := preload("res://scripts/world/customer_dialogue_feedback.gd")
 const GameplayDebugLog := preload("res://scripts/debug/gameplay_debug_log.gd")
 
 @export var customer_type := PrototypeConstants.CUSTOMER_STUDENT
@@ -36,6 +36,8 @@ var _route_points: Array[Vector2] = []
 var _route_index := 0
 var _route_timeout_seconds := 18.0
 var _tree_entered_position: Vector2
+var _setup_start_position := Vector2.ZERO
+var _has_setup_start_position := false
 var _purchase_stall: Node = null
 var _purchase_preview: Dictionary = {}
 var _purchase_deadline_msec := 0
@@ -48,9 +50,7 @@ var _stuck_target := Vector2.ZERO
 var _stuck_seconds := 0.0
 var _last_slide_normal := Vector2.ZERO
 var _detour_serial := 0
-var _dialogue_bubble: Node2D = null
-var _seen_stall_dialogue_ids := {}
-var _dialogue_chance_overrides := {}
+var _dialogue_feedback: Node = null
 
 @onready var visual: AnimatedSprite2D = $Visual
 
@@ -62,6 +62,8 @@ func setup(next_type: String, stall: Node, start_position: Vector2, leave_positi
 	gender = next_gender
 	_apply_default_demographics()
 	target_stall = stall
+	_setup_start_position = start_position
+	_has_setup_start_position = true
 	global_position = start_position
 	exit_position = leave_position
 	_route_points.clear()
@@ -75,6 +77,8 @@ func setup(next_type: String, stall: Node, start_position: Vector2, leave_positi
 
 
 func _enter_tree() -> void:
+	if _has_setup_start_position:
+		global_position = _setup_start_position
 	_tree_entered_position = global_position
 
 
@@ -576,27 +580,11 @@ func _maybe_show_stall_seen_dialogue(stall: Node) -> void:
 	var item := _stall_dialogue_item(stall)
 	if item.is_empty():
 		return
-	var stall_id := stall.get_instance_id()
-	if _seen_stall_dialogue_ids.has(stall_id):
-		return
-	_seen_stall_dialogue_ids[stall_id] = true
-	_show_customer_dialogue(CustomerDialogueLines.EVENT_SEE_STALL, str(item.get("item_id", "")), int(item.get("price", 0)), "")
+	_dialogue_feedback_component().call("maybe_show_stall_seen", stall, item)
 
 
 func _show_customer_dialogue(event: String, item_id: String, price: int, reason: String) -> void:
-	if not _should_trigger_customer_dialogue(event):
-		return
-	if item_id.is_empty():
-		item_id = PrototypeConstants.ITEM_APPLE
-	var bubble := _ensure_dialogue_bubble()
-	var text := CustomerDialogueLines.line_for(event, _customer_profile, item_id, price, reason, _rng)
-	if bubble.has_method("show_line"):
-		bubble.call("show_line", text)
-
-
-func _should_trigger_customer_dialogue(event: String) -> bool:
-	var chance := float(_dialogue_chance_overrides.get(event, CustomerDialogueLines.trigger_chance_for(event)))
-	return _rng.randf() <= clampf(chance, 0.0, 1.0)
+	_dialogue_feedback_component().call("show_dialogue", event, item_id, price, reason)
 
 
 func _stall_dialogue_item(stall: Node) -> Dictionary:
@@ -636,24 +624,24 @@ func _preference_for(item_id: String) -> float:
 	return float(preferences.get(item_id, 0.0))
 
 
-func _ensure_dialogue_bubble() -> Node2D:
-	if _dialogue_bubble != null and is_instance_valid(_dialogue_bubble):
-		return _dialogue_bubble
-	_dialogue_bubble = Node2D.new()
-	_dialogue_bubble.name = "DialogueBubble"
-	_dialogue_bubble.set_script(CustomerDialogueBubble)
-	add_child(_dialogue_bubble)
-	return _dialogue_bubble
+func _dialogue_feedback_component() -> Node:
+	if _dialogue_feedback != null and is_instance_valid(_dialogue_feedback):
+		_dialogue_feedback.call("set_customer_profile", _customer_profile)
+		return _dialogue_feedback
+	_dialogue_feedback = Node.new()
+	_dialogue_feedback.name = "DialogueFeedback"
+	_dialogue_feedback.set_script(CustomerDialogueFeedback)
+	add_child(_dialogue_feedback)
+	_dialogue_feedback.call("configure", self, _customer_profile, _rng)
+	return _dialogue_feedback
 
 
 func get_current_dialogue_text() -> String:
-	if _dialogue_bubble == null or not is_instance_valid(_dialogue_bubble) or not _dialogue_bubble.has_method("get_text"):
-		return ""
-	return str(_dialogue_bubble.call("get_text"))
+	return str(_dialogue_feedback_component().call("get_current_text"))
 
 
 func set_dialogue_chance_override(event: String, chance: float) -> void:
-	_dialogue_chance_overrides[event] = clampf(chance, 0.0, 1.0)
+	_dialogue_feedback_component().call("set_chance_override", event, chance)
 
 
 func get_purchase_prompt() -> String:

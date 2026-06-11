@@ -1,19 +1,19 @@
 [gd_scene format=3 uid="uid://de1r2fbrl8bjf"]
 
 [ext_resource type="Script" uid="uid://bwetsoqobj0qh" path="res://scripts/world/npc_endpoint.gd" id="1_endpoint"]
+[ext_resource type="Texture2D" uid="uid://dpwhuf6vsr2hq" path="res://assets/generated/sprites/map/down_map.png" id="2_wssiy"]
+[ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="3_3eebk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
-size = Vector2(54.920643, 52.182343)
+size = Vector2(28.215044, 23.419918)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
-size = Vector2(66.2955, 45.14823)
+size = Vector2(42.443413, 31.696827)
 
 [node name="NpcEndpoint" type="Area2D" unique_id=965728198 groups=["building", "npc_endpoint"]]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_endpoint")
-capacity = null
-attraction_bias = null
 
 [node name="Visual" type="Sprite2D" parent="." unique_id=872435065]
 z_index = -5
@@ -32,3 +32,12 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=596944552]
 position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_body")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=260896949]
+z_index = 10
+position = Vector2(-58.978367, -108.2172)
+texture = ExtResource("2_wssiy")
+polygon = PackedVector2Array(-15.808624, 23.189331, -15.200607, -9.135254, 38.91356, -9.135254, 38.91356, 23.189331)
+uv = PackedVector2Array(623.582, 1499.8389, 625.26843, 1429.7405, 775.36554, 1429.7405, 775.36554, 1499.8389)
+script = ExtResource("3_3eebk")
+source_sprite_path = NodePath("../../../MapLayers/Sprite2D")

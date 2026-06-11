@@ -1,0 +1,9 @@
+Create a single finished 1920x1080 pixel-art game map layer for a 1990s Chinese township. Top-down / 3/4 orthographic RPG perspective with front-facing shop facades, crisp readable pixel art, clear tile-like edges, no blur, no painterly softness.
+
+Scene requirements: a large complex township map with wide roads and intersections, arranged for a playable 2D pixel game layer. Include many small-town storefront buildings and civic buildings: supply and marketing cooperative, post office, department store, grain and oil shop, clinic, barber shop, bookstore, restaurant, pharmacy, vegetable market, small school gate, residential alleys, courtyards, roadside trees, low brick walls, dirt shoulders, drainage ditches, small plazas, and shopfront awnings. Roads should be broad, empty, and clean, with no text painted on the road surface.
+
+Text constraints: Chinese text must be accurate and only on building signs. Use only these exact simple shop signs where needed: 供销社, 邮电局, 百货商店, 粮油店, 卫生院, 理发店, 书店, 饭店, 药店, 菜市场. Do not invent other text. Do not put any text on roads, ground, banners, posters, or labels.
+
+Hard exclusions: no people, no characters, no NPCs, no animals, no vehicles, no bicycles, no carts, no traffic, no utility poles, no electric poles, no telephone poles, no wires, no modern high-rises, no UI, no arrows, no labels, no legends, no watermarks.
+
+Art direction: 1980s-1990s rural Chinese township atmosphere, muted brick red, faded green metal awnings, gray concrete, beige dirt road edges, hand-laid stone curbs, old shop windows, enamel signs, simple tiled roofs, dense but readable building layout. Keep the map as a usable game layer with clean perspective, consistent scale, strong edge continuity, and open walkable road space.

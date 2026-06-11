@@ -31,6 +31,10 @@ func _ready() -> void:
 		"地图切换完成后相机应立即贴到玩家出生点，不能继续从旧位置平滑滑入"
 	)
 
+	main.queue_free()
+	PopulationFlow.reset_for_tests()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	get_tree().quit()
 
 

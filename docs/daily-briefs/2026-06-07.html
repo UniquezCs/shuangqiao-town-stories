@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godot 项目每日简报 - 2026-06-07</title>
+  <style>
+    :root {
+      --bg: #efe8dc;
+      --paper: #fffaf2;
+      --ink: #2c241e;
+      --muted: #6d6458;
+      --line: #ddcfbc;
+      --accent: #91552e;
+      --accent-soft: #f4e4d3;
+      --fact: #2e6c45;
+      --infer: #8a5f1d;
+      --idea: #7f3651;
+      --p0: #f6d6d6;
+      --p1: #f5e4c8;
+      --p2: #dce9d8;
+      --p3: #dde7f5;
+      --shadow: rgba(71, 50, 29, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #e7d4bd 0%, var(--bg) 38%, #faf7f1 100%);
+      line-height: 1.7;
+    }
+
+    .wrap {
+      width: min(1220px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero, .section, .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 28px var(--shadow);
+    }
+
+    .hero {
+      padding: 28px 30px 24px;
+      margin-bottom: 18px;
+    }
+
+    .section {
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .section-body {
+      padding: 0 24px 24px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 32px; }
+    h2 { font-size: 22px; padding: 22px 24px 0; }
+    h3 { font-size: 17px; }
+    p { margin: 8px 0; }
+    ul { margin: 8px 0 0 20px; padding: 0; }
+    li { margin: 6px 0; }
+
+    .meta, .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #6d3d1b;
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-12 { grid-column: span 12; }
+
+    .card {
+      padding: 16px 18px;
+      height: 100%;
+    }
+
+    .mono {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent);
+      color: var(--muted);
+    }
+
+    .fact { color: var(--fact); font-weight: 700; }
+    .infer { color: var(--infer); font-weight: 700; }
+    .idea { color: var(--idea); font-weight: 700; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    th {
+      background: #f7ecde;
+      color: #684326;
+      font-weight: 700;
+    }
+
+    .tag {
+      display: inline-block;
+      min-width: 34px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .p0 { background: var(--p0); color: #8b2d2d; }
+    .p1 { background: var(--p1); color: #87541c; }
+    .p2 { background: var(--p2); color: #2f6241; }
+    .p3 { background: var(--p3); color: #355b95; }
+
+    @media (max-width: 900px) {
+      .col-4, .col-6, .col-12 { grid-column: span 12; }
+      h1 { font-size: 27px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>本简报覆盖自 <strong>2026-06-06 06:01:51 UTC</strong>（上次自动化运行时间）以来的仓库变化，并明确区分 <span class="fact">已发生改动</span>、<span class="infer">基于当前代码状态推断的优化建议</span>、<span class="idea">结合现有系统提出的新增功能建议</span>。</p>
+      <div class="meta">
+        <span class="chip">日期：2026-06-07</span>
+        <span class="chip">当前 HEAD：0a1c38d</span>
+        <span class="chip">提交数量：2</span>
+        <span class="chip">工作区变更：2 个已跟踪修改 + 4 个未跟踪项</span>
+        <span class="chip">生成时刻：2026-06-07 14:01:57 CST</span>
+      </div>
+      <div class="notice">
+        <div><span class="fact">已发生改动</span>：纳入两次 2026-06-06 提交，以及当前未提交的地图视觉层资源登记。</div>
+        <div><span class="infer">验证状态</span>：本次额外运行了 <span class="mono">tests/gameplay_debug_log_test.tscn</span>、<span class="mono">tests/generated_asset_layout_test.tscn</span>、<span class="mono">tests/back_mountain_scene_test.tscn</span>，进程退出码为 0，但后山场景测试退出时仍出现 Camera2D 覆盖和多类资源/RID 泄漏告警。</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>概览</h2>
+      <div class="section-body">
+        <div class="grid">
+          <div class="col-4">
+            <div class="card">
+              <h3>本轮主线</h3>
+              <ul>
+                <li>补齐了自动化可依赖的测试入口与玩法调试日志开关，日常回归更容易标准化。</li>
+                <li>继续扩充后山美术候选，并新增一张农家小院/农田场景视觉层，为后续新地图落地铺路。</li>
+                <li>资源注册表与人工说明继续同步维护，避免“资源存在但系统不知道”的隐性漂移。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <h3>变化规模</h3>
+              <ul>
+                <li>提交窗口内新增 7 个文件、修改 6 个文件、没有删除。</li>
+                <li>当前工作区额外修改 <span class="mono">configs/assets.json</span>、<span class="mono">docs/asset_registry.md</span>。</li>
+                <li>新增未提交资源集中在 <span class="mono">assets/generated/sprites/locations/back_mountain</span>、<span class="mono">assets/generated/sprites/locations/rural_homestead</span> 和 <span class="mono">assets/source/map_prompts_2026_06_07</span>。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <h3>阶段判断</h3>
+              <ul>
+                <li>项目正从“城镇摆摊 + 基础后山探索”过渡到“可继续扩展的多地点经营原型”。</li>
+                <li>代码与测试基础已经足以支持继续加内容，但场景切换、资源接线和大脚本拆分开始成为扩展瓶颈。</li>
+                <li>当前最值得做的不是继续堆散资源，而是把新资源和现有系统接成可玩的闭环。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>主要改动</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>类型</th>
+              <th>范围</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="fact">已提交</span></td>
+              <td class="mono">0a1c38d</td>
+              <td>新增 <span class="mono">tools/run_godot_headless_tests.sh</span>，并为 <span class="mono">scripts/debug/gameplay_debug_log.gd</span> 补入按频道控制的验证测试；<span class="mono">project.godot</span> 和 <span class="mono">docs/development_baseline.md</span> 同步声明调试/测试基线。</td>
+            </tr>
+            <tr>
+              <td><span class="fact">已提交</span></td>
+              <td class="mono">80b0dc1</td>
+              <td>补入 <span class="mono">location.back_mountain_detail_1024</span> 资源登记，并保存一份 2026-06-06 的简报快照，说明自动化输出已纳入项目文档流。</td>
+            </tr>
+            <tr>
+              <td><span class="fact">工作区</span></td>
+              <td class="mono">configs/assets.json</td>
+              <td>新增 <span class="mono">location.back_mountain_trails_1024</span> 与 <span class="mono">location.rural_bungalow_fields_1024</span> 两个可用视觉层条目，均标注为 hybrid map visual layer candidate，尚未接入具体场景。</td>
+            </tr>
+            <tr>
+              <td><span class="fact">工作区</span></td>
+              <td class="mono">docs/asset_registry.md</td>
+              <td>把两张新视觉层资源同步写入可读资产清单，延续“配置 + 文档双登记”的流程。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增内容</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="fact">测试入口</span>：<span class="mono">tools/run_godot_headless_tests.sh</span>，可直接跑单测场景或全量 <span class="mono">tests/*_test.tscn</span>。</li>
+          <li><span class="fact">调试日志测试</span>：<span class="mono">tests/gameplay_debug_log_test.gd</span> 与 <span class="mono">tests/gameplay_debug_log_test.tscn</span>。</li>
+          <li><span class="fact">后山视觉层候选</span>：<span class="mono">assets/generated/sprites/locations/back_mountain/back_mountain_trails_1024.png</span> 及对应 prompt。</li>
+          <li><span class="fact">农家小院视觉层候选</span>：<span class="mono">assets/generated/sprites/locations/rural_homestead/rural_bungalow_fields_1024.png</span> 及对应 prompt。</li>
+          <li><span class="fact">文档快照</span>：<span class="mono">docs/daily-briefs/2026-06-06-140317.html</span>。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>修改内容</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="fact">项目配置</span>：<span class="mono">project.godot</span> 增加了玩法调试日志相关设置入口，与 <span class="mono">scripts/debug/gameplay_debug_log.gd</span> 的频道开关对应。</li>
+          <li><span class="fact">开发基线</span>：<span class="mono">docs/development_baseline.md</span> 新增 Headless Test Entry 和 Gameplay Debug Logging 规则，自动化与人工开发的口径更统一。</li>
+          <li><span class="fact">资源清单</span>：<span class="mono">configs/assets.json</span>、<span class="mono">docs/asset_registry.md</span> 继续维护后山/农家地图候选条目。</li>
+          <li><span class="fact">测试覆盖</span>：<span class="mono">tests/generated_asset_layout_test.gd</span> 随日志变更补了一处兼容改动。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>删除或废弃内容</h2>
+      <div class="section-body">
+        <p>本窗口内没有发现显式删除文件或正式废弃模块。当前新增地图资源均是 <span class="mono">available</span> 候选态，而不是替换现有运行时资源。</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>可能影响</h2>
+      <div class="section-body">
+        <ul>
+          <li><span class="fact">正向影响</span>：自动化现在可以用统一脚本跑头less测试，后续每日报告更容易带上真实验证结果，而不是只看 git diff。</li>
+          <li><span class="fact">正向影响</span>：后山和农家小院视觉层补齐后，项目已经具备继续扩图的素材基础，不必从零开始找美术方向。</li>
+          <li><span class="infer">风险</span>：新地图资源目前只登记未接线，如果后续直接把图片拖进场景而不补逻辑层，会违反项目既定 hybrid map 规范。</li>
+          <li><span class="infer">风险</span>：<span class="mono">tests/back_mountain_scene_test.tscn</span> 虽然退出码为 0，但有资源/RID 泄漏和 Camera2D 告警，说明后山场景生命周期或测试清理仍不够干净。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>待跟进事项</h2>
+      <div class="section-body">
+        <ul>
+          <li>决定 <span class="mono">location.rural_bungalow_fields_1024</span> 是作为新场景基底，还是只保留为 Home 外景改造参考。</li>
+          <li>为后山和农家小院候选资源补一层明确的逻辑层设计，至少定义道路、阻挡、采集点或出口节点。</li>
+          <li>排查后山测试退出时的资源/RID 泄漏，确认是测试清理问题还是场景常驻节点释放不完整。</li>
+          <li>把新资源提交前再跑一次 <span class="mono">tools/run_godot_headless_tests.sh</span> 的相关场景，避免只更新 registry 不更新运行时引用。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>优化点（基于当前代码状态推断）</h2>
+      <div class="section-body">
+        <p class="small">以下均为 <span class="infer">推断建议</span>，不是本窗口内已发生改动。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>标题</th>
+              <th>优先级</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略实施成本</th>
+              <th>需先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>场景路由与入口契约收拢</td>
+              <td><span class="tag p1">P1</span></td>
+              <td><span class="mono">scripts/main.gd</span> 直接硬编码场景映射、目标文案、切换逻辑；新增场景会继续把入口判断堆在主脚本里。</td>
+              <td>后续接入农家小院、更多外景时不必继续膨胀主流程脚本，切场景回归也更稳。</td>
+              <td class="mono">scripts/main.gd、scripts/core/prototype_constants.gd、scenes/*</td>
+              <td>中</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td>农作物状态完全配置化</td>
+              <td><span class="tag p1">P1</span></td>
+              <td><span class="mono">scripts/world/farm_plot.gd</span> 仍保留苹果贴图常量和多处苹果回退；一旦扩作物，很容易“逻辑是新作物，画面还是苹果”。</td>
+              <td>让种植系统真正符合当前 baseline 的 config-driven 约束，降低扩新品种时的隐性错配。</td>
+              <td class="mono">scripts/world/farm_plot.gd、configs/crops.json、configs/items.json</td>
+              <td>中</td>
+              <td>是，先用第二种作物做一次端到端试接</td>
+            </tr>
+            <tr>
+              <td>统一 UI 图标与纹理缓存</td>
+              <td><span class="tag p2">P2</span></td>
+              <td><span class="mono">inventory_slot_control.gd</span>、<span class="mono">hotbar_slot_control.gd</span>、<span class="mono">backpack_panel.gd</span>、<span class="mono">stall_setup_panel.gd</span>、<span class="mono">customer.gd</span>、<span class="mono">stall.gd</span> 都在各自重复 <span class="mono">load()</span> 图标/纹理。</td>
+              <td>减少重复 IO 和分散回退逻辑，也方便统一处理缺图占位、过滤模式和资源热替换。</td>
+              <td class="mono">scripts/autoload/config_loader.gd 或独立 asset resolver</td>
+              <td>中</td>
+              <td>是，先用 Godot profiler 看 UI/交互热点</td>
+            </tr>
+            <tr>
+              <td>拆分超大 NPC/人口流脚本职责</td>
+              <td><span class="tag p2">P2</span></td>
+              <td><span class="mono">scripts/world/customer.gd</span> 742 行、<span class="mono">scripts/autoload/population_flow.gd</span> 594 行；移动、购买、卡住恢复、对白、画像和群体流动都揉在大文件里。</td>
+              <td>降低改动碰撞面，新增行为如采集 NPC、节日客流、家庭拜访时更容易局部改动。</td>
+              <td class="mono">scripts/world/customer*.gd、scripts/autoload/population_flow.gd</td>
+              <td>高</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td>Town 场景分块与子场景化</td>
+              <td><span class="tag p2">P2</span></td>
+              <td><span class="mono">scenes/town_scene.tscn</span> 内联大量 <span class="mono">NpcEndpoint</span> 实例和碰撞，可读性与编辑成本都在上升。</td>
+              <td>地图编辑更稳，后续住宅区、商业区、公共区可独立迭代，也更适合多人协作。</td>
+              <td class="mono">scenes/town_scene.tscn、scenes/npc_endpoint.tscn</td>
+              <td>中到高</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td>把资源泄漏告警纳入日常验证</td>
+              <td><span class="tag p2">P2</span></td>
+              <td>本次后山测试退出码为 0 但仍有 100+ 资源在用与多类 RID 泄漏告警，现有脚本只关注“是否退出失败”，没有显式拦截泄漏。</td>
+              <td>可以更早发现生命周期问题，避免场景规模继续增大后调试成本失控。</td>
+              <td class="mono">tools/run_godot_headless_tests.sh、tests/back_mountain_scene_test.gd</td>
+              <td>中</td>
+              <td>是，先确认这些告警是否稳定复现</td>
+            </tr>
+            <tr>
+              <td>按改动范围映射测试集合</td>
+              <td><span class="tag p3">P3</span></td>
+              <td>测试数量已接近 50 组，但当前只靠人工挑场景运行，自动化还没有“改了哪里就优先跑哪些测试”的机制。</td>
+              <td>提高日常反馈速度，让资源改动、UI 改动、场景改动的验证更有针对性。</td>
+              <td class="mono">tools/run_godot_headless_tests.sh、tests/</td>
+              <td>低到中</td>
+              <td>否</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增功能建议（结合现有系统的创意建议）</h2>
+      <div class="section-body">
+        <p class="small">以下均为 <span class="idea">创意性功能建议</span>，基于当前资源、场景和最近改动推导，不代表已经立项。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>标题</th>
+              <th>优先级</th>
+              <th>依据</th>
+              <th>预期收益</th>
+              <th>建议落点文件或模块</th>
+              <th>粗略实施成本</th>
+              <th>需先验证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>后山采集与摆摊补货闭环</td>
+              <td><span class="tag p1">P1</span></td>
+              <td>后山已有独立场景和多张视觉层候选，但当前目标文案只停留在“探索可采集区域”，还没有真正的采集收益回流经济系统。</td>
+              <td>把“探索”从纯移动变成经济选择，玩家白天上山采药/砍竹/摘菌，傍晚回镇里卖货，经营循环更完整。</td>
+              <td class="mono">scenes/back_mountain_scene.tscn、scripts/world/*、configs/items.json、configs/customer_preferences.json</td>
+              <td>中到高</td>
+              <td>是，先验证后山逻辑层点位与背包容量节奏</td>
+            </tr>
+            <tr>
+              <td>农家小院外景场景</td>
+              <td><span class="tag p1">P1</span></td>
+              <td>刚新增 <span class="mono">location.rural_bungalow_fields_1024</span>；Home 当前仍偏功能地图，新资产正适合承接“家门口农田 + 通向后山/镇街”的外景层。</td>
+              <td>提升世界连贯性，也给睡觉、仓储、种地、邻里事件留出更自然的舞台。</td>
+              <td class="mono">scenes/home_scene.tscn 或新建 homestead scene、scripts/scenes/home_scene.gd</td>
+              <td>中</td>
+              <td>是，先决定替换 Home 还是新增中转场景</td>
+            </tr>
+            <tr>
+              <td>集市日 / 雨天客流波动</td>
+              <td><span class="tag p1">P1</span></td>
+              <td>项目已有 <span class="mono">configs/calendar.json</span>、<span class="mono">configs/flow_preferences.json</span>、<span class="mono">PopulationFlow</span> 和顾客偏好系统，但还缺“为什么今天人多/人少”的玩法层解释。</td>
+              <td>让摆摊选址、定价和进货更有策略感，也能给日常经营增加明显节奏变化。</td>
+              <td class="mono">scripts/autoload/population_flow.gd、configs/calendar.json、configs/flow_preferences.json、HUD</td>
+              <td>中</td>
+              <td>是，先做一版纯数值模拟</td>
+            </tr>
+            <tr>
+              <td>城管压力可视化与预警反馈</td>
+              <td><span class="tag p2">P2</span></td>
+              <td><span class="mono">docs/asset_registry.md</span> 已记录 <span class="mono">ui.penalty_warning</span> 可用，但尚未接到 Chengguan 反馈链路。</td>
+              <td>把“被抓”从突然惩罚改成可预判风险，增强操作与决策空间，而不是纯挫败。</td>
+              <td class="mono">scripts/world/chengguan*.gd、scripts/ui/hud.gd、scripts/world/customer_dialogue_feedback.gd</td>
+              <td>中</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td>开场一周目标链</td>
+              <td><span class="tag p2">P2</span></td>
+              <td>标题页三幕漫画已经把叙事起点搭好，但进入游戏后的目标仍以即时文案为主，缺少把耕地、上街、后山、彩票等系统串起来的“首周引导”。</td>
+              <td>降低新玩家理解成本，也能把现有多个系统展示得更顺畅，减少“有内容但不知道为什么做”的空窗。</td>
+              <td class="mono">scripts/autoload/game_state.gd、scripts/main.gd、scripts/ui/daily_summary_panel.gd</td>
+              <td>中</td>
+              <td>否</td>
+            </tr>
+            <tr>
+              <td>居民分层商品需求</td>
+              <td><span class="tag p2">P2</span></td>
+              <td>顾客年龄/性别偏好、预算与对白系统已经存在，最近又扩了农村住宅 endpoint，适合把“谁住在哪、爱买什么”做得更具体。</td>
+              <td>可以让住宅区扩张真正影响经营：不同片区与人群对蔬菜、山货、廉价货的需求不同，摆摊选址更有意味。</td>
+              <td class="mono">scripts/autoload/population_flow.gd、scripts/world/customer.gd、configs/customer_preferences.json</td>
+              <td>中到高</td>
+              <td>是，先验证现有顾客决策是否支持分片权重</td>
+            </tr>
+            <tr>
+              <td>资产预览场景支持候选图对比</td>
+              <td><span class="tag p3">P3</span></td>
+              <td>项目已经有 <span class="mono">scenes/debug/asset_preview_scene.tscn</span>，而最近新增的内容主要是多个地点视觉层候选图。</td>
+              <td>美术筛选效率更高，能在不改正式场景的前提下快速比较后山/农家地图方案。</td>
+              <td class="mono">scenes/debug/asset_preview_scene.tscn、scripts/debug/asset_preview_scene.gd</td>
+              <td>低</td>
+              <td>否</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>用于回顾的关键文件路径</h2>
+      <div class="section-body">
+        <ul class="mono">
+          <li>project.godot</li>
+          <li>docs/development_baseline.md</li>
+          <li>tools/run_godot_headless_tests.sh</li>
+          <li>scripts/debug/gameplay_debug_log.gd</li>
+          <li>tests/gameplay_debug_log_test.gd</li>
+          <li>tests/gameplay_debug_log_test.tscn</li>
+          <li>tests/generated_asset_layout_test.gd</li>
+          <li>tests/back_mountain_scene_test.gd</li>
+          <li>scripts/main.gd</li>
+          <li>scripts/world/farm_plot.gd</li>
+          <li>scripts/world/customer.gd</li>
+          <li>scripts/autoload/population_flow.gd</li>
+          <li>scenes/back_mountain_scene.tscn</li>
+          <li>scenes/home_scene.tscn</li>
+          <li>scenes/town_scene.tscn</li>
+          <li>configs/assets.json</li>
+          <li>docs/asset_registry.md</li>
+          <li>assets/generated/sprites/locations/back_mountain/back_mountain_trails_1024.png</li>
+          <li>assets/generated/sprites/locations/rural_homestead/rural_bungalow_fields_1024.png</li>
+          <li>assets/source/map_prompts_2026_06_07/back_mountain_trails_1024.prompt.txt</li>
+          <li>assets/source/map_prompts_2026_06_07/rural_bungalow_fields_1024.prompt.txt</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

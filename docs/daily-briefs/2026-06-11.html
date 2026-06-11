@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Godot 项目每日简报 - 2026-06-11</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --card: #fffaf3;
+      --ink: #2f261f;
+      --muted: #6d6359;
+      --line: #d8ccb7;
+      --accent: #8b4c21;
+      --accent-soft: #f3e2cc;
+      --good: #2d6a4f;
+      --warn: #a7641d;
+      --risk: #a62a2a;
+      --info: #365f8b;
+      --code: #efe5d7;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, #f0dfc6 0, transparent 28%),
+        linear-gradient(180deg, #efe5d7 0, var(--bg) 260px);
+      line-height: 1.62;
+    }
+
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+    h1 { font-size: 31px; }
+    h2 {
+      margin-top: 28px;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 8px;
+      font-size: 22px;
+    }
+    h3 {
+      margin-top: 22px;
+      font-size: 18px;
+    }
+    p, li, td, th { font-size: 14px; }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li + li { margin-top: 6px; }
+    code {
+      background: var(--code);
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 12px;
+      word-break: break-all;
+    }
+
+    .hero, section, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 24px rgba(88, 58, 25, 0.06);
+    }
+    .hero {
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    section {
+      padding: 20px 22px;
+      margin-top: 18px;
+    }
+    .meta, .note { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .card { padding: 14px 16px; }
+    .tag {
+      display: inline-block;
+      margin-right: 6px;
+      margin-top: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .p0 { background: #f8d7d7; color: var(--risk); }
+    .p1 { background: #f8e6d2; color: var(--warn); }
+    .p2 { background: #e2efdf; color: var(--good); }
+    .p3 { background: #e5edf7; color: var(--info); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: #f0e5d3;
+      color: #5a4a39;
+      font-size: 12px;
+    }
+    .mono-list li {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p class="meta">日期：2026-06-11 | 回顾窗口：自 2026-06-10 14:02:19 CST 上次自动简报时间起，至 2026-06-11 06:03:01 CST</p>
+      <p class="meta">生成时间：2026-06-11 06:03:01 CST</p>
+      <div>
+        <span class="tag">已发生改动</span>
+        <span class="tag">基于代码状态的优化建议</span>
+        <span class="tag">创意性功能建议</span>
+      </div>
+      <p>本次窗口内确认到 2 条 git 提交、9 个已跟踪未提交修改，以及 6 个与地图视觉层相关的未跟踪文件。主线非常集中：项目正在把家庭、屋内、后山、城镇四张场景切换到更完整的整图视觉层，并同步补齐相机边界、字体、资源登记和像素遮挡的配套能力。</p>
+    </div>
+
+    <section>
+      <h2>概览</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>提交主线</h3>
+          <p><code>13a0286</code> 引入默认中文字体、四张运行时地图、<code>CameraBounds</code> 脚本与测试；<code>c1fb0d4</code> 继续修复地图资源引用与资源表登记。</p>
+        </div>
+        <div class="card">
+          <h3>工作区主线</h3>
+          <p>当前工作区继续推进城镇地图替换，新增 1990s 乡镇大地图候选资源、更新 <code>town_scene.tscn</code> 的视觉层位置与遮挡点位，并把 <code>CameraBounds</code> / <code>polygon_texture_occluder</code> 从 <code>Area2D + 编辑器同步</code> 收敛到更偏运行时的实现。</p>
+        </div>
+        <div class="card">
+          <h3>验证状态</h3>
+          <p>已运行 <code>tests/camera_bounds_test.tscn</code>、<code>tests/default_font_test.tscn</code>、<code>tests/back_mountain_scene_test.tscn</code>。三项通过，但持续出现 1 条资源告警：<code>scenes/town_scene.tscn</code> 中 <code>export.png</code> 的 UID 无法解析，只能退回文本路径加载。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>主要改动</h2>
+      <h3>已发生的项目改动</h3>
+      <ul>
+        <li>四张运行时主地图已经基本从早期零散地点图，切换到语义更清晰的命名资源：<code>down_map.png</code>、<code>home_map.png</code>、<code>house_map.png</code>、<code>mountain.png</code>。</li>
+        <li>项目新增默认中文字体 <code>NotoSansCJKsc-Regular.otf</code>，并在 <code>project.godot</code> 中设置为全局 GUI 字体，降低中文 UI 缺字或风格漂移风险。</li>
+        <li><code>scripts/world/camera_bounds.gd</code> 已接入家庭、屋内、后山、城镇场景，镜头范围开始由场景内显式节点控制，而不是仅依赖全局大范围默认值。</li>
+        <li><code>configs/assets.json</code> 与 <code>docs/asset_registry.md</code> 继续补充地图视觉层候选资源，包括新的 <code>location.township_1990s_wide_roads_1920</code>。</li>
+        <li>当前工作区继续打磨 <code>town_scene.tscn</code> 的屋顶遮挡点、多建筑定位与新底图试装，同时将 <code>CameraBounds</code> 节点统一改成 <code>StaticBody2D</code>。</li>
+      </ul>
+
+      <h3>基于当前状态的判断</h3>
+      <ul>
+        <li>项目已经不再是单纯验证苹果摆摊原型，而是在为“家庭 - 乡镇街道 - 后山采集”三段式日循环搭基础设施。</li>
+        <li>地图资源资产化方向是正确的，但当前仍处于“视觉层替换速度快于逻辑层和资源治理”的阶段，容易在 UID、场景锚点、遮挡多边形和资源登记上积累小裂缝。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>新增内容</h2>
+      <ul>
+        <li>新增全局中文字体资源：<code>assets/fonts/NotoSansCJKsc-Regular.otf</code>、<code>assets/fonts/OFL.txt</code>。</li>
+        <li>新增运行时地图资源：<code>assets/generated/sprites/map/home_map.png</code>、<code>house_map.png</code>、<code>mountain.png</code>。</li>
+        <li>新增乡镇大地图候选资源：<code>assets/generated/sprites/locations/township/township_1990s_wide_roads_1920x1080.png</code>。</li>
+        <li>新增相机边界能力：<code>scripts/world/camera_bounds.gd</code> 与 <code>tests/camera_bounds_test.gd</code>。</li>
+        <li>新增默认字体验证：<code>tests/default_font_test.gd</code> / <code>.tscn</code>。</li>
+        <li>新增地图生成提示词源文件：<code>assets/source/map_prompts_2026_06_10/township_1990s_wide_roads_1920x1080.prompt.txt</code>。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>修改内容</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>文件/模块</th>
+            <th>变更性质</th>
+            <th>摘要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>project.godot</code></td>
+            <td>已提交</td>
+            <td>设置全局 GUI 默认字体为 <code>NotoSansCJKsc-Regular.otf</code>，统一中文显示基线。</td>
+          </tr>
+          <tr>
+            <td><code>scenes/back_mountain_scene.tscn</code> / <code>home_scene.tscn</code> / <code>house_scene.tscn</code> / <code>town_scene.tscn</code></td>
+            <td>已提交 + 当前继续修改</td>
+            <td>四张场景切换到命名运行时地图，并接入 <code>CameraBounds</code>；当前工作区继续微调城镇底图、建筑点位与边界节点类型。</td>
+          </tr>
+          <tr>
+            <td><code>scripts/main.gd</code></td>
+            <td>已提交</td>
+            <td>切场景后自动发现并应用 <code>CameraBounds</code>，无边界时回退到极大 limit。</td>
+          </tr>
+          <tr>
+            <td><code>scripts/world/camera_bounds.gd</code></td>
+            <td>已提交 + 当前继续修改</td>
+            <td>从场景矩形生成相机 limit 和边界墙；工作区版本进一步把脚本宿主从 <code>Area2D</code> 改为 <code>StaticBody2D</code>。</td>
+          </tr>
+          <tr>
+            <td><code>scripts/world/polygon_texture_occluder.gd</code></td>
+            <td>当前未提交修改</td>
+            <td>移除 <code>@tool</code> 和编辑器内自动同步，改成运行时刷新遮挡 UV，减少编辑器侧噪音，但也失去编辑期可视反馈。</td>
+          </tr>
+          <tr>
+            <td><code>configs/assets.json</code> / <code>docs/asset_registry.md</code></td>
+            <td>已提交 + 当前继续修改</td>
+            <td>补充运行时地图与 1990s 乡镇候选图的登记；资源表正在跟随地图替换同步演进。</td>
+          </tr>
+          <tr>
+            <td><code>tests/back_mountain_scene_test.gd</code></td>
+            <td>已提交</td>
+            <td>修复后山场景资源引用，确保地图替换后测试仍能定位到正确资源。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>删除或废弃内容</h2>
+      <ul>
+        <li>旧的匿名位置图资源 <code>assets/generated/sprites/locations/Gemini_Generated_Image_4kgpl14kgpl14kgp.png</code> 与 <code>...qm6filqm6filqm6f.png</code> 已从提交历史中移除，改由语义更明确的 <code>home_map.png</code> / <code>house_map.png</code> 等运行时地图承担主场景视觉层。</li>
+        <li><code>polygon_texture_occluder.gd</code> 的编辑器自动同步路径在当前工作区事实上被废弃，意味着遮挡多边形的调试方式从“编辑器所见即所得”切回“运行时验证”。</li>
+        <li><code>CameraBounds</code> 早期使用 <code>Area2D</code> 的节点形态正在退出，项目显式转向以 <code>StaticBody2D</code> 承担边界表达与边界墙生成。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>可能影响</h2>
+      <ul>
+        <li>相机边界接入后，四张主场景的镜头行为会更稳定，但任何碰撞框偏移都可能直接带来“镜头卡死”或“边界裁切过紧”的体验问题。</li>
+        <li>城镇场景继续替换新底图与手工屋顶遮挡时，如果多边形 UV、建筑锚点或碰撞体没同步，容易出现“玩家脚下可走、视觉上却穿模”或“屋顶遮挡错位”。</li>
+        <li>全局字体切换能改善中文一致性，但也会影响 UI 布局尺寸，特别是背包、热键条、弹窗标题等紧凑控件。</li>
+        <li><code>export.png</code> 的无效 UID 告警虽然不阻塞加载，但说明资源导入或场景引用链仍不干净，继续累积会影响编辑器稳定性和自动化信心。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>修复 <code>scenes/town_scene.tscn</code> 第 17 行对 <code>assets/generated/sprites/map/export.png</code> 的无效 UID 引用，避免继续以文本路径兜底。</li>
+        <li>决定 <code>export.png</code> 是正式运行时地图、候选对照图，还是临时试装图；如果保留，需补齐资源登记与命名语义。</li>
+        <li>在新城镇底图定稿前，补做一次 <code>town_scene.tscn</code> 的视觉/逻辑对齐回归，重点检查建筑交互点、碰撞体和遮挡多边形。</li>
+        <li>评估是否需要保留 <code>polygon_texture_occluder.gd</code> 的编辑器预览能力；如果不保留，需要补充专门的遮挡验证场景或测试流程。</li>
+        <li>在后山与家庭地图替换完成后，尽快补上与新视觉层对应的玩法目标，否则美术更新会领先玩法闭环。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>优化点（基于当前代码状态推断）</h2>
+      <p class="note">以下内容不是“已经发生的改动”，而是基于当前仓库结构、最近变更和测试输出推断出的优先优化项。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>优先级</th>
+            <th>依据</th>
+            <th>预期收益</th>
+            <th>建议落点文件或模块</th>
+            <th>粗略实施成本</th>
+            <th>是否需要先验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>清理城镇场景资源 UID 与试装图引用</td>
+            <td><span class="badge p0">P0</span></td>
+            <td>测试已稳定复现 <code>export.png</code> 无效 UID 告警；当前又在场景中额外挂载了 <code>Export</code> 精灵，说明正式资源与试装资源边界不清。</td>
+            <td>减少编辑器/CI 告警，避免资源链继续腐化，降低场景保存后再次漂移的风险。</td>
+            <td><code>scenes/town_scene.tscn</code>、<code>assets/generated/sprites/map/export.png</code>、<code>configs/assets.json</code></td>
+            <td>XS-S</td>
+            <td>需要，先确认 <code>export.png</code> 的真实用途再清理。</td>
+          </tr>
+          <tr>
+            <td>拆分地图视觉层与逻辑层的场景组织</td>
+            <td><span class="badge p1">P1</span></td>
+            <td><code>town_scene.tscn</code> 已有 76 个节点，并且屋顶遮挡、交互端点、碰撞、背景图、试装图都混在同一个场景里；当前地图迭代会持续放大这一复杂度。</td>
+            <td>让底图替换、逻辑点位维护、屋顶遮挡回归各自独立，降低每次换图时的联动改坏面。</td>
+            <td><code>scenes/town_scene.tscn</code>、<code>scenes/npc_endpoint.tscn</code>、地图子场景拆分模块</td>
+            <td>M</td>
+            <td>需要，先统计哪些节点属于纯视觉、哪些属于玩法语义。</td>
+          </tr>
+          <tr>
+            <td>压缩核心脚本体积，减轻单文件职责过载</td>
+            <td><span class="badge p1">P1</span></td>
+            <td><code>scripts/world/customer.gd</code> 748 行、<code>population_flow.gd</code> 594 行、<code>main.gd</code> 425 行，已经超出轻量原型脚本的舒适维护范围。</td>
+            <td>降低回归成本，后续接功能时更容易定位改动边界，也更利于补测。</td>
+            <td><code>scripts/main.gd</code>、<code>scripts/world/customer.gd</code>、<code>scripts/autoload/population_flow.gd</code></td>
+            <td>M-L</td>
+            <td>需要，先做职责盘点，避免为了拆分而拆分。</td>
+          </tr>
+          <tr>
+            <td>补一层地图资源治理规则，约束候选图与正式图</td>
+            <td><span class="badge p1">P1</span></td>
+            <td>本轮新增了正式运行时图、候选乡镇图、试装导出图和 prompt 源文件；资源层级与用途已经开始分叉，但项目里还缺“候选/试装/正式”状态约束。</td>
+            <td>减少匿名文件、误引用和注册表漂移，后续切图或换图时更可控。</td>
+            <td><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、<code>docs/development_baseline.md</code></td>
+            <td>S-M</td>
+            <td>不需要，可直接补规则与状态字段。</td>
+          </tr>
+          <tr>
+            <td>恢复遮挡编辑期可见性或提供等价调试工具</td>
+            <td><span class="badge p2">P2</span></td>
+            <td><code>polygon_texture_occluder.gd</code> 当前工作区移除了 <code>@tool</code> 与编辑器内刷新，而城镇屋顶遮挡恰恰高度依赖手工摆点。</td>
+            <td>提升地图迭代效率，减少“跑起来才发现遮挡错位”的往返。</td>
+            <td><code>scripts/world/polygon_texture_occluder.gd</code>、调试预览场景或测试</td>
+            <td>S</td>
+            <td>需要，先确认编辑器同步是否曾导致真实问题。</td>
+          </tr>
+          <tr>
+            <td>把关键警告纳入测试失败条件</td>
+            <td><span class="badge p2">P2</span></td>
+            <td>当前测试能通过，但无效 UID 和 Camera2D 插值告警仍会出现，说明“通过”并不等于“干净”。</td>
+            <td>让自动化更早拦住资源和场景结构退化。</td>
+            <td><code>tools/run_godot_headless_tests.sh</code>、测试场景约定、日志筛选规则</td>
+            <td>S-M</td>
+            <td>需要，先筛选哪些告警应视为硬失败。</td>
+          </tr>
+          <tr>
+            <td>建立场景/资源回顾清单，降低人工巡检成本</td>
+            <td><span class="badge p3">P3</span></td>
+            <td>项目已有大量测试和资产，但地图替换仍需要人工比对场景、资源表、提示词、导入状态。</td>
+            <td>让每日简报、资源接入和场景回归更稳定，不依赖记忆。</td>
+            <td><code>docs/</code>、<code>scripts/debug/asset_preview_scene.gd</code>、辅助脚本</td>
+            <td>S</td>
+            <td>不需要。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>新增功能建议（创意性建议）</h2>
+      <p class="note">以下内容不是仓库里已经存在的功能，而是结合当前已有系统、最近地图建设方向与体验缺口提出的功能建议。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>优先级</th>
+            <th>依据</th>
+            <th>预期收益</th>
+            <th>建议落点文件或模块</th>
+            <th>粗略实施成本</th>
+            <th>是否需要先验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>把“广场/路口/校门/厂门”做成可切换摆摊热点</td>
+            <td><span class="badge p1">P1</span></td>
+            <td>城镇新地图刻意强调宽路、路口、店面与公共建筑，且现有系统已具备 <code>PopulationFlow</code>、摊位、城管和端点容量。</td>
+            <td>把新地图价值真正转成玩法差异，让玩家的摆摊位置选择更有策略深度。</td>
+            <td><code>scenes/town_scene.tscn</code>、<code>scripts/world/stall_spot.gd</code>、<code>scripts/autoload/population_flow.gd</code></td>
+            <td>M</td>
+            <td>需要，先验证新地图上哪些路段最适合承载热点。</td>
+          </tr>
+          <tr>
+            <td>为后山补一套“采集 - 携回 - 摆摊/售卖”闭环</td>
+            <td><span class="badge p1">P1</span></td>
+            <td>项目已有 <code>back_mountain_scene</code>、后山目标文案和新整图，但目前主收益闭环仍偏向苹果种植与摆摊。</td>
+            <td>让后山从视觉扩张变成真实日程选项，增加白天决策和资源来源多样性。</td>
+            <td><code>scenes/back_mountain_scene.tscn</code>、<code>scripts/world/farm_field.gd</code>、物品/作物配置</td>
+            <td>M-L</td>
+            <td>需要，先确认采集品是临时素材还是复用现有作物图标。</td>
+          </tr>
+          <tr>
+            <td>引入“家中备货与次日计划”夜间整理环节</td>
+            <td><span class="badge p1">P1</span></td>
+            <td>项目已经有 <code>house</code>、<code>home</code>、日终结算、背包和升级系统，但“回家”仍偏功能跳转，缺少策略沉淀时刻。</td>
+            <td>强化日循环节奏，让家庭场景在玩法上承担准备、储藏和次日规划价值。</td>
+            <td><code>scripts/ui/daily_summary_panel.gd</code>、<code>scripts/autoload/game_state.gd</code>、家庭场景交互点</td>
+            <td>M</td>
+            <td>不需要，可先做低保真版本。</td>
+          </tr>
+          <tr>
+            <td>给人口流动加入天气/节日标签，驱动客流异常日</td>
+            <td><span class="badge p2">P2</span></td>
+            <td><code>PopulationFlow</code> 已经存在 <code>_weather_override</code>、<code>_day_tag_override</code> 等扩展入口，说明系统已经为全局流量修饰器留了口子。</td>
+            <td>让同一张镇街地图在不同日子里呈现不同赚钱机会，提升重玩性。</td>
+            <td><code>scripts/autoload/population_flow.gd</code>、<code>configs/population.json</code>、<code>scripts/autoload/game_state.gd</code></td>
+            <td>M</td>
+            <td>需要，先决定天气是否只做数值修饰还是连带视觉表现。</td>
+          </tr>
+          <tr>
+            <td>把新乡镇候选图扩展成“店铺购置/升级”中长期目标</td>
+            <td><span class="badge p2">P2</span></td>
+            <td>开发基线已明确主角会从路边摊成长为店主，而当前地图资源明显开始覆盖供销社、邮电局、饭店、书店等完整镇街空间。</td>
+            <td>把地图建设与长期经济成长绑在一起，形成原型之后的下一层目标感。</td>
+            <td><code>configs/upgrades.json</code>、<code>scripts/world/seed_shop.gd</code>、未来店铺场景模块</td>
+            <td>L</td>
+            <td>需要，先验证第一家可购店铺是哪一类最合适。</td>
+          </tr>
+          <tr>
+            <td>增加地图逻辑层可视化开关，辅助摆点和寻路调试</td>
+            <td><span class="badge p3">P3</span></td>
+            <td>项目已明确采用混合地图架构，但大图替换后，逻辑层与视觉层的错位更难靠肉眼直接发现。</td>
+            <td>提高地图制作和问题定位效率，也能为后续更多地图扩建做准备。</td>
+            <td><code>scripts/debug/asset_preview_scene.gd</code>、<code>scripts/world/road_navigator.gd</code>、调试 UI</td>
+            <td>S-M</td>
+            <td>不需要。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>用于回顾的关键文件路径</h2>
+      <ul class="mono-list">
+        <li>project.godot</li>
+        <li>configs/assets.json</li>
+        <li>docs/asset_registry.md</li>
+        <li>docs/development_baseline.md</li>
+        <li>scenes/town_scene.tscn</li>
+        <li>scenes/home_scene.tscn</li>
+        <li>scenes/house_scene.tscn</li>
+        <li>scenes/back_mountain_scene.tscn</li>
+        <li>scenes/npc_endpoint.tscn</li>
+        <li>scripts/main.gd</li>
+        <li>scripts/world/camera_bounds.gd</li>
+        <li>scripts/world/polygon_texture_occluder.gd</li>
+        <li>scripts/autoload/population_flow.gd</li>
+        <li>scripts/autoload/game_state.gd</li>
+        <li>tests/camera_bounds_test.gd</li>
+        <li>tests/default_font_test.gd</li>
+        <li>tests/back_mountain_scene_test.gd</li>
+        <li>assets/generated/sprites/map/down_map.png</li>
+        <li>assets/generated/sprites/map/home_map.png</li>
+        <li>assets/generated/sprites/map/house_map.png</li>
+        <li>assets/generated/sprites/map/mountain.png</li>
+        <li>assets/generated/sprites/map/export.png</li>
+        <li>assets/generated/sprites/locations/township/township_1990s_wide_roads_1920x1080.png</li>
+        <li>assets/source/map_prompts_2026_06_10/township_1990s_wide_roads_1920x1080.prompt.txt</li>
+        <li>assets/fonts/NotoSansCJKsc-Regular.otf</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

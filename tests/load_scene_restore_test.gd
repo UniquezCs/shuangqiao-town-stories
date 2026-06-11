@@ -27,6 +27,10 @@ func _ready() -> void:
 	_assert_equal(world_root.get_child(0).name, "TownScene", "保存场景为 town 时应直接加载镇街")
 
 	SaveManager.set_pending_load({})
+	main.queue_free()
+	PopulationFlow.reset_for_tests()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	get_tree().quit()
 
 

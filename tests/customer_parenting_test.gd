@@ -89,7 +89,11 @@ func _ready() -> void:
 	var customers := find_children("Customer", "CharacterBody2D", true, false)
 	_assert_equal(customers.size(), 1, "应该生成 1 个顾客")
 	_assert_equal(customers[0].get_parent(), town, "顾客必须挂在 TownScene 下，切回家时才能随 TownScene 销毁")
-	_assert_true(_is_near_any_position(customers[0].get("_tree_entered_position"), residence_positions), "顾客进入场景树时就应在住宅区附近道路点，不能先显示在默认位置再瞬移")
+	var tree_entered_position: Vector2 = customers[0].get("_tree_entered_position")
+	_assert_true(
+		_is_near_any_position(tree_entered_position, residence_positions),
+		"顾客进入场景树时就应在住宅区附近道路点，不能先显示在默认位置再瞬移。实际：%s，住宅点：%s" % [tree_entered_position, residence_positions]
+	)
 	_assert_equal(customers[0].call("_active_stall"), null, "顾客进入影响范围前不应考虑摊位")
 	influence_area.body_entered.emit(customers[0])
 	_assert_equal(customers[0].call("_active_stall"), stall, "顾客进入影响范围后才应考虑摊位")

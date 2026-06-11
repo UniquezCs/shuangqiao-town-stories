@@ -36,6 +36,9 @@ _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 [debug]
 
 gameplay/economy_and_patrol_logs_enabled=false
+gameplay/log_channels/chengguan_enabled=false
+gameplay/log_channels/population_flow_enabled=false
+gameplay/log_channels/stall_enabled=false
 
 [display]
 
@@ -46,6 +49,10 @@ window/stretch/mode="viewport"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
+
+[gui]
+
+theme/custom_font="res://assets/fonts/NotoSansCJKsc-Regular.otf"
 
 [input]
 

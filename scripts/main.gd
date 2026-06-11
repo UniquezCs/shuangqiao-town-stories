@@ -7,6 +7,32 @@ const BACK_MOUNTAIN_SCENE := preload("res://scenes/back_mountain_scene.tscn")
 const StallActionPanelScript := preload("res://scripts/ui/stall_action_panel.gd")
 const LotteryPanelScript := preload("res://scripts/ui/lottery_panel.gd")
 
+const SCENE_ENTRY_HOME := "home"
+const SCENE_ENTRY_TOWN := "town"
+const SCENE_ENTRY_BACK_MOUNTAIN := "back_mountain"
+const SCENE_ENTRY_DEFAULT := "default"
+const CAMERA_LIMIT_MIN := -10000000
+const CAMERA_LIMIT_MAX := 10000000
+const SCENE_ROUTES := {
+	PrototypeConstants.SCENE_HOME: {
+		"scene": HOME_SCENE,
+		"entry": SCENE_ENTRY_HOME,
+	},
+	PrototypeConstants.SCENE_HOUSE: {
+		"scene": HOUSE_SCENE,
+		"entry": SCENE_ENTRY_DEFAULT,
+	},
+	PrototypeConstants.SCENE_TOWN: {
+		"scene": TOWN_SCENE,
+		"entry": SCENE_ENTRY_TOWN,
+	},
+	PrototypeConstants.SCENE_BACK_MOUNTAIN: {
+		"scene": BACK_MOUNTAIN_SCENE,
+		"entry": SCENE_ENTRY_BACK_MOUNTAIN,
+		"objective": "在后山探索可采集区域",
+	},
+}
+
 var current_world: Node2D = null
 var pending_stall_spot: Node = null
 var stall_action_panel: CanvasLayer = null
@@ -74,14 +100,16 @@ func _run_scene_transition(target_scene: String, spawn_id: String) -> void:
 
 
 func _apply_scene_entry_state(target_scene: String) -> void:
-	if target_scene == PrototypeConstants.SCENE_TOWN:
-		_enter_town()
-	elif target_scene == PrototypeConstants.SCENE_HOME:
-		_enter_home()
-	elif target_scene == PrototypeConstants.SCENE_BACK_MOUNTAIN:
-		GameState.set_objective("在后山探索可采集区域")
-	else:
-		GameState.set_objective("出门劳作，晚上十二点前回来睡觉")
+	var route := _scene_route_for_id(target_scene)
+	match str(route.get("entry", SCENE_ENTRY_DEFAULT)):
+		SCENE_ENTRY_TOWN:
+			_enter_town()
+		SCENE_ENTRY_HOME:
+			_enter_home()
+		SCENE_ENTRY_BACK_MOUNTAIN:
+			GameState.set_objective(str(route.get("objective", "")))
+		_:
+			GameState.set_objective("出门劳作，晚上十二点前回来睡觉")
 
 
 func _load_world(target_scene: String, spawn_id: String) -> void:
@@ -91,6 +119,7 @@ func _load_world(target_scene: String, spawn_id: String) -> void:
 	world_root.add_child(current_world)
 	GameState.current_scene = target_scene
 	await get_tree().process_frame
+	_apply_current_world_camera_bounds()
 	var spawn := current_world.get_node_or_null("Spawns/%s" % spawn_id)
 	if spawn == null:
 		spawn = current_world.get_node_or_null("Spawns/default")
@@ -283,6 +312,36 @@ func _get_player_camera() -> Camera2D:
 	return player.get_node_or_null("Camera2D") as Camera2D
 
 
+func _apply_current_world_camera_bounds() -> void:
+	var camera := _get_player_camera()
+	if camera == null:
+		return
+	var bounds := _get_current_world_camera_bounds()
+	if bounds != null and bounds.has_method("apply_to_camera"):
+		bounds.call("apply_to_camera", camera)
+		return
+	_clear_camera_bounds(camera)
+
+
+func _get_current_world_camera_bounds() -> Node:
+	if current_world == null:
+		return null
+	var direct_bounds := current_world.get_node_or_null("CameraBounds")
+	if direct_bounds != null:
+		return direct_bounds
+	for node in get_tree().get_nodes_in_group("camera_bounds"):
+		if node is Node and current_world.is_ancestor_of(node):
+			return node
+	return null
+
+
+func _clear_camera_bounds(camera: Camera2D) -> void:
+	camera.limit_left = CAMERA_LIMIT_MIN
+	camera.limit_top = CAMERA_LIMIT_MIN
+	camera.limit_right = CAMERA_LIMIT_MAX
+	camera.limit_bottom = CAMERA_LIMIT_MAX
+
+
 func _close_all_stalls() -> void:
 	for node in get_tree().get_nodes_in_group("stall"):
 		if node.get("is_open"):
@@ -290,13 +349,19 @@ func _close_all_stalls() -> void:
 
 
 func _scene_for_id(target_scene: String) -> PackedScene:
-	if target_scene == PrototypeConstants.SCENE_TOWN:
-		return TOWN_SCENE
-	if target_scene == PrototypeConstants.SCENE_HOUSE:
-		return HOUSE_SCENE
-	if target_scene == PrototypeConstants.SCENE_BACK_MOUNTAIN:
-		return BACK_MOUNTAIN_SCENE
-	return HOME_SCENE
+	return _scene_route_for_id(target_scene).get("scene", HOME_SCENE) as PackedScene
+
+
+func _scene_route_for_id(target_scene: String) -> Dictionary:
+	return SCENE_ROUTES.get(target_scene, SCENE_ROUTES[PrototypeConstants.SCENE_HOME])
+
+
+func _scene_route_ids_for_test() -> Array:
+	return SCENE_ROUTES.keys()
+
+
+func _scene_entry_for_test(target_scene: String) -> String:
+	return str(_scene_route_for_id(target_scene).get("entry", SCENE_ENTRY_DEFAULT))
 
 
 func _remaining_apples() -> int:

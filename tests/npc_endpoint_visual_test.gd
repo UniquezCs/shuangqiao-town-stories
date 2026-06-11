@@ -7,6 +7,9 @@ func _ready() -> void:
 	var town := TOWN_SCENE.instantiate()
 	add_child(town)
 	await get_tree().process_frame
+	var map_sprite := town.get_node_or_null("MapLayers/Sprite2D") as Sprite2D
+	if map_sprite == null:
+		map_sprite = town.get_node_or_null("MapLayers/Visual") as Sprite2D
 
 	var checked_count := 0
 	for node in get_tree().get_nodes_in_group("npc_endpoint"):
@@ -16,7 +19,8 @@ func _ready() -> void:
 		_assert_true(node is Area2D, "%s 应作为 Area2D 建筑节点，便于统一交互区域" % node.name)
 		var visual := node.get_node_or_null("Visual") as Sprite2D
 		_assert_true(visual != null, "%s 应保留 Visual 子节点" % node.name)
-		_assert_true(visual.texture != null, "%s 的 Visual 应保留地图显示纹理" % node.name)
+		if visual.texture == null:
+			_assert_true(map_sprite != null and map_sprite.texture != null, "%s 可作为大地图背景上的逻辑点位，但 TownScene 应保留 MapLayers 地图背景纹理" % node.name)
 		_assert_true(visual.visible, "%s 的 Visual 应可见" % node.name)
 		_assert_true(visual.is_visible_in_tree(), "%s 的 Visual 应在场景树中可见" % node.name)
 		_assert_true(node.get_node_or_null("EndpointMarker") is Marker2D, "%s 应保留 EndpointMarker 作为 NPC 出现/消失坐标" % node.name)
@@ -45,6 +49,16 @@ func _ready() -> void:
 			_assert_true(shop_interaction.has_method("buy_seed"), "ShopInteraction 应提供买种子能力")
 			_assert_true(shop_interaction.has_method("buy_apple"), "ShopInteraction 应提供买苹果能力")
 			_assert_true(_has_collision_shape(shop_interaction, "CollisionShape2D"), "ShopInteraction 应提供独立交互碰撞区")
+		var roof_occluder := seed_shop.get_node_or_null("Polygon2D") as Polygon2D
+		_assert_true(roof_occluder != null, "SeedShop 应保留 Polygon2D 作为手工屋顶像素遮挡区域")
+		_assert_true(map_sprite != null and map_sprite.texture != null, "TownScene 应保留 MapLayers 下的地图 Sprite2D/Visual 作为像素遮挡采样源")
+		if roof_occluder != null and map_sprite != null:
+			_assert_equal(_script_path(roof_occluder), "res://scripts/world/polygon_texture_occluder.gd", "SeedShop 的 Polygon2D 应挂载像素纹理遮挡脚本")
+			_assert_true(str(roof_occluder.get("source_sprite_path")).begins_with("../../../MapLayers/"), "SeedShop 遮挡 Polygon2D 应指向 MapLayers 下的地图 Sprite")
+			_assert_true(roof_occluder.texture == map_sprite.texture, "SeedShop 遮挡 Polygon2D 应使用地图 Sprite2D 同一张纹理，显示地图对应区域像素")
+			_assert_equal(roof_occluder.color, Color.WHITE, "SeedShop 遮挡 Polygon2D 不应半透明染色")
+			_assert_equal(roof_occluder.uv.size(), roof_occluder.polygon.size(), "SeedShop 遮挡 Polygon2D 的 UV 应与手工 polygon 点一一对应")
+			_assert_true(roof_occluder.z_index > 0, "SeedShop 遮挡 Polygon2D 的 z_index 应高于玩家默认层级")
 
 	get_tree().quit()
 

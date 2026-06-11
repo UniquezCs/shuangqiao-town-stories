@@ -1,12 +1,18 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-06",
+	"updated_at": "2026-06-11",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
 		"available": "Asset exists but is not wired into gameplay yet.",
+		"trial": "Temporary proof-of-fit asset kept for comparison only; it must not be wired into runtime scenes.",
 		"placeholder": "Current gameplay uses a temporary or semantically imperfect asset.",
 		"missing": "Required by design but no suitable asset is registered yet."
+	},
+	"map_asset_stages": {
+		"runtime": "Formal map visual used by gameplay scenes.",
+		"candidate": "Candidate map visual available for design review before scene wiring.",
+		"trial": "Temporary map proof-of-fit kept out of runtime scenes."
 	},
 	"standards": {
 		"tile_size": [
@@ -41,7 +47,10 @@
 			"PopulationFlow target timing should stay generic: configs/flow_preferences.json time_curves adjusts attraction for age_group + target_type over the day, instead of adding hard-coded commute plans for specific buildings.",
 			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools.",
 			"Customer overhead dialogue is probabilistic per event and must be based on an in-stock stall item the customer actually wants; avoid fixed dialogue triggers and stale sold-out item names.",
-			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics."
+			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics.",
+			"Map visuals under res://assets/generated/sprites/map must be registered with map_stage. Only runtime maps may be referenced by gameplay scenes; candidate and trial maps stay out of .tscn files until promoted.",
+			"Baked-map pixel occlusion can use Polygon2D with scripts/world/polygon_texture_occluder.gd: the polygon samples a configured map/background Sprite2D texture, such as TownScene/MapLayers/Sprite2D, with matching UVs and renders above the player, while collision remains separate StaticBody2D geometry.",
+			"CameraBounds uses a StaticBody2D root with a non-player collision layer as editable rectangle data for camera limits; TownScene also enables create_boundary_walls on CameraBounds instead of maintaining separate top/left/right/bottom Wall nodes."
 		]
 	},
 	"packs": {
@@ -58,6 +67,28 @@
 			"status": "implemented",
 			"path": "res://assets/generated/tilesets",
 			"notes": "Final generated tile atlases and TileSet resources. Raw map-generation references and manifests are intentionally removed."
+		}
+	},
+	"fonts": {
+		"font.noto_sans_cjk_sc_regular": {
+			"type": "font",
+			"status": "implemented",
+			"path": "res://assets/fonts/NotoSansCJKsc-Regular.otf",
+			"license": "SIL Open Font License 1.1",
+			"license_path": "res://assets/fonts/OFL.txt",
+			"usage": [
+				"default_gui_font",
+				"chinese_text_rendering",
+				"title_screen",
+				"hud",
+				"dialogue_bubbles",
+				"menus"
+			],
+			"used_by": [
+				"project.godot",
+				"tests/default_font_test.tscn"
+			],
+			"notes": "Added 2026-06-10 to provide Simplified Chinese glyph coverage for all Godot Control text through gui/theme/custom_font."
 		}
 	},
 	"tilesets": {
@@ -1905,6 +1936,236 @@
 				"locations"
 			]
 		},
+		"location.protagonist_home_fields_1920": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"map_stage": "candidate",
+			"path": "res://assets/generated/sprites/locations/home/protagonist_home_fields_1920x1080.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_09/protagonist_home_fields_1920x1080.prompt.txt",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"home_scene_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"farmhouse_fields_scene_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-09 as a standalone 1920x1080 protagonist-home visual layer matching the supplied township pixel-map reference style. Contains a rural house, courtyard, surrounding crop fields, vegetable plots, trees, dirt paths, fences, shed, well, haystack, and stream/irrigation edge details. No characters, animals, vehicles, or readable text are baked into the visual layer. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"home",
+				"protagonist_home",
+				"farmhouse",
+				"farmland",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.township_1990s_wide_roads_1920": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"map_stage": "candidate",
+			"path": "res://assets/generated/sprites/locations/township/township_1990s_wide_roads_1920x1080.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_10/township_1990s_wide_roads_1920x1080.prompt.txt",
+			"size": [
+				1920,
+				1080
+			],
+			"usage": [
+				"town_scene_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"township_map_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-10 as a standalone 1920x1080 1980s/1990s Chinese township visual layer candidate with wide empty roads, shopfronts, civic buildings, courtyards, roadside trees, low walls, drainage water, and accurate large building signs. No people, vehicles, utility poles, wires, or road-surface text are intended to be baked into the visual layer. Gameplay logic must remain in separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"township",
+				"shops",
+				"roads",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.town_map_runtime_3635": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"map_stage": "runtime",
+			"path": "res://assets/generated/sprites/map/down_map.png",
+			"size": [
+				3635,
+				2765
+			],
+			"usage": [
+				"town_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"township_map_runtime_reference"
+			],
+			"used_by": [
+				"scenes/town_scene.tscn",
+				"scenes/npc_endpoint.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime township raster map referenced by TownScene/MapLayers/Sprite2D and the NpcEndpoint occluder texture source. Gameplay logic remains in separate scene nodes; CameraBounds defines the visible camera contract.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.town_map_trial_clean_2026_06_10": {
+			"type": "raster_map_visual_layer",
+			"status": "trial",
+			"map_stage": "trial",
+			"path": "res://assets/generated/sprites/map/Gemini_Generated_Image_sebjzasebjzasebj-clean.png",
+			"size": [
+				1376,
+				768
+			],
+			"usage": [
+				"town_scene_trial_visual_reference",
+				"hybrid_map_visual_layer"
+			],
+			"used_by": [],
+			"anchor": "not_for_runtime_scene_wiring",
+			"collision": "none",
+			"notes": "Temporary clean township map proof-of-fit retained for comparison. Do not reference from runtime scenes unless promoted to a named runtime or candidate asset.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"trial",
+				"pixel_art"
+			]
+		},
+		"location.town_map_trial_export_2026_06_10": {
+			"type": "raster_map_visual_layer",
+			"status": "trial",
+			"map_stage": "trial",
+			"path": "res://assets/generated/sprites/map/export.png",
+			"size": [
+				2047,
+				2048
+			],
+			"usage": [
+				"town_scene_trial_visual_reference",
+				"hybrid_map_visual_layer"
+			],
+			"used_by": [],
+			"anchor": "not_for_runtime_scene_wiring",
+			"collision": "none",
+			"notes": "Temporary exported township map proof-of-fit retained for comparison. It was removed from TownScene runtime wiring on 2026-06-11; promote and rename before any future scene use.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"trial",
+				"pixel_art"
+			]
+		},
+		"location.home_map_runtime_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"map_stage": "runtime",
+			"path": "res://assets/generated/sprites/map/home_map.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"home_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"home_map_runtime_reference"
+			],
+			"used_by": [
+				"scenes/home_scene.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime home raster map referenced by HomeScene/MapLayers/Sprite2D. Gameplay logic remains in separate scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"home",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.house_map_runtime_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"map_stage": "runtime",
+			"path": "res://assets/generated/sprites/map/house_map.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"house_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"house_map_runtime_reference"
+			],
+			"used_by": [
+				"scenes/house_scene.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime house raster map referenced by HouseScene/Sprite2D. Gameplay logic remains in separate scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"house",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_runtime_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "implemented",
+			"map_stage": "runtime",
+			"path": "res://assets/generated/sprites/map/mountain.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_scene_visual_layer",
+				"hybrid_map_visual_layer",
+				"back_mountain_runtime_reference"
+			],
+			"used_by": [
+				"scenes/back_mountain_scene.tscn"
+			],
+			"anchor": "center_by_scene_contract",
+			"collision": "none",
+			"notes": "Runtime back-mountain raster map currently referenced by BackMountainScene/BackgroundBlocks/Chunk00. Existing BoundaryWalls still define the playable logic bounds.",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
 		"location.house_interior_floor": {
 			"type": "tileset_or_prop",
 			"status": "placeholder",
@@ -2079,6 +2340,88 @@
 				"locations",
 				"back_mountain",
 				"raster_map_chunk",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_detail_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_detail_1024.png",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"mountain_path_grassland_vegetation_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Added 2026-06-06 as a standalone 1024x1024 back-mountain visual layer derived from the existing generated 4096x4096 back_mountain_full raster at crop (512, 512). Contains winding mountain paths, stone steps, rock clusters, dense vegetation, bamboo/trees, grassland, and shrine details. Gameplay logic must be represented by separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.back_mountain_trails_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/back_mountain/back_mountain_trails_1024.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_07/back_mountain_trails_1024.prompt.txt",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"back_mountain_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"mountain_path_grassland_vegetation_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-07 as a standalone 1024x1024 back-mountain visual layer with complex winding and forked mountain trails, stone steps, dense bamboo/trees, grassy clearings, shrubs, rock clusters, and small cliff edges. Gameplay logic must be represented by separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"back_mountain",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
+				"pixel_art"
+			]
+		},
+		"location.rural_bungalow_fields_1024": {
+			"type": "raster_map_visual_layer",
+			"status": "available",
+			"path": "res://assets/generated/sprites/locations/rural_homestead/rural_bungalow_fields_1024.png",
+			"source_prompt": "res://assets/source/map_prompts_2026_06_07/rural_bungalow_fields_1024.prompt.txt",
+			"size": [
+				1024,
+				1024
+			],
+			"usage": [
+				"rural_homestead_visual_layer_candidate",
+				"hybrid_map_visual_layer",
+				"farmhouse_fields_scene_reference"
+			],
+			"used_by": [],
+			"anchor": "top_left_or_center_by_scene_contract",
+			"collision": "none",
+			"notes": "Generated 2026-06-07 as a standalone 1024x1024 rural homestead visual layer matching the back-mountain pixel-art style. Contains a rural single-story bungalow, courtyard wall, yard details, surrounding vegetable plots and grain fields, dirt paths, bamboo/trees, rocks, and water/irrigation edge details. Gameplay logic must be represented by separate TileMapLayer or scene nodes under the hybrid map architecture.",
+			"tags": [
+				"locations",
+				"rural_homestead",
+				"farmhouse",
+				"farmland",
+				"raster_map",
+				"visual_layer",
+				"hybrid_map",
 				"pixel_art"
 			]
 		}

@@ -7,6 +7,7 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 - `implemented`: currently used by scenes, scripts, or configs.
 - `available`: asset exists in the repository but is not wired into gameplay yet.
+- `trial`: temporary proof-of-fit asset kept for comparison only; it must not be wired into runtime scenes.
 - `placeholder`: gameplay uses a temporary or semantically imperfect asset.
 - `missing`: design needs the asset, but no suitable asset is registered.
 
@@ -45,6 +46,20 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Large raster maps use a hybrid setup: `Sprite2D` background chunks provide
   the visual map, while exits, collision, navigation, and interactions stay in
   separate gameplay nodes or logic layers.
+- Raster maps must carry a `map_stage`: `runtime` maps may be referenced by
+  scenes, `candidate` maps are available for design review, and `trial` maps
+  are temporary proof-of-fit references that must stay out of `.tscn` files
+  until promoted.
+- Baked-map pixel occlusion can use `Polygon2D` with
+  `scripts/world/polygon_texture_occluder.gd`: the polygon samples a configured
+  map/background `Sprite2D` texture, such as `TownScene/MapLayers/Sprite2D`,
+  with matching UVs and renders above the player.
+  Collision still belongs to separate `StaticBody2D` geometry.
+- `CameraBounds` uses a `StaticBody2D` root on a non-player collision layer as
+  editable rectangle data for camera limits. `TownScene/CameraBounds` also
+  enables `create_boundary_walls`, so the outer boundary collision is generated
+  from the same rectangle instead of separate top/left/right/bottom `Wall`
+  nodes.
 
 ## Generated Pack Metadata
 
@@ -54,6 +69,12 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Raw generation images, contact sheets, prompt text, manifests, preview GIFs, and other intermediate process files should not be kept under `assets/generated`.
 
 ## Current Resource Needs By System
+
+### Fonts
+
+| Asset ID | Status | Current Resource | Notes |
+| --- | --- | --- | --- |
+| `font.noto_sans_cjk_sc_regular` | implemented | `res://assets/fonts/NotoSansCJKsc-Regular.otf` | Added 2026-06-10 and wired through `project.godot` `gui/theme/custom_font`, so Chinese UI text, HUD labels, menus, and dialogue bubbles use a font with Simplified Chinese glyph coverage. Licensed under SIL Open Font License 1.1; license stored at `res://assets/fonts/OFL.txt`. |
 
 ### TileMap And Scene Ground
 
@@ -165,6 +186,17 @@ opens at the player's position.
 | `location.police_station` | implemented | `police_station_256x128.png` | Used as the Town `PoliceStation` endpoint visual and chengguan patrol origin/return point. |
 | `location.back_mountain_full` | implemented | `back_mountain_full_4096.png` | Full `4096x4096` pixel-art back-mountain raster reference. Runtime uses chunked Sprite2D backgrounds. |
 | `location.back_mountain_chunk_*` | implemented | `back_mountain_chunk_{x}_{y}_1024.png` | Four `1024x1024` background chunks placed in `scenes/back_mountain_scene.tscn` as a 2x2 Sprite2D grid. |
+| `location.back_mountain_detail_1024` | available | `back_mountain_detail_1024.png` | Standalone `1024x1024` back-mountain visual layer candidate with winding mountain paths, stone steps, dense vegetation, grassland, bamboo/trees, rocks, and shrine details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.back_mountain_trails_1024` | available | `back_mountain_trails_1024.png` | Standalone `1024x1024` back-mountain visual layer candidate with complex forked mountain trails, stone steps, grassy clearings, bamboo/trees, rocks, shrubs, and cliff edges. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.rural_bungalow_fields_1024` | available | `rural_bungalow_fields_1024.png` | Standalone `1024x1024` rural homestead visual layer candidate with a rural bungalow, courtyard, vegetable plots, grain fields, dirt paths, bamboo/trees, rocks, and water/irrigation edge details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.protagonist_home_fields_1920` | available | `protagonist_home_fields_1920x1080.png` | Standalone `1920x1080` protagonist-home visual layer candidate matching the supplied township map style, with a rural house, courtyard, crop fields, vegetable plots, trees, dirt paths, fences, shed, well, haystack, and stream edge details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.township_1990s_wide_roads_1920` | available | `township_1990s_wide_roads_1920x1080.png` | Standalone `1920x1080` township visual layer candidate with wide empty roads, shopfronts, civic buildings, courtyards, roadside trees, water/drainage edges, and building signs. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
+| `location.town_map_runtime_3635` | implemented | `down_map.png` | Runtime township raster map referenced by `scenes/town_scene.tscn` and `scenes/npc_endpoint.tscn`; gameplay logic remains in separate scene nodes and camera bounds define the visible contract. |
+| `location.town_map_trial_clean_2026_06_10` | trial | `Gemini_Generated_Image_sebjzasebjzasebj-clean.png` | Temporary clean township map proof-of-fit retained only for comparison; do not wire into runtime scenes unless promoted and renamed. |
+| `location.town_map_trial_export_2026_06_10` | trial | `export.png` | Temporary exported township map proof-of-fit removed from `TownScene` runtime wiring on 2026-06-11; promote and rename before any future scene use. |
+| `location.home_map_runtime_1024` | implemented | `home_map.png` | Runtime home raster map referenced by `scenes/home_scene.tscn`; gameplay logic remains in separate scene nodes. |
+| `location.house_map_runtime_1024` | implemented | `house_map.png` | Runtime house raster map referenced by `scenes/house_scene.tscn`; gameplay logic remains in separate scene nodes. |
+| `location.back_mountain_runtime_1024` | implemented | `mountain.png` | Runtime back-mountain raster map referenced by `scenes/back_mountain_scene.tscn`; current `BoundaryWalls` remain the playable logic bounds. |
 | `location.residential_area` | implemented | `residential_area_320x128.png` | Used as a Town `NpcEndpoint` visual for multiple `residential` spawn endpoints. |
 | `location.seed_shop` | implemented | `seed_shop_64x64.png` | v2 seed shop stand exists as a future replacement candidate. |
 | `location.home_exterior` | placeholder | embedded environment texture region | v2 rural house facade exists as a future replacement candidate. |
