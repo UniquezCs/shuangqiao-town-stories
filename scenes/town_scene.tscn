@@ -14,7 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://ctoptq6f5mjhg" path="res://assets/generated/sprites/locations/residential_area_320x128.png" id="11_residence"]
 [ext_resource type="Texture2D" uid="uid://dhvbb5bpvn5u8" path="res://assets/generated/sprites/props/township/buildings/supply_coop_shop_row.png" id="12_dmh3e"]
 [ext_resource type="Script" uid="uid://c5jyg8rea0222" path="res://scripts/world/chengguan_spawner.gd" id="13_chengguan_spawner"]
-[ext_resource type="Texture2D" uid="uid://i3spxca57org" path="res://assets/generated/sprites/map/export.png" id="14_aiiwr"]
 [ext_resource type="PackedScene" uid="uid://de1r2fbrl8bjf" path="res://scenes/npc_endpoint.tscn" id="14_npc_endpoint"]
 [ext_resource type="Texture2D" uid="uid://cmaaqlnfcc10x" path="res://assets/generated/sprites/locations/police_station_256x128.png" id="19_police_station"]
 [ext_resource type="Script" uid="uid://qj0dw0hr3vd8" path="res://scripts/world/polygon_texture_occluder.gd" id="41_polygon_occluder"]
@@ -398,11 +397,6 @@ polygon = PackedVector2Array(-20.87381, 10.969849, -20.87381, -10.471191, 22.265
 uv = PackedVector2Array(294.6045, 1451.0747, 294.6045, 1394.6912, 448.0747, 1394.6912, 449.7611, 1451.0747)
 script = ExtResource("41_polygon_occluder")
 source_sprite_path = NodePath("../../../MapLayers/Sprite2D")
-
-[node name="Export" type="Sprite2D" parent="." unique_id=316307282]
-position = Vector2(618, 1941.0001)
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("14_aiiwr")
 
 [editable path="Buildings/Residential2Spot"]
 [editable path="Buildings/Residential1Sopt"]

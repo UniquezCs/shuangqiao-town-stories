@@ -1,12 +1,18 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-09",
+	"updated_at": "2026-06-11",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
 		"available": "Asset exists but is not wired into gameplay yet.",
+		"trial": "Temporary proof-of-fit asset kept for comparison only; it must not be wired into runtime scenes.",
 		"placeholder": "Current gameplay uses a temporary or semantically imperfect asset.",
 		"missing": "Required by design but no suitable asset is registered yet."
+	},
+	"map_asset_stages": {
+		"runtime": "Formal map visual used by gameplay scenes.",
+		"candidate": "Candidate map visual available for design review before scene wiring.",
+		"trial": "Temporary map proof-of-fit kept out of runtime scenes."
 	},
 	"standards": {
 		"tile_size": [
@@ -42,6 +48,7 @@
 			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools.",
 			"Customer overhead dialogue is probabilistic per event and must be based on an in-stock stall item the customer actually wants; avoid fixed dialogue triggers and stale sold-out item names.",
 			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics.",
+			"Map visuals under res://assets/generated/sprites/map must be registered with map_stage. Only runtime maps may be referenced by gameplay scenes; candidate and trial maps stay out of .tscn files until promoted.",
 			"Baked-map pixel occlusion can use Polygon2D with scripts/world/polygon_texture_occluder.gd: the polygon samples a configured map/background Sprite2D texture, such as TownScene/MapLayers/Sprite2D, with matching UVs and renders above the player, while collision remains separate StaticBody2D geometry.",
 			"CameraBounds uses a StaticBody2D root with a non-player collision layer as editable rectangle data for camera limits; TownScene also enables create_boundary_walls on CameraBounds instead of maintaining separate top/left/right/bottom Wall nodes."
 		]
@@ -1932,6 +1939,7 @@
 		"location.protagonist_home_fields_1920": {
 			"type": "raster_map_visual_layer",
 			"status": "available",
+			"map_stage": "candidate",
 			"path": "res://assets/generated/sprites/locations/home/protagonist_home_fields_1920x1080.png",
 			"source_prompt": "res://assets/source/map_prompts_2026_06_09/protagonist_home_fields_1920x1080.prompt.txt",
 			"size": [
@@ -1962,6 +1970,7 @@
 		"location.township_1990s_wide_roads_1920": {
 			"type": "raster_map_visual_layer",
 			"status": "available",
+			"map_stage": "candidate",
 			"path": "res://assets/generated/sprites/locations/township/township_1990s_wide_roads_1920x1080.png",
 			"source_prompt": "res://assets/source/map_prompts_2026_06_10/township_1990s_wide_roads_1920x1080.prompt.txt",
 			"size": [
@@ -1991,6 +2000,7 @@
 		"location.town_map_runtime_3635": {
 			"type": "raster_map_visual_layer",
 			"status": "implemented",
+			"map_stage": "runtime",
 			"path": "res://assets/generated/sprites/map/down_map.png",
 			"size": [
 				3635,
@@ -2017,9 +2027,62 @@
 				"pixel_art"
 			]
 		},
+		"location.town_map_trial_clean_2026_06_10": {
+			"type": "raster_map_visual_layer",
+			"status": "trial",
+			"map_stage": "trial",
+			"path": "res://assets/generated/sprites/map/Gemini_Generated_Image_sebjzasebjzasebj-clean.png",
+			"size": [
+				1376,
+				768
+			],
+			"usage": [
+				"town_scene_trial_visual_reference",
+				"hybrid_map_visual_layer"
+			],
+			"used_by": [],
+			"anchor": "not_for_runtime_scene_wiring",
+			"collision": "none",
+			"notes": "Temporary clean township map proof-of-fit retained for comparison. Do not reference from runtime scenes unless promoted to a named runtime or candidate asset.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"trial",
+				"pixel_art"
+			]
+		},
+		"location.town_map_trial_export_2026_06_10": {
+			"type": "raster_map_visual_layer",
+			"status": "trial",
+			"map_stage": "trial",
+			"path": "res://assets/generated/sprites/map/export.png",
+			"size": [
+				2047,
+				2048
+			],
+			"usage": [
+				"town_scene_trial_visual_reference",
+				"hybrid_map_visual_layer"
+			],
+			"used_by": [],
+			"anchor": "not_for_runtime_scene_wiring",
+			"collision": "none",
+			"notes": "Temporary exported township map proof-of-fit retained for comparison. It was removed from TownScene runtime wiring on 2026-06-11; promote and rename before any future scene use.",
+			"tags": [
+				"locations",
+				"township",
+				"raster_map",
+				"visual_layer",
+				"trial",
+				"pixel_art"
+			]
+		},
 		"location.home_map_runtime_1024": {
 			"type": "raster_map_visual_layer",
 			"status": "implemented",
+			"map_stage": "runtime",
 			"path": "res://assets/generated/sprites/map/home_map.png",
 			"size": [
 				1024,
@@ -2048,6 +2111,7 @@
 		"location.house_map_runtime_1024": {
 			"type": "raster_map_visual_layer",
 			"status": "implemented",
+			"map_stage": "runtime",
 			"path": "res://assets/generated/sprites/map/house_map.png",
 			"size": [
 				1024,
@@ -2076,6 +2140,7 @@
 		"location.back_mountain_runtime_1024": {
 			"type": "raster_map_visual_layer",
 			"status": "implemented",
+			"map_stage": "runtime",
 			"path": "res://assets/generated/sprites/map/mountain.png",
 			"size": [
 				1024,

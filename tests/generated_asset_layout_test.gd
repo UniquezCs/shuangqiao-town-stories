@@ -9,6 +9,7 @@ const DISALLOWED_FILE_NAMES := [".DS_Store", "manifest.json", "contact_sheet.png
 const REQUIRED_CROP_TEXTURE_STATES := ["tilled", "seed_dry", "seed_watered", "growing_dry", "growing_watered", "ready"]
 const REQUIRED_REGISTERED_GENERATED_DIRS := [
 	"res://assets/generated/sprites/locations",
+	"res://assets/generated/sprites/map",
 	"res://assets/generated/sprites/props/township",
 	"res://assets/generated/sprites/ui/intro",
 ]
@@ -20,6 +21,7 @@ func _ready() -> void:
 	_assert_generated_files_are_final_assets(GENERATED_DIR)
 	_assert_generated_assets_are_registered()
 	_assert_registered_resource_paths_exist()
+	_assert_trial_map_assets_are_not_wired_into_scenes()
 	_assert_configured_item_icons_exist()
 	_assert_seed_shop_crop_textures_exist()
 	get_tree().quit()
@@ -128,6 +130,26 @@ func _assert_registered_resource_paths_exist() -> void:
 	_assert_true(missing.is_empty(), "configs/assets.json 中存在无效 res:// 路径：%s" % str(missing))
 
 
+func _assert_trial_map_assets_are_not_wired_into_scenes() -> void:
+	var trial_paths := {}
+	_collect_trial_map_paths(ConfigLoader.assets, trial_paths)
+	if trial_paths.is_empty():
+		return
+
+	var scene_files := _collect_files_with_extension("res://scenes", "tscn")
+	var scene_text_by_path := {}
+	for scene_path in scene_files:
+		scene_text_by_path[scene_path] = FileAccess.get_file_as_string(scene_path)
+
+	var wired := []
+	for path in trial_paths.keys():
+		for scene_path in scene_files:
+			if str(scene_text_by_path[scene_path]).contains(str(path)):
+				wired.append("%s -> %s" % [path, scene_path])
+	wired.sort()
+	_assert_true(wired.is_empty(), "trial 地图资源不能直接挂载到场景：%s" % str(wired))
+
+
 func _collect_generated_paths(value: Variant, out_paths: Dictionary) -> void:
 	match typeof(value):
 		TYPE_DICTIONARY:
@@ -156,6 +178,23 @@ func _collect_res_paths(value: Variant, out_paths: Dictionary) -> void:
 				out_paths[path] = true
 
 
+func _collect_trial_map_paths(value: Variant, out_paths: Dictionary) -> void:
+	if typeof(value) != TYPE_DICTIONARY:
+		return
+	var dict := value as Dictionary
+	for key in dict.keys():
+		var child = dict[key]
+		if typeof(child) != TYPE_DICTIONARY:
+			_collect_trial_map_paths(child, out_paths)
+			continue
+		var child_dict := child as Dictionary
+		if str(child_dict.get("map_stage", "")) == "trial":
+			var path := str(child_dict.get("path", ""))
+			if path.begins_with("res://assets/generated/sprites/map/"):
+				out_paths[path] = true
+		_collect_trial_map_paths(child_dict, out_paths)
+
+
 func _collect_unregistered_generated_assets(dir_path: String, registered_paths: Dictionary, missing: Array) -> void:
 	var dir := DirAccess.open(dir_path)
 	_assert_true(dir != null, "无法读取目录：%s" % dir_path)
@@ -170,6 +209,23 @@ func _collect_unregistered_generated_assets(dir_path: String, registered_paths: 
 				missing.append(path)
 		entry = dir.get_next()
 	dir.list_dir_end()
+
+
+func _collect_files_with_extension(dir_path: String, extension: String) -> Array:
+	var files := []
+	var dir := DirAccess.open(dir_path)
+	_assert_true(dir != null, "无法读取目录：%s" % dir_path)
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		var path := "%s/%s" % [dir_path, entry]
+		if dir.current_is_dir():
+			files.append_array(_collect_files_with_extension(path, extension))
+		elif entry.get_extension() == extension:
+			files.append(path)
+		entry = dir.get_next()
+	dir.list_dir_end()
+	return files
 
 
 func _assert_resource_path_exists(path: String, message: String) -> void:

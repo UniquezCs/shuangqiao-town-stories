@@ -1,25 +1,32 @@
+@tool
 extends Polygon2D
 
-@export var source_sprite_path := NodePath("")
-@export var force_opaque_white := true
-@export var sync_in_editor := false
+@export var source_sprite_path := NodePath(""):
+	set(value):
+		source_sprite_path = value
+		_refresh_deferred()
+@export var force_opaque_white := true:
+	set(value):
+		force_opaque_white = value
+		_refresh_deferred()
+@export var sync_in_editor := false:
+	set(value):
+		sync_in_editor = value
+		set_process(Engine.is_editor_hint() and sync_in_editor)
 
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
 	refresh_occluder()
 	call_deferred("refresh_occluder")
+	set_process(Engine.is_editor_hint() and sync_in_editor)
 
 
 func _process(_delta: float) -> void:
-	if not Engine.is_editor_hint() and sync_in_editor:
+	if Engine.is_editor_hint() and sync_in_editor:
 		refresh_occluder()
 
 
 func refresh_occluder() -> void:
-	if Engine.is_editor_hint():
-		return
 	var source_sprite := _get_source_sprite()
 	if source_sprite == null or source_sprite.texture == null:
 		return
@@ -62,26 +69,25 @@ func _sprite_local_to_texture_uv(source_sprite: Sprite2D, sprite_local_point: Ve
 
 
 func _refresh_deferred() -> void:
-	if not Engine.is_editor_hint() and is_inside_tree():
+	if is_inside_tree():
 		call_deferred("refresh_occluder")
 
 
 func _get_source_sprite() -> Sprite2D:
-	if Engine.is_editor_hint():
-		return null
-	if not is_inside_tree():
-		return null
-	var scene_root := owner
-	if scene_root == null or not scene_root.is_inside_tree():
-		return null
-	var parent_node := get_parent()
-	if parent_node == null or not parent_node.is_inside_tree():
-		return null
-
 	if not source_sprite_path.is_empty():
 		var configured_sprite := get_node_or_null(source_sprite_path) as Sprite2D
 		if configured_sprite != null:
 			return configured_sprite
+
+	var tree := get_tree()
+	if tree == null:
+		return null
+
+	var scene_root := tree.edited_scene_root if Engine.is_editor_hint() else owner
+	if scene_root == null:
+		scene_root = tree.current_scene
+	if scene_root == null:
+		return null
 
 	for path in [
 		NodePath("MapLayers/Visual"),

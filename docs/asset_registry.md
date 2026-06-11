@@ -7,6 +7,7 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 
 - `implemented`: currently used by scenes, scripts, or configs.
 - `available`: asset exists in the repository but is not wired into gameplay yet.
+- `trial`: temporary proof-of-fit asset kept for comparison only; it must not be wired into runtime scenes.
 - `placeholder`: gameplay uses a temporary or semantically imperfect asset.
 - `missing`: design needs the asset, but no suitable asset is registered.
 
@@ -45,6 +46,10 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Large raster maps use a hybrid setup: `Sprite2D` background chunks provide
   the visual map, while exits, collision, navigation, and interactions stay in
   separate gameplay nodes or logic layers.
+- Raster maps must carry a `map_stage`: `runtime` maps may be referenced by
+  scenes, `candidate` maps are available for design review, and `trial` maps
+  are temporary proof-of-fit references that must stay out of `.tscn` files
+  until promoted.
 - Baked-map pixel occlusion can use `Polygon2D` with
   `scripts/world/polygon_texture_occluder.gd`: the polygon samples a configured
   map/background `Sprite2D` texture, such as `TownScene/MapLayers/Sprite2D`,
@@ -187,6 +192,8 @@ opens at the player's position.
 | `location.protagonist_home_fields_1920` | available | `protagonist_home_fields_1920x1080.png` | Standalone `1920x1080` protagonist-home visual layer candidate matching the supplied township map style, with a rural house, courtyard, crop fields, vegetable plots, trees, dirt paths, fences, shed, well, haystack, and stream edge details. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.township_1990s_wide_roads_1920` | available | `township_1990s_wide_roads_1920x1080.png` | Standalone `1920x1080` township visual layer candidate with wide empty roads, shopfronts, civic buildings, courtyards, roadside trees, water/drainage edges, and building signs. Gameplay logic should be supplied by separate TileMapLayer or scene nodes. |
 | `location.town_map_runtime_3635` | implemented | `down_map.png` | Runtime township raster map referenced by `scenes/town_scene.tscn` and `scenes/npc_endpoint.tscn`; gameplay logic remains in separate scene nodes and camera bounds define the visible contract. |
+| `location.town_map_trial_clean_2026_06_10` | trial | `Gemini_Generated_Image_sebjzasebjzasebj-clean.png` | Temporary clean township map proof-of-fit retained only for comparison; do not wire into runtime scenes unless promoted and renamed. |
+| `location.town_map_trial_export_2026_06_10` | trial | `export.png` | Temporary exported township map proof-of-fit removed from `TownScene` runtime wiring on 2026-06-11; promote and rename before any future scene use. |
 | `location.home_map_runtime_1024` | implemented | `home_map.png` | Runtime home raster map referenced by `scenes/home_scene.tscn`; gameplay logic remains in separate scene nodes. |
 | `location.house_map_runtime_1024` | implemented | `house_map.png` | Runtime house raster map referenced by `scenes/house_scene.tscn`; gameplay logic remains in separate scene nodes. |
 | `location.back_mountain_runtime_1024` | implemented | `mountain.png` | Runtime back-mountain raster map referenced by `scenes/back_mountain_scene.tscn`; current `BoundaryWalls` remain the playable logic bounds. |

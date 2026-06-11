@@ -55,5 +55,9 @@ for test_scene in "${tests[@]}"; do
 		rm -f "$output_file"
 		exit 1
 	fi
+	if grep '^WARNING:' "$output_file" | grep -Ei "invalid UID|using text path instead|Unable to load resource by UID|Failed to load resource by UID" >/dev/null; then
+		rm -f "$output_file"
+		exit 1
+	fi
 	rm -f "$output_file"
 done
