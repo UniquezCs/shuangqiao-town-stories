@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godot 项目每日简报 - 2026-06-12</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f5f1e8;
+  --paper: #fffdf8;
+  --ink: #1f2933;
+  --muted: #5b6875;
+  --line: #d8cdbd;
+  --accent: #9c4f2f;
+  --accent-soft: #f4dfd4;
+  --good: #2f6b3b;
+  --warn: #9a6a16;
+  --bad: #9f2d2d;
+  --shadow: 0 18px 40px rgba(72, 52, 32, 0.08);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(156, 79, 47, 0.12), transparent 28%),
+    linear-gradient(180deg, #f7f2e8 0%, #f1ebe0 100%);
+  color: var(--ink);
+}
+main {
+  width: min(1180px, calc(100vw - 32px));
+  margin: 24px auto 48px;
+}
+.hero, section {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+.hero {
+  padding: 28px 30px;
+  margin-bottom: 18px;
+}
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}
+.hero p {
+  margin: 6px 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: #6e2f16;
+  font-size: 13px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+}
+section {
+  padding: 22px 24px;
+}
+.span-12 { grid-column: span 12; }
+.span-8 { grid-column: span 8; }
+.span-6 { grid-column: span 6; }
+.span-4 { grid-column: span 4; }
+h2 {
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+h3 {
+  margin: 20px 0 10px;
+  font-size: 16px;
+}
+p, li {
+  line-height: 1.7;
+}
+ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.card {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffaf2;
+}
+.card strong {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+.note {
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+.note.warn { background: #fff2dd; color: #754d00; }
+.note.bad { background: #fce5e5; color: #7c1f1f; }
+.tag {
+  display: inline-block;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.p0 { background: #f9d8d8; color: var(--bad); }
+.p1 { background: #fde7c8; color: var(--warn); }
+.p2 { background: #e3efff; color: #275ea8; }
+.p3 { background: #e7f4e8; color: var(--good); }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  text-align: left;
+}
+th {
+  color: var(--muted);
+  font-weight: 700;
+  background: #faf5ec;
+}
+code {
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: #f4efe7;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.path-list li { word-break: break-all; }
+@media (max-width: 900px) {
+  .span-8, .span-6, .span-4 { grid-column: span 12; }
+  .hero { padding: 22px; }
+  section { padding: 20px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <article class="hero">
+    <h1>Godot 项目每日 HTML 简报</h1>
+    <p>日期：2026-06-12。回顾范围以上次自动化运行时间 <strong>2026-06-10 22:01:32 UTC</strong> 之后的提交、当前工作区改动与项目现状为准。</p>
+    <p>本简报将三类信息明确分开：<strong>已发生的项目改动</strong>、<strong>基于当前代码状态推断出的优化建议</strong>、<strong>结合现有系统提出的新增功能建议</strong>。</p>
+    <div class="meta">
+      <span class="chip">提交数：3</span>
+      <span class="chip">提交内文件变更：40</span>
+      <span class="chip">新增：9</span>
+      <span class="chip">修改：31</span>
+      <span class="chip">未提交改动：1 个场景 + 2 个未跟踪资源</span>
+    </div>
+  </article>
+
+  <div class="grid">
+    <section class="span-12">
+      <h2>概览</h2>
+      <div class="cards">
+        <div class="card">
+          <strong>插件侧</strong>
+          最近提交大量集中在 <code>addons/godot_ai</code>，重点是路径校验、资源路径兼容和配置原子写入权限保护。
+        </div>
+        <div class="card">
+          <strong>游戏侧</strong>
+          城镇地图资源治理加强，正式区分 <code>runtime / candidate / trial</code>，并把试验地图从运行时场景接线中清理出来。
+        </div>
+        <div class="card">
+          <strong>场景侧</strong>
+          多个地图场景统一到 <code>CameraBounds</code> 方案，城镇场景移除独立 Wall 节点，边界墙由脚本生成。
+        </div>
+        <div class="card">
+          <strong>文档侧</strong>
+          新增项目 README，补齐了玩法、目录结构、运行和测试入口的对外说明。
+        </div>
+      </div>
+      <div class="note bad">
+        当前工作区仍有未提交的 <code>scenes/town_scene.tscn</code> 改动，并引入未跟踪资源 <code>assets/generated/sprites/map/Image 4_stitched.png</code>。这导致本次 headless 测试在加载场景时出现 invalid UID warning 并中断。
+      </div>
+    </section>
+
+    <section class="span-8">
+      <h2>主要改动</h2>
+      <ul>
+        <li><strong>README 建立项目基线说明：</strong>新增 <code>README.md</code>，把《双桥镇往事》的题材、玩法闭环、核心场景、Autoload 架构、测试入口统一写清。</li>
+        <li><strong>地图资源分级与注册表收紧：</strong><code>configs/assets.json</code> 与 <code>docs/asset_registry.md</code> 新增 <code>trial</code> 状态和 <code>map_stage</code> 规则，要求 trial 地图不能直接挂入运行时场景。</li>
+        <li><strong>TownScene 运行时试验资源清线：</strong>提交中把 trial 地图从 <code>scenes/town_scene.tscn</code> 的正式接线移除，保留 runtime 地图为当前正式视觉层。</li>
+        <li><strong>CameraBounds 方案落地：</strong><code>scripts/world/camera_bounds.gd</code> 继续作为场景镜头边界与 BoundaryWalls 生成入口，相关测试覆盖同步补上。</li>
+        <li><strong>资产与场景测试增强：</strong><code>tests/generated_asset_layout_test.gd</code> 增加对 generated 资源登记完整性、trial 地图误接线的检查；<code>tools/run_godot_headless_tests.sh</code> 对 UID 警告更严格。</li>
+        <li><strong>Godot AI 插件增强：</strong><code>addons/godot_ai/utils/path_validator.gd</code>、<code>addons/godot_ai/handlers/material_handler.gd</code> 等处理 <code>uid://</code>、<code>user://</code>、loadable path 验证；<code>addons/godot_ai/clients/_atomic_write.gd</code> 增强配置文件权限保留。</li>
+      </ul>
+    </section>
+
+    <section class="span-4">
+      <h2>提交摘要</h2>
+      <table>
+        <thead>
+          <tr><th>时间</th><th>提交</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2026-06-11 12:02 +0800</td><td><code>3d6c841</code> snapshot daily brief baseline</td></tr>
+          <tr><td>2026-06-11 12:08 +0800</td><td><code>6191d6a</code> clean town map trial asset wiring</td></tr>
+          <tr><td>2026-06-11 14:45 +0800</td><td><code>9e3a5be</code> 新增游戏项目 README</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="span-6">
+      <h2>新增内容</h2>
+      <ul>
+        <li><code>README.md</code> 新增并成为项目入口说明文档。</li>
+        <li>新增城镇候选大图资源：<code>assets/generated/sprites/locations/township/township_1990s_wide_roads_1920x1080.png</code>。</li>
+        <li>新增两份 trial 地图资源：<code>assets/generated/sprites/map/Gemini_Generated_Image_sebjzasebjzasebj-clean.png</code>、<code>assets/generated/sprites/map/export.png</code>。</li>
+        <li>新增提示词追溯文件：<code>assets/source/map_prompts_2026_06_10/township_1990s_wide_roads_1920x1080.prompt.txt</code>。</li>
+        <li>新增昨日简报归档：<code>docs/daily-briefs/2026-06-11.html</code>。</li>
+      </ul>
+    </section>
+
+    <section class="span-6">
+      <h2>修改内容</h2>
+      <ul>
+        <li><code>configs/assets.json</code> 扩展资源治理规则，并登记新地图候选/试验资源。</li>
+        <li><code>docs/asset_registry.md</code> 同步补足 map stage 说明。</li>
+        <li><code>scenes/home_scene.tscn</code>、<code>scenes/house_scene.tscn</code>、<code>scenes/back_mountain_scene.tscn</code>、<code>scenes/town_scene.tscn</code> 对齐 CameraBounds 节点方案。</li>
+        <li><code>scripts/world/polygon_texture_occluder.gd</code> 与 TownScene 多个 Polygon2D UV 跟随场景地图接线更新。</li>
+        <li><code>addons/godot_ai</code> 下 20 余个脚本调整路径验证、资源加载和客户端写入安全。</li>
+      </ul>
+    </section>
+
+    <section class="span-12">
+      <h2>删除或废弃内容</h2>
+      <ul>
+        <li>本回顾范围内没有 git 级别的文件删除。</li>
+        <li>但从行为上看，<strong>trial 地图资源已被明确降级为“仅比较用途”</strong>，并从 TownScene 正式运行时接线中移除，不再作为当前正式场景资源。</li>
+        <li>TownScene 旧式独立边界墙节点的职责被 CameraBounds 统一接管，属于结构性废弃而非文件删除。</li>
+      </ul>
+    </section>
+
+    <section class="span-12">
+      <h2>可能影响</h2>
+      <ul>
+        <li><strong>测试门禁更严格：</strong><code>tools/run_godot_headless_tests.sh</code> 现在会把 invalid UID / text path fallback 视为失败，能更早暴露资源导入元数据问题。</li>
+        <li><strong>地图迭代流程更安全：</strong>trial 资源不再允许直接进入运行时场景，减少“试验图误上线”的风险。</li>
+        <li><strong>场景边界更一致：</strong><code>scripts/main.gd</code> 在世界切换后统一应用 <code>camera_bounds</code> 分组节点，可减少多场景相机限制配置漂移。</li>
+        <li><strong>当前工作区存在回归风险：</strong>未提交的 TownScene 切到了新的 <code>Image 4_stitched.png</code>，但 import UID 还未稳定，已直接影响 headless 测试。</li>
+        <li><strong>插件配置安全性提升：</strong><code>addons/godot_ai/clients/_atomic_write.gd</code> 明确保留 0600 等权限模式，降低本地敏感配置被错误放宽权限的风险。</li>
+      </ul>
+      <div class="note warn">
+        本次验证执行了 <code>tools/run_godot_headless_tests.sh</code>，在 <code>tests/back_mountain_scene_test.tscn</code> 运行前后加载 TownScene 时因 <code>Image 4_stitched.png</code> 的 invalid UID warning 失败；因此“测试通过”不能作为本轮项目状态结论。
+      </div>
+    </section>
+
+    <section class="span-12">
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>决定当前未提交 TownScene 改动是否要升级为正式候选地图；如果要保留，需要重新导入并稳定 <code>Image 4_stitched.png</code> 的 UID 元数据。</li>
+        <li>若该 stitched 图只是临时试验，建议撤出运行时场景，继续遵守 <code>trial</code> 资源不接线规则。</li>
+        <li>补一轮以 TownScene 为中心的场景/资源验证，确认 Polygon2D 遮挡 UV、CameraBounds、RoadLayer 和 NPC endpoint 仍对齐。</li>
+        <li>评估 <code>scripts/main.gd</code>、<code>scripts/autoload/population_flow.gd</code>、<code>scripts/world/customer.gd</code> 等大文件的职责拆分窗口，避免后续系统继续堆叠。</li>
+      </ul>
+    </section>
+
+    <section class="span-12">
+      <h2>已发生的项目改动：关键文件路径</h2>
+      <ul class="path-list">
+        <li><code>README.md</code></li>
+        <li><code>configs/assets.json</code></li>
+        <li><code>docs/asset_registry.md</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>scripts/world/camera_bounds.gd</code></li>
+        <li><code>scripts/world/polygon_texture_occluder.gd</code></li>
+        <li><code>tests/generated_asset_layout_test.gd</code></li>
+        <li><code>tests/camera_bounds_test.gd</code></li>
+        <li><code>tools/run_godot_headless_tests.sh</code></li>
+        <li><code>addons/godot_ai/utils/path_validator.gd</code></li>
+        <li><code>addons/godot_ai/clients/_atomic_write.gd</code></li>
+      </ul>
+    </section>
+
+    <section class="span-12">
+      <h2>基于当前代码状态推断出的优化建议</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>优先级</th>
+            <th>依据</th>
+            <th>预期收益</th>
+            <th>建议落点</th>
+            <th>粗略成本</th>
+            <th>需先验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>清理 TownScene 试验资源接线与 UID 稳定性</td>
+            <td><span class="tag p0">P0</span></td>
+            <td>当前未提交 <code>scenes/town_scene.tscn</code> 引用了未跟踪的 <code>Image 4_stitched.png</code>，headless 测试已因 invalid UID warning 中断。</td>
+            <td>恢复测试门禁稳定性，避免试验资源污染正式场景。</td>
+            <td><code>scenes/town_scene.tscn</code>、<code>assets/generated/sprites/map/</code>、<code>configs/assets.json</code></td>
+            <td>0.5-1 天</td>
+            <td>是，需先确认该图是否要进入候选流转。</td>
+          </tr>
+          <tr>
+            <td>拆分场景加载与日循环主控</td>
+            <td><span class="tag p1">P1</span></td>
+            <td><code>scripts/main.gd</code> 已承担场景切换、时间推进、睡眠过场、UI 创建、相机应用和玩法入口，职责明显过多。</td>
+            <td>降低回归面，后续扩展剧情、任务、过场或新场景时更容易定位问题。</td>
+            <td><code>scripts/main.gd</code>，可拆为 world loader / day flow / overlay controller</td>
+            <td>2-4 天</td>
+            <td>是，需先梳理与 <code>SignalBus</code>、<code>GameState</code> 的实际耦合边界。</td>
+          </tr>
+          <tr>
+            <td>收束 PopulationFlow 的场景模板和运行时双态</td>
+            <td><span class="tag p1">P1</span></td>
+            <td><code>scripts/autoload/population_flow.gd</code> 同时维护后台模板世界、可见世界、endpoint 收集、tick、日志与测试注入，状态面较宽。</td>
+            <td>减少人口流模拟与场景实例生命周期互相牵连的风险，方便后续做更细的人群行为。</td>
+            <td><code>scripts/autoload/population_flow.gd</code>、<code>scripts/world/population_flow_spawner.gd</code></td>
+            <td>2-3 天</td>
+            <td>是，需先确认后台模板世界是否仍是必需设计。</td>
+          </tr>
+          <tr>
+            <td>把顾客行为状态机从单文件抽离</td>
+            <td><span class="tag p1">P1</span></td>
+            <td><code>scripts/world/customer.gd</code> 已接近 750 行，混合移动、卡住处理、购买交互、倒计时、对话反馈和人群画像。</td>
+            <td>提升可维护性与测试粒度，方便为顾客追加排队、回头客、举报、讨价还价等行为。</td>
+            <td><code>scripts/world/customer.gd</code>，可拆为 movement / purchase flow / dialogue feedback</td>
+            <td>3-5 天</td>
+            <td>是，需先用现有顾客行为补足回归测试。</td>
+          </tr>
+          <tr>
+            <td>为地图逻辑层建立专门的编辑检查清单</td>
+            <td><span class="tag p2">P2</span></td>
+            <td>当前规则写在 <code>docs/development_baseline.md</code>，但 TownScene 依赖 RoadLayer、CameraBounds、NPC endpoint、遮挡 UV 的对齐，人工改图容易漏项。</td>
+            <td>减少地图迭代时的隐性错误，提升场景组织一致性。</td>
+            <td><code>docs/development_baseline.md</code>、<code>tests/generated_asset_layout_test.gd</code>、TownScene 编辑流程</td>
+            <td>1-2 天</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>扩展事件驱动调试摘要，替代分散日志排查</td>
+            <td><span class="tag p2">P2</span></td>
+            <td>已有 <code>scripts/debug/gameplay_debug_log.gd</code>，但经营循环涉及顾客决策、人口流、城管处罚、日结，跨系统复盘仍偏手工。</td>
+            <td>更快定位平衡性和剧情流程问题，便于每日回顾和自动化诊断。</td>
+            <td><code>scripts/debug/</code>、<code>scripts/autoload/game_state.gd</code>、<code>scripts/world/stall.gd</code></td>
+            <td>1-3 天</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>把关键经营系统测试扩展到完整日循环</td>
+            <td><span class="tag p2">P2</span></td>
+            <td>当前已有场景边界、资源布局、标题页、库存操作等测试，但对“种植-摆摊-结算-存档恢复”的跨日闭环覆盖仍有限。</td>
+            <td>让后续加作物、调价格、扩地图时更可控。</td>
+            <td><code>tests/</code>、<code>scripts/autoload/game_state.gd</code>、<code>scripts/autoload/save_manager.gd</code></td>
+            <td>2-4 天</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>统一 generated 资源收口与命名规范</td>
+            <td><span class="tag p3">P3</span></td>
+            <td>目前注册表已经收紧，但目录中仍存在 trial、candidate、runtime 三类地图并存，命名风格混杂。</td>
+            <td>降低资源追踪成本，减轻长期维护负担。</td>
+            <td><code>assets/generated/</code>、<code>configs/assets.json</code>、<code>docs/asset_registry.md</code></td>
+            <td>1-2 天</td>
+            <td>否</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="span-12">
+      <h2>创意性新增功能建议</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>优先级</th>
+            <th>依据</th>
+            <th>预期收益</th>
+            <th>建议落点</th>
+            <th>粗略成本</th>
+            <th>需先验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>顾客排队与摊前拥挤反馈</td>
+            <td><span class="tag p1">P1</span></td>
+            <td>当前顾客已具备等待玩家确认购买、倒计时和摊位影响范围；再往前一步就是把“单客购买”升级为可见的摊前热度。</td>
+            <td>直接增强摆摊手感，让“选点”和“补货速度”更有经营张力。</td>
+            <td><code>scripts/world/customer.gd</code>、<code>scripts/world/stall.gd</code>、<code>scripts/ui/circular_countdown_indicator.gd</code></td>
+            <td>3-5 天</td>
+            <td>是，需先验证现有路径与碰撞是否能承受排队站位。</td>
+          </tr>
+          <tr>
+            <td>不同时间窗的摊位热点竞争</td>
+            <td><span class="tag p1">P1</span></td>
+            <td>项目已有 <code>PopulationFlow</code>、学校/工厂时间窗和多个 endpoint，适合把“上午/放学/下班”转成更明确的客流热点。</td>
+            <td>强化“赶时间、换点位、抢人流”的核心经营抉择。</td>
+            <td><code>scripts/autoload/population_flow.gd</code>、<code>scripts/world/stall_spot.gd</code>、<code>configs/flow_preferences.json</code></td>
+            <td>2-4 天</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>城管巡逻预警与临时躲避玩法</td>
+            <td><span class="tag p1">P1</span></td>
+            <td>城管系统已经存在，下一步最自然的补足是“听到风声提前收摊/绕路/躲进巷子”，而不是只有被追后罚款。</td>
+            <td>让城镇地图更有戏剧张力，也让玩家的风险管理更主动。</td>
+            <td><code>scripts/world/chengguan.gd</code>、<code>scripts/world/chengguan_spawner.gd</code>、<code>scripts/ui/hud.gd</code></td>
+            <td>3-6 天</td>
+            <td>是，需先验证城管路线与可躲避空间是否足够。</td>
+          </tr>
+          <tr>
+            <td>日结后“家庭开支/压力事件”层</td>
+            <td><span class="tag p2">P2</span></td>
+            <td>当前日结与自动存档已经完成，但游戏主题强调现金流压力与生活责任，尚缺把收入转化为长期压力的机制。</td>
+            <td>增强题材表达，让赚钱不只是数字上涨，而是支撑家庭与再投资决策。</td>
+            <td><code>scripts/autoload/game_state.gd</code>、<code>scripts/ui/daily_summary_panel.gd</code>、新增事件配置</td>
+            <td>2-5 天</td>
+            <td>是，需先确定事件强度不会破坏原型节奏。</td>
+          </tr>
+          <tr>
+            <td>作物与顾客偏好的季节化/天气化波动</td>
+            <td><span class="tag p2">P2</span></td>
+            <td><code>PopulationFlow</code> 已预留 weather/day tag override，顾客偏好和作物配置已是 JSON 驱动，具备扩展条件。</td>
+            <td>让重复摆摊不那么单调，提升长期经营策略深度。</td>
+            <td><code>configs/customer_preferences.json</code>、<code>configs/crops.json</code>、<code>scripts/autoload/population_flow.gd</code></td>
+            <td>3-5 天</td>
+            <td>是，需先验证配置复杂度是否可控。</td>
+          </tr>
+          <tr>
+            <td>地图内“熟客/固定关系”系统</td>
+            <td><span class="tag p2">P2</span></td>
+            <td>当前顾客已有人群画像、对话和购买判断，向前扩展成熟客记忆最贴近现有结构。</td>
+            <td>提升角色感与城镇生活感，带来回访率、口碑和特殊需求等中期目标。</td>
+            <td><code>scripts/world/customer.gd</code>、<code>scripts/world/customer_dialogue_lines.gd</code>、<code>scripts/autoload/save_manager.gd</code></td>
+            <td>4-6 天</td>
+            <td>是，需先确定保存粒度与数据体量。</td>
+          </tr>
+          <tr>
+            <td>店铺升级前置的“固定摊位经营许可证”</td>
+            <td><span class="tag p3">P3</span></td>
+            <td>项目长线目标包括从摆摊到店主，现阶段可先做一个小中间层，让玩家从临时摊转向固定摊位。</td>
+            <td>给长期成长链路增加里程碑，衔接未来店铺化经营。</td>
+            <td><code>configs/upgrades.json</code>、<code>scripts/world/stall_spot.gd</code>、<code>scripts/ui/settlement_panel.gd</code></td>
+            <td>3-5 天</td>
+            <td>否</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="span-12">
+      <h2>用于回顾的关键文件路径</h2>
+      <ul class="path-list">
+        <li><code>scripts/main.gd</code></li>
+        <li><code>scripts/autoload/game_state.gd</code></li>
+        <li><code>scripts/autoload/population_flow.gd</code></li>
+        <li><code>scripts/world/customer.gd</code></li>
+        <li><code>scripts/world/stall.gd</code></li>
+        <li><code>scripts/world/camera_bounds.gd</code></li>
+        <li><code>scripts/world/polygon_texture_occluder.gd</code></li>
+        <li><code>scenes/town_scene.tscn</code></li>
+        <li><code>configs/assets.json</code></li>
+        <li><code>docs/development_baseline.md</code></li>
+        <li><code>tests/generated_asset_layout_test.gd</code></li>
+        <li><code>tools/run_godot_headless_tests.sh</code></li>
+      </ul>
+    </section>
+  </div>
+</main>
+</body>
+</html>
