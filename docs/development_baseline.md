@@ -138,6 +138,21 @@ Detailed incident notes and prevention rules are maintained in
   `RoadLayer.get_used_cells()`, to build route data, but must not write or
   auto-fill map logic tiles during normal gameplay. Logical map editing belongs
   in the Godot editor or an explicit map-authoring tool.
+- TownScene map edits must pass this manual logic-layer checklist before
+  commit:
+  - The runtime visual map must be a `map_stage: runtime` asset registered in
+    `configs/assets.json`; candidate and trial map assets must not be wired
+    into `.tscn` files.
+  - `MapLayers/RoadLayer` must still cover every NPC endpoint route that
+    spawners can choose.
+  - `CameraBounds` must enclose the visible runtime map and remain in the
+    `camera_bounds` group.
+  - `NpcEndpoint` positions, `endpoint_type` values, and building visuals must
+    remain aligned after any visual-layer move or scale change.
+  - `Polygon2D` occluders using `polygon_texture_occluder.gd` must still sample
+    the active runtime map sprite, with UVs rechecked after map texture,
+    position, or scale changes.
+  - Run `tools/run_godot_headless_tests.sh tests/generated_asset_layout_test.tscn tests/camera_bounds_test.tscn tests/town_layer_structure_test.tscn` after editing TownScene map visuals or logic layers.
 
 ### Gameplay Node Design
 

@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://dev0tsamqw0cu" path="res://scripts/world/scene_exit.gd" id="2_exit"]
 [ext_resource type="TileSet" uid="uid://cg7i1ismlck1w" path="res://assets/generated/tilesets/rural_town_32/rural_town_tileset_32.tres" id="2_jlhm2"]
 [ext_resource type="Script" uid="uid://cd8arr3p3btot" path="res://scripts/world/stall_area_layer.gd" id="3_stall_area_layer"]
-[ext_resource type="Texture2D" uid="uid://ccctx05kb5uvn" path="res://assets/generated/sprites/map/Image 4_stitched.png" id="5_aiiwr"]
 [ext_resource type="Texture2D" uid="uid://dpwhuf6vsr2hq" path="res://assets/generated/sprites/map/down_map.png" id="5_wgmto"]
 [ext_resource type="Script" uid="uid://dnm2r0fwdfap1" path="res://scripts/world/town_random_customer_spawner.gd" id="6_random_spawner"]
 [ext_resource type="Script" uid="uid://4ccnlbl1wje2" path="res://scripts/world/population_flow_spawner.gd" id="7_population_flow_spawner"]
@@ -122,7 +121,7 @@ tile_set = ExtResource("2_jlhm2")
 [node name="Sprite2D" type="Sprite2D" parent="MapLayers" unique_id=1656449052]
 position = Vector2(2171, 2516)
 scale = Vector2(0.59294945, 0.6562169)
-texture = ExtResource("5_aiiwr")
+texture = ExtResource("5_wgmto")
 
 [node name="RoadLayer" type="TileMapLayer" parent="MapLayers" unique_id=332799103]
 z_index = -30
