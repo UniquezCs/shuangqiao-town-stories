@@ -1,9 +1,9 @@
-extends SceneTree
+extends Node
 
 const CustomerSchedule := preload("res://scripts/world/customer_schedule.gd")
 
 
-func _init() -> void:
+func _ready() -> void:
 	_assert_equal(CustomerSchedule.real_seconds_to_game_minutes(25.0), 5, "25 秒应等于游戏内 5 分钟")
 
 	_assert_equal(
@@ -52,7 +52,7 @@ func _init() -> void:
 			"学生刷新时间必须落在上下学窗口"
 		)
 
-	quit()
+	get_tree().quit()
 
 
 func _contains_varied_intervals(plan: Array) -> bool:
@@ -79,10 +79,10 @@ func _contains_multiple_spawns_in_one_minute(plan: Array) -> bool:
 func _assert_equal(actual: Variant, expected: Variant, message: String) -> void:
 	if actual != expected:
 		push_error("%s。实际：%s，期望：%s" % [message, str(actual), str(expected)])
-		quit(1)
+		get_tree().quit(1)
 
 
 func _assert_true(condition: bool, message: String) -> void:
 	if not condition:
 		push_error(message)
-		quit(1)
+		get_tree().quit(1)

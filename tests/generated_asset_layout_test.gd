@@ -21,7 +21,8 @@ func _ready() -> void:
 	_assert_generated_files_are_final_assets(GENERATED_DIR)
 	_assert_generated_assets_are_registered()
 	_assert_registered_resource_paths_exist()
-	_assert_trial_map_assets_are_not_wired_into_scenes()
+	_assert_registered_map_assets_have_stage()
+	_assert_non_runtime_map_assets_are_not_wired_into_scenes()
 	_assert_configured_item_icons_exist()
 	_assert_seed_shop_crop_textures_exist()
 	get_tree().quit()
@@ -130,10 +131,20 @@ func _assert_registered_resource_paths_exist() -> void:
 	_assert_true(missing.is_empty(), "configs/assets.json 中存在无效 res:// 路径：%s" % str(missing))
 
 
-func _assert_trial_map_assets_are_not_wired_into_scenes() -> void:
-	var trial_paths := {}
-	_collect_trial_map_paths(ConfigLoader.assets, trial_paths)
-	if trial_paths.is_empty():
+func _assert_registered_map_assets_have_stage() -> void:
+	var missing_stage := []
+	var invalid_stage := []
+	_collect_map_asset_stage_issues(ConfigLoader.assets, missing_stage, invalid_stage)
+	missing_stage.sort()
+	invalid_stage.sort()
+	_assert_true(missing_stage.is_empty(), "地图资源必须登记 map_stage：%s" % str(missing_stage))
+	_assert_true(invalid_stage.is_empty(), "地图资源 map_stage 只能是 runtime/candidate/trial：%s" % str(invalid_stage))
+
+
+func _assert_non_runtime_map_assets_are_not_wired_into_scenes() -> void:
+	var non_runtime_paths := {}
+	_collect_non_runtime_map_paths(ConfigLoader.assets, non_runtime_paths)
+	if non_runtime_paths.is_empty():
 		return
 
 	var scene_files := _collect_files_with_extension("res://scenes", "tscn")
@@ -142,12 +153,12 @@ func _assert_trial_map_assets_are_not_wired_into_scenes() -> void:
 		scene_text_by_path[scene_path] = FileAccess.get_file_as_string(scene_path)
 
 	var wired := []
-	for path in trial_paths.keys():
+	for path in non_runtime_paths.keys():
 		for scene_path in scene_files:
 			if str(scene_text_by_path[scene_path]).contains(str(path)):
 				wired.append("%s -> %s" % [path, scene_path])
 	wired.sort()
-	_assert_true(wired.is_empty(), "trial 地图资源不能直接挂载到场景：%s" % str(wired))
+	_assert_true(wired.is_empty(), "candidate/trial 地图资源不能直接挂载到场景：%s" % str(wired))
 
 
 func _collect_generated_paths(value: Variant, out_paths: Dictionary) -> void:
@@ -178,21 +189,37 @@ func _collect_res_paths(value: Variant, out_paths: Dictionary) -> void:
 				out_paths[path] = true
 
 
-func _collect_trial_map_paths(value: Variant, out_paths: Dictionary) -> void:
+func _collect_map_asset_stage_issues(value: Variant, missing_stage: Array, invalid_stage: Array) -> void:
+	if typeof(value) != TYPE_DICTIONARY:
+		return
+	var dict := value as Dictionary
+	var path := str(dict.get("path", ""))
+	if path.begins_with("res://assets/generated/sprites/map/"):
+		var stage := str(dict.get("map_stage", ""))
+		if stage.is_empty():
+			missing_stage.append(path)
+		elif not ["runtime", "candidate", "trial"].has(stage):
+			invalid_stage.append("%s: %s" % [path, stage])
+	for child in dict.values():
+		_collect_map_asset_stage_issues(child, missing_stage, invalid_stage)
+
+
+func _collect_non_runtime_map_paths(value: Variant, out_paths: Dictionary) -> void:
 	if typeof(value) != TYPE_DICTIONARY:
 		return
 	var dict := value as Dictionary
 	for key in dict.keys():
 		var child = dict[key]
 		if typeof(child) != TYPE_DICTIONARY:
-			_collect_trial_map_paths(child, out_paths)
+			_collect_non_runtime_map_paths(child, out_paths)
 			continue
 		var child_dict := child as Dictionary
-		if str(child_dict.get("map_stage", "")) == "trial":
+		var stage := str(child_dict.get("map_stage", ""))
+		if not stage.is_empty() and stage != "runtime":
 			var path := str(child_dict.get("path", ""))
 			if path.begins_with("res://assets/generated/sprites/map/"):
 				out_paths[path] = true
-		_collect_trial_map_paths(child_dict, out_paths)
+		_collect_non_runtime_map_paths(child_dict, out_paths)
 
 
 func _collect_unregistered_generated_assets(dir_path: String, registered_paths: Dictionary, missing: Array) -> void:
