@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godot 项目每日简报 - 2026-06-14</title>
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --panel: #fffaf2;
+      --ink: #2f241c;
+      --muted: #6f6257;
+      --line: #d7c7b3;
+      --accent: #8a4b2a;
+      --accent-soft: #efe0d0;
+      --good: #2f6b3b;
+      --warn: #9a6a12;
+      --risk: #a33d2d;
+      --fact: #1f5a7a;
+      --infer: #7a4f9a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: linear-gradient(180deg, #efe7da 0%, var(--bg) 100%);
+      color: var(--ink);
+      font: 16px/1.7 "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      background: rgba(255, 250, 242, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px 32px 40px;
+      box-shadow: 0 18px 48px rgba(88, 61, 34, 0.12);
+    }
+    h1, h2, h3 { margin: 0 0 12px; line-height: 1.3; }
+    h1 { font-size: 32px; }
+    h2 {
+      margin-top: 28px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 22px;
+    }
+    h3 { margin-top: 18px; font-size: 18px; }
+    p { margin: 10px 0; }
+    ul { margin: 10px 0 0 20px; padding: 0; }
+    li { margin: 6px 0; }
+    code {
+      padding: 1px 6px;
+      border-radius: 6px;
+      background: #f2e8dc;
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.95em;
+    }
+    .meta, .card, .item, .note {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding: 14px;
+      margin: 18px 0 6px;
+    }
+    .meta div strong, .metric strong { display: block; font-size: 13px; color: var(--muted); }
+    .meta div span, .metric span { display: block; margin-top: 4px; font-weight: 600; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .card { padding: 16px 18px; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .metric {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #fcf5eb;
+      border: 1px solid var(--line);
+    }
+    .label {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-right: 8px;
+      color: #fff;
+    }
+    .fact { background: var(--fact); }
+    .infer { background: var(--infer); }
+    .idea { background: var(--good); }
+    .p0 { background: #7d1f1f; }
+    .p1 { background: #a44f11; }
+    .p2 { background: #8c6a16; }
+    .p3 { background: #406d46; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    th {
+      background: #f1e2d0;
+      font-size: 14px;
+    }
+    tr:last-child td { border-bottom: none; }
+    .item { padding: 16px 18px; margin-top: 14px; }
+    .item p { margin: 8px 0; }
+    .muted { color: var(--muted); }
+    .paths li { word-break: break-all; }
+    .foot { margin-top: 28px; font-size: 14px; color: var(--muted); }
+    @media (max-width: 900px) {
+      body { padding: 12px; }
+      main { padding: 20px 16px 28px; }
+      .meta, .grid, .metrics { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Godot 项目每日 HTML 简报</h1>
+    <p>本简报覆盖 <strong>2026-06-13 06:00:44 +08:00</strong>（上次自动化运行对应本地时间）到 <strong>2026-06-14</strong> 当前工作区状态，明确区分“已发生改动”“基于代码状态的优化建议”“创意性功能建议”。</p>
+
+    <section class="meta">
+      <div><strong>简报日期</strong><span>2026-06-14</span></div>
+      <div><strong>回顾窗口</strong><span>自 2026-06-13 06:00:44 +08:00 起</span></div>
+      <div><strong>工作区状态</strong><span>干净，无未提交改动</span></div>
+    </section>
+
+    <section class="metrics">
+      <div class="metric"><strong>窗口内提交</strong><span>2 个</span></div>
+      <div class="metric"><strong>新增文件</strong><span>8 个</span></div>
+      <div class="metric"><strong>修改文件</strong><span>9 个</span></div>
+      <div class="metric"><strong>删除文件</strong><span>0 个</span></div>
+    </section>
+
+    <h2>概览</h2>
+    <div class="grid">
+      <div class="card">
+        <p><span class="label fact">已发生改动</span>窗口内主要发生两类工作：一类是 <code>addons/godot_ai</code> 插件能力增强，新增了类信息查询、统一 Variant 序列化和模糊建议能力；另一类是测试补强，特别是把顾客时段调度测试改成可由标准 <code>.tscn</code> 场景驱动，并把地图资源治理规则进一步写进自动化测试。</p>
+        <p>当前没有未提交工作区变更，因此这次简报可以把“仓库事实”清晰收敛到两次提交及现有代码状态。</p>
+      </div>
+      <div class="card">
+        <p><span class="label infer">状态判断</span>项目主线仍是“经营闭环 + 人流/城管压迫 + 场景/资源规范化”三条线并行推进。代码侧已经有较多系统化基础：全局单例、人口流模拟、资源注册表、地图阶段管理、headless 测试集。</p>
+        <p>但从当前大文件分布、资源占位数和最近提交方向看，后续最值得优先做的是：补插件自动化测试、拆主流程脚本责任边界、把资源阶段治理扩展到更完整的开发工作流。</p>
+      </div>
+    </div>
+
+    <h2>主要改动</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>提交</th>
+          <th>核心内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2026-06-13 12:00 +08:00</td>
+          <td><code>9d0907d</code><br />chore: save daily brief baseline</td>
+          <td>扩展 <code>addons/godot_ai</code>：新增 <code>get_class_info</code> API、统一类元数据抽取、统一 Variant 序列化、命令模糊建议复用，同时把插件版本升到 <code>2.7.2</code>。</td>
+        </tr>
+        <tr>
+          <td>2026-06-13 12:05 +08:00</td>
+          <td><code>ce5ef96</code><br />test: gate map asset wiring</td>
+          <td>补了 <code>tests/customer_schedule_test.tscn</code>，并强化 <code>tests/generated_asset_layout_test.gd</code>，要求地图资源必须显式声明 <code>map_stage</code>，且非 runtime 地图不能直接挂进场景。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>新增内容</h2>
+    <div class="item">
+      <p><span class="label fact">已发生改动</span><strong>Godot AI 插件新增 API 元能力：</strong><code>addons/godot_ai/handlers/api_handler.gd</code> 新增 <code>get_class_info</code> 入口，可直接读取 ClassDB 类元信息，并在传错类名或 section 名时返回模糊建议。</p>
+      <p><strong>新增支撑模块：</strong><code>addons/godot_ai/utils/class_introspection.gd</code>、<code>fuzzy_suggestions.gd</code>、<code>variant_serializer.gd</code> 将“类信息抽取”“名称纠错”“Variant JSON 安全化”抽成可复用基础设施。</p>
+    </div>
+    <div class="item">
+      <p><span class="label fact">已发生改动</span><strong>测试入口补齐：</strong><code>tests/customer_schedule_test.tscn</code> 新增后，顾客时段刷新计划测试不再依赖脚本级 <code>SceneTree._init()</code>，而是变成常规节点场景，更符合现有 headless 测试运行方式。</p>
+    </div>
+    <div class="item">
+      <p><span class="label fact">已发生改动</span><strong>新增简报基线文件：</strong>仓库内新增了前一份日报 <code>docs/daily-briefs/2026-06-13.html</code>，便于后续自动化继续按文件产物做连续回顾。</p>
+    </div>
+
+    <h2>修改内容</h2>
+    <ul>
+      <li><span class="label fact">已发生改动</span><strong>命令相似度建议复用：</strong><code>addons/godot_ai/dispatcher.gd</code> 不再内联 similarity 排序，改为统一走 <code>FuzzySuggestions.rank()</code>。</li>
+      <li><span class="label fact">已发生改动</span><strong>节点属性序列化复用：</strong><code>addons/godot_ai/handlers/node_handler.gd</code> 把大量内联 Variant 序列化逻辑抽到 <code>VariantSerializer</code>，减少重复实现。</li>
+      <li><span class="label fact">已发生改动</span><strong>资源类信息查询增强：</strong><code>addons/godot_ai/handlers/resource_handler.gd</code> 改为通过 <code>ClassIntrospection.build()</code> 统一提供属性列表和可实例化子类信息。</li>
+      <li><span class="label fact">已发生改动</span><strong>插件注册项扩展：</strong><code>addons/godot_ai/plugin.gd</code> 与 <code>tool_catalog.gd</code> 把新的 API handler 和 <code>api</code> 域接入现有 MCP 工具目录。</li>
+      <li><span class="label fact">已发生改动</span><strong>地图治理测试更严格：</strong><code>tests/generated_asset_layout_test.gd</code> 把原来只检查 trial 贴图误接线，升级为同时检查 <code>map_stage</code> 合法性，以及所有 <code>candidate/trial</code> 地图不得接入运行时场景。</li>
+      <li><span class="label fact">已发生改动</span><strong>顾客调度测试运行方式修正：</strong><code>tests/customer_schedule_test.gd</code> 从 <code>extends SceneTree</code> 改成 <code>extends Node</code>，并统一使用 <code>get_tree().quit()</code> 收尾。</li>
+    </ul>
+
+    <h2>删除或废弃内容</h2>
+    <div class="card">
+      <p><span class="label fact">已发生改动</span>本窗口内没有 git 级别的文件删除。</p>
+      <p><span class="label infer">状态判断</span>但有两类“软废弃”很明确：</p>
+      <ul>
+        <li><code>node_handler.gd</code> 内联 Variant 序列化实现已被共享模块替代，后续应继续避免重新复制同类逻辑。</li>
+        <li>地图资源流程里“把非 runtime 地图直接挂进场景”的旧做法，随着 <code>generated_asset_layout_test.gd</code> 加严，实际上已经被进一步制度化废弃。</li>
+      </ul>
+    </div>
+
+    <h2>可能影响</h2>
+    <ul>
+      <li><strong>对 Godot AI 插件使用者：</strong>新增 <code>get_class_info</code> 后，外部调用方可以更稳定地查询 Godot 类结构，减少对不完整文档或错误类名的容错成本。</li>
+      <li><strong>对插件回归风险：</strong>本次插件改动横跨 <code>dispatcher</code>、<code>node_handler</code>、<code>resource_handler</code>、<code>plugin</code> 注册流程，但窗口内没有看到对应插件级自动化测试一起增加，说明功能增强已落地，保护网仍偏薄。</li>
+      <li><strong>对地图资源流程：</strong>地图贴图阶段管理从“文档约定”进一步变成“测试门禁”，能明显降低 candidate/trial 资源误入正式场景的风险。</li>
+      <li><strong>对测试可维护性：</strong>顾客调度测试改成标准测试场景后，更容易被统一测试脚本发现、筛选和单独执行。</li>
+    </ul>
+
+    <h2>待跟进事项</h2>
+    <ul>
+      <li>给 <code>addons/godot_ai</code> 新增的 <code>get_class_info</code>、模糊建议和序列化路径补 headless 或插件级回归测试。</li>
+      <li>继续清点 <code>configs/assets.json</code> 中的 <strong>10 个 placeholder</strong> 与 <strong>2 个 missing</strong> 条目，确认哪些会优先阻塞下一阶段玩法或 UI 打磨。</li>
+      <li>把地图资源阶段治理从“测试守门”继续推进到“命名与评审流程”，减少 <code>candidate</code>/<code>trial</code>/<code>runtime</code> 长期并存造成的理解成本。</li>
+      <li>决定主流程脚本是否进入拆分周期，目前 <code>scripts/main.gd</code>、<code>scripts/autoload/game_state.gd</code>、<code>scripts/autoload/population_flow.gd</code> 都已带有明显“单文件承载多职责”信号。</li>
+    </ul>
+
+    <h2>当前项目可优化点</h2>
+    <p class="muted">以下内容属于 <span class="label infer">状态推断</span>，不是本窗口内已发生改动。优先级按 P0/P1/P2/P3 排列。</p>
+
+    <div class="item">
+      <h3><span class="label p0">P0</span>为 Godot AI 新 API 链路补自动化回归</h3>
+      <p><strong>依据：</strong>本窗口新增 <code>get_class_info</code>、统一模糊建议和统一 Variant 序列化，但没有对应新增插件测试；改动面横跨 <code>plugin.gd</code>、handler 注册和返回数据结构。</p>
+      <p><strong>预期收益：</strong>避免插件发布后才发现类名纠错、section 校验、复杂 Variant 返回值或资源类查询行为回退。</p>
+      <p><strong>建议落点文件或模块：</strong><code>addons/godot_ai/handlers/api_handler.gd</code>、<code>addons/godot_ai/utils/class_introspection.gd</code>、插件测试目录或现有 test runner。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先确定当前插件测试框架如何覆盖 MCP handler 返回结构。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p1">P1</span>拆分 <code>main.gd</code> 的主流程责任</h3>
+      <p><strong>依据：</strong><code>scripts/main.gd</code> 已同时负责场景切换、日夜推进、UI 面板调度、睡眠转场、玩家定位和世界加载，文件体量约 425 行，耦合点集中在入口节点。</p>
+      <p><strong>预期收益：</strong>降低“加一个系统就继续塞进 Main”的趋势，减少日结、场景切换和 UI 弹窗互相影响时的排查成本。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/main.gd</code>，优先拆成 scene transition controller、day flow controller、ui panel coordinator。</p>
+      <p><strong>粗略实施成本：</strong>中到高。</p>
+      <p><strong>是否需要先验证：</strong>需要。先梳理现有信号依赖，再拆，避免场景切换和睡眠流程回归。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p1">P1</span>收敛 <code>GameState</code> 的全局状态面</h3>
+      <p><strong>依据：</strong><code>scripts/autoload/game_state.gd</code> 当前同时承载现金、时间、目标、升级、日统计、农田状态、彩票、商店随机库存与存档序列化，是典型的“全局数据桶”。</p>
+      <p><strong>预期收益：</strong>后续加系统时不容易继续把所有状态堆进单一 autoload，也能让存档结构和运行时派生状态更清晰。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/autoload/game_state.gd</code>，考虑拆出 <code>day_stats</code>、<code>economy_state</code>、<code>farm_state</code> 或纯数据资源。</p>
+      <p><strong>粗略实施成本：</strong>中到高。</p>
+      <p><strong>是否需要先验证：</strong>需要。先盘点 <code>SignalBus</code> 和存档格式兼容面。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p1">P1</span>把资源治理从注册表扩展到“缺口清单”</h3>
+      <p><strong>依据：</strong><code>configs/assets.json</code> 当前统计为 <strong>implemented 92 / available 80 / placeholder 10 / missing 2 / trial 2</strong>。注册表已经很完整，但“哪些缺口正在阻塞体验”还没有一个面向开发优先级的聚焦清单。</p>
+      <p><strong>预期收益：</strong>资源生产、程序接线和 UI 打磨能围绕阻塞项排序，不会只做“登记齐全”但体验仍碎片化。</p>
+      <p><strong>建议落点文件或模块：</strong><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、<code>scripts/debug/asset_preview_scene.gd</code>。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>建议先验证。先按“运行时可见且影响经营反馈”的原则定义阻塞级别。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p2">P2</span>优化人口流端点收集与路由复用</h3>
+      <p><strong>依据：</strong><code>scripts/autoload/population_flow.gd</code> 在 tick 中会重收集端点，<code>scripts/world/population_flow_spawner.gd</code> 也会按事件多次求路；随着 TownScene 继续扩张，端点数和事件数都会上升。</p>
+      <p><strong>预期收益：</strong>降低中后期地图扩容后的人流模拟和可见 NPC 恢复开销，为更多建筑和时段行为留性能余量。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/autoload/population_flow.gd</code>、<code>scripts/world/population_flow_spawner.gd</code>、<code>scripts/world/road_navigator.gd</code>。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先用现有 <code>tests/random_customer_performance_test.tscn</code> 或新的 profiling case 建基线。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p2">P2</span>统一地图场景模板与节点契约</h3>
+      <p><strong>依据：</strong>基线文档已明确 hybrid map 规则，但当前项目同时存在 <code>HomeScene</code>、<code>TownScene</code>、<code>BackMountainScene</code>、<code>HouseScene</code> 等多类地图；规则写在文档里，未完全沉淀成场景模板或校验工具。</p>
+      <p><strong>预期收益：</strong>后续扩图时不容易出现逻辑层漏节点、出口命名不一致、导航层缺失等人工错误。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scenes/*.tscn</code>、<code>tests/town_layer_structure_test.gd</code> 同类测试、可选的地图检查工具脚本。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>建议先验证。先收敛出“所有地图共有的最小契约”。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p3">P3</span>把调试日志从“开关”提升到“诊断面板”</h3>
+      <p><strong>依据：</strong><code>project.godot</code> 里已有 economy/patrol 日志开关，说明调试意识是有的；但当前仍偏文本流，缺少对人口流、销量、追捕等结果的可视化汇总。</p>
+      <p><strong>预期收益：</strong>做平衡或排查“为什么这里没人买”“为什么城管总卡住”时，效率会比翻日志更高。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/debug/gameplay_debug_log.gd</code>、<code>scenes/debug/asset_preview_scene.tscn</code> 同类调试场景、独立 debug HUD。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>可先不验证，先做一个轻量可视化原型即可。</p>
+    </div>
+
+    <h2>可新增功能建议</h2>
+    <p class="muted">以下内容属于 <span class="label idea">创意性功能建议</span>，结合当前已存在的经营、人流、城管、日结、地图和资源体系提出，不等同于已在开发中的事项。</p>
+
+    <div class="item">
+      <h3><span class="label p1">P1</span>摆摊热度预报与选址提示</h3>
+      <p><strong>依据：</strong>项目已有 <code>PopulationFlow</code>、时段窗口、学校/工厂/住宅端点与随机可见 NPC 生成，说明“哪里有人”已经有可计算基础，但玩家当前主要靠经验判断。</p>
+      <p><strong>预期收益：</strong>把人流系统直接转成经营决策反馈，让“学校门口早高峰”“工厂下班潮”真正成为可利用信息，而不只是后台模拟。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/autoload/population_flow.gd</code>、<code>scripts/main.gd</code>、HUD 或地图交互层。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先验证玩家是否更愿意用提示做选址，而不是变成纯自动答案。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p1">P1</span>日结复盘中的“次日经营建议”</h3>
+      <p><strong>依据：</strong>已有 <code>GameState</code> 销量、拒绝、罚款、现金和日结流程；但日结若只报数字，玩家很难从失败里形成下一天行动策略。</p>
+      <p><strong>预期收益：</strong>把现有统计转成行动反馈，例如“今天苹果在学校卖得快，但 17:00 后客流转向工厂”“库存断档导致错失销量”，能显著增强经营学习感。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/autoload/game_state.gd</code>、日结面板脚本、<code>customer_dialogue</code> 或 HUD 文案。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>建议先验证。先明确哪些数据已采集、哪些需要补记录。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p1">P1</span>城管风声与临时应对玩法</h3>
+      <p><strong>依据：</strong>项目已经有城管巡逻、追逐、罚款和收摊结果，但玩家面对城管的策略空间仍相对窄，更多是“看到就跑”。</p>
+      <p><strong>预期收益：</strong>让风险管理更像经营玩法的一部分，例如听到风声提前收摊、临时转移到次优点位、赌晚高峰收益是否值得冒险。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/world/chengguan.gd</code>、<code>scripts/world/chengguan_spawner.gd</code>、HUD 提示与摊位交互。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先验证它不会把追逐系统变得过于可预测。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p2">P2</span>家庭准备环节扩展为“次日备货”循环</h3>
+      <p><strong>依据：</strong>当前 <code>HouseScene</code>/<code>HomeScene</code> 已存在，种植、背包、睡觉、自动存档也已齐备，但家内更多是流程节点，还不是完整的经营准备空间。</p>
+      <p><strong>预期收益：</strong>把“晚上回家收成、整理背包、决定明天卖什么”做成一段明确节奏，可强化小人物维持现金流的主题。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scenes/house_scene.tscn</code>、<code>scenes/home_scene.tscn</code>、<code>scripts/world/farm_plot.gd</code>、背包/热键 UI。</p>
+      <p><strong>粗略实施成本：</strong>中到高。</p>
+      <p><strong>是否需要先验证：</strong>建议先验证。先确认家庭环节时长不能拖慢主循环。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p2">P2</span>建筑差异化需求事件</h3>
+      <p><strong>依据：</strong>项目已经区分学校、工厂、住宅和公共端点，也有顾客偏好配置；下一步可以让不同建筑在特定时段触发更强需求，而不是只体现在移动方向上。</p>
+      <p><strong>预期收益：</strong>形成“同样卖水果，但学校更偏低价快销、工厂偏耐饱/高单价”的经营差异，让商品结构真正重要。</p>
+      <p><strong>建议落点文件或模块：</strong><code>configs/customer_preferences.json</code>、<code>configs/flow_preferences.json</code>、<code>scripts/world/stall_sales_policy.gd</code>。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先验证现有商品数和价格区间是否足够支撑差异化。</p>
+    </div>
+
+    <div class="item">
+      <h3><span class="label p3">P3</span>候选地图与资源的游戏内评审模式</h3>
+      <p><strong>依据：</strong>当前 <code>configs/assets.json</code> 已存在 <code>candidate</code> 与 <code>trial</code> 地图阶段，也有 <code>asset_preview_scene</code>。这很适合做成一个开发期“对比预览”入口，而不是仅靠文件名和注册表判断。</p>
+      <p><strong>预期收益：</strong>美术候选图的取舍会更快，也更不容易误接线到正式场景。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/debug/asset_preview_scene.gd</code>、<code>scenes/debug/asset_preview_scene.tscn</code>、<code>configs/assets.json</code>。</p>
+      <p><strong>粗略实施成本：</strong>低到中。</p>
+      <p><strong>是否需要先验证：</strong>可选。属于效率增强，不是运行时阻塞项。</p>
+    </div>
+
+    <h2>用于回顾的关键文件路径</h2>
+    <ul class="paths">
+      <li><code>README.md</code></li>
+      <li><code>project.godot</code></li>
+      <li><code>docs/development_baseline.md</code></li>
+      <li><code>configs/assets.json</code></li>
+      <li><code>addons/godot_ai/plugin.gd</code></li>
+      <li><code>addons/godot_ai/handlers/api_handler.gd</code></li>
+      <li><code>addons/godot_ai/utils/class_introspection.gd</code></li>
+      <li><code>addons/godot_ai/utils/variant_serializer.gd</code></li>
+      <li><code>addons/godot_ai/utils/fuzzy_suggestions.gd</code></li>
+      <li><code>tests/customer_schedule_test.gd</code></li>
+      <li><code>tests/customer_schedule_test.tscn</code></li>
+      <li><code>tests/generated_asset_layout_test.gd</code></li>
+      <li><code>scripts/main.gd</code></li>
+      <li><code>scripts/autoload/game_state.gd</code></li>
+      <li><code>scripts/autoload/population_flow.gd</code></li>
+      <li><code>scripts/world/population_flow_spawner.gd</code></li>
+      <li><code>scripts/world/chengguan.gd</code></li>
+      <li><code>scripts/world/stall.gd</code></li>
+      <li><code>docs/daily-briefs/2026-06-13.html</code></li>
+    </ul>
+
+    <h2>验证记录</h2>
+    <div class="card">
+      <ul>
+        <li>确认工作区无未提交改动：<code>git status --short</code> 返回空。</li>
+        <li>确认窗口内提交：<code>git log --since='2026-06-12T22:00:44Z'</code> 命中 2 个提交。</li>
+        <li>抽样运行 headless 测试：<code>tools/run_godot_headless_tests.sh tests/customer_schedule_test.tscn tests/generated_asset_layout_test.tscn</code>，本地执行成功。</li>
+      </ul>
+    </div>
+
+    <p class="foot">生成说明：本文件是自动化日报产物；若后续当天再次生成，应使用时间戳后缀避免覆盖同名简报。</p>
+  </main>
+</body>
+</html>
