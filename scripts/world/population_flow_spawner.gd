@@ -25,9 +25,12 @@ func _on_flow_event_created(event: Dictionary) -> void:
 	var target := _endpoint_for_event(event, "target", "target_key")
 	if source == null or target == null or not is_instance_valid(source) or not is_instance_valid(target):
 		return
+	var route := _route_for_positions(_endpoint_position(source), _endpoint_position(target))
+	if route.is_empty():
+		return
 	var visible_count := mini(max_visible_per_event, int(event.get("visible_count", 0)))
 	for _index in range(visible_count):
-		_schedule_customer_for_event(event, source, target)
+		_schedule_customer_for_event(event, route)
 
 
 func debug_pending_spawn_count() -> int:
@@ -50,16 +53,19 @@ func _spawn_recent_flow_events() -> void:
 		var target := _endpoint_for_event(event, "target", "target_key")
 		if source == null or target == null or not is_instance_valid(source) or not is_instance_valid(target):
 			continue
+		var route := _route_for_positions(_endpoint_position(source), _endpoint_position(target))
+		if route.is_empty():
+			continue
 		var visible_count := mini(max_visible_per_event, int(event.get("visible_count", 0)))
 		for _index in range(visible_count):
-			_spawn_customer_for_recent_event(event, source, target)
+			var progress := _event_route_progress(event)
+			_spawn_customer_on_route(event, _route_from_progress(route, progress))
 
 
-func _schedule_customer_for_event(event: Dictionary, source: Node2D, target: Node2D) -> void:
+func _schedule_customer_for_event(event: Dictionary, route: Dictionary) -> void:
 	var request := {
 		"event": event.duplicate(true),
-		"source": source,
-		"target": target,
+		"route": route.duplicate(true),
 	}
 	_pending_spawns.append(request)
 	var timer := Timer.new()
@@ -79,6 +85,10 @@ func _on_spawn_timer_timeout(timer: Timer, request: Dictionary) -> void:
 
 func _spawn_customer_for_request(request: Dictionary) -> void:
 	var event: Dictionary = request.get("event", {})
+	var route: Dictionary = request.get("route", {})
+	if not route.is_empty():
+		_spawn_customer_on_route(event, route)
+		return
 	var source := request.get("source") as Node2D
 	var target := request.get("target") as Node2D
 	if source == null or target == null or not is_instance_valid(source) or not is_instance_valid(target):
