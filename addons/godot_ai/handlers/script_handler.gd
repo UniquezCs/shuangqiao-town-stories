@@ -70,9 +70,10 @@ func create_script(params: Dictionary) -> Dictionary:
 	# races the global-class registry and can SIGABRT in
 	# ScriptServer::remove_global_class_by_path (see dsarno/godot#6).
 	# update_file() is the single-file path the rest of the plugin already uses.
-	var efs := EditorInterface.get_resource_filesystem()
-	if efs != null:
-		efs.update_file(path)
+	if Engine.is_editor_hint() and EditorInterface.has_method("get_resource_filesystem"):
+		var efs = EditorInterface.call("get_resource_filesystem")
+		if efs != null:
+			efs.update_file(path)
 
 	# `.gd.uid` is the sidecar Godot generates on scan; list both so the caller
 	# can rm the full set in one go.
@@ -322,9 +323,10 @@ func patch_script(params: Dictionary) -> Dictionary:
 	_attach_gdscript_diagnostics(data, path, new_content)
 
 	# Single-file register, not a full scan() — see create_script (dsarno/godot#6).
-	var efs := EditorInterface.get_resource_filesystem()
-	if efs != null:
-		efs.update_file(path)
+	if Engine.is_editor_hint() and EditorInterface.has_method("get_resource_filesystem"):
+		var efs = EditorInterface.call("get_resource_filesystem")
+		if efs != null:
+			efs.update_file(path)
 
 	return {"data": data}
 

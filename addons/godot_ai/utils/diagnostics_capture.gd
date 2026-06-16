@@ -63,4 +63,8 @@ static func _source_location(entry: Dictionary) -> Dictionary:
 		var details: Dictionary = entry.details
 		if details.get("source") is Dictionary:
 			return details.source
-	return {}
+	return {
+		"path": entry.get("path", ""),
+		"line": entry.get("line", 0),
+		"function": entry.get("function", ""),
+	}
