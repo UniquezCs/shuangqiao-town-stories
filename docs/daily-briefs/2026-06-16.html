@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godot 项目每日简报 - 2026-06-16</title>
+  <style>
+    :root {
+      --bg: #efe6d8;
+      --paper: rgba(255, 250, 243, 0.96);
+      --panel: #fff8ef;
+      --ink: #2c241d;
+      --muted: #6a5f54;
+      --line: #d8c8b5;
+      --fact: #215d7a;
+      --infer: #7a4f88;
+      --idea: #2c6b40;
+      --p0: #7a1f1f;
+      --p1: #9a4d12;
+      --p2: #8b6d18;
+      --p3: #4b6f49;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.7), transparent 28%),
+        linear-gradient(180deg, #f5ede3 0%, var(--bg) 100%);
+      font: 16px/1.72 "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 30px 32px 40px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 22px 54px rgba(71, 44, 23, 0.12);
+    }
+    h1, h2, h3 { margin: 0 0 12px; line-height: 1.28; }
+    h1 { font-size: 34px; }
+    h2 {
+      margin-top: 30px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 22px;
+    }
+    h3 { margin-top: 18px; font-size: 18px; }
+    p { margin: 10px 0; }
+    ul { margin: 10px 0 0 20px; padding: 0; }
+    li { margin: 6px 0; }
+    code {
+      padding: 1px 6px;
+      border-radius: 6px;
+      background: #f4e8d9;
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.95em;
+      word-break: break-all;
+    }
+    .meta, .metrics, .grid {
+      display: grid;
+      gap: 14px;
+    }
+    .meta { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 18px; }
+    .metrics { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 16px; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .panel, .metric, .entry {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .panel, .entry { padding: 16px 18px; }
+    .metric { padding: 12px 14px; }
+    .metric strong, .meta strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .metric span, .meta span {
+      display: block;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    .meta > div {
+      padding: 14px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .label {
+      display: inline-block;
+      padding: 2px 9px;
+      margin-right: 8px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .fact { background: var(--fact); }
+    .infer { background: var(--infer); }
+    .idea { background: var(--idea); }
+    .p0 { background: var(--p0); }
+    .p1 { background: var(--p1); }
+    .p2 { background: var(--p2); }
+    .p3 { background: var(--p3); }
+    table {
+      width: 100%;
+      margin-top: 12px;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+    th { background: #f1e0cd; font-size: 14px; }
+    tr:last-child td { border-bottom: none; }
+    .muted { color: var(--muted); }
+    .paths li { word-break: break-all; }
+    .foot { margin-top: 28px; font-size: 14px; color: var(--muted); }
+    @media (max-width: 920px) {
+      body { padding: 12px; }
+      main { padding: 20px 16px 30px; }
+      .meta, .metrics, .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Godot 项目每日 HTML 简报</h1>
+    <p>本简报覆盖 <strong>2026-06-15 19:25:44 +08:00</strong>（上次自动化运行时间）到 <strong>2026-06-16 06:02:05 +08:00</strong> 的仓库状态。由于没有历史 memory 文件，本次以“上次运行时间戳 + 当前 git 工作区 + 文件更新时间”作为回顾基线，并明确区分“已发生的项目改动”“基于代码状态的优化建议”“创意性功能建议”。</p>
+
+    <section class="meta">
+      <div><strong>简报日期</strong><span>2026-06-16</span></div>
+      <div><strong>回顾窗口</strong><span>自 2026-06-15 19:25:44 +08:00 起</span></div>
+      <div><strong>工作区状态</strong><span>5 个已修改跟踪文件，7 个未跟踪文件，无新提交</span></div>
+    </section>
+
+    <section class="metrics">
+      <div class="metric"><strong>窗口内提交</strong><span>0 个</span></div>
+      <div class="metric"><strong>新增源码文件</strong><span>2 个</span></div>
+      <div class="metric"><strong>修改源码文件</strong><span>5 个</span></div>
+      <div class="metric"><strong>删除文件</strong><span>0 个</span></div>
+      <div class="metric"><strong>项目规模</strong><span>62 脚本 / 13 场景 / 54 测试 / 689 生成资源</span></div>
+    </section>
+
+    <h2>概览</h2>
+    <div class="grid">
+      <div class="panel">
+        <p><span class="label fact">已发生改动</span>这次窗口内没有新的 git commit，实质变更全部停留在工作区，且集中在 <code>addons/godot_ai</code> 插件。核心方向是：在 <code>create_script</code> / <code>patch_script</code> 后追加 GDScript 静态校验、一次性日志捕获和诊断回传，增强 AI 写脚本后的可观测性。</p>
+        <p>伴随改动还包括插件版本号从 <code>2.7.2</code> 升到 <code>2.7.5</code>，以及新增上一日简报文件 <code>docs/daily-briefs/2026-06-15.html</code>，但后者目前仍未纳入 git。</p>
+      </div>
+      <div class="panel">
+        <p><span class="label infer">状态推断</span>游戏原型主线仍围绕“经营闭环 + 人流系统 + 场景世界组织”展开，但本轮实际开发时间几乎没有落在玩法层，而是落在编辑器插件的稳定性与诊断链路。</p>
+        <p>从代码体量看，风险仍然集中在少数大文件：<code>addons/godot_ai/mcp_dock.gd</code> 2496 行、<code>addons/godot_ai/plugin.gd</code> 1690 行、<code>scripts/world/customer.gd</code> 748 行、<code>scripts/autoload/population_flow.gd</code> 594 行、<code>scripts/main.gd</code> 425 行。项目已经具备不少测试，但大体量节点仍会放大后续迭代成本。</p>
+      </div>
+    </div>
+
+    <h2>主要改动</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>类别</th>
+          <th>文件</th>
+          <th>核心内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>脚本诊断</td>
+          <td><code>addons/godot_ai/handlers/script_handler.gd</code></td>
+          <td>在写入脚本后执行 <code>GDScript.reload()</code> 预校验；若失败，则通过临时 logger 捕获仅属于该文件的错误，必要时回退为兜底诊断对象。</td>
+        </tr>
+        <tr>
+          <td>日志设施</td>
+          <td><code>addons/godot_ai/utils/structured_log_ring.gd</code><br /><code>addons/godot_ai/utils/editor_log_buffer.gd</code></td>
+          <td>增加基于单调 cursor 的 <code>get_since()</code> / <code>appended_total()</code> 读取能力，支持“只取一次操作期间新增的日志”。</td>
+        </tr>
+        <tr>
+          <td>新增文件</td>
+          <td><code>addons/godot_ai/utils/diagnostics_capture.gd</code><br /><code>addons/godot_ai/runtime/loggers/validation_logger.gd</code></td>
+          <td>前者负责 scoped log capture，后者负责 validation load 场景下的短生命周期 Logger。</td>
+        </tr>
+        <tr>
+          <td>版本信息</td>
+          <td><code>addons/godot_ai/plugin.cfg</code></td>
+          <td>插件版本升级到 <code>2.7.5</code>，说明这批诊断增强被视为一次显式迭代。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>新增内容</h2>
+    <div class="entry">
+      <p><span class="label fact">已发生改动</span><strong>新增 validation logger：</strong><code>addons/godot_ai/runtime/loggers/validation_logger.gd</code> 作为一次性 Logger，只包住单次 <code>ResourceLoader.load()</code> 验证窗口，避免把临时诊断污染到共享 editor log。</p>
+    </div>
+    <div class="entry">
+      <p><span class="label fact">已发生改动</span><strong>新增 diagnostics capture 工具：</strong><code>addons/godot_ai/utils/diagnostics_capture.gd</code> 利用 cursor 快照筛出“本次动作之后新增、且 source path 命中目标脚本”的诊断。</p>
+    </div>
+    <div class="entry">
+      <p><span class="label fact">已发生改动</span><strong>新增文档产物：</strong><code>docs/daily-briefs/2026-06-15.html</code> 已出现在工作区，但仍是未跟踪文件。</p>
+    </div>
+
+    <h2>修改内容</h2>
+    <ul>
+      <li><span class="label fact">已发生改动</span><strong>脚本创建返回值增强：</strong><code>create_script()</code> 现在会附带 <code>diagnostics</code>、<code>diagnostics_detail</code>、<code>diagnostics_status</code> 等字段，而不只是路径和大小。</li>
+      <li><span class="label fact">已发生改动</span><strong>脚本补丁返回值增强：</strong><code>patch_script()</code> 同样在写回文件后补充诊断信息，便于 AI 调用端立即判断脚本是否可加载。</li>
+      <li><span class="label fact">已发生改动</span><strong>日志环缓冲读法升级：</strong><code>structured_log_ring.gd</code> 不再只能看“最近 N 条”，而是支持按 cursor 增量读取。</li>
+      <li><span class="label fact">已发生改动</span><strong>插件版本提升：</strong><code>plugin.cfg</code> 反映出这是一次可对外暴露的插件行为变化，而非纯内部重构。</li>
+    </ul>
+
+    <h2>删除或废弃内容</h2>
+    <div class="panel">
+      <p><span class="label fact">已发生改动</span>本窗口内没有 git 级别删除、rename 或显式废弃文件。</p>
+      <p><span class="label infer">状态推断</span>但从实现方向看，“AI 写脚本后只知道文件落盘、却不知道 Godot 能否成功编译”这条旧流程正在被事实上淘汰，新的预期是脚本写入必须尽量同步回传可消费的诊断结果。</p>
+    </div>
+
+    <h2>可能影响</h2>
+    <ul>
+      <li><strong>对 Godot AI 插件：</strong>AI 工具链在写脚本后会更快拿到编译层反馈，减少“文件生成成功但运行时报错”的黑箱时间。</li>
+      <li><strong>对编辑器日志：</strong>本次实现刻意把 validation logger 约束在单次加载窗口内，理论上能避免把验证期噪声混进长期共享日志；但这依赖 <code>OS.add_logger</code> / <code>remove_logger</code> 在目标环境正常可用。</li>
+      <li><strong>对游戏主项目：</strong>玩法脚本本身这次没有同步增强测试或回归门禁，因此主游戏体验不会直接变化，但编辑器辅助开发效率会提升。</li>
+      <li><strong>对后续自动化：</strong>简报 memory 之前缺失，这次已补；后续可以更稳定地区分“新改动”与“上次已提事项”。</li>
+    </ul>
+
+    <h2>待跟进事项</h2>
+    <ul>
+      <li>补一组覆盖 <code>script_handler.gd</code> 新诊断返回结构的测试，验证成功、解析失败、fallback 三条路径。</li>
+      <li>把这次产生的 <code>.uid</code> 与 <code>docs/daily-briefs/2026-06-15.html</code> 统一决定是否纳入版本控制，避免工作区长期带着半成品噪声。</li>
+      <li>确认插件版本 <code>2.7.5</code> 的变更说明是否需要同步到 <code>addons/godot_ai/README.md</code> 或发布记录。</li>
+      <li>继续观察是否还需要为 <code>create_script</code> / <code>patch_script</code> 增加性能保护，避免在高频脚本生成场景中触发过多同步验证。</li>
+    </ul>
+
+    <h2>当前项目可优化点</h2>
+    <p class="muted">以下内容属于 <span class="label infer">状态推断</span>，不是本窗口内已发生改动。排序按优先级给出。</p>
+
+    <div class="entry">
+      <h3><span class="label p0">P0</span>为 Godot AI 脚本诊断链路补回归测试</h3>
+      <p><strong>依据：</strong>本轮实际代码改动 181 行新增主要都落在 <code>script_handler.gd</code>、<code>structured_log_ring.gd</code>、<code>editor_log_buffer.gd</code>，但工作区里只看到历史 API 测试的 <code>.uid</code>，没有对应新增测试提交。</p>
+      <p><strong>预期收益：</strong>避免以后继续改 logger 或脚本写入流程时把诊断字段、truncated 状态、fallback 行号等关键信号打坏。</p>
+      <p><strong>建议落点文件或模块：</strong><code>tests/godot_ai_api_handler_test.gd</code> 同级新增 addon 测试，或 <code>addons/godot_ai/testing/</code> 体系。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先确认 headless 环境能否稳定模拟 <code>OS.add_logger()</code> 行为。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p1">P1</span>拆分高体量脚本的职责边界</h3>
+      <p><strong>依据：</strong><code>addons/godot_ai/plugin.gd</code> 1690 行、<code>mcp_dock.gd</code> 2496 行、<code>scripts/world/customer.gd</code> 748 行、<code>scripts/autoload/population_flow.gd</code> 594 行，都已经接近“看得懂但难以安全修改”的区间。</p>
+      <p><strong>预期收益：</strong>减少回归排查半径，让插件层、顾客行为层、人流模型层能各自独立演进。</p>
+      <p><strong>建议落点文件或模块：</strong><code>addons/godot_ai/plugin.gd</code>、<code>addons/godot_ai/mcp_dock.gd</code>、<code>scripts/world/customer.gd</code>、<code>scripts/autoload/population_flow.gd</code>。</p>
+      <p><strong>粗略实施成本：</strong>高。</p>
+      <p><strong>是否需要先验证：</strong>需要。先用现有测试锁住顾客行为、面板交互和插件注册行为。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p1">P1</span>把场景契约从“测试约束”推进到“场景模板化”</h3>
+      <p><strong>依据：</strong><code>town_scene.tscn</code> 已经包含 <code>Spawns</code>、<code>CameraBounds</code>、<code>NpcRouteSpawners</code>、出口 Area2D 等固定结构，其他地图场景也靠类似约定运作，但仍主要依赖人工维护。</p>
+      <p><strong>预期收益：</strong>后续新地图或重做地图时更不容易漏掉出生点、边界和导航节点，减少“场景能打开但规则层不完整”的问题。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scenes/*.tscn</code>、<code>scripts/scenes/</code>、地图契约测试。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先梳理哪些节点是所有地图必须具备，哪些仅对特定地图有效。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p2">P2</span>治理资源目录与生成资产索引</h3>
+      <p><strong>依据：</strong><code>assets/generated</code> 已有 689 个文件，资源量增长很快，而当前仍主要按目录和文件名人工识别，容易出现重复、无用资源和引用不清。</p>
+      <p><strong>预期收益：</strong>降低资源膨胀和误引用成本，方便后续替换占位素材、做打包清理和统一命名。</p>
+      <p><strong>建议落点文件或模块：</strong><code>assets/generated/</code>、<code>configs/assets.json</code>、<code>docs/</code> 资源注册文档、辅助脚本 <code>scripts/tools/</code>。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>建议先验证。先做一次未引用资源扫描，确认治理范围。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p2">P2</span>统一调试日志开关与运行期诊断出口</h3>
+      <p><strong>依据：</strong><code>project.godot</code> 已有 <code>debug/gameplay/*</code> 开关，<code>scripts/debug/gameplay_debug_log.gd</code> 也存在，但插件日志、玩法日志、测试诊断还比较分散。</p>
+      <p><strong>预期收益：</strong>更快定位顾客决策、人流事件、摆摊状态和插件异常，减少“要改代码才能看状态”的调试成本。</p>
+      <p><strong>建议落点文件或模块：</strong><code>project.godot</code>、<code>scripts/debug/</code>、<code>addons/godot_ai/runtime/loggers/</code>。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>不一定，先整理现有开关即可。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p3">P3</span>把 headless 测试执行结果做成固定日报输入</h3>
+      <p><strong>依据：</strong>项目测试数量已经达到 54 个，但这次简报只能看到文件状态，无法知道最近回归是否真的跑过。</p>
+      <p><strong>预期收益：</strong>让每日简报不仅描述“改了什么”，还能描述“现在是否稳定”。</p>
+      <p><strong>建议落点文件或模块：</strong><code>tools/run_godot_headless_tests.sh</code>、<code>docs/daily-briefs/</code> 自动化流程。</p>
+      <p><strong>粗略实施成本：</strong>低到中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先确认本地和 CI 的 Godot 路径与返回码格式。</p>
+    </div>
+
+    <h2>可新增功能建议</h2>
+    <p class="muted">以下内容属于 <span class="label idea">创意功能建议</span>，结合当前已有系统、最近改动和经营体验空缺推断，不代表已经在开发。</p>
+
+    <div class="entry">
+      <h3><span class="label p1">P1</span>顾客等待成交的“短交互”强化</h3>
+      <p><strong>依据：</strong><code>customer.gd</code> 已经有等待玩家确认购买、倒计时、对话反馈和价格预判；现有链路已具备做“递货/找零/确认”微交互的基础。</p>
+      <p><strong>预期收益：</strong>把当前较静态的购买确认提升为更有手感的经营瞬间，增强摆摊核心循环辨识度。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/world/customer.gd</code>、<code>scripts/world/customer_purchase_interaction.gd</code>、<code>scripts/ui/circular_countdown_indicator.gd</code>、<code>scripts/ui/hud.gd</code>。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先验证不会让成交流程变得拖沓。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p1">P1</span>基于时间窗和地点的人流热点可视化</h3>
+      <p><strong>依据：</strong><code>PopulationFlow</code> 已经按时段产生活动事件，<code>TownScene</code> 也有学校、工厂、住宅等端点；玩家却未必能直观看出“什么时候该去哪里摆”。</p>
+      <p><strong>预期收益：</strong>把人流系统从幕后数值提升为可理解策略信息，帮助玩家学会挑时段、挑地段，而不是只靠试错。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/autoload/population_flow.gd</code>、<code>scripts/world/population_flow_spawner.gd</code>、<code>scripts/ui/hud.gd</code>、<code>scenes/town_scene.tscn</code>。</p>
+      <p><strong>粗略实施成本：</strong>中。</p>
+      <p><strong>是否需要先验证：</strong>需要。先决定信息呈现是 diegetic 提示还是显式 UI。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p2">P2</span>城管巡逻的风险升级与规避玩法</h3>
+      <p><strong>依据：</strong>README 已明确城管追赶和罚款是核心压力源，但现有公开代码结构里更像“有无处罚”的二元状态，策略层仍可继续做厚。</p>
+      <p><strong>预期收益：</strong>增加经营决策张力，让摆摊地点、时间、收摊时机和临时躲避都有更强博弈感。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/world/chengguan.gd</code>、<code>scripts/world/chengguan_spawner.gd</code>、<code>scripts/world/stall.gd</code>、<code>scripts/autoload/game_state.gd</code>。</p>
+      <p><strong>粗略实施成本：</strong>中到高。</p>
+      <p><strong>是否需要先验证：</strong>需要。先验证当前节奏是否已经足够紧张。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p2">P2</span>把后山采集与农田种植接成“缺货补货”链路</h3>
+      <p><strong>依据：</strong>现有场景里已经有 <code>back_mountain_scene</code>、<code>farm_plot.gd</code>、种子和作物配置，但日常经营与探索采集的经济关联还可以更紧。</p>
+      <p><strong>预期收益：</strong>让“出门劳作”不只是切场景，而是和摆摊货源、成本控制、季节选择真正挂钩。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scenes/back_mountain_scene.tscn</code>、<code>scripts/world/farm_plot.gd</code>、<code>configs/crops.json</code>、<code>scripts/autoload/game_state.gd</code>。</p>
+      <p><strong>粗略实施成本：</strong>中到高。</p>
+      <p><strong>是否需要先验证：</strong>建议先验证。先确认当前日循环是否容得下更多劳作步骤。</p>
+    </div>
+
+    <div class="entry">
+      <h3><span class="label p3">P3</span>日结界面增加顾客画像与失败原因分解</h3>
+      <p><strong>依据：</strong>项目已有 <code>daily_summary_panel.gd</code>、顾客偏好配置和 rejection 记录逻辑，已经能支撑更有解释性的结算反馈。</p>
+      <p><strong>预期收益：</strong>帮助玩家理解“为什么没卖掉”，让调价、换地点、换货品有明确反馈闭环。</p>
+      <p><strong>建议落点文件或模块：</strong><code>scripts/ui/daily_summary_panel.gd</code>、<code>scripts/autoload/game_state.gd</code>、<code>configs/customer_preferences.json</code>。</p>
+      <p><strong>粗略实施成本：</strong>低到中。</p>
+      <p><strong>是否需要先验证：</strong>不一定，先整理已有统计字段即可。</p>
+    </div>
+
+    <h2>用于回顾的关键文件路径</h2>
+    <ul class="paths">
+      <li><code>addons/godot_ai/handlers/script_handler.gd</code></li>
+      <li><code>addons/godot_ai/utils/diagnostics_capture.gd</code></li>
+      <li><code>addons/godot_ai/runtime/loggers/validation_logger.gd</code></li>
+      <li><code>addons/godot_ai/utils/structured_log_ring.gd</code></li>
+      <li><code>addons/godot_ai/utils/editor_log_buffer.gd</code></li>
+      <li><code>addons/godot_ai/plugin.cfg</code></li>
+      <li><code>project.godot</code></li>
+      <li><code>README.md</code></li>
+      <li><code>scripts/main.gd</code></li>
+      <li><code>scripts/world/customer.gd</code></li>
+      <li><code>scripts/autoload/population_flow.gd</code></li>
+      <li><code>scenes/town_scene.tscn</code></li>
+      <li><code>tests/godot_ai_api_handler_test.gd</code></li>
+      <li><code>tests/map_scene_contract_test.gd</code></li>
+      <li><code>tests/population_flow_spawner_route_cache_test.gd</code></li>
+    </ul>
+
+    <p class="foot">生成时间：2026-06-16 06:02:05 +0800。说明：本次未运行 Godot headless 测试，简报中的“已发生改动”基于 git 工作区与文件内容，“优化点”和“新增功能”基于当前代码状态推断。</p>
+  </main>
+</body>
+</html>
