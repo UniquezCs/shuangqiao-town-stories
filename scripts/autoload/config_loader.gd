@@ -24,14 +24,14 @@ func _ready() -> void:
 
 
 func load_all() -> void:
-	items = _load_json(ITEMS_PATH)
-	crops = _load_json(CROPS_PATH)
-	upgrades = _load_json(UPGRADES_PATH)
-	assets = _load_json(ASSETS_PATH)
-	customer_preferences = _load_json(CUSTOMER_PREFERENCES_PATH)
-	population = _load_json(POPULATION_PATH)
-	flow_preferences = _load_json(FLOW_PREFERENCES_PATH)
-	calendar = _load_json(CALENDAR_PATH)
+	items = _load_json(ITEMS_PATH, items)
+	crops = _load_json(CROPS_PATH, crops)
+	upgrades = _load_json(UPGRADES_PATH, upgrades)
+	assets = _load_json(ASSETS_PATH, assets)
+	customer_preferences = _load_json(CUSTOMER_PREFERENCES_PATH, customer_preferences)
+	population = _load_json(POPULATION_PATH, population)
+	flow_preferences = _load_json(FLOW_PREFERENCES_PATH, flow_preferences)
+	calendar = _load_json(CALENDAR_PATH, calendar)
 
 
 func get_item(item_id: String) -> Dictionary:
@@ -227,13 +227,25 @@ func _string_array(raw_items: Variant) -> Array[String]:
 	return result
 
 
-func _load_json(path: String) -> Dictionary:
+func _load_json(path: String, fallback: Dictionary = {}) -> Dictionary:
 	if not FileAccess.file_exists(path):
-		push_warning("配置文件不存在：%s" % path)
-		return {}
+		_report_config_load_failure(path, "配置文件不存在", fallback)
+		return fallback
 	var text := FileAccess.get_file_as_string(path)
-	var parsed: Variant = JSON.parse_string(text)
-	if typeof(parsed) != TYPE_DICTIONARY:
-		push_error("配置文件格式错误：%s" % path)
-		return {}
-	return parsed
+	var parser := JSON.new()
+	var error := parser.parse(text)
+	if error != OK:
+		_report_config_load_failure(path, "配置文件 JSON 解析失败：%s" % parser.get_error_message(), fallback)
+		return fallback
+	if typeof(parser.data) != TYPE_DICTIONARY:
+		_report_config_load_failure(path, "配置文件顶层必须是 Dictionary", fallback)
+		return fallback
+	return parser.data
+
+
+func _report_config_load_failure(path: String, reason: String, fallback: Dictionary) -> void:
+	var message := "%s：%s" % [reason, path]
+	if not fallback.is_empty():
+		push_warning("%s；保留上一份有效配置" % message)
+	else:
+		push_error(message)
