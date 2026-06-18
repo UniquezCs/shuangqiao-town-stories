@@ -4,6 +4,7 @@ const SaveManagerScript := preload("res://scripts/autoload/save_manager.gd")
 
 
 func _ready() -> void:
+	RuntimeDiagnostics.clear()
 	var save_manager := Node.new()
 	save_manager.set_script(SaveManagerScript)
 	add_child(save_manager)
@@ -57,8 +58,19 @@ func _ready() -> void:
 	_assert_equal(str(Hotbar.slots[5].get("item_id", "")), PrototypeConstants.ITEM_HOE, "读档应恢复快捷栏工具位置")
 	_assert_equal(GameState.current_tool, PrototypeConstants.TOOL_HOE, "读档后当前工具应跟随快捷栏选中格")
 
+	_write_text(save_manager.get("SAVE_PATH"), "{\"schema_version\":")
+	_assert_true(save_manager.call("load_autosave").is_empty(), "损坏存档应返回空数据")
+	_assert_true(RuntimeDiagnostics.get_issues("save").size() > 0, "存档读取失败应进入统一诊断入口")
+
 	save_manager.call("delete_autosave")
 	get_tree().quit()
+
+
+func _write_text(path: String, text: String) -> void:
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	_assert_true(file != null, "应能写入测试存档：%s" % path)
+	file.store_string(text)
+	file.close()
 
 
 func _assert_equal(actual: Variant, expected: Variant, message: String) -> void:

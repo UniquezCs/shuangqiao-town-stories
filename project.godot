@@ -27,6 +27,7 @@ Inventory="*res://scripts/autoload/inventory.gd"
 GameState="*res://scripts/autoload/game_state.gd"
 PopulationFlow="*res://scripts/autoload/population_flow.gd"
 Hotbar="*res://scripts/autoload/hotbar.gd"
+RuntimeDiagnostics="*res://scripts/debug/runtime_diagnostics.gd"
 ConfigLoader="*res://scripts/autoload/config_loader.gd"
 SaveManager="*res://scripts/autoload/save_manager.gd"
 MusicManager="*res://scripts/autoload/music_manager.gd"
@@ -37,6 +38,8 @@ _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 gameplay/economy_and_patrol_logs_enabled=false
 gameplay/log_channels/chengguan_enabled=false
+gameplay/log_channels/customer_enabled=false
+gameplay/log_channels/patrol_enabled=false
 gameplay/log_channels/population_flow_enabled=false
 gameplay/log_channels/stall_enabled=false
 

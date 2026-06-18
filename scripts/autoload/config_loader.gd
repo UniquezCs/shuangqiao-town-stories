@@ -245,6 +245,17 @@ func _load_json(path: String, fallback: Dictionary = {}) -> Dictionary:
 
 func _report_config_load_failure(path: String, reason: String, fallback: Dictionary) -> void:
 	var message := "%s：%s" % [reason, path]
+	RuntimeDiagnostics.report_issue(
+		"config",
+		"load_failed",
+		message,
+		{
+			"path": path,
+			"reason": reason,
+			"using_fallback": not fallback.is_empty(),
+		},
+		RuntimeDiagnostics.SEVERITY_WARNING if not fallback.is_empty() else RuntimeDiagnostics.SEVERITY_ERROR
+	)
 	if not fallback.is_empty():
 		push_warning("%s；保留上一份有效配置" % message)
 	else:

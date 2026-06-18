@@ -67,6 +67,7 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - `sprites` contains final game-ready character, item, farm, location, object, prop, and UI PNG/TRES resources.
 - `tilesets` contains final game-ready tile atlases and TileSet resources.
 - Raw generation images, contact sheets, prompt text, manifests, preview GIFs, and other intermediate process files should not be kept under `assets/generated`.
+- Run `tools/audit_generated_assets.py` before pruning generated files. It reports generated resources missing from `configs/assets.json`, generated paths referenced by text files, and registry paths whose files no longer exist.
 
 ## Current Resource Needs By System
 

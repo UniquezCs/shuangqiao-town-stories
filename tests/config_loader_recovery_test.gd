@@ -7,6 +7,7 @@ const TEMP_MISSING_CONFIG := "res://tests/.tmp_config_loader_missing.json"
 
 
 func _ready() -> void:
+	RuntimeDiagnostics.clear()
 	var fallback := {"apple": {"name": "苹果", "stack_size": 20}}
 	var loader := preload("res://scripts/autoload/config_loader.gd").new()
 	add_child(loader)
@@ -21,6 +22,7 @@ func _ready() -> void:
 	_assert_equal(loader.call("_load_json", TEMP_INVALID_CONFIG, fallback), fallback, "JSON 解析失败时应保留 fallback")
 	_assert_equal(loader.call("_load_json", TEMP_ARRAY_CONFIG, fallback), fallback, "顶层不是 Dictionary 时应保留 fallback")
 	_assert_equal(loader.call("_load_json", TEMP_MISSING_CONFIG, fallback), fallback, "配置文件缺失时应保留 fallback")
+	_assert_equal(RuntimeDiagnostics.get_issues("config").size(), 3, "配置加载失败应进入统一诊断入口")
 
 	_cleanup()
 	loader.queue_free()

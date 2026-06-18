@@ -47,6 +47,7 @@
 			"PopulationFlow target timing should stay generic: configs/flow_preferences.json time_curves adjusts attraction for age_group + target_type over the day, instead of adding hard-coded commute plans for specific buildings.",
 			"Population endpoint collection must only include nodes with the endpoint interface or a real endpoint_id property; generic Node2D children such as Visual, EndpointMarker, and collision nodes must never participate in population pools.",
 			"Customer overhead dialogue is probabilistic per event and must be based on an in-stock stall item the customer actually wants; avoid fixed dialogue triggers and stale sold-out item names.",
+			"Run tools/audit_generated_assets.py before pruning generated files; it reports generated resources missing from configs/assets.json and resources not referenced by scenes, scripts, configs, or docs.",
 			"Large raster maps should use a hybrid setup: Sprite2D background chunks for visuals plus separate gameplay nodes/layers for exits, collision, navigation, and interaction semantics.",
 			"Map visuals under res://assets/generated/sprites/map must be registered with map_stage. Only runtime maps may be referenced by gameplay scenes; candidate and trial maps stay out of .tscn files until promoted.",
 			"Baked-map pixel occlusion can use Polygon2D with scripts/world/polygon_texture_occluder.gd: the polygon samples a configured map/background Sprite2D texture, such as TownScene/MapLayers/Sprite2D, with matching UVs and renders above the player, while collision remains separate StaticBody2D geometry.",
