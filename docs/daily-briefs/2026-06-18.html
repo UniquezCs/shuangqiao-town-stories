@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Godot 项目每日简报 - 2026-06-18</title>
+  <style>
+    :root {
+      --bg: #f3ede2;
+      --panel: #fffaf1;
+      --panel-2: #f6efe2;
+      --line: #d8c5a6;
+      --text: #2f2418;
+      --muted: #6a5a47;
+      --accent: #8b4d2c;
+      --accent-2: #436a56;
+      --danger: #9f3d2e;
+      --warn: #b67c26;
+      --shadow: 0 18px 42px rgba(66, 43, 20, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Noto Sans CJK SC", "PingFang SC", sans-serif;
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at top left, rgba(139, 77, 44, 0.12), transparent 28%),
+        linear-gradient(180deg, #f8f2e8 0%, #f1eadf 100%);
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero, .section, .chip, .priority-item {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero, .section {
+      padding: 24px 28px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 31px; }
+    h2 { font-size: 22px; }
+    h3 { font-size: 18px; }
+    p { margin: 0 0 10px; }
+
+    .meta, .grid, .priority-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .meta {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 18px;
+    }
+
+    .meta > div, .chip, .priority-item {
+      padding: 14px 16px;
+    }
+
+    .meta strong, .label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .chip {
+      background: var(--panel-2);
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    li { margin-bottom: 8px; }
+
+    .note {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .priority-item {
+      background: linear-gradient(180deg, #fffaf1 0%, #fbf4e8 100%);
+    }
+
+    .priority-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .p0 { background: var(--danger); }
+    .p1 { background: var(--accent); }
+    .p2 { background: var(--accent-2); }
+    .p3 { background: var(--warn); color: #2f2418; }
+
+    .priority-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .priority-meta > div {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      background: #efe2cf;
+      border-radius: 6px;
+      padding: 1px 5px;
+      word-break: break-all;
+    }
+
+    @media (max-width: 720px) {
+      .hero, .section { padding: 18px; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>项目：<strong>Shuangqiao Town Stories / 《双桥镇往事》</strong>。本简报将“已发生改动事实”“基于当前代码状态的优化建议”“结合现状提出的功能建议”三类内容明确分开，避免把推断写成事实。</p>
+      <div class="meta">
+        <div>
+          <strong>简报日期</strong>
+          <span>2026-06-18</span>
+        </div>
+        <div>
+          <strong>回顾窗口</strong>
+          <span>自 2026-06-17 06:01:22 +0800 至 2026-06-18 06:03:21 +0800</span>
+        </div>
+        <div>
+          <strong>回顾依据</strong>
+          <span>2 个 git 提交 + 当前工作区状态 + README / project.godot / 核心 Autoload 与测试抽样</span>
+        </div>
+        <div>
+          <strong>项目快照</strong>
+          <span>13 个场景 / 62 个脚本 / 56 对测试脚本与场景 / 689 个 generated 资源文件</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>概览</h2>
+      <div class="grid">
+        <div class="chip">
+          <strong class="label">主线结论</strong>
+          <p>本轮已提交改动高度集中在配置加载容错和其回归测试，没有新增玩法系统，但提升了配置出错时的运行稳定性。</p>
+        </div>
+        <div class="chip">
+          <strong class="label">当前收益</strong>
+          <p><code>ConfigLoader</code> 在 JSON 缺失、损坏或顶层结构不合法时，开始保留上一份有效配置，能避免热重载或开发过程中的全局配置被清空。</p>
+        </div>
+        <div class="chip">
+          <strong class="label">当前风险</strong>
+          <p>经营原型已有较多全局 Autoload、主入口逻辑和大量 generated 资源，结构分层、资源索引与自动化验证开始成为主要维护成本来源。</p>
+        </div>
+        <div class="chip">
+          <strong class="label">产品状态</strong>
+          <p>“获得商品 → 摆摊 → 顾客购买 → 日结存档”闭环已经成型，下一阶段最值得做的是让经营反馈更可读、地图人流更可信、系统边界更清晰。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>已发生的项目改动</h2>
+      <p class="note">本节只记录已发生事实，不混入建议。</p>
+
+      <h3>主要改动</h3>
+      <ul>
+        <li><code>a68b62a</code> <strong>fix: preserve config state on reload failure</strong>：修改 <code>scripts/autoload/config_loader.gd</code>，让配置重载失败时回退到上一份有效配置，而不是返回空字典。</li>
+        <li><code>a68b62a</code> 同时新增 <code>tests/config_loader_recovery_test.gd</code> 与 <code>tests/config_loader_recovery_test.tscn</code>，覆盖合法配置、损坏 JSON、数组顶层、缺失文件四类恢复路径。</li>
+        <li><code>e3ba78c</code> <strong>chore: snapshot before daily brief fixes</strong>：删除 <code>addons/godot_ai.backup-20260612-080104/</code> 下大批 <code>.uid</code> 文件，并新增上一日简报 <code>docs/daily-briefs/2026-06-17.html</code>。</li>
+      </ul>
+
+      <h3>新增内容</h3>
+      <ul>
+        <li>新增配置恢复测试脚本和场景，验证配置容错不会丢失旧状态。</li>
+        <li>新增 2026-06-17 的历史简报归档，简报机制保持连续。</li>
+      </ul>
+
+      <h3>修改内容</h3>
+      <ul>
+        <li><code>scripts/autoload/config_loader.gd</code>：<code>load_all()</code> 改为把当前内存配置作为 <code>_load_json()</code> 的 fallback 传入；<code>_load_json()</code> 在异常场景返回 fallback；新增 <code>_report_config_load_failure()</code> 统一输出 warning / error。</li>
+        <li>从测试内容看，这次修复明确针对开发期配置文件被临时写坏、热重载中断、顶层结构错误等可预见问题，而不是扩展新配置能力。</li>
+      </ul>
+
+      <h3>删除或废弃内容</h3>
+      <ul>
+        <li>删除了备份插件目录中的大量 <code>.uid</code> 文件；路径显示这些删除发生在 <code>addons/godot_ai.backup-20260612-080104/</code>，更像备份清理，不是主项目运行时代码删减。</li>
+        <li>本回顾窗口内未发现主玩法场景、配置 JSON、角色脚本或生成资源的已提交删除。</li>
+      </ul>
+
+      <h3>可能影响</h3>
+      <ul>
+        <li>对开发稳定性：配置热重载失败不再把全局商品、作物、升级、人流等配置清空，能减少调试链路中的“二次故障”。</li>
+        <li>对测试质量：配置系统从“能跑”向“可回归验证”推进，后续适合继续补 save/load、场景切换、人口流动等关键路径测试。</li>
+        <li>对资源管理：备份目录 UID 清理如果只是减噪问题不大；若该目录仍承担恢复用途，则要确认是否还需要保留完整 UID 集。</li>
+      </ul>
+
+      <h3>待跟进事项</h3>
+      <ul>
+        <li>确认是否需要对 <code>addons/godot_ai.backup-20260612-080104/</code> 建立更明确的备份保留策略，避免未来误把“快照目录”当普通垃圾文件夹处理。</li>
+        <li>考虑把配置恢复场景纳入常规 headless 测试执行清单，保证后续配置项增多时不回退。</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>基于代码状态推断的优化建议</h2>
+      <p class="note">以下内容不是已发生改动，而是根据当前仓库状态、核心脚本形态和最近提交方向给出的优先级建议。</p>
+      <div class="priority-list">
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p0">P0</span>
+            <h3>把全局配置与存档的失败可见性做成统一诊断面板</h3>
+          </div>
+          <p>依据：<code>config_loader.gd</code> 现在能保留旧配置，但仍主要依赖 <code>push_warning()</code>/<code>push_error()</code>；<code>save_manager.gd</code> 也只在失败时打印文本。运行时若配置或存档悄悄退化，玩家和开发者都难以及时发现。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 更快定位配置/存档损坏，减少“游戏还能跑但状态已脏”的隐性风险。</div>
+            <div><strong class="label">建议落点</strong> <code>scripts/autoload/config_loader.gd</code>、<code>scripts/autoload/save_manager.gd</code>、<code>scripts/debug/</code>。</div>
+            <div><strong class="label">粗略成本</strong> 中。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先盘点现有 warning/error 的触发路径。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>拆分主入口脚本，降低 <code>scripts/main.gd</code> 的职责密度</h3>
+          </div>
+          <p>依据：<code>main.gd</code> 同时负责世界切换、UI 面板调度、日夜时钟、睡眠过场、玩家锁定、地图入口目标设置，已经是典型的“原型期方便、扩展期吃力”的汇聚点。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 场景切换、时间推进和 UI 交互更容易单独测试，未来加地图或结算逻辑不必继续堆进入口脚本。</div>
+            <div><strong class="label">建议落点</strong> <code>scripts/main.gd</code>，可拆为 scene flow / day clock / overlay controller。</div>
+            <div><strong class="label">粗略成本</strong> 中到高。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先梳理现有信号和调用边界。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>为人口流系统建立数据缓存和可视化抽样，而不是只靠运行时遍历</h3>
+          </div>
+          <p>依据：<code>population_flow.gd</code> 会在世界模板或场景中通过 <code>find_children()</code> 收集端点，并在 tick 中计算流动；系统已可用，但继续扩图后，端点收集、调参与问题定位会越来越重。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 提升性能稳定性，降低“为什么这里没人/太多人”的调试成本。</div>
+            <div><strong class="label">建议落点</strong> <code>scripts/autoload/population_flow.gd</code>、<code>scenes/town_scene.tscn</code>、调试面板脚本。</div>
+            <div><strong class="label">粗略成本</strong> 中。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先采样当前端点数量和 tick 频率。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p2">P2</span>
+            <h3>整理 generated 资源的注册表与淘汰策略</h3>
+          </div>
+          <p>依据：当前已有 689 个 <code>assets/generated</code> 文件，且配置通过 <code>assets.json</code> 与多个 <code>.tres</code> 资源共同引用。资源数量继续增长后，重复资产、孤儿资源和引用漂移会更常见。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 减少包体膨胀、查找成本和误用旧资源的概率。</div>
+            <div><strong class="label">建议落点</strong> <code>assets/generated/</code>、<code>configs/assets.json</code>、<code>tools/</code> 下资源审计脚本。</div>
+            <div><strong class="label">粗略成本</strong> 中。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先统计未被场景或配置引用的文件。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p2">P2</span>
+            <h3>补足调试日志的开关颗粒度和统一入口</h3>
+          </div>
+          <p>依据：<code>project.godot</code> 已有多项 <code>debug/gameplay/*</code> 开关，另有 <code>scripts/debug/gameplay_debug_log.gd</code>；说明项目已经意识到日志需求，但目前更像散点配置，而不是可复用的调试工作流。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 更容易复现经营、城管、人流、交易链路问题，降低人工插桩频率。</div>
+            <div><strong class="label">建议落点</strong> <code>project.godot</code>、<code>scripts/debug/gameplay_debug_log.gd</code>、相关系统日志调用点。</div>
+            <div><strong class="label">粗略成本</strong> 低到中。</div>
+            <div><strong class="label">是否需先验证</strong> 不强制，适合边补边用。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p3">P3</span>
+            <h3>把 headless 测试分层，形成 smoke / core / long-running 三档</h3>
+          </div>
+          <p>依据：已有 56 对测试脚本和场景，但 <code>tools/run_godot_headless_tests.sh</code> 默认串行跑全部测试；随着测试继续增长，日常开发会更依赖快速反馈而不是全量等待。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 改善开发工作流，降低“因为测试慢而少跑测试”的现实风险。</div>
+            <div><strong class="label">建议落点</strong> <code>tools/run_godot_headless_tests.sh</code>、<code>tests/</code> 命名或清单文件。</div>
+            <div><strong class="label">粗略成本</strong> 低。</div>
+            <div><strong class="label">是否需先验证</strong> 建议先统计单测耗时分布。</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>结合当前状态可新增的功能建议</h2>
+      <p class="note">以下内容属于创意性功能建议，重点基于当前已有的摆摊、人流、顾客偏好、日结、配置驱动和测试基础，不是泛泛列点。</p>
+      <div class="priority-list">
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>新增“今日客流与成交回顾”面板</h3>
+          </div>
+          <p>依据：项目已有 <code>PopulationFlow</code>、顾客购买判断、日结流程和日志事件，但玩家层面缺少“为什么今天卖得好/差”的可见反馈。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 让经营决策从凭感觉变成看数据，增强玩家学习循环。</div>
+            <div><strong class="label">建议落点</strong> <code>scripts/autoload/population_flow.gd</code>、日结 UI、顾客购买结果汇总模块。</div>
+            <div><strong class="label">粗略成本</strong> 中。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先确认现有事件字段是否足够汇总。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>新增“摊位选址热度提示”</h3>
+          </div>
+          <p>依据：README 明确强调学校门口、厂门口等时间窗和地点差异，当前系统已有时间窗口与人口流模型，适合把“高峰地段”转成可感知的经营提示，而不是只靠玩家记忆。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 强化“看人流选位置”的核心乐趣，减少新玩家初期迷失。</div>
+            <div><strong class="label">建议落点</strong> <code>scenes/town_scene.tscn</code>、地图交互提示、<code>PopulationFlow</code> 调试/摘要接口。</div>
+            <div><strong class="label">粗略成本</strong> 中。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先确认热度展示不会破坏探索感。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p2">P2</span>
+            <h3>新增“天气/节令影响供需”的轻量事件层</h3>
+          </div>
+          <p>依据：<code>calendar.json</code>、<code>flow_preferences.json</code> 和人口流系统已存在，说明项目已经具备时间与偏好配置基础；加入轻量天气/节令修正，可以显著提升乡镇经营的生活感。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 丰富每日经营差异，给种植、备货、摆摊时机带来更多策略空间。</div>
+            <div><strong class="label">建议落点</strong> <code>configs/calendar.json</code>、<code>configs/flow_preferences.json</code>、<code>scripts/autoload/population_flow.gd</code>。</div>
+            <div><strong class="label">粗略成本</strong> 中到高。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先做 1 到 2 种天气原型验证体感。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p2">P2</span>
+            <h3>新增“老顾客/偏好记忆”系统</h3>
+          </div>
+          <p>依据：现有顾客已具备年龄、性别、预算、偏好和购买判断，但关系仍偏匿名。加入少量复访顾客与记忆标签，能直接利用现有偏好系统放大情感辨识度。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 让重复经营更有角色感，提升留存和叙事温度。</div>
+            <div><strong class="label">建议落点</strong> 顾客生成逻辑、顾客配置、日结展示、存档结构。</div>
+            <div><strong class="label">粗略成本</strong> 中到高。</div>
+            <div><strong class="label">是否需先验证</strong> 需要，先定义轻量数据模型避免存档膨胀。</div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p3">P3</span>
+            <h3>新增“配置热重载反馈条”用于开发模式</h3>
+          </div>
+          <p>依据：最近刚修复配置重载失败回退，说明开发过程会频繁改 JSON。把结果显式显示为开发模式反馈条，可以让配置驱动迭代更顺滑。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong> 提高调参效率，减少开发者误以为配置已生效的时间损耗。</div>
+            <div><strong class="label">建议落点</strong> <code>scripts/autoload/config_loader.gd</code>、开发调试 UI、日志系统。</div>
+            <div><strong class="label">粗略成本</strong> 低到中。</div>
+            <div><strong class="label">是否需先验证</strong> 不强制，属于开发体验增强。</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>用于回顾的关键文件路径</h2>
+      <ul>
+        <li><code>README.md</code></li>
+        <li><code>project.godot</code></li>
+        <li><code>scripts/autoload/config_loader.gd</code></li>
+        <li><code>tests/config_loader_recovery_test.gd</code></li>
+        <li><code>tests/config_loader_recovery_test.tscn</code></li>
+        <li><code>scripts/main.gd</code></li>
+        <li><code>scripts/autoload/population_flow.gd</code></li>
+        <li><code>scripts/autoload/save_manager.gd</code></li>
+        <li><code>scripts/autoload/signal_bus.gd</code></li>
+        <li><code>tools/run_godot_headless_tests.sh</code></li>
+        <li><code>docs/daily-briefs/2026-06-17.html</code></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
