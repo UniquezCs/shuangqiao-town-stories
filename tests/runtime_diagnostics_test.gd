@@ -23,6 +23,15 @@ func _ready() -> void:
 	_assert_equal(int(summary.get("by_source", {}).get("config", 0)), 1, "诊断摘要应按来源统计")
 	_assert_equal(int(summary.get("by_severity", {}).get(RuntimeDiagnostics.SEVERITY_WARNING, 0)), 1, "诊断摘要应按级别统计")
 
+	var log_path := "user://runtime_diagnostics_test.json"
+	_assert_true(RuntimeDiagnostics.write_log(log_path), "诊断入口应能把摘要与问题落盘")
+	var log_file := FileAccess.open(log_path, FileAccess.READ)
+	_assert_true(log_file != null, "诊断日志文件应能被读回")
+	var parsed: Variant = JSON.parse_string(log_file.get_as_text())
+	_assert_true(parsed is Dictionary, "诊断日志应是 JSON 字典")
+	_assert_equal(int(parsed.get("summary", {}).get("total", 0)), 1, "诊断日志应包含摘要")
+	_assert_equal((parsed.get("issues", []) as Array).size(), 1, "诊断日志应包含问题列表")
+
 	RuntimeDiagnostics.clear("config")
 	_assert_equal(RuntimeDiagnostics.get_issues().size(), 0, "诊断入口应支持按来源清理")
 	get_tree().quit()
@@ -31,4 +40,10 @@ func _ready() -> void:
 func _assert_equal(actual: Variant, expected: Variant, message: String) -> void:
 	if actual != expected:
 		push_error("%s。实际：%s，期望：%s" % [message, str(actual), str(expected)])
+		get_tree().quit(1)
+
+
+func _assert_true(condition: bool, message: String) -> void:
+	if not condition:
+		push_error(message)
 		get_tree().quit(1)

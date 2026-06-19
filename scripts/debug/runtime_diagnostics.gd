@@ -49,6 +49,18 @@ func get_summary() -> Dictionary:
 	}
 
 
+func write_log(path: String = "user://runtime_diagnostics.json") -> bool:
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return false
+	var payload := {
+		"summary": get_summary(),
+		"issues": get_issues(),
+	}
+	file.store_string(JSON.stringify(payload, "\t"))
+	return true
+
+
 func clear(source := "") -> void:
 	if source.is_empty():
 		_issues.clear()
