@@ -69,6 +69,26 @@ The JSON file is the source of truth for stable asset ids, paths, status, and fu
 - Raw generation images, contact sheets, prompt text, manifests, preview GIFs, and other intermediate process files should not be kept under `assets/generated`.
 - Run `tools/audit_generated_assets.py` before pruning generated files. It reports generated resources missing from `configs/assets.json`, generated paths referenced by text files, and registry paths whose files no longer exist.
 
+## Generated Inventory Closure
+
+On 2026-06-24, the remaining final generated PNG/TRES resources were registered
+in `configs/assets.json` under `generated_inventory` with `available` status.
+These entries are inventory-only: they close the audit loop without wiring new
+art into runtime scenes, scripts, or configs.
+
+| Group | Registered Resources | Notes |
+| --- | ---: | --- |
+| `sprites/characters` | 3 | Legacy/customer character resources and spriteframes kept available for review. |
+| `sprites/farm` | 12 | Shared farm-state and stage textures not currently selected by crop configs. |
+| `sprites/items` | 13 | Extra crop, seed, basket, and marker icons. |
+| `sprites/objects` | 12 | General environment/object sprites. |
+| `sprites/props/stall` | 30 | Stall-side props, markers, stock states, and money props. |
+| `sprites/props/town` | 20 | Small town prop sprites. |
+| `sprites/ui/backpack` | 11 | Backpack UI component art. |
+| `sprites/ui/icons` | 26 | General UI and feedback icons. |
+| `sprites/ui/shop` | 11 | Shop panel component art. |
+| `tilesets/ui_feedback_32` | 1 | Available feedback icon TileSet resource. |
+
 ## Current Resource Needs By System
 
 ### Fonts
@@ -280,6 +300,7 @@ residential `NpcEndpoint` nodes: `WorkingFarmyardResidence`,
 | Asset ID | Status | Current Resource | Notes |
 | --- | --- | --- | --- |
 | `asset_preview_scene` | implemented | `res://scenes/debug/asset_preview_scene.tscn` | Developer-only scene that previews registered assets, statuses, dimensions, and load errors. |
+| `runtime_diagnostics_panel` | implemented | `res://scenes/debug/runtime_diagnostics_panel.tscn` | Developer-only scene that shows `RuntimeDiagnostics` summary, recent issue rows, and manual log export. |
 
 ## Integration Rule
 

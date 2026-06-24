@@ -1,6 +1,6 @@
 {
 	"schema_version": 1,
-	"updated_at": "2026-06-11",
+	"updated_at": "2026-06-24",
 	"purpose": "Central registry for gameplay art requirements, existing assets, placeholders, and future art generation targets.",
 	"status_values": {
 		"implemented": "Used by current scenes, scripts, or configs.",
@@ -4676,6 +4676,1141 @@
 				"asset_registry",
 				"preview"
 			]
+		},
+		"runtime_diagnostics_panel": {
+			"type": "debug_scene",
+			"status": "implemented",
+			"path": "res://scenes/debug/runtime_diagnostics_panel.tscn",
+			"usage": [
+				"inspect_runtime_diagnostic_summary",
+				"inspect_recent_runtime_issues",
+				"manual_runtime_diagnostic_log_export"
+			],
+			"used_by": [
+				"tests/runtime_diagnostics_panel_test.tscn"
+			],
+			"anchor": "full_rect",
+			"collision": "none",
+			"tags": [
+				"debug",
+				"runtime_diagnostics",
+				"diagnostics"
+			],
+			"notes": "Added 2026-06-24 as a standalone debug panel for RuntimeDiagnostics summary, recent issue rows, and manual log export."
+		}
+	},
+	"generated_inventory": {
+		"generated.sprites.characters.customer.student.48x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/characters/customer_student_48x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.characters.customer.worker.48x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/characters/customer_worker_48x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.characters.vendor.walk.spriteframes.48x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/characters/vendor_walk_spriteframes_48x64.tres",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.farm.empty.64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/farm_empty_64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.farm.growing.64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/farm_growing_64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.farm.ready.64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/farm_ready_64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.farm.seeded.64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/farm_seeded_64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.flowering.stage": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/flowering_stage.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.freshly.hoed": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/freshly_hoed.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.grass.patch": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/grass_patch.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.harvest.ready": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/harvest_ready.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.leafy.stage": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/leafy_stage.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.seeded": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/seeded.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.sprout.stage": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/sprout_stage.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.farm.stages.watered.seeded": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/farm/stages/watered_seeded.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.carrot.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/carrot_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.chili.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/chili_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.corn.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/corn_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.eggplant.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/eggplant_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.onion.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/onion_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.pumpkin.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/pumpkin_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.strawberry.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/strawberry_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.sunflower.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/sunflower_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.turnip.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/turnip_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.crops.wheat.bundle.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/crops/wheat_bundle_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.general.basket.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/general/basket_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.general.stall.marker.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/general/stall_marker_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.items.pear.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/items/pear_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.apple.basket.pile.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/apple_basket_pile_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.apple.tree.96x96": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/apple_tree_96x96.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.bamboo.fence.128x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/bamboo_fence_128x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.courtyard.path.tile.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/courtyard_path_tile_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.dirt.road.sign.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/dirt_road_sign_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.farm.empty.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/farm_empty_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.farm.growing.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/farm_growing_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.farm.ready.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/farm_ready_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.farm.seeded.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/farm_seeded_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.house.doorway.128x128": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/house_doorway_128x128.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.scene.exit.marker.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/scene_exit_marker_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.objects.water.jar.64x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/objects/water_jar_64x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.06.basket.apples.full": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/06_basket_apples_full.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.07.basket.apples.half": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/07_basket_apples_half.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.08.basket.empty": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/08_basket_empty.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.09.wooden.crate": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/09_wooden_crate.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.10.wooden.sign": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/10_wooden_sign.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.14.abacus": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/14_abacus.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.16.seed.bag.large": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/16_seed_bag_large.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.17.apple.seed.packet": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/17_apple_seed_packet.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.18.tied.sack.small": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/18_tied_sack_small.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.19.carrying.pole": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/19_carrying_pole.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.20.shoulder.basket.pole": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/20_shoulder_basket_pole.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.22.wooden.stool": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/22_wooden_stool.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.23.red.thermos": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/23_red_thermos.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.24.enamel.mug": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/24_enamel_mug.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.25.radio": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/25_radio.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.26.burlap.sack.large": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/26_burlap_sack_large.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.30.tree.stump": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/30_tree_stump.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.32.brick.stairs": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/32_brick_stairs.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.38.stall.placement.marker": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/38_stall_placement_marker.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.39.footprint.marker": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/39_footprint_marker.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.40.coin.silver.single": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/40_coin_silver_single.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.41.coin.silver.stack": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/41_coin_silver_stack.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.42.coin.gold.stack": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/42_coin_gold_stack.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.43.cash.bundle": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/43_cash_bundle.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.44.red.x.marker": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/44_red_x_marker.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.stall.empty.96x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/stall_empty_96x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.stall.full.96x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/stall_full_96x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.stall.low.96x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/stall_low_96x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.stall.mid.96x64": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/stall_mid_96x64.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.stall.stall.spot.128x32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/stall/stall_spot_128x32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.barrel": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/barrel.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.bench": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/bench.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.bicycle": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/bicycle.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.broom": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/broom.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.bucket": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/bucket.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.burlap.sack": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/burlap_sack.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.clothesline.post": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/clothesline_post.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.flower.pot": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/flower_pot.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.handcart": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/handcart.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.hay.bale": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/hay_bale.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.lantern": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/lantern.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.mailbox": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/mailbox.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.market.signboard": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/market_signboard.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.milk.can": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/milk_can.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.shovel": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/shovel.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.street.lamp": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/street_lamp.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.watering.trough": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/watering_trough.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.wicker.basket": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/wicker_basket.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.wooden.crate": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/wooden_crate.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.props.town.wooden.stool": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/props/town/wooden_stool.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.backpack.emblem": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/backpack_emblem.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.close.button": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/close_button.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.coin.cash.badge": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/coin_cash_badge.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.confirm.button": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/confirm_button.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.inner.paper.panel": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/inner_paper_panel.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.item.detail.card": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/item_detail_card.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.scroll.divider": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/scroll_divider.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.tab.backpack": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/tab_backpack.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.tab.crop": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/tab_crop.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.tab.tool": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/tab_tool.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.backpack.title.plaque": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/backpack/title_plaque.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.apple.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/apple_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.apple.seed.packet.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/apple_seed_packet_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.factory.gate.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/factory_gate_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.backpack.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/backpack_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.calendar.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/calendar_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.chat.bubble.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/chat_bubble_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.coin.stack.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/coin_stack_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.fertilizer.placeholder.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/fertilizer_placeholder_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.heart.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/heart_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.home.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/home_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.map.pin.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/map_pin_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.market.stall.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/market_stall_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.player.portrait.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/player_portrait_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.quest.scroll.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/quest_scroll_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.seed.bag.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/seed_bag_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.settings.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/settings_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.stamina.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/stamina_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.general.treasure.chest.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/general/treasure_chest_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.price.down.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/price_down_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.price.up.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/price_up_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.question.bubble.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/question_bubble_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.refusal.bubble.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/refusal_bubble_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.school.gate.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/school_gate_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.sold.out.basket.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/sold_out_basket_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.stall.location.marker.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/stall_location_marker_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.icons.ui.feedback.icons.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/icons/ui_feedback_icons_32.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.awning.header": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/awning_header.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.backpack.upgrade.icon": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/backpack_upgrade_icon.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.close.button": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/close_button.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.coin.stack.badge": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/coin_stack_badge.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.crop.basket.card": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/crop_basket_card.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.receipt.paper": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/receipt_paper.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.seed.packet.card": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/seed_packet_card.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.sold.out.stamp": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/sold_out_stamp.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.stall.upgrade.icon": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/stall_upgrade_icon.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.stock.badge": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/stock_badge.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.sprites.ui.shop.upgrade.card": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/sprites/ui/shop/upgrade_card.png",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
+		},
+		"generated.tilesets.ui.feedback.32.ui.feedback.icons.tileset.32": {
+			"type": "generated_resource",
+			"status": "available",
+			"path": "res://assets/generated/tilesets/ui_feedback_32/ui_feedback_icons_tileset_32.tres",
+			"registered_at": "2026-06-24",
+			"registry_scope": "bulk_generated_asset_inventory",
+			"notes": "Existing final generated resource registered to close the generated asset audit loop; not newly wired into runtime gameplay."
 		}
 	}
 }

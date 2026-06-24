@@ -5,8 +5,18 @@ signal issue_reported(issue: Dictionary)
 const SEVERITY_WARNING := "warning"
 const SEVERITY_ERROR := "error"
 const MAX_ISSUES := 50
+const DISPLAY_ROW_LIMIT := 8
+const AUTO_EXPORT_ON_ERROR_SETTING := "debug/runtime_diagnostics/auto_export_on_error"
+const AUTO_EXPORT_PATH_SETTING := "debug/runtime_diagnostics/auto_export_path"
 
 var _issues: Array[Dictionary] = []
+
+
+func _ready() -> void:
+	if not ProjectSettings.has_setting(AUTO_EXPORT_ON_ERROR_SETTING):
+		ProjectSettings.set_setting(AUTO_EXPORT_ON_ERROR_SETTING, false)
+	if not ProjectSettings.has_setting(AUTO_EXPORT_PATH_SETTING):
+		ProjectSettings.set_setting(AUTO_EXPORT_PATH_SETTING, "user://runtime_diagnostics.json")
 
 
 func report_issue(source: String, code: String, message: String, data: Dictionary = {}, severity := SEVERITY_WARNING) -> void:
@@ -23,6 +33,8 @@ func report_issue(source: String, code: String, message: String, data: Dictionar
 	while _issues.size() > MAX_ISSUES:
 		_issues.pop_front()
 	issue_reported.emit(issue.duplicate(true))
+	if severity == SEVERITY_ERROR and bool(ProjectSettings.get_setting(AUTO_EXPORT_ON_ERROR_SETTING, false)):
+		write_log(str(ProjectSettings.get_setting(AUTO_EXPORT_PATH_SETTING, "user://runtime_diagnostics.json")))
 
 
 func get_issues(source := "") -> Array[Dictionary]:
@@ -47,6 +59,22 @@ func get_summary() -> Dictionary:
 		"by_severity": by_severity,
 		"latest_issue": _issues.back().duplicate(true) if not _issues.is_empty() else {},
 	}
+
+
+func get_display_rows(limit: int = DISPLAY_ROW_LIMIT) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	var start: int = maxi(0, _issues.size() - limit)
+	for index in range(start, _issues.size()):
+		var issue: Dictionary = _issues[index]
+		rows.append({
+			"source": str(issue.get("source", "")),
+			"code": str(issue.get("code", "")),
+			"severity": str(issue.get("severity", "")),
+			"message": str(issue.get("message", "")),
+			"frame": int(issue.get("frame", 0)),
+			"timestamp_msec": int(issue.get("timestamp_msec", 0)),
+		})
+	return rows
 
 
 func write_log(path: String = "user://runtime_diagnostics.json") -> bool:

@@ -7,12 +7,6 @@ const ALLOWED_EXTENSIONS := ["import", "png", "tres"]
 const DISALLOWED_DIR_NAMES := ["raw", "processed", "references", "direction_gifs", "direction_strips"]
 const DISALLOWED_FILE_NAMES := [".DS_Store", "manifest.json", "contact_sheet.png"]
 const REQUIRED_CROP_TEXTURE_STATES := ["tilled", "seed_dry", "seed_watered", "growing_dry", "growing_watered", "ready"]
-const REQUIRED_REGISTERED_GENERATED_DIRS := [
-	"res://assets/generated/sprites/locations",
-	"res://assets/generated/sprites/map",
-	"res://assets/generated/sprites/props/township",
-	"res://assets/generated/sprites/ui/intro",
-]
 
 
 func _ready() -> void:
@@ -114,10 +108,9 @@ func _assert_generated_assets_are_registered() -> void:
 	var registered_paths := {}
 	_collect_generated_paths(ConfigLoader.assets, registered_paths)
 	var missing := []
-	for dir_path in REQUIRED_REGISTERED_GENERATED_DIRS:
-		_collect_unregistered_generated_assets(dir_path, registered_paths, missing)
+	_collect_unregistered_generated_assets(GENERATED_DIR, registered_paths, missing)
 	missing.sort()
-	_assert_true(missing.is_empty(), "需强制登记的 generated 目录存在未写入 configs/assets.json 的最终资源：%s" % str(missing))
+	_assert_true(missing.is_empty(), "generated 中存在未写入 configs/assets.json 的最终资源：%s" % str(missing))
 
 
 func _assert_registered_resource_paths_exist() -> void:
