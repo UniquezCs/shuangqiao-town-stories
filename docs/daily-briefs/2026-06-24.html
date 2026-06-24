@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Godot 项目每日简报 - 2026-06-24</title>
+  <style>
+    :root {
+      --bg: #f3ede2;
+      --panel: #fffaf1;
+      --panel-2: #f6efe2;
+      --line: #d8c5a6;
+      --text: #2f2418;
+      --muted: #6a5a47;
+      --accent: #8b4d2c;
+      --accent-2: #436a56;
+      --danger: #9f3d2e;
+      --warn: #b67c26;
+      --shadow: 0 18px 42px rgba(66, 43, 20, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Noto Sans CJK SC", "PingFang SC", sans-serif;
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at top left, rgba(139, 77, 44, 0.12), transparent 28%),
+        linear-gradient(180deg, #f8f2e8 0%, #f1eadf 100%);
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero, .section, .chip, .priority-item {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero, .section {
+      padding: 24px 28px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 31px; }
+    h2 { font-size: 22px; }
+    h3 { font-size: 18px; }
+    p { margin: 0 0 10px; }
+
+    .meta, .grid, .priority-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .meta {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 18px;
+    }
+
+    .meta > div, .chip, .priority-item {
+      padding: 14px 16px;
+    }
+
+    .meta strong, .label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .chip {
+      background: var(--panel-2);
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    li { margin-bottom: 8px; }
+
+    .note {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .priority-item {
+      background: linear-gradient(180deg, #fffaf1 0%, #fbf4e8 100%);
+    }
+
+    .priority-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .p0 { background: var(--danger); }
+    .p1 { background: var(--accent); }
+    .p2 { background: var(--accent-2); }
+    .p3 { background: var(--warn); color: #2f2418; }
+
+    .priority-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .priority-meta > div {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      background: #efe2cf;
+      border-radius: 6px;
+      padding: 1px 5px;
+      word-break: break-all;
+    }
+
+    .callout {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fbf2e5 0%, #f7ecdd 100%);
+      margin-top: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .hero, .section { padding: 18px; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Godot 项目每日 HTML 简报</h1>
+      <p>项目：<strong>Shuangqiao Town Stories / 《双桥镇往事》</strong>。本简报明确区分三类内容：一是回顾窗口内已发生的事实改动，二是基于当前代码状态推断的优化建议，三是结合现有系统提出的功能补足建议。</p>
+      <div class="meta">
+        <div>
+          <strong>简报日期</strong>
+          <span>2026-06-24</span>
+        </div>
+        <div>
+          <strong>回顾窗口</strong>
+          <span>自 2026-06-22 22:01:26 UTC（即 2026-06-23 06:01:26 +0800）至 2026-06-24 06:02:01 +0800</span>
+        </div>
+        <div>
+          <strong>回顾依据</strong>
+          <span><code>git log</code>、<code>git status</code>、文件时间戳、资源审计、README、核心脚本/配置/场景抽样</span>
+        </div>
+        <div>
+          <strong>项目快照</strong>
+          <span>13 个场景 / 125 个脚本 / 169 个测试文件 / 348 个 generated 资源文件</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>概览</h2>
+      <div class="grid">
+        <div class="chip">
+          <strong class="label">本轮结论</strong>
+          <p>本回顾窗口内没有新的 git 提交、没有工作区改动、没有新增未跟踪文件，属于一次“代码冻结日”的项目快照简报。</p>
+        </div>
+        <div class="chip">
+          <strong class="label">最近实质代码基线</strong>
+          <p>仓库最近一次功能性提交仍是 <code>2026-06-19 12:08:15 +0800</code> 的 <code>c510748</code>，内容是为 <code>RuntimeDiagnostics</code> 增加日志导出。</p>
+        </div>
+        <div class="chip">
+          <strong class="label">当前主要风险</strong>
+          <p>虽然最近一天没有新增风险，但项目结构债务仍在积累，尤其是 generated 资源注册缺口与核心脚本职责膨胀两类问题。</p>
+        </div>
+        <div class="chip">
+          <strong class="label">当前重点</strong>
+          <p>今天更适合做“整理、拆分、补闭环”而不是继续堆功能，因为经营闭环已可玩，但维护成本正在超过玩法增长速度。</p>
+        </div>
+      </div>
+      <div class="callout">
+        自动化提供的上次运行时间是 <code>2026-06-22T22:01:26.275Z</code>，但仓库内最近已落盘的日报文件仍停留在 <code>docs/daily-briefs/2026-06-19.html</code>。本次回顾以自动化时间窗为准，同时参考最近一份已保存日报避免重复结论。
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>已发生的项目改动</h2>
+      <p class="note">本节只记录回顾窗口内已经发生的事实，不混入建议。</p>
+
+      <h3>主要改动</h3>
+      <ul>
+        <li>无新的 git 提交。</li>
+        <li>无已暂存或未暂存工作区改动。</li>
+        <li>无新增未跟踪文件。</li>
+      </ul>
+
+      <h3>新增内容</h3>
+      <ul>
+        <li>无。</li>
+      </ul>
+
+      <h3>修改内容</h3>
+      <ul>
+        <li>无。</li>
+      </ul>
+
+      <h3>删除或废弃内容</h3>
+      <ul>
+        <li>无。</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>可能影响</h2>
+      <ul>
+        <li>短期内没有新增回归风险，因为代码和资源在回顾窗口内没有变化。</li>
+        <li>中期风险没有消失：<code>python3 tools/audit_generated_assets.py</code> 仍显示 348 个 generated 资源中有 139 个未登记、138 个未被文本引用，资源侧闭环仍不完整。</li>
+        <li>代码维护压力继续上升：<code>scripts/autoload/population_flow.gd</code> 594 行、<code>scripts/ui/stall_setup_panel.gd</code> 443 行、<code>scripts/main.gd</code> 425 行、<code>scripts/autoload/game_state.gd</code> 408 行、<code>scripts/player.gd</code> 401 行，核心职责已明显集中。</li>
+        <li>测试数量已经不少，但开发工作流仍偏“全量串行执行”；目前 <code>tools/run_godot_headless_tests.sh</code> 主要负责串行跑场景，增量反馈成本仍偏高。</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>优化点（基于当前代码状态推断）</h2>
+      <p class="note">以下内容不是已发生改动，而是结合当前代码、配置、资源与工具状态得出的优化建议。</p>
+      <div class="priority-list">
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p0">P0</span>
+            <h3>补齐 generated 资源注册闭环</h3>
+          </div>
+          <p><strong>依据：</strong><code>tools/audit_generated_assets.py</code> 当前报告 348 个 generated 资源里有 139 个未登记、138 个未被文本引用，样本里已出现 <code>vendor_walk_spriteframes_48x64.tres</code>、农田阶段图和多组商品图标。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>减少幽灵资源、错误引用和素材盘点失真，避免后续功能开发继续踩旧资源。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>configs/assets.json</code>、<code>docs/asset_registry.md</code>、<code>assets/generated/</code></span></div>
+            <div><strong class="label">实施成本</strong><span>中</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，先以审计脚本输出分批收口。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>拆分主入口与全局状态的混合职责</h3>
+          </div>
+          <p><strong>依据：</strong><code>scripts/main.gd</code> 同时管理场景切换、时间推进、睡眠结算、面板创建和玩家出生点；<code>scripts/autoload/game_state.gd</code> 同时负责经济、农田、结算、升级和存档数据整形。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>降低跨系统改动的牵连范围，让场景切换、日结、状态持久化更容易单测。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>scripts/main.gd</code>、<code>scripts/autoload/game_state.gd</code>，可新增 world/session 或 settlement 子模块。</span></div>
+            <div><strong class="label">实施成本</strong><span>中到高</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，需先用现有结算与读档测试兜底。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>模块化人口流动与玩家交互控制器</h3>
+          </div>
+          <p><strong>依据：</strong><code>scripts/autoload/population_flow.gd</code> 已覆盖初始化、流动计算、可见抽样、事件缓存和调试摘要；<code>scripts/player.gd</code> 同时承担移动、交互、耕作点击、求乞姿态和长按交互。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>让顾客流动、人流调优和玩家动作扩展彼此解耦，后续加天气、活动日或新工具时不必继续堆到单文件。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>scripts/autoload/population_flow.gd</code>、<code>scripts/player.gd</code>、相关 tests</span></div>
+            <div><strong class="label">实施成本</strong><span>中</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，建议先锁定现有顾客、人流、耕作与交互测试。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p2">P2</span>
+            <h3>补一层可见诊断面板与自动导出策略</h3>
+          </div>
+          <p><strong>依据：</strong><code>scripts/debug/runtime_diagnostics.gd</code> 已支持聚合和写盘，但当前主要还是底层容器；<code>project.godot</code> 里的玩法日志频道默认全关，排错路径仍偏手动。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>把“有诊断能力”变成“能被快速消费”，缩短配置失败、存档异常和玩法异常的定位链路。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>scripts/debug/runtime_diagnostics.gd</code>、调试场景或 HUD debug 面板</span></div>
+            <div><strong class="label">实施成本</strong><span>低到中</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，先定义需要展示和落盘的最小字段。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p3">P3</span>
+            <h3>整理测试工作流与项目文档基线</h3>
+          </div>
+          <p><strong>依据：</strong>当前测试文件已达 169 个，但执行入口仍是串行 shell；同时 README 中“63 个脚本 / 114 个测试”的描述已落后于仓库实况。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>减少新人判断偏差，也让日常改动更容易选对测试子集。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>tools/run_godot_headless_tests.sh</code>、<code>README.md</code>、<code>docs/development_baseline.md</code></span></div>
+            <div><strong class="label">实施成本</strong><span>低</span></div>
+            <div><strong class="label">是否先验证</strong><span>否，可直接整理。</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>新增功能（创意性建议）</h2>
+      <p class="note">以下内容不是仓库里已经实现的功能，而是结合当前系统状态、最近已完成基础设施和玩家体验缺口提出的功能建议。</p>
+      <div class="priority-list">
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>把“昨日总结”升级成经营复盘面板</h3>
+          </div>
+          <p><strong>依据：</strong><code>scripts/ui/daily_summary_panel.gd</code> 现在只显示收入、销量、顾客数和罚款；而 <code>GameState</code>、<code>GameplayDebugLog</code>、<code>PopulationFlow</code> 已具备承载更细颗粒结算信息的基础。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>让玩家知道“为什么今天赚到钱或亏钱”，强化经营反馈闭环。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>scripts/ui/daily_summary_panel.gd</code>、<code>scripts/autoload/game_state.gd</code>、相关结算测试</span></div>
+            <div><strong class="label">实施成本</strong><span>中</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，先确定最小复盘指标：畅销品、拒购原因、罚款来源、时段收入。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p1">P1</span>
+            <h3>启用日历 / 天气 / 集市日对人流与需求的影响</h3>
+          </div>
+          <p><strong>依据：</strong><code>configs/calendar.json</code> 目前几乎为空，<code>PopulationFlow</code> 已有 <code>weather/day_tag override</code> 入口，顾客偏好和人口流量又都是配置驱动，基础设施已经在但玩法价值还没释放。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>把每天经营从“重复摆摊”拉成“看日子做决策”，增强长线策略感。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>configs/calendar.json</code>、<code>configs/population.json</code>、<code>scripts/autoload/population_flow.gd</code></span></div>
+            <div><strong class="label">实施成本</strong><span>中</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，先验证一种特殊日，例如赶集日或雨天。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p2">P2</span>
+            <h3>加入摆摊选址热力提示和时段建议</h3>
+          </div>
+          <p><strong>依据：</strong>项目已经有学校、工厂、住宅、公共节点的人口流动模型，也有不同时段窗口；但玩家还缺少把这些系统转化成可理解决策的信息层。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>让“去哪里摆、什么时候摆”从试错改成可学习的经营技巧。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>scripts/autoload/population_flow.gd</code>、<code>scripts/ui/hud.gd</code>、<code>scenes/town_scene.tscn</code></span></div>
+            <div><strong class="label">实施成本</strong><span>中</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，先做 debug 版热力提示，再决定是否转成玩家功能。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p2">P2</span>
+            <h3>把农作循环从“当日产出”扩成“多日耕作”</h3>
+          </div>
+          <p><strong>依据：</strong><code>configs/crops.json</code> 中多种作物的 <code>growth_days</code> 仍为 0，但肥料、浇水、种子和地块状态已经齐备，当前农业更多像补给来源，还没形成中期经营选择。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>把农业从即时补货手段升级为有节奏、有投入产出比的第二经营线。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>configs/crops.json</code>、<code>scripts/autoload/game_state.gd</code>、农田相关场景与测试</span></div>
+            <div><strong class="label">实施成本</strong><span>中到高</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，先只改 1 到 2 种作物并校准日结节奏。</span></div>
+          </div>
+        </article>
+
+        <article class="priority-item">
+          <div class="priority-head">
+            <span class="badge p3">P3</span>
+            <h3>增强城管风险预警和快速收摊反馈</h3>
+          </div>
+          <p><strong>依据：</strong>城管巡逻、抓捕和罚款已存在，但当前玩家侧更多是被动承受；如果加入预警、收摊时间差或躲避反馈，现有系统张力会明显提升。</p>
+          <div class="priority-meta">
+            <div><strong class="label">预期收益</strong><span>增加紧张感和操作表达，避免城管系统只表现为一次性惩罚。</span></div>
+            <div><strong class="label">建议落点</strong><span><code>scripts/ui/hud.gd</code>、<code>scripts/main.gd</code>、城管相关场景和测试</span></div>
+            <div><strong class="label">实施成本</strong><span>中</span></div>
+            <div><strong class="label">是否先验证</strong><span>是，先验证提示不会破坏紧张感。</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>待跟进事项</h2>
+      <ul>
+        <li>先决定这轮是否把“资源注册闭环”作为下一个明确目标，因为这是当前唯一达到 P0 的结构问题。</li>
+        <li>如果近期要继续加玩法，建议优先做“经营复盘面板”或“日历/天气/集市日”，它们最能复用现有数据驱动基础。</li>
+        <li>如果近期以稳定性为先，建议先拆 <code>main.gd</code> / <code>game_state.gd</code> / <code>population_flow.gd</code> 的职责边界，再继续扩系统。</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>用于回顾的关键文件路径</h2>
+      <ul>
+        <li><code>README.md</code></li>
+        <li><code>project.godot</code></li>
+        <li><code>scripts/main.gd</code></li>
+        <li><code>scripts/autoload/game_state.gd</code></li>
+        <li><code>scripts/autoload/population_flow.gd</code></li>
+        <li><code>scripts/autoload/config_loader.gd</code></li>
+        <li><code>scripts/autoload/save_manager.gd</code></li>
+        <li><code>scripts/player.gd</code></li>
+        <li><code>scripts/ui/daily_summary_panel.gd</code></li>
+        <li><code>scripts/ui/title_screen.gd</code></li>
+        <li><code>scripts/debug/runtime_diagnostics.gd</code></li>
+        <li><code>configs/assets.json</code></li>
+        <li><code>configs/calendar.json</code></li>
+        <li><code>configs/crops.json</code></li>
+        <li><code>configs/customer_preferences.json</code></li>
+        <li><code>docs/asset_registry.md</code></li>
+        <li><code>tools/audit_generated_assets.py</code></li>
+        <li><code>tools/run_godot_headless_tests.sh</code></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
